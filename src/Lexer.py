@@ -12,14 +12,8 @@ def lexer(characters):
                 match = re.match(regex[0], characters[i:], re.IGNORECASE)
                 if match:
                     if regex[1] is not None:
-                        try:
-                            tokens.append((match.group(1), regex[1]))
-                        except IndexError:
                             tokens.append((match.group(), regex[1]))
-                    try:
-                        i += len(match.group(1))
-                    except IndexError:
-                        i += len(match.group())
+                    i += len(match.group())
                     regex_matches = True
                     break
                 else:
