@@ -1,6 +1,7 @@
 import unittest
 import src
 
+
 class TestEqualityMethods(unittest.TestCase):
 
     def testEquals(self):
