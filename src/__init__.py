@@ -1,1 +1,1 @@
-from .Lexer import *
+from .Lexer import lexer
