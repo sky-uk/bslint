@@ -45,3 +45,9 @@ class TestIdentifierMethods(unittest.TestCase):
         exp_result = ('_testId', 'ID')
         result = src.lexer(identifier)
         self.assertEquals(result[0], exp_result)
+
+    def testIdentifierAsUnderscore(self):
+        identifier = "_"
+        exp_result = ('_', 'ID')
+        result = src.lexer(identifier)
+        self.assertEquals(result[0], exp_result)
