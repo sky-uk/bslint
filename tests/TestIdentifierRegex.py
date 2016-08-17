@@ -1,7 +1,6 @@
 import unittest
 import src
 
-
 class TestIdentifierMethods(unittest.TestCase):
 
     def testBasicIdentifier(self):
