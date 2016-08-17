@@ -15,14 +15,26 @@ class TestEqualityMethods(unittest.TestCase):
         result = src.lexer(identifier)
         self.assertEquals(result, exp_result)
 
-    def testNotEquals(self):
+    def testLessThanOrEqual(self):
         identifier = "<="
         exp_result = [('<=', 'STMT')]
         result = src.lexer(identifier)
         self.assertEquals(result, exp_result)
 
-    def testNotEquals(self):
+    def testGreaterThanOrEqual(self):
         identifier = ">="
         exp_result = [('>=', 'STMT')]
+        result = src.lexer(identifier)
+        self.assertEquals(result, exp_result)
+
+    def testGreaterThan(self):
+        identifier = ">"
+        exp_result = [('>', 'STMT')]
+        result = src.lexer(identifier)
+        self.assertEquals(result, exp_result)
+
+    def testLessThan(self):
+        identifier = "<"
+        exp_result = [('<', 'STMT')]
         result = src.lexer(identifier)
         self.assertEquals(result, exp_result)
