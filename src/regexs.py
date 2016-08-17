@@ -1,29 +1,30 @@
 # this characters need escaping . ^ $ * + ? { } [ ] \ | ( )
-STMT = 'STMT'
-ID = 'ID'
+import resources.Constants as const
+
 List = [
     (r"\s", None),
-    ("\+=", STMT),
-    ("-=", STMT),
-    ("\*=", STMT),
-    ("/=", STMT),
-    (r"\\=", STMT), # divide integer
-    ("<<=", STMT),
-    (">>=", STMT),
-    ("==", STMT),
-    ("<>", STMT),
-    (">=", STMT),
-    ("<=", STMT),
-    (">=", STMT),
-    (r"\.", STMT),
-    (r"\^", STMT),
-    ("=", STMT),
-    ("-", STMT),
-    ("\+", STMT),
-    ("\*", STMT),
-    (r"/", STMT),
-    ("<", STMT),
-    (">", STMT),
-    ("'", STMT),
-    (r"(^[a-z_][a-z0-9_]*)", ID)
+    ("\+=", const.STMT),
+    ("-=", const.STMT),
+    ("\*=", const.STMT),
+    ("/=", const.STMT),
+    (r"\\=", const.STMT), # divide integer
+    ("<<=", const.STMT),
+    (">>=", const.STMT),
+    ("==", const.STMT),
+    ("<>", const.STMT),
+    (">=", const.STMT),
+    ("<=", const.STMT),
+    (">=", const.STMT),
+    (r"\.", const.STMT),
+    (r"\^", const.STMT),
+    ("=", const.STMT),
+    ("-", const.STMT),
+    ("\+", const.STMT),
+    ("\*", const.STMT),
+    (r"/", const.STMT),
+    ("<", const.STMT),
+    (">", const.STMT),
+    ("'", const.STMT),
+    (r"(^[a-z_][a-z0-9_]*)", const.ID),
+    ('\"(.*)\"', const.STRING)
 ]

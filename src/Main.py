@@ -1,2 +1,8 @@
-fo = open("../resources/brightscript.txt", "r+")
-strToParse = fo.read(11)
+import src
+
+
+def main(filepath):
+    fo = open(filepath, "r+")
+    str_to_parse = fo.read()
+
+    return str_to_parse
