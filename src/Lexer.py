@@ -13,9 +13,9 @@ def lexer(characters):
                 if match:
                     if regex[1] is not None:
                         try:
-                            tokens.append(match.group(1))
+                            tokens.append((match.group(1), regex[1]))
                         except IndexError:
-                            tokens.append(match.group())
+                            tokens.append((match.group(), regex[1]))
                     try:
                         i += len(match.group(1))
                     except IndexError:

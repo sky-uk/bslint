@@ -1,5 +1,6 @@
-#this characters need escaping . ^ $ * + ? { } [ ] \ | ( )
+# this characters need escaping . ^ $ * + ? { } [ ] \ | ( )
 STMT = 'STMT'
+ID = 'ID'
 List = [
     ("\+=", STMT),
     ("-=", STMT),
@@ -18,6 +19,6 @@ List = [
     (r"\.", STMT),
     (r"\^", STMT),
     ("'", STMT),
-    (r"(^[a-z_][a-z0-9_]+)(?:[\D\d]+)", STMT),
+    (r"(^[a-z_][a-z0-9_]*)(?:[\D\d]*)", ID),
     (r"\s", None)
 ]
