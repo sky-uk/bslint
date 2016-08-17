@@ -1,5 +1,6 @@
 import src.regexs as regexs
 import re
+import resources.Constants as const
 
 
 def lexer(characters):
@@ -12,8 +13,11 @@ def lexer(characters):
                 match = re.match(regex[0], characters[i:], re.IGNORECASE)
                 if match:
                     if regex[1] is not None:
-                            tokens.append((match.group(), regex[1]))
-                    i += len(match.group())
+                        group = match.group()
+                        if regex[1] == const.STRING:
+                            group = match.group(1)  # If string then strip quotation marks from start
+                        tokens.append((group, regex[1]))
+                    i += len(match.group())  # -1 access last element in list
                     regex_matches = True
                     break
                 else:

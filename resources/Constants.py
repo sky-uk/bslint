@@ -1,0 +1,4 @@
+STMT = 'STMT'
+ID = 'ID'
+STRING = 'STRING'
+INT = 'INT'
