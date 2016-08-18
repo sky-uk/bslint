@@ -21,6 +21,8 @@ List = [
     (">=", const.STMT),
     ("<=", const.STMT),
     (">=", const.STMT),
+    ("=>", const.STMT),
+    ("=<", const.STMT),
 
     (">>", const.STMT), # TODO
     ("<<", const.STMT), # TODO
