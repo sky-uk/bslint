@@ -1,3 +1,3 @@
 machine:
-    post:
-        - pyenv global 3.5.2
+    python:
+        version: pypy-3.5.1
