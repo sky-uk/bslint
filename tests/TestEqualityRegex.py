@@ -22,9 +22,21 @@ class TestEqualityMethods(unittest.TestCase):
         result = src.lexer(identifier)
         self.assertEquals(result, exp_result)
 
+    def testLessThanOrEqualSec(self):
+        identifier = "=<"
+        exp_result = [('=<', 'STMT')]
+        result = src.lexer(identifier)
+        self.assertEquals(result, exp_result)
+
     def testGreaterThanOrEqual(self):
         identifier = ">="
         exp_result = [('>=', 'STMT')]
+        result = src.lexer(identifier)
+        self.assertEquals(result, exp_result)
+
+    def testGreaterThanOrEqualSec(self):
+        identifier = "=>"
+        exp_result = [('=>', 'STMT')]
         result = src.lexer(identifier)
         self.assertEquals(result, exp_result)
 
