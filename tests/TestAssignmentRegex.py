@@ -10,8 +10,8 @@ class TestAssignments(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.string_file = src.main("../resources/BasicStringAssignment.txt")
-        cls.int_file = src.main("../resources/BasicIntegerAssignment.txt")
+        cls.string_file = src.main("./resources/BasicStringAssignment.txt")
+        cls.int_file = src.main("./resources/BasicIntegerAssignment.txt")
 
     def testString(self):
         test_string = '"test123ID"'
