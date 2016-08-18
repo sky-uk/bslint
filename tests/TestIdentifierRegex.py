@@ -45,7 +45,7 @@ class TestIdentifierMethods(unittest.TestCase):
 
     def testIdentifierInStatement(self):
         identifier = "_testId$="
-        exp_result = ('_testId', 'ID')
+        exp_result = ('_testId', 'ID', '$')
         result = self.lexer.lex(identifier)
         self.assertEqual(result[0], exp_result)
 

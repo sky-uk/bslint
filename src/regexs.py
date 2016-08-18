@@ -88,6 +88,6 @@ List = [
 
     ("MAIN", const.STMT),
 
-    (r"(^[a-z_][a-z0-9_]*)", const.ID),
+    (r"(?P<value>^[a-z_][a-z0-9_]*)(?P<type>\$?)", const.ID),
     ('\"(.*)\"', const.STRING)
 ]
