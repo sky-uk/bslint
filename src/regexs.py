@@ -90,5 +90,6 @@ List = [
     ("MAIN", const.STMT),
 
     (r"(?P<value>^[a-z_][a-z0-9_]*)(?P<type>\$|%|!|#|&?)", const.ID),
-    ('\"(.*)\"', const.STRING)
+    ('\"(.*)\"', const.STRING),
+    (r"^\d*(\.?\d+){1}", const.NUMERIC)
 ]
