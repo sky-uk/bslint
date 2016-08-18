@@ -56,25 +56,25 @@ class TestIdentifierMethods(unittest.TestCase):
         self.assertEqual(result[0], exp_result)
 
     def testIdentifierInStatementPercentage(self):
-        identifier = "_testId%="
+        identifier = "_testId%"
         exp_result = ('_testId', 'ID', '%')
         result = self.lexer.lex(identifier)
         self.assertEqual(result[0], exp_result)
 
     def testIdentifierInStatementExclamation(self):
-        identifier = "_testId!="
+        identifier = "_testId!"
         exp_result = ('_testId', 'ID', '!')
         result = self.lexer.lex(identifier)
         self.assertEqual(result[0], exp_result)
 
     def testIdentifierInStatementHashtag(self):
-        identifier = "_testId##"
+        identifier = "_testId#"
         exp_result = ('_testId', 'ID', '#')
         result = self.lexer.lex(identifier)
         self.assertEqual(result[0], exp_result)
 
-    def testIdentifierInStatementAlphasand(self):
-        identifier = "_testId&!"
+    def testIdentifierInStatementAmpersand(self):
+        identifier = "_testId&"
         exp_result = ('_testId', 'ID', '&')
         result = self.lexer.lex(identifier)
         self.assertEqual(result[0], exp_result)
