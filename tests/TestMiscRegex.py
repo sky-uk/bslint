@@ -1,5 +1,6 @@
 import unittest
 import src
+import resources.Constants as const
 
 
 class TestMiscMethods(unittest.TestCase):
@@ -15,6 +16,30 @@ class TestMiscMethods(unittest.TestCase):
 
     def testSingleQuoteComment(self):
         identifier = "'"
-        exp_result = [("'", 'STMT')]
+        exp_result = [("'", const.STMT)]
+        result = self.lexer.lex(identifier)
+        self.assertEquals(result, exp_result)
+
+    def testOpenParenthesis(self):
+        identifier = "("
+        exp_result = [("(", const.STMT)]
+        result = self.lexer.lex(identifier)
+        self.assertEquals(result, exp_result)
+
+    def testCloseParenthesis(self):
+        identifier = ")"
+        exp_result = [(")", const.STMT)]
+        result = self.lexer.lex(identifier)
+        self.assertEquals(result, exp_result)
+
+    def testOpenSquareBracket(self):
+        identifier = "["
+        exp_result = [("[", const.STMT)]
+        result = self.lexer.lex(identifier)
+        self.assertEquals(result, exp_result)
+
+    def testCloseSquareBracket(self):
+        identifier = "]"
+        exp_result = [("]", const.STMT)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)

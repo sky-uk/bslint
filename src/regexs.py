@@ -31,6 +31,10 @@ List = [
     ("<", const.STMT),
     (">", const.STMT),
     ("'", const.STMT),
+    (r"\(", const.STMT),
+    (r"\)", const.STMT),
+    (r"\[", const.STMT),
+    (r"\]", const.STMT),
 
     ("TRUE", const.STMT),
     ("GETLASTRUNCOMPILEERROR", const.STMT),
