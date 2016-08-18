@@ -1,6 +1,7 @@
 import unittest
 import src
 import resources.Constants as const
+import sys
 
 
 class TestAssignments(unittest.TestCase):
@@ -10,8 +11,13 @@ class TestAssignments(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.string_file = src.main("./resources/BasicStringAssignment.txt")
-        cls.int_file = src.main("./resources/BasicIntegerAssignment.txt")
+        if sys.argv[0].endswith('nosetests'):
+            cls.string_file = src.main("./resources/BasicStringAssignment.txt")
+            cls.int_file = src.main("./resources/BasicIntegerAssignment.txt")
+        else:
+            cls.string_file = src.main("../resources/BasicStringAssignment.txt")
+            cls.int_file = src.main("../resources/BasicIntegerAssignment.txt")
+
 
     def testString(self):
         test_string = '"test123ID"'
