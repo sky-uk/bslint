@@ -30,9 +30,16 @@ class Lexer:
     @staticmethod
     def build_token(match, regex):
         group = match.group()
+        tuple_token = (group, regex[1])
         if regex[1] == const.STRING:
-            group = match.group(1)  # If string then strip quotation marks from start
-        return group, regex[1]
+            group = match.group()
+            tuple_token = (group[1:-1], regex[1])
+        if regex[1] == const.ID:
+            group = match.group('value')
+            tuple_token = (group, regex[1])
+            if match.group('type') is not '':
+                tuple_token = (group, regex[1], match.group('type'))
+        return tuple_token
 
 
 
