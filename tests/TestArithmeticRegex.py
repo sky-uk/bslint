@@ -57,15 +57,27 @@ class TestArithmeticMethods(unittest.TestCase):
         result = src.lexer(identifier)
         self.assertEquals(result, exp_result)
 
-    def testLeftShift(self):
+    def testLeftShiftAssign(self):
         identifier = "<<="
         exp_result = [('<<=', 'STMT')]
         result = src.lexer(identifier)
         self.assertEquals(result, exp_result)
 
-    def testRightShift(self):
+    def testRightShiftAssign(self):
         identifier = ">>="
         exp_result = [('>>=', 'STMT')]
+        result = src.lexer(identifier)
+        self.assertEquals(result, exp_result)
+
+    def testLeftShift(self):
+        identifier = "<<"
+        exp_result = [('<<', 'STMT')]
+        result = src.lexer(identifier)
+        self.assertEquals(result, exp_result)
+
+    def testRightShift(self):
+        identifier = ">>"
+        exp_result = [('>>', 'STMT')]
         result = src.lexer(identifier)
         self.assertEquals(result, exp_result)
 
