@@ -18,7 +18,6 @@ class TestAssignments(unittest.TestCase):
             cls.string_file = src.main("../resources/BasicStringAssignment.txt")
             cls.int_file = src.main("../resources/BasicIntegerAssignment.txt")
 
-
     def testString(self):
         test_string = '"test123ID"'
         exp_result = [("test123ID", const.STRING)]
