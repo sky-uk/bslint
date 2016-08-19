@@ -8,6 +8,7 @@ class Lexer:
     def lex(self, characters):
         i = 0
         tokens = []
+        errors = []
         regex_matches = True
         while i < len(characters):
             if regex_matches:
@@ -23,9 +24,12 @@ class Lexer:
                     else:
                         regex_matches = False
             else:
-                print("not match found")
+                errors.append("Syntax error at: " + characters[i:i+5])
                 break
-        return tokens
+        if len(errors) is not 0:
+            return "Errors", errors
+        else:
+            return tokens
 
     @staticmethod
     def build_token(match, regex):
