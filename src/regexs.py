@@ -2,13 +2,14 @@
 import resources.Constants as const
 
 List = [
+    (r"\n", const.NEW_LINE),
     (r"\s", None),
 
     ("\+=", const.STMT),
     ("-=", const.STMT),
     ("\*=", const.STMT),
     ("/=", const.STMT),
-    (r"\\=", const.STMT), # divide integer
+    (r"\\=", const.STMT),  # divide integer
     ("<<=", const.STMT),
     (">>=", const.STMT),
     ("<>", const.STMT),
