@@ -25,6 +25,12 @@ class TestAssignments(unittest.TestCase):
         result = self.lexer.lex(test_string)
         self.assertEqual(result, exp_result)
 
+    def testUnclosedQuotes(self):
+        test_string = '"test123ID'
+        exp_result = ("Errors", ["Syntax error at: " + test_string[:5]])
+        result = self.lexer.lex(test_string)
+        self.assertEqual(result, exp_result)
+
     def testVariableAssignmentString(self):
         exp_result = [('string', const.ID), ('=', const.STMT), ("words", const.STRING)]
         result = self.lexer.lex(self.string_file)
