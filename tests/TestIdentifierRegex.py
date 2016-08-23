@@ -40,13 +40,13 @@ class TestIdentifierMethods(unittest.TestCase):
 
     def testIdentifierInStatementWithSpace(self):
         identifier = "_testId ="
-        exp_result = [('_testId', const.ID), ('=', const.STMT)]
+        exp_result = [('_testId', const.ID), ('=', const.OPERATOR)]
         result = self.lexer.lex(identifier)
         self.assertEqual(result, exp_result)
 
     def testIdentifierInStatementDollar(self):
         identifier = "_testId$="
-        exp_result = [('_testId', const.ID, '$'), ('=', const.STMT)]
+        exp_result = [('_testId', const.ID, '$'), ('=', const.OPERATOR)]
         result = self.lexer.lex(identifier)
         self.assertEqual(result, exp_result)
 

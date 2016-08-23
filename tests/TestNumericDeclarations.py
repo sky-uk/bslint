@@ -21,19 +21,19 @@ class TestNumericDeclaration(unittest.TestCase):
 
     def testIntegerWithTrailingPoints(self):
         identifier = "123."
-        exp_result = [('123', const.NUMERIC), ('.', const.STMT)]
+        exp_result = [('123', const.NUMERIC), ('.', const.OPERATOR)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     def testMultipleDecimalNumbers(self):
         identifier = "123.123.123"
-        exp_result = [('123.123', const.NUMERIC), ('.', const.STMT), ('123', const.NUMERIC)]
+        exp_result = [('123.123', const.NUMERIC), ('.', const.OPERATOR), ('123', const.NUMERIC)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     def testMultipleDecimalPoints(self):
         identifier = "123..123"
-        exp_result = [('123', const.NUMERIC), ('.', const.STMT), ('.', const.STMT), ('123', const.NUMERIC)]
+        exp_result = [('123', const.NUMERIC), ('.', const.OPERATOR), ('.', const.OPERATOR), ('123', const.NUMERIC)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
