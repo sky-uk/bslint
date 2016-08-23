@@ -1,5 +1,5 @@
 sub main()
-    screen = CreateObject("roSGScreen")
+    screen = CreateObject("roSGScreen)
     port = CreateObject("roMessagePort")
     screen.setMessagePort(port)
 

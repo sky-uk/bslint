@@ -5,7 +5,7 @@ import resources.Constants as const
 
 class Lexer:
 
-    line_number = 0
+    line_number = 1
 
     def lex(self, characters):
         i = 0
@@ -28,8 +28,11 @@ class Lexer:
                     else:
                         regex_matches = False
             else:
-                errors.append("Syntax error at: " + characters[i:i+5])
-                break
+                end_of_line = re.match(r"(.*)\n", characters[i:])
+                errors.append(("Syntax error at: " + end_of_line.group(), self.line_number))
+                self.line_number += 1
+                i += len(end_of_line.group())
+                regex_matches = True
         if len(errors) is not 0:
             return "Errors", errors
         else:
@@ -45,11 +48,13 @@ class Lexer:
             tuple_token = (group, regex[1])
         return tuple_token + (self.line_number,)
 
-    def build_string_tuple(self, match, regex):
+    @staticmethod
+    def build_string_tuple(match, regex):
         group = match.group()
         return group[1:-1], regex[1]
 
-    def build_id_tuple(self, match, regex):
+    @staticmethod
+    def build_id_tuple(match, regex):
         group = match.group('value')
         tuple_token = (group, regex[1])
         if match.group('type') is not '':
