@@ -1,6 +1,7 @@
-import src.regexs as regexs
 import re
-import resources.Constants as const
+
+import Constants as const
+import src.regexs as regexs
 
 
 class Lexer:
