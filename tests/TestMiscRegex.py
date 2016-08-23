@@ -22,24 +22,24 @@ class TestMiscMethods(unittest.TestCase):
 
     def testOpenParenthesis(self):
         identifier = "("
-        exp_result = [("(", const.STMT)]
+        exp_result = [("(", const.BRACKET)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     def testCloseParenthesis(self):
         identifier = ")"
-        exp_result = [(")", const.STMT)]
+        exp_result = [(")", const.BRACKET)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     def testOpenSquareBracket(self):
         identifier = "["
-        exp_result = [("[", const.STMT)]
+        exp_result = [("[", const.SQUARE_BRACKET)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     def testCloseSquareBracket(self):
         identifier = "]"
-        exp_result = [("]", const.STMT)]
+        exp_result = [("]", const.SQUARE_BRACKET)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
