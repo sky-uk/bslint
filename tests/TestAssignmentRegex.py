@@ -1,7 +1,8 @@
-import unittest
-import src
-import resources.Constants as const
 import sys
+import unittest
+
+import Constants as const
+import src
 
 
 class TestAssignments(unittest.TestCase):

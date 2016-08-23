@@ -1,6 +1,7 @@
 import unittest
+
+import Constants as const
 import src
-import resources.Constants as const
 
 
 class TestIdentifierMethods(unittest.TestCase):
