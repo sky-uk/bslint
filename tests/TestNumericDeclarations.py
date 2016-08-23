@@ -1,6 +1,7 @@
 import unittest
+
+import Constants as const
 import src
-import resources.Constants as const
 
 
 class TestNumericDeclaration(unittest.TestCase):
@@ -9,31 +10,31 @@ class TestNumericDeclaration(unittest.TestCase):
 
     def testInteger(self):
         identifier = "1234"
-        exp_result = [('1234', const.NUMERIC)]
+        exp_result = [('1234', const.NUMERIC, 1)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     def testDecimal(self):
         identifier = "123.456"
-        exp_result = [('123.456', const.NUMERIC)]
+        exp_result = [('123.456', const.NUMERIC, 1)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     def testIntegerWithTrailingPoints(self):
         identifier = "123."
-        exp_result = [('123', const.NUMERIC), ('.', const.OPERATOR)]
+        exp_result = [('123', const.NUMERIC, 1), ('.', const.OPERATOR, 1)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     def testMultipleDecimalNumbers(self):
         identifier = "123.123.123"
-        exp_result = [('123.123', const.NUMERIC), ('.', const.OPERATOR), ('123', const.NUMERIC)]
+        exp_result = [('123.123', const.NUMERIC, 1), ('.', const.OPERATOR, 1), ('123', const.NUMERIC, 1)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     def testMultipleDecimalPoints(self):
         identifier = "123..123"
-        exp_result = [('123', const.NUMERIC), ('.', const.OPERATOR), ('.', const.OPERATOR), ('123', const.NUMERIC)]
+        exp_result = [('123', const.NUMERIC, 1), ('.', const.OPERATOR, 1), ('.', const.OPERATOR, 1), ('123', const.NUMERIC, 1)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
