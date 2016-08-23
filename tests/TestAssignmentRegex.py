@@ -32,7 +32,7 @@ class TestAssignments(unittest.TestCase):
         self.assertEqual(result, exp_result)
 
     def testVariableAssignmentString(self):
-        exp_result = [('string', const.ID), ('=', const.STMT), ("words", const.STRING)]
+        exp_result = [('string', const.ID), ('=', const.OPERATOR), ("words", const.STRING)]
         result = self.lexer.lex(self.string_file)
         self.assertEqual(result, exp_result)
 
