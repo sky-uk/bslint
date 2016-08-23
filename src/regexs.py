@@ -30,7 +30,6 @@ List = [
     (r"/", const.STMT),
     ("<", const.STMT),
     (">", const.STMT),
-    ("'", const.STMT),
     (r"\(", const.STMT),
     (r"\)", const.STMT),
     (r"\[", const.STMT),
@@ -95,5 +94,6 @@ List = [
 
     (r"(?P<value>^[a-z_][a-z0-9_]*)(?P<type>\$|%|!|#|&?)", const.ID),
     ('\"(.*)\"', const.STRING),
-    (r"^\d*(\.?\d+){1}", const.NUMERIC)
+    (r"^\d*(\.?\d+){1}", const.NUMERIC),
+    (r"'(.*)\n", None)
 ]

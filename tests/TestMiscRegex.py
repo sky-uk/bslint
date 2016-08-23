@@ -15,8 +15,8 @@ class TestMiscMethods(unittest.TestCase):
         self.assertEquals(result, exp_result)
 
     def testSingleQuoteComment(self):
-        identifier = "'"
-        exp_result = [("'", const.STMT)]
+        identifier = "' do stuff \n"
+        exp_result = []
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
