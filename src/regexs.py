@@ -1,9 +1,11 @@
 # this characters need escaping . ^ $ * + ? { } [ ] \ | ( )
 import resources.Constants as const
+import re
 
 List = [
     (r"\n", const.NEW_LINE),
     (r"\s", None),
+
 
     ("\+=", const.OPERATOR),
     ("-=", const.OPERATOR),
@@ -95,11 +97,15 @@ List = [
     ("TAB", const.KEYWORD),
     ("TYPE", const.KEYWORD),
 
+
+
     ("MAIN", const.KEYWORD),
     ("\?", const.KEYWORD),
 
     (r"(?P<value>^[a-z_][a-z0-9_]*)(?P<type>\$|%|!|#|&?)", const.ID),
     ('\"(.*)\"', const.STRING),
     (r"^\d*(\.?\d+){1}", const.NUMERIC),
+    (r"'\s*(BSLINT_skipline).*\n", const.BSLINT_COMMAND),
     (r"'(.*)\n", None)
+
 ]

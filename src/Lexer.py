@@ -38,6 +38,9 @@ class Lexer:
         if regex[1] == const.STRING:
             group = match.group()
             tuple_token = (group[1:-1], regex[1])
+        if regex[1] == const.BSLINT_COMMAND:
+            group = match.group(1)
+            tuple_token = (group, regex[1])
         if regex[1] == const.ID:
             group = match.group('value')
             tuple_token = (group, regex[1])
