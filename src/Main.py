@@ -9,7 +9,7 @@ def main(filepath):
 
 
 def lex_from_file():
-    filepath = "../resources/BasicStringAssignment.txt"
+    filepath = "../resources/MultilineAssignment.txt"
     fo = open(filepath, "r+")
     str_to_parse = fo.read()
     lexer = src.Lexer()
