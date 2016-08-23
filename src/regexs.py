@@ -47,6 +47,7 @@ List = [
     ("END WHILE", const.STMT),
     ("EXIT WHILE", const.STMT),
     ("END FUNCTION", const.STMT),
+    ("END SUB", const.STMT),
     ("LINE_NUM", const.STMT),
     ("GOTO", const.STMT),
     ("CREATEOBJECT", const.STMT),
