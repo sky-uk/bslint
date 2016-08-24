@@ -15,32 +15,32 @@ class TestConfigFileLoading(unittest.TestCase):
         else:
             cls.filepath_prefix = "../resources/config/"
 
-    def TestReadJsonCorrectly(self):
+    def testReadJsonCorrectly(self):
         config_file =  self.filepath_prefix + "default-config.json"
         exp_res = 17
         config_json = src.read_json(config_file)
         result = len(config_json)
         self.assertEqual(result, exp_res)
 
-    def TestReadJsonBadFileName(self):
+    def testReadJsonBadFileName(self):
         config_file = self.filepath_prefix + "fig.json"
         with self.assertRaises(FileNotFoundError):
             src.read_json(config_file)
 
-    def TestLoadConfigFileCheckRead(self):
+    def testLoadConfigFileCheckRead(self):
         exp_res = "Read styling config JSON correctly."
         out = StringIO()
         src.load_config_file(out=out)
         result = out.getvalue().strip()
         self.assertEqual(result, exp_res)
 
-    def TestDefaultConfigOverwritten(self):
+    def testDefaultConfigOverwritten(self):
         exp_res = 666
         config = src.load_config_file()
         result = config["max_line_length"]
         self.assertEqual(result, exp_res)
 
-    def TestDefaultConfigPersists(self):
+    def testDefaultConfigPersists(self):
         exp_res = True
         config = src.load_config_file()
         result = config["spellcheck"]
