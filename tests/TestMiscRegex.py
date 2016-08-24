@@ -1,6 +1,7 @@
 import unittest
+
+import Constants as const
 import src
-import resources.Constants as const
 
 
 class TestMiscMethods(unittest.TestCase):
@@ -22,24 +23,24 @@ class TestMiscMethods(unittest.TestCase):
 
     def testOpenParenthesis(self):
         identifier = "("
-        exp_result = [("(", const.BRACKET)]
+        exp_result = [("(", const.BRACKET, 1)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     def testCloseParenthesis(self):
         identifier = ")"
-        exp_result = [(")", const.BRACKET)]
+        exp_result = [(")", const.BRACKET, 1)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     def testOpenSquareBracket(self):
         identifier = "["
-        exp_result = [("[", const.SQUARE_BRACKET)]
+        exp_result = [("[", const.SQUARE_BRACKET, 1)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     def testCloseSquareBracket(self):
         identifier = "]"
-        exp_result = [("]", const.SQUARE_BRACKET)]
+        exp_result = [("]", const.SQUARE_BRACKET, 1)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)

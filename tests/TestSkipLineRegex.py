@@ -1,6 +1,6 @@
 import unittest
 import src
-import resources.Constants as const
+import Constants as const
 
 
 class TestSkipLine(unittest.TestCase):
