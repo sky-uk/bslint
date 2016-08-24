@@ -22,8 +22,8 @@ class TestSkipLine(unittest.TestCase):
         self.assertEquals(regex_type, const.BSLINT_COMMAND)
 
     # Should be interpreted as a string
-    def testSkipLineText(self):
-        identifier = "' BSLINT_skip_line\n"
+    def testSkipLineTextAfterCommand(self):
+        identifier = "' BSLINT_skip_line asfasfasfsadfsafsaf\n"
         exp_result = 'skip_line'
         result, regex_type = self.lexer.regex_handler(identifier)
         self.assertEquals(result.group('command'), exp_result)
