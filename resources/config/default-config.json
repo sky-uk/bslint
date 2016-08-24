@@ -1,3 +1,43 @@
 {
+  
+  "max_line_length": 80,
 
+  // Source File Encoding.
+  "source_file_encoding": "UTF-8",
+
+  // Variables should begin with a lower case first letter.
+  "variable_lowercase_start": true,
+  // Variable types should be capitalised eg Boolean, Void, String.
+  "variable_types_capitalised": true,
+
+  // Class names should match the file name.
+  "classname_filename_match": true,
+  // Number of classes per file.
+  "classes_per_file": 1,
+
+  // Variables correctly spelt - checked with PyEnchant.
+  "spellcheck": true,
+  // No print statements.
+  "trace_free": true,
+
+  // No comments allowed except TODOs.
+  "only_todo_comments": true,
+  // TODOs must be initialed. ' TODO JS.
+  "initialed_todos": true,
+
+  // Explicitly declare function and function parameter types.
+  "fn_and_fn_param_types": true,
+  // All function parameters prefixed with an underscore.
+  "underscore_fn_params": true,
+
+  // Consecutive blank lines allowed.
+  "consecutive_empty_lines": 1,
+  // Spaces per tab.
+  "tab_size": 2,
+  // Must use spaces or tabs not both.
+  "spaces_or_tabs": "false",
+  // Number of spaces around operators except colon.
+  "spaces_around_operators": 1,
+  // Spaces between method name and parameter list.
+  "method_spaces": 1
 }
