@@ -1,5 +1,4 @@
 sub main()
-    ' BSLINT_skipline
     screen = CreateObject("roSGScreen")
     port = CreateObject("roMessagePort")
     screen.setMessagePort(port)

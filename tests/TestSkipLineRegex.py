@@ -8,32 +8,44 @@ class TestSkipLine(unittest.TestCase):
         self.lexer = src.Lexer()
 
     def testSkipLineSingleSpace(self):
-        identifier = "'  BSLINT_skipline"
-        exp_result = [("BSLINT", const.BSLINT_COMMAND, 1)]
-        result = self.lexer.lex(identifier)
-        self.assertEquals(result, exp_result)
+        identifier = "' BSLINT_skip_line\n"
+        exp_result = 'skip_line'
+        result, regex_type = self.lexer.regex_handler(identifier)
+        self.assertEquals(result.group('command'), exp_result)
+        self.assertEquals(regex_type, const.BSLINT_COMMAND)
 
     def testSkipLineNoSpaces(self):
-        identifier = "'BSLINT_skipline"
-        exp_result = [("BSLINT", const.BSLINT_COMMAND, 1)]
-        result = self.lexer.lex(identifier)
-        self.assertEquals(result, exp_result)
+        identifier = "'BSLINT_skip_line\n"
+        exp_result = 'skip_line'
+        result, regex_type = self.lexer.regex_handler(identifier)
+        self.assertEquals(result.group('command'), exp_result)
+        self.assertEquals(regex_type, const.BSLINT_COMMAND)
 
     # Should be interpreted as a string
     def testSkipLineText(self):
-        identifier = "' BSLINT_skipline"
-        exp_result = [("BSLINT", const.BSLINT_COMMAND, 1)]
-        result = self.lexer.lex(identifier)
-        self.assertEquals(result, exp_result)
+        identifier = "' BSLINT_skip_line\n"
+        exp_result = 'skip_line'
+        result, regex_type = self.lexer.regex_handler(identifier)
+        self.assertEquals(result.group('command'), exp_result)
+        self.assertEquals(regex_type, const.BSLINT_COMMAND)
 
     def testSkipLineFiveSpaces(self):
-        identifier = "'     BSLINT_skipline"
-        exp_result = [("BSLINT", const.BSLINT_COMMAND, 1)]
-        result = self.lexer.lex(identifier)
-        self.assertEquals(result, exp_result)
+        identifier = "'     BSLINT_skip_line\n"
+        exp_result = 'skip_line'
+        result, regex_type = self.lexer.regex_handler(identifier)
+        self.assertEquals(result.group('command'), exp_result)
+        self.assertEquals(regex_type, const.BSLINT_COMMAND)
 
     def testSkipLineWithText(self):
-        identifier = "' randomText BSLINT_skipline \n"
+        identifier = "' randomText BSLINT_skip_line \n"
         exp_result = []
-        result = self.lexer.lex(identifier)
+        result = self.lexer.regex_handler(identifier)
         self.assertEquals(result, exp_result)
+
+    def testSkipFile(self):
+        identifier = "'BSLINT_skip_file\n"
+        exp_result = 'skip_file'
+        result, regex_type = self.lexer.regex_handler(identifier)
+        self.assertEquals(result.group('command'), exp_result)
+        self.assertEquals(regex_type, const.BSLINT_COMMAND)
+

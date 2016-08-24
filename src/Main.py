@@ -9,8 +9,6 @@ def main(filepath):
 
 
 def lex_from_file():
-
-    result.execute()
     filepath = "../resources/SkeletonMain.brs"
     fo = open(filepath, "r+")
     str_to_parse = fo.read()
