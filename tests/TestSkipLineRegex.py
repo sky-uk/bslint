@@ -38,9 +38,8 @@ class TestSkipLine(unittest.TestCase):
 
     def testSkipLineWithText(self):
         identifier = "' randomText BSLINT_skip_line \n"
-        exp_result = []
-        result = self.lexer.regex_handler(identifier)
-        self.assertEquals(result, exp_result)
+        result, regex = self.lexer.regex_handler(identifier)
+        self.assertEquals(regex, None)
 
     def testSkipFile(self):
         identifier = "'BSLINT_skip_file\n"
