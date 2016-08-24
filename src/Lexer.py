@@ -2,7 +2,7 @@ import re
 
 import Constants as const
 import src.regexs as regexs
-
+import src as src
 
 class Lexer:
 
@@ -24,6 +24,8 @@ class Lexer:
                         elif regex[1] is const.NEW_LINE:
                             self.line_number += 1
                         i += len(match.group())
+                        if regex[1] == const.BSLINT_COMMAND:
+                            i = self.execute_BSLINT_command(match.group('command'),characters[i:])
                         regex_matches = True
                         break
                     else:
@@ -43,9 +45,6 @@ class Lexer:
         group = match.group()
         if regex[1] == const.STRING:
             tuple_token = self.build_string_tuple(match, regex)
-        elif regex[1] == const.BSLINT_COMMAND:
-            group = match.group(1)
-            tuple_token = (group, regex[1])
         elif regex[1] == const.ID:
             tuple_token = self.build_id_tuple(match, regex)
         else:
@@ -64,6 +63,12 @@ class Lexer:
         if match.group('type') is not '':
             tuple_token = (group, regex[1], match.group('type'))
         return tuple_token
+
+    @staticmethod
+    def execute_BSLINT_command(command, characters):
+        return getattr(src, command).execute()
+
+
 
 
 
