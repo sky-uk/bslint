@@ -2,6 +2,8 @@ import re
 
 import Constants as const
 import src.regexs as regexs
+import src as src
+import string
 
 
 class Lexer:
@@ -12,58 +14,71 @@ class Lexer:
         i = 0
         tokens = []
         errors = []
-        regex_matches = True
         while i < len(characters):
-            if regex_matches:
-                for regex in regexs.List:
-                    match = re.match(regex[0], characters[i:], re.IGNORECASE)
-                    if match:
-                        if regex[1] is not None and regex[1] is not const.NEW_LINE:
-                            token_tuple = self.build_token(match, regex)
-                            tokens.append(token_tuple)
-                        elif regex[1] is const.NEW_LINE:
-                            self.line_number += 1
-                        i += len(match.group())
-                        regex_matches = True
-                        break
-                    else:
-                        regex_matches = False
-            else:
+            try:
+                match, token_type = self.regex_handler(characters[i:])
+                i += len(match.group())
+                tokens = self.match_handler(match, token_type, tokens)
+            except ValueError:
                 end_of_line = re.match(r"(.*)\n", characters[i:])
                 errors.append(("Syntax error at: " + end_of_line.group(), self.line_number))
                 self.line_number += 1
                 i += len(end_of_line.group())
-                regex_matches = True
         if len(errors) is not 0:
             return "Errors", errors
         else:
             return tokens
 
-    def build_token(self, match, regex):
+    def match_handler(self, match, token_type, tokens):
+        if token_type is const.NEW_LINE:
+            self.line_number += 1
+        elif token_type == const.BSLINT_COMMAND:
+            self.execute_BSLINT_command(match.group('command'))
+        elif token_type is not None:
+            token_tuple = self.build_token(match, token_type)
+            tokens.append(token_tuple)
+
+        return tokens
+
+    @staticmethod
+    def regex_handler(characters):
+        for regex in regexs.List:
+            match = re.match(regex[0], characters, re.IGNORECASE)
+            if match:
+                break
+        if not match:
+            raise ValueError('NO MATCH FOUND')
+        return match, regex[1]
+
+    def build_token(self, match, regex_type):
         group = match.group()
-        if regex[1] == const.STRING:
-            tuple_token = self.build_string_tuple(match, regex)
-        elif regex[1] == const.BSLINT_COMMAND:
-            group = match.group(1)
-            tuple_token = (group, regex[1])
-        elif regex[1] == const.ID:
-            tuple_token = self.build_id_tuple(match, regex)
+        if regex_type == const.STRING:
+            tuple_token = self.build_string_tuple(match, regex_type)
+        elif regex_type == const.ID:
+            tuple_token = self.build_id_tuple(match, regex_type)
         else:
-            tuple_token = (group, regex[1])
+            tuple_token = (group, regex_type)
         return tuple_token + (self.line_number,)
 
     @staticmethod
-    def build_string_tuple(match, regex):
+    def build_string_tuple(match, regex_type):
         group = match.group()
-        return group[1:-1], regex[1]
+        return group[1:-1], regex_type
 
     @staticmethod
-    def build_id_tuple(match, regex):
+    def build_id_tuple(match, regex_type):
         group = match.group('value')
-        tuple_token = (group, regex[1])
+        tuple_token = (group, regex_type)
         if match.group('type') is not '':
-            tuple_token = (group, regex[1], match.group('type'))
+            tuple_token = (group, regex_type, match.group('type'))
         return tuple_token
+
+    @staticmethod
+    def execute_BSLINT_command(command):
+        class_name = string.capwords(command, "_").replace("_", "") + "Command"
+        return getattr(src, class_name).execute()
+
+
 
 
 
