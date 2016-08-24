@@ -105,7 +105,7 @@ List = [
     (r"(?P<value>^[a-z_][a-z0-9_]*)(?P<type>\$|%|!|#|&?)", const.ID),
     ('\"(.*)\"', const.STRING),
     (r"^\d*(\.?\d+){1}", const.NUMERIC),
-    (r"'\s*(BSLINT_skipline).*\n", const.BSLINT_COMMAND),
+    (r"'\s*(BSLINT)_(?P<command>skipline)(:(?P<param>[0-9]+))?", const.BSLINT_COMMAND),
     (r"'(.*)\n", None)
 
 ]

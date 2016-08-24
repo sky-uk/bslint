@@ -8,27 +8,27 @@ class TestSkipLine(unittest.TestCase):
         self.lexer = src.Lexer()
 
     def testSkipLineSingleSpace(self):
-        identifier = "'  BSLINT_skipline\n"
-        exp_result = [("BSLINT_skipline", const.BSLINT_COMMAND)]
+        identifier = "'  BSLINT_skipline"
+        exp_result = [("BSLINT", const.BSLINT_COMMAND)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     def testSkipLineNoSpaces(self):
-        identifier = "'BSLINT_skipline\n"
-        exp_result = [("BSLINT_skipline", const.BSLINT_COMMAND)]
+        identifier = "'BSLINT_skipline"
+        exp_result = [("BSLINT", const.BSLINT_COMMAND)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     # Should be interpreted as a string
     def testSkipLineText(self):
-        identifier = "' BSLINT_skipline  random text\n"
-        exp_result = [("BSLINT_skipline", const.BSLINT_COMMAND)]
+        identifier = "' BSLINT_skipline"
+        exp_result = [("BSLINT", const.BSLINT_COMMAND)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
     def testSkipLineFiveSpaces(self):
-        identifier = "'     BSLINT_skipline\n"
-        exp_result = [("BSLINT_skipline", const.BSLINT_COMMAND)]
+        identifier = "'     BSLINT_skipline"
+        exp_result = [("BSLINT", const.BSLINT_COMMAND)]
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 
