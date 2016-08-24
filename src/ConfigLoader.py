@@ -1,7 +1,8 @@
 import json
+import sys
 
 
-def load_config_file():
+def load_config_file(out=sys.stdout):
     default_filepath = "../resources/config/default-config.json"
     user_filepath = "../resources/config/user-config.json"
 
@@ -10,15 +11,14 @@ def load_config_file():
         user_json = read_json(user_filepath)
         for property in user_json:
             default_json[property] = user_json[property]
-            print(default_json[property])
-    except IOError:
-        print("Error: cannot find file or read data.")
+    except FileNotFoundError as e:
+        out.write("Cannot find file: " + e.filename)
     else:
-        print("Read styling config JSON correctly.")
+        out.write("Read styling config JSON correctly.")
+        return default_json
 
 
 def read_json(filepath):
-    config_json = ''
     config_string = ''
     with open(filepath) as f:
         for line in f:
