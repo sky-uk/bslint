@@ -43,6 +43,9 @@ class Lexer:
         group = match.group()
         if regex[1] == const.STRING:
             tuple_token = self.build_string_tuple(match, regex)
+        elif regex[1] == const.BSLINT_COMMAND:
+            group = match.group(1)
+            tuple_token = (group, regex[1])
         elif regex[1] == const.ID:
             tuple_token = self.build_id_tuple(match, regex)
         else:
