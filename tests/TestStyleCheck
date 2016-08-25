@@ -1,0 +1,44 @@
+import unittest
+import sys
+import src
+
+
+class TestStyleCheck(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        if sys.argv[0].endswith('nosetests'):
+            cls.filepath_prefix = "./resources/"
+        else:
+            cls.filepath_prefix = "../resources/"
+
+    def testDefaultConfigAllStyles(self):
+        config = src.load_config_file()
+        self.lexer = src.Lexer(config)
+        file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
+        file = src.main(file_name)
+        exp_res = ['Comments must be TODOs and must be initialled. Line number: 11',
+                   'Comments must be TODOs and must be initialled. Line number: 12',
+                   'Comments must be TODOs and must be initialled. Line number: 17']
+        result = self.lexer.lex(file)
+        self.assertEqual(result["Warnings"], exp_res)
+
+    def testNoCommentCheck(self):
+        config = src.load_config_file("../resources/config/no-comment-check-config.json")
+        self.lexer = src.Lexer(config)
+        file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
+        file = src.main(file_name)
+        exp_res = []
+        result = self.lexer.lex(file)
+        self.assertEqual(result["Warnings"], exp_res)
+
+    def testCommentCheck(self):
+        config = src.load_config_file("../resources/config/comment-check-config.json")
+        self.lexer = src.Lexer(config)
+        file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
+        file = src.main(file_name)
+        exp_res = ['Comments must be TODOs and must be initialled. Line number: 11',
+                   'Comments must be TODOs and must be initialled. Line number: 12',
+                   'Comments must be TODOs and must be initialled. Line number: 17']
+        result = self.lexer.lex(file)
+        self.assertEqual(result["Warnings"], exp_res)

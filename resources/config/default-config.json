@@ -1,43 +1,99 @@
 {
-  
-  "max_line_length": 80,
-
+  "check_comment": {
+    "active": true,
+    "params": {}
+  },
+  "check_max_line_length": {
+    "active": true,
+    "params": {
+      "max_line_length": 80
+    }
+  },
   // Source File Encoding.
-  "source_file_encoding": "UTF-8",
-
+  "check_source_file_encoding": {
+    "active": true,
+    "params": {
+      "source_file_encoding": "UTF-8"
+    }
+  },
   // Variables should begin with a lower case first letter.
-  "variable_lowercase_start": true,
+  "check_variable_lowercase_start": {
+    "active": true,
+    "params": {}
+  },
   // Variable types should be capitalised eg Boolean, Void, String.
-  "variable_types_capitalised": true,
-
+  "check_variable_types_capitalised": {
+    "active": true,
+    "params": {}
+  },
   // Class names should match the file name.
-  "classname_filename_match": true,
+  "check_classname_filename_match": {
+    "active": true,
+    "params": {}
+  },
   // Number of classes per file.
-  "classes_per_file": 1,
-
+  "check_classes_per_file": {
+    "active": true,
+    "params": {
+      "classes_per_file": 1
+    }
+  },
   // Variables correctly spelt - checked with PyEnchant.
-  "spell_check": true,
+  "check_spell_check": {
+    "active": true,
+    "params": {}
+  },
   // No print statements.
-  "trace_free": true,
-
+  "check_trace_free": {
+    "active": true,
+    "params": {}
+  },
   // No comments allowed except TODOs.
-  "only_todo_comments": true,
+  "check_only_todo_comments": {
+    "active": true,
+    "params": {}
+  },
   // TODOs must be initialed. ' TODO JS.
-  "initialed_todos": true,
-
+  "check_initialed_todos": {
+    "active": true,
+    "params": {}
+  },
   // Explicitly declare function and function parameter types.
-  "fn_and_fn_param_types": true,
+  "check_fn_and_fn_param_types": {
+    "active": true,
+    "params": {}
+  },
   // All function parameters prefixed with an underscore.
-  "underscore_fn_params": true,
-
+  "check_underscore_fn_params": {
+    "active": true,
+    "params": {}
+  },
   // Consecutive blank lines allowed.
-  "consecutive_empty_lines": 1,
-  // Spaces per tab.
-  "tab_size": 2,
+  "check_consecutive_empty_lines": {
+    "active": true,
+    "params": {
+      "consecutive_empty_lines": 1
+    }
+  },
   // Must use spaces or tabs not both.
-  "spaces_or_tabs": false,
+  "check_spaces_or_tabs": {
+    "active": true,
+    "params": {
+      "tab_size": 2
+    }
+  },
   // Number of spaces around operators except colon.
-  "spaces_around_operators": 1,
+  "check_spaces_around_operators": {
+    "active": true,
+    "params": {
+      "spaces_around_operators": 2
+    }
+  }, 
   // Spaces between method name and parameter list.
-  "method_spaces": 1
+  "check_method_spaces": {
+    "active": true,
+    "params": {
+      "method_spaces": 1
+    }
+  } 
 }
