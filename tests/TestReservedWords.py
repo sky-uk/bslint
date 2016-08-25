@@ -292,8 +292,8 @@ class TestReservedWords(unittest.TestCase):
         self.assertEquals(result, exp_result)
 
     def testREM(self):
-        identifier = "REM"
-        exp_result = [('REM', const.KEYWORD, 1)]
+        identifier = "REM\n"
+        exp_result = []
         result = self.lexer.lex(identifier)
         self.assertEquals(result, exp_result)
 

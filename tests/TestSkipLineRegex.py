@@ -55,3 +55,40 @@ class TestSkipLine(unittest.TestCase):
         self.assertEquals(result.group('command'), exp_result)
         self.assertEquals(regex_type, const.BSLINT_COMMAND)
 
+
+
+
+    def testSkipRemLineSingleSpace(self):
+        identifier = "rem BSLINT_skip_line\n"
+        exp_result = 'skip_line'
+        result, regex_type = self.lexer.regex_handler(identifier)
+        self.assertEquals(result.group('command'), exp_result)
+        self.assertEquals(regex_type, const.BSLINT_COMMAND)
+
+    def testSkipRemLineNoSpaces(self):
+        identifier = "remBSLINT_skip_line\n"
+        exp_result = 'skip_line'
+        result, regex_type = self.lexer.regex_handler(identifier)
+        self.assertEquals(result.group('command'), exp_result)
+        self.assertEquals(regex_type, const.BSLINT_COMMAND)
+
+    # Should be interpreted as a string
+    def testSkipRemLineTextAfterCommand(self):
+        identifier = "rem BSLINT_skip_line asfasfasfsadfsafsaf\n"
+        exp_result = 'skip_line'
+        result, regex_type = self.lexer.regex_handler(identifier)
+        self.assertEquals(result.group('command'), exp_result)
+        self.assertEquals(regex_type, const.BSLINT_COMMAND)
+
+    def testSkipRemLineFiveSpaces(self):
+        identifier = "rem     BSLINT_skip_line\n"
+        exp_result = 'skip_line'
+        result, regex_type = self.lexer.regex_handler(identifier)
+        self.assertEquals(result.group('command'), exp_result)
+        self.assertEquals(regex_type, const.BSLINT_COMMAND)
+
+    def testSkipRemLineWithText(self):
+        identifier = "rem randomText BSLINT_skip_line \n"
+        result, regex = self.lexer.regex_handler(identifier)
+        self.assertEquals(regex, None)
+
