@@ -1,5 +1,6 @@
 import re
 
+import json
 import Constants as const
 import src.regexs as regexs
 import src
@@ -7,8 +8,11 @@ import string
 
 
 class Lexer:
-    line_number = 1
-    warnings = []
+
+    def __init__(self, config):
+        self.line_number = 1
+        self.warnings = []
+        self.config_json = config
 
     def lex(self, characters):
         i = 0
@@ -78,7 +82,7 @@ class Lexer:
             tuple_token = (group, regex_type, match.group('type'))
         return tuple_token
 
-    @staticmethod
-    def execute_BSLINT_command(command, params={}):
+    def execute_BSLINT_command(self, command, params={}):
         class_name = string.capwords(command, "_").replace("_", "") + "Command"
-        return getattr(src, class_name).execute(params)
+        if self.config_json[command]['active'] is True:
+            return getattr(src, class_name).execute({**params, **self.config_json[command]['params']})

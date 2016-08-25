@@ -6,7 +6,8 @@ import src
 
 class TestNumericDeclaration(unittest.TestCase):
     def setUp(self):
-        self.lexer = src.Lexer()
+        config = src.load_config_file()
+        self.lexer = src.Lexer(config)
 
     def testInteger(self):
         identifier = "1234"

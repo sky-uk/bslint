@@ -6,13 +6,8 @@ import src
 class TestEqualityMethods(unittest.TestCase):
 
     def setUp(self):
-        self.lexer = src.Lexer()
-        
-    def testEquals(self):
-        identifier = "=="
-        exp_result = [('==', 'STMT')]
-        result = self.lexer.lex(identifier)
-        self.assertEquals(result, exp_result)
+        config = src.load_config_file()
+        self.lexer = src.Lexer(config)
 
     def testNotEquals(self):
         identifier = "<>"

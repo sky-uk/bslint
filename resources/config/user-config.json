@@ -1,3 +1,8 @@
 {
-  "max_line_length":666
+  "check_max_line_length": {
+    "active": true,
+    "params": {
+      "max_line_length": 666
+    }
+  }
 }
