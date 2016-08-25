@@ -13,7 +13,7 @@ class SpellCheckCommand(object):
             if not spelt_correct:
                 return "Warning. You have spelling mistakes in your code. line number:x"
 
-        return ""
+        return None
 
     @staticmethod
     def _parse_words(identifier_str):

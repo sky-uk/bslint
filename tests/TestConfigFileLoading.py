@@ -16,7 +16,7 @@ class TestConfigFileLoading(unittest.TestCase):
             cls.filepath_prefix = "../resources/config/"
 
     def testReadJsonCorrectly(self):
-        config_file =  self.filepath_prefix + "default-config.json"
+        config_file = self.filepath_prefix + "default-config.json"
         exp_res = 17
         config_json = src.read_json(config_file)
         result = len(config_json)
@@ -43,5 +43,5 @@ class TestConfigFileLoading(unittest.TestCase):
     def testDefaultConfigPersists(self):
         exp_res = True
         config = src.load_config_file()
-        result = config["spellcheck"]
+        result = config["spell_check"]
         self.assertEqual(result, exp_res)
