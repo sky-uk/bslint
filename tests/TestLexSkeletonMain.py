@@ -15,7 +15,7 @@ class TestLexSkeletonMain(unittest.TestCase):
             file = src.main("../resources/SkeletonMain.brs")
 
         result = self.lexer.lex(file)
-        self.assertNotEqual(result[0], 'Errors')
+        self.assertNotEqual(result["Status"], 'Error')
 
     def testLexWholeFileWithMultipleErrors(self):
         if sys.argv[0].endswith('nosetests'):
@@ -23,4 +23,4 @@ class TestLexSkeletonMain(unittest.TestCase):
         else:
             file = src.main("../resources/SkeletonMainWithErrors.brs")
         result = self.lexer.lex(file)
-        self.assertEqual(result, ('Errors', [('Syntax error at: "roSGScreen)\n', 2), ('Syntax error at: "SampleScene)\n', 6)]))
+        self.assertEqual(result["Tokens"], [('Syntax error at: "roSGScreen)\n', 2), ('Syntax error at: "SampleScene)\n', 6)])
