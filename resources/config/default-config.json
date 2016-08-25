@@ -16,7 +16,7 @@
   "classes_per_file": 1,
 
   // Variables correctly spelt - checked with PyEnchant.
-  "spellcheck": true,
+  "spell_check": true,
   // No print statements.
   "trace_free": true,
 
@@ -35,7 +35,7 @@
   // Spaces per tab.
   "tab_size": 2,
   // Must use spaces or tabs not both.
-  "spaces_or_tabs": "false",
+  "spaces_or_tabs": false,
   // Number of spaces around operators except colon.
   "spaces_around_operators": 1,
   // Spaces between method name and parameter list.

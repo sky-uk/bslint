@@ -1,3 +1,5 @@
 from .Lexer import Lexer
 from .Main import main
-from .BSLINT_commands.SkipLineCommand import SkipLineCommand
+from .ConfigLoader import *
+from .BSLINT_commands.SkipLineCommand import *
+from .BSLINT_commands.CheckCommentCommand import *

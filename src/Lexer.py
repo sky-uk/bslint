@@ -2,18 +2,19 @@ import re
 
 import Constants as const
 import src.regexs as regexs
-import src as src
+import src
 import string
 
 
 class Lexer:
-
     line_number = 1
+    warnings = []
 
     def lex(self, characters):
         i = 0
         tokens = []
         errors = []
+
         while i < len(characters):
             try:
                 match, token_type = self.regex_handler(characters[i:])
@@ -25,15 +26,19 @@ class Lexer:
                 self.line_number += 1
                 i += len(end_of_line.group())
         if len(errors) is not 0:
-            return "Errors", errors
+            return {"Status": "Error", "Tokens": errors, "Warnings": self.warnings}
         else:
-            return tokens
+            return {"Status": "Success", "Tokens": tokens, "Warnings": self.warnings}
 
     def match_handler(self, match, token_type, tokens):
         if token_type is const.NEW_LINE:
             self.line_number += 1
         elif token_type == const.BSLINT_COMMAND:
             self.execute_BSLINT_command(match.group('command'))
+        elif token_type == const.COMMENT:
+            self.warnings += filter(None, [self.execute_BSLINT_command('check_comment', {"token": match.group(),
+                                                                                         "line_number": self.line_number})])
+
         elif token_type is not None:
             token_tuple = self.build_token(match, token_type)
             tokens.append(token_tuple)
@@ -74,13 +79,6 @@ class Lexer:
         return tuple_token
 
     @staticmethod
-    def execute_BSLINT_command(command):
+    def execute_BSLINT_command(command, params={}):
         class_name = string.capwords(command, "_").replace("_", "") + "Command"
-        return getattr(src, class_name).execute()
-
-
-
-
-
-
-
+        return getattr(src, class_name).execute(params)

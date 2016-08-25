@@ -7,9 +7,6 @@ import src
 
 class TestAssignments(unittest.TestCase):
 
-    string_file = ''
-    int_file = ''
-
     @classmethod
     def setUpClass(cls):
         if sys.argv[0].endswith('nosetests'):
@@ -26,21 +23,21 @@ class TestAssignments(unittest.TestCase):
         test_string = '"test123ID"'
         exp_result = [("test123ID", const.STRING, 1)]
         result = self.lexer.lex(test_string)
-        self.assertEqual(result, exp_result)
+        self.assertEqual(result["Tokens"], exp_result)
 
     def testUnclosedQuotes(self):
         test_string = '"test123ID\n'
-        exp_result = ("Errors", [("Syntax error at: " + test_string, 1)])
+        exp_result = ([("Syntax error at: " + test_string, 1)])
         result = self.lexer.lex(test_string)
-        self.assertEqual(result, exp_result)
+        self.assertEqual(result["Tokens"], exp_result)
 
     def testVariableAssignmentString(self):
         exp_result = [('string', const.ID, 1), ('=', const.OPERATOR, 1), ("words", const.STRING, 1)]
         result = self.lexer.lex(self.string_file)
-        self.assertEqual(result, exp_result)
+        self.assertEqual(result["Tokens"], exp_result)
 
     def testDoubleQuoteString(self):
         test_string = '""""'
         exp_result = [('""', const.STRING, 1)]
         result = self.lexer.lex(test_string)
-        self.assertEqual(result, exp_result)
+        self.assertEqual(result["Tokens"], exp_result)

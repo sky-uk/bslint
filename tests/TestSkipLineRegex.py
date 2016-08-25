@@ -39,7 +39,7 @@ class TestSkipLine(unittest.TestCase):
     def testSkipLineWithText(self):
         identifier = "' randomText BSLINT_skip_line \n"
         result, regex = self.lexer.regex_handler(identifier)
-        self.assertEquals(regex, None)
+        self.assertEquals(regex, const.COMMENT)
 
     def testSkipFile(self):
         identifier = "'BSLINT_skip_file\n"
@@ -90,5 +90,5 @@ class TestSkipLine(unittest.TestCase):
     def testSkipRemLineWithText(self):
         identifier = "rem randomText BSLINT_skip_line \n"
         result, regex = self.lexer.regex_handler(identifier)
-        self.assertEquals(regex, None)
+        self.assertEquals(regex, const.COMMENT)
 
