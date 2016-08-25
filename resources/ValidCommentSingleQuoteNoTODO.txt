@@ -1,4 +1,4 @@
-rem TODO ZRV Check Todo
+rem TODO ZRV Check comments 
 sub main()
     screen = CreateObject("roSGScreen")
     port = CreateObject("roMessagePort")

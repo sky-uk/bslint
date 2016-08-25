@@ -1,4 +1,5 @@
 import enchant
+import Constants as const
 
 
 class SpellCheckCommand(object):
@@ -6,7 +7,11 @@ class SpellCheckCommand(object):
     @staticmethod
     def execute(params):
         d = enchant.Dict("en_UK")
-        words = SpellCheckCommand._parse_words(params['token'])
+        words = []
+        if params['type'] == const.COMMENT:
+           words = SpellCheckCommand._parse_comment_words(params['token'])
+        else:
+            words = SpellCheckCommand._parse_words(params['token'])
 
         for word in words:
             spelt_correct = d.check(word)
@@ -37,3 +42,21 @@ class SpellCheckCommand(object):
             words.append(word)
 
         return words
+
+    @staticmethod
+    def _parse_comment_words(comment):
+        words = []
+        comment_list = comment.split(' ')
+
+        for word in comment_list:
+            if not word.isalpha():
+                continue
+            if word == 'rem':
+                continue
+            if word.isupper():
+                continue
+            else:
+                if not word == '':
+                    words.append(word)
+        return words
+
