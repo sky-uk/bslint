@@ -42,9 +42,11 @@ class Lexer:
         elif token_type == const.BSLINT_COMMAND:
             self.execute_BSLINT_command(match.group('command'))
         elif token_type == const.COMMENT:
-            self.warnings += filter(None, [self.execute_BSLINT_command('check_comment', {"token": match.group(),
-                                                                                         "line_number": self.line_number})])
-
+            self.warning_filter(self.execute_BSLINT_command('check_comment', {"token": match.group(),
+                                                                              "line_number": self.line_number}))
+            self.warning_filter(self.execute_BSLINT_command('spell_check', {"token": match.group(),
+                                                                            "line_number": self.line_number,
+                                                                            "type": token_type}))
         elif token_type is not None:
             token_tuple = self.build_token(match, token_type)
             tokens.append(token_tuple)
@@ -68,7 +70,8 @@ class Lexer:
         elif regex_type == const.ID:
             tuple_token = self.build_id_tuple(match, regex_type)
             self.warning_filter(
-                self.execute_BSLINT_command('spell_check', {'token': match.group(), "line_number": self.line_number}))
+                self.execute_BSLINT_command('spell_check', {'token': match.group(), "line_number": self.line_number,
+                                                            "type": regex_type}))
         else:
             tuple_token = (group, regex_type)
         return tuple_token + (self.line_number,)
@@ -87,7 +90,7 @@ class Lexer:
         return tuple_token
 
     @staticmethod
-    def execute_BSLINT_command(command, params = {}):
+    def execute_BSLINT_command(command, params={}):
         class_name = string.capwords(command, "_").replace("_", "") + "Command"
         return getattr(src, class_name).execute(params)
 

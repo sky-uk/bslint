@@ -1,12 +1,11 @@
 import unittest
 import src
-import resources.Constants as const
+import Constants as const
 
 
 class TestSkipLine(unittest.TestCase):
     def setUp(self):
-        config = src.load_config_file()
-        self.lexer = src.Lexer(config)
+        self.lexer = src.Lexer()
 
     def testSkipLineSingleSpace(self):
         identifier = "' BSLINT_skip_line\n"

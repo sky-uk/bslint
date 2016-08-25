@@ -7,8 +7,7 @@ import src
 class TestIdentifierMethods(unittest.TestCase):
 
     def setUp(self):
-        config = src.load_config_file()
-        self.lexer = src.Lexer(config)
+        self.lexer = src.Lexer()
         
     def testBasicIdentifier(self):
         identifier = "testId"
