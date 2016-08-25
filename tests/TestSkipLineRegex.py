@@ -48,3 +48,10 @@ class TestSkipLine(unittest.TestCase):
         self.assertEquals(result.group('command'), exp_result)
         self.assertEquals(regex_type, const.BSLINT_COMMAND)
 
+    def testSkipFileWithRemCommand(self):
+        identifier = "rem BSLINT_skip_file\n"
+        exp_result = 'skip_file'
+        result, regex_type = self.lexer.regex_handler(identifier)
+        self.assertEquals(result.group('command'), exp_result)
+        self.assertEquals(regex_type, const.BSLINT_COMMAND)
+
