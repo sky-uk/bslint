@@ -91,7 +91,7 @@ List = [
     ("OR", const.KEYWORD),
     ("POS", const.KEYWORD),
     (r"('|rem)\s*(BSLINT)_(?P<command>[a-z_]+)(:(?P<param>[0-9]+))?.*\n", const.BSLINT_COMMAND),
-    ("REM", const.KEYWORD),
+    ("('|REM)(.*)\n", None),
     ("RUN", const.KEYWORD),
     ("SUB", const.KEYWORD),
     ("TAB", const.KEYWORD),
@@ -104,7 +104,5 @@ List = [
 
     (r"(?P<value>^[a-z_][a-z0-9_]*)(?P<type>\$|%|!|#|&?)", const.ID),
     ('\"(.*)\"', const.STRING),
-    (r"^\d*(\.?\d+){1}", const.NUMERIC),
-    (r"'(.*)\n", None)
-
+    (r"^\d*(\.?\d+){1}", const.NUMERIC)
 ]
