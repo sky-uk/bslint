@@ -37,11 +37,11 @@ class TestConfigFileLoading(unittest.TestCase):
     def testDefaultConfigOverwritten(self):
         exp_res = 666
         config = src.load_config_file()
-        result = config["max_line_length"]
+        result = config["check_max_line_length"]["params"]["max_line_length"]
         self.assertEqual(result, exp_res)
 
     def testDefaultConfigPersists(self):
         exp_res = True
         config = src.load_config_file()
-        result = config["spell_check"]
+        result = config["check_spell_check"]["active"]
         self.assertEqual(result, exp_res)

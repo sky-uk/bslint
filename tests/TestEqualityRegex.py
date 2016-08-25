@@ -7,7 +7,8 @@ import src
 class TestEqualityMethods(unittest.TestCase):
 
     def setUp(self):
-        self.lexer = src.Lexer()
+        config = src.load_config_file()
+        self.lexer = src.Lexer(config)
 
     def testNotEquals(self):
         identifier = "<>"

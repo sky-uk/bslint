@@ -12,7 +12,8 @@ class TestCommentSyntaxChecking(unittest.TestCase):
             cls.filepath_prefix = "../resources/"
 
     def setUp(self):
-        self.lexer = src.Lexer()
+        config = src.load_config_file()
+        self.lexer = src.Lexer(config)
 
     def testAllCommentTypes(self):
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
