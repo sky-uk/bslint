@@ -11,8 +11,7 @@ class SpellCheckCommand(object):
         for word in words:
             spelt_correct = d.check(word)
             if not spelt_correct:
-                return "Warning. You have spelling mistakes in your code. line number:x"
-
+                return "Warning. You have spelling mistakes in your code. line number: " + str(params["line_number"])
         return None
 
     @staticmethod

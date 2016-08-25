@@ -7,10 +7,12 @@ import string
 
 
 class Lexer:
-    line_number = 1
-    warnings = []
+    def __init__(self):
+        self.line_number = 1
+        self.warnings = []
 
     def lex(self, characters):
+
         i = 0
         tokens = []
         errors = []
@@ -64,8 +66,8 @@ class Lexer:
             tuple_token = self.build_string_tuple(match, regex_type)
         elif regex_type == const.ID:
             tuple_token = self.build_id_tuple(match, regex_type)
-            print(tuple_token)
-            self.warning_filter(self.execute_BSLINT_command('spell_check', {'token': tuple_token}))
+            self.warning_filter(
+                self.execute_BSLINT_command('spell_check', {'token': match.group(), "line_number": self.line_number}))
         else:
             tuple_token = (group, regex_type)
         return tuple_token + (self.line_number,)
