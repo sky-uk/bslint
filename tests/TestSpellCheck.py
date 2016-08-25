@@ -86,3 +86,10 @@ class TestSpellCheck(unittest.TestCase):
         exp_res = ['Warning. You have spelling mistakes in your code. line number: 2']
         result = self.lexer.lex(file)
         self.assertEqual(result["Warnings"], exp_res)
+
+    def testMisspelledCommentFromFile(self):
+        file_name = self.filepath_prefix + "IncorrectCommentSpelling.brs"
+        file = src.main(file_name)
+        exp_res = ['Warning. You have spelling mistakes in your code. line number: 1']
+        result = self.lexer.lex(file)
+        self.assertEqual(result["Warnings"], exp_res)

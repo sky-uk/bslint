@@ -1,4 +1,4 @@
-rem TODO ZRV Check comments
+rem TODO ZRV Check fgdfgdfg
 sub main()
     screen = CreateObject("roSGScreen")
     port = CreateObject("roMessagePort")
@@ -8,10 +8,8 @@ sub main()
     screen.show()
 
     while true
-        ' do stuff
-        rem second comment
     end while
 
 end sub
 
-' TODO non initialled
+' TODO PFU valid
