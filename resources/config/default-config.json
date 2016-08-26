@@ -1,7 +1,10 @@
 {
   "check_comment": {
     "active": true,
-    "params": {}
+    "params": {
+      "allow_TODOs": true,
+      "allow_generic_comments": false
+    }
   },
   "check_max_line_length": {
     "active": true,

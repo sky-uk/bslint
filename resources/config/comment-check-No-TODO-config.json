@@ -1,9 +1,9 @@
 {
   "check_comment": {
-    "active": false,
+    "active": true,
     "params": {
       "allow_TODOs": false,
-      "allow_generic_comments": false
+      "allow_generic_comments": true
     }
   }
 }
