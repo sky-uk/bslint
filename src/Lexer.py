@@ -1,6 +1,4 @@
 import re
-
-import json
 import Constants as const
 import src.regexs as regexs
 import src
@@ -8,9 +6,11 @@ import string
 
 
 class Lexer:
-    def __init__(self):
+
+    def __init__(self, config):
         self.line_number = 1
         self.warnings = []
+        self.config_json = config
 
     def lex(self, characters):
 
@@ -33,9 +33,6 @@ class Lexer:
         else:
             return {"Status": "Success", "Tokens": tokens, "Warnings": self.warnings}
 
-    def spell_check(self, tokens):
-        print(tokens)
-
     def match_handler(self, match, token_type, tokens):
         if token_type is const.NEW_LINE:
             self.line_number += 1
@@ -47,6 +44,7 @@ class Lexer:
             self.warning_filter(self.execute_BSLINT_command('spell_check', {"token": match.group(),
                                                                             "line_number": self.line_number,
                                                                             "type": token_type}))
+
         elif token_type is not None:
             token_tuple = self.build_token(match, token_type)
             tokens.append(token_tuple)
@@ -89,10 +87,10 @@ class Lexer:
             tuple_token = (group, regex_type, match.group('type'))
         return tuple_token
 
-    @staticmethod
-    def execute_BSLINT_command(command, params={}):
+    def execute_BSLINT_command(self, command, params={}):
         class_name = string.capwords(command, "_").replace("_", "") + "Command"
-        return getattr(src, class_name).execute(params)
+        if self.config_json[command]['active'] is True:
+            return getattr(src, class_name).execute({**params, **self.config_json[command]['params']})
 
     def warning_filter(self, result):
         self.warnings += filter(None, [result])
