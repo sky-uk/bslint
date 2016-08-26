@@ -2,7 +2,7 @@
   "check_comment": {
     "active": true,
     "params": {
-      "allow_TODOs": false,
+      "TODOs": {"allow_TODOs": false, "format": "('|rem)\\s*TODO\\s+([A-Z]{2,3})"},
       "allow_generic_comments": true
     }
   }
