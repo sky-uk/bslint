@@ -24,7 +24,7 @@ class TestStyleCheck(unittest.TestCase):
         self.assertEqual(result["Warnings"], exp_res)
 
     def testNoCommentCheck(self):
-        config = src.load_config_file("../resources/config/no-comment-check-config.json")
+        config = src.load_config_file(self.filepath_prefix + "config/no-comment-check-config.json")
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.main(file_name)
@@ -33,7 +33,7 @@ class TestStyleCheck(unittest.TestCase):
         self.assertEqual(result["Warnings"], exp_res)
 
     def testTODOComment(self):
-        config = src.load_config_file("../resources/config/comment-check-TODO-check-config.json")
+        config = src.load_config_file(self.filepath_prefix + "config/comment-check-TODO-check-config.json")
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.main(file_name)
@@ -42,7 +42,7 @@ class TestStyleCheck(unittest.TestCase):
         self.assertEqual(result["Warnings"], exp_res)
 
     def testNoTODOComment(self):
-        config = src.load_config_file("../resources/config/comment-check-no-TODO-config.json")
+        config = src.load_config_file(self.filepath_prefix + "config/comment-check-no-TODO-config.json")
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.main(file_name)
@@ -52,7 +52,7 @@ class TestStyleCheck(unittest.TestCase):
         self.assertEqual(result["Warnings"], exp_res)
 
     def testNoTODONoComment(self):
-        config = src.load_config_file("../resources/config/no-comment-no-TODO-config.json")
+        config = src.load_config_file(self.filepath_prefix + "config/no-comment-no-TODO-config.json")
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.main(file_name)
