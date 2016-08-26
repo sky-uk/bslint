@@ -1,0 +1,9 @@
+{
+  "check_comment": {
+    "active": true,
+    "params": {
+      "allow_TODOs": true,
+      "allow_generic_comments": true
+    }
+  }
+}
