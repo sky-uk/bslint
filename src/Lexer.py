@@ -8,6 +8,7 @@ import string
 class Lexer:
 
     def __init__(self, config):
+        self.config_json = []
         self.line_number = 1
         self.warnings = []
         self.config_json = config
