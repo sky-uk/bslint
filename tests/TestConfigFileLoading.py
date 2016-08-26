@@ -43,5 +43,5 @@ class TestConfigFileLoading(unittest.TestCase):
     def testDefaultConfigPersists(self):
         exp_res = True
         config = src.load_config_file()
-        result = config["check_spell_check"]["active"]
+        result = config["spell_check"]["active"]
         self.assertEqual(result, exp_res)

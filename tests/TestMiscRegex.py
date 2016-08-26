@@ -7,7 +7,8 @@ import src
 class TestMiscMethods(unittest.TestCase):
 
     def setUp(self):
-        self.lexer = src.Lexer()
+        config = src.load_config_file()
+        self.lexer = src.Lexer(config)
         
     def testWhiteSpace(self):
         identifier = " "

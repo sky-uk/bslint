@@ -17,7 +17,8 @@ class TestAssignments(unittest.TestCase):
             cls.int_file = src.main("../resources/BasicIntegerAssignment.txt")
 
     def setUp(self):
-        self.lexer = src.Lexer()
+        config = src.load_config_file()
+        self.lexer = src.Lexer(config)
 
     def testString(self):
         test_string = '"test123ID"'

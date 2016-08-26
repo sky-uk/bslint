@@ -15,10 +15,8 @@ class TestSpellCheck(unittest.TestCase):
             cls.filepath_prefix = "../resources/"
 
     def setUp(self):
-        self.lexer = src.Lexer()
-
-    def tearDown(self):
-        self.lexer = None
+        config = src.load_config_file()
+        self.lexer = src.Lexer(config)
 
     def testSingleLCase(self):
         test_string = "bad"

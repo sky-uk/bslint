@@ -2,7 +2,7 @@
   "check_comment": {
     "active": true,
     "params": {
-      "allow_TODOs": true,
+      "TODOs": {"allow_TODOs": true, "format": "('|rem)\\s*TODO\\s+([A-Z]{2,3})"},
       "allow_generic_comments": false
     }
   },
@@ -42,7 +42,7 @@
     }
   },
   // Variables correctly spelt - checked with PyEnchant.
-  "check_spell_check": {
+  "spell_check": {
     "active": true,
     "params": {}
   },
