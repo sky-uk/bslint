@@ -2,7 +2,7 @@
   "max_line_length": {
     "active": true,
     "params": {
-      "max_line_length": 666
+      "max_line_length": 11
     }
   }
 }

@@ -6,11 +6,11 @@ import string
 
 
 class Lexer:
-
     def __init__(self, config):
         self.line_number = 1
         self.warnings = []
         self.config_json = config
+        self.line_length = 0
 
     def lex(self, characters):
 
@@ -28,13 +28,22 @@ class Lexer:
                 errors.append(("Syntax error at: " + end_of_line.group(), self.line_number))
                 self.line_number += 1
                 i += len(end_of_line.group())
+        self.warning_filter(self.execute_BSLINT_command('max_line_length',
+                                                    {"line_length": self.line_length, "line_number": self.line_number}))
         if len(errors) is not 0:
             return {"Status": "Error", "Tokens": errors, "Warnings": self.warnings}
         else:
             return {"Status": "Success", "Tokens": tokens, "Warnings": self.warnings}
 
     def match_handler(self, match, token_type, tokens):
+
+        self.line_length += len(match.group())
+
         if token_type is const.NEW_LINE:
+            self.warning_filter(
+                self.execute_BSLINT_command('max_line_length',
+                                            {"line_length": self.line_length, "line_number": self.line_number}))
+            self.line_length = 0
             self.line_number += 1
         elif token_type == const.BSLINT_COMMAND:
             self.execute_BSLINT_command(match.group('command'))
@@ -51,8 +60,7 @@ class Lexer:
 
         return tokens
 
-    @staticmethod
-    def regex_handler(characters):
+    def regex_handler(self, characters):
         for regex in regexs.List:
             match = re.match(regex[0], characters, re.IGNORECASE)
             if match:
