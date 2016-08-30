@@ -32,7 +32,7 @@ class TestMaxLineLength(unittest.TestCase):
         file_name = self.filepath_prefix + "BasicStringAssignment.txt"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_result = ['Line length exceeds max line length [11]. Line number: 1']
+        exp_result = ['WARNING: Line length exceeds 11 number of characters. Line number: 1']
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_result)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -43,7 +43,7 @@ class TestMaxLineLength(unittest.TestCase):
         file_name = self.filepath_prefix + "brightscript.txt"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_result = ['Warning. You have spelling mistakes in your code. line number: 1']
+        exp_result = ['WARNING: You have spelling mistakes in your code. Line number: 1']
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_result)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -54,8 +54,8 @@ class TestMaxLineLength(unittest.TestCase):
         file_name = self.filepath_prefix + "MultilineAssignment.txt"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_result = ['Line length exceeds max line length [11]. Line number: 1',
-                      'Line length exceeds max line length [11]. Line number: 2']
+        exp_result = ['WARNING: Line length exceeds 11 number of characters. Line number: 1',
+                      'WARNING: Line length exceeds 11 number of characters. Line number: 2']
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_result)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
