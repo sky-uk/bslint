@@ -3,6 +3,7 @@ import src
 import sys
 import Constants as const
 
+SPELLCHECK_ERROR = "WARNING: You have spelling mistakes in your code. Line number: "
 
 class TestSpellCheck(unittest.TestCase):
     
@@ -75,19 +76,19 @@ class TestSpellCheck(unittest.TestCase):
 
     def testStartUCaseIncorrect(self):
         test_string = "Badsfddsf"
-        exp_result = "Warning. You have spelling mistakes in your code. line number: 1"
+        exp_result = SPELLCHECK_ERROR + "1"
         result = self.spellCheck.execute({self.TOKEN: test_string, self.LINE_NUMBER: 1, self.TYPE: const.ID})
         self.assertEqual(result, exp_result)
 
     def testIncorrectSpelling(self):
         test_string = "sfgsdrgser"
-        exp_result = "Warning. You have spelling mistakes in your code. line number: 1"
+        exp_result = SPELLCHECK_ERROR + "1"
         result = self.spellCheck.execute({self.TOKEN : test_string, self.LINE_NUMBER: 1, self.TYPE: const.ID})
         self.assertEqual(result, exp_result)
 
     def testIncorrectCamelCase(self):
         test_string = "badGrgdrfdfg"
-        exp_result = "Warning. You have spelling mistakes in your code. line number: 1"
+        exp_result = SPELLCHECK_ERROR + "1"
         result = self.spellCheck.execute({self.TOKEN : test_string, self.LINE_NUMBER: 1, self.TYPE: const.ID})
         self.assertEqual(result, exp_result)
 
@@ -95,7 +96,7 @@ class TestSpellCheck(unittest.TestCase):
         file_name = self.filepath_prefix + "SpellCheck.brs"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ['Warning. You have spelling mistakes in your code. line number: 2']
+        exp_res = [SPELLCHECK_ERROR + "2"]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -104,7 +105,7 @@ class TestSpellCheck(unittest.TestCase):
         file_name = self.filepath_prefix + "IncorrectCommentSpelling.brs"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ['Warning. You have spelling mistakes in your code. line number: 1']
+        exp_res = [SPELLCHECK_ERROR + "1"]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
