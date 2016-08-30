@@ -43,8 +43,14 @@ class TestSpellCheck(unittest.TestCase):
         result = self.spellCheck.execute({self.TOKEN : test_string, self.TYPE: const.ID})
         self.assertEqual(result , exp_result)
 
-    def testSingleUnderscore(self):
+    def testSingleUnderscoreCamelCase(self):
         test_string = "bad_Good"
+        exp_result = None
+        result = self.spellCheck.execute({self.TOKEN : test_string, self.TYPE: const.ID})
+        self.assertEqual(result , exp_result)
+
+    def testSingleUnderscoreLowerCase(self):
+        test_string = "bad_good"
         exp_result = None
         result = self.spellCheck.execute({self.TOKEN : test_string, self.TYPE: const.ID})
         self.assertEqual(result , exp_result)

@@ -27,6 +27,9 @@ class SpellCheckCommand(object):
         for i in range(0, len(identifier_str)):
             char = identifier_str[i]
             if not char.isalpha():
+                if not word == '':
+                    words.append(word)
+                word = ''
                 continue
             if char.islower():
                 word += char

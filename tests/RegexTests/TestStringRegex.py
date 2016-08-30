@@ -49,6 +49,6 @@ class TestStringRegex(unittest.TestCase):
 
     def testMultilineAssignment(self):
         exp_result = [('string', const.ID, 1), ('=', const.OPERATOR, 1), ("words", const.STRING, 1),
-                      ('teststring', const.ID, 2), ('=', const.OPERATOR, 2), ("this is words", const.STRING, 2)]
+                      ('test_String', const.ID, 2), ('=', const.OPERATOR, 2), ("this is words", const.STRING, 2)]
         result = self.lexer.lex(self.multi_line_file)
         self.assertEqual(result[self.TOKENS], exp_result)
