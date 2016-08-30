@@ -6,8 +6,6 @@ from io import StringIO
 
 class TestConfigFileLoading(unittest.TestCase):
 
-    filepath_prefix = ''
-
     @classmethod
     def setUpClass(cls):
         if sys.argv[0].endswith('nosetests'):
