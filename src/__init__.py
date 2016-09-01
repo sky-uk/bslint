@@ -8,3 +8,4 @@ from .BSLINT_commands.SpellCheckCommand import *
 from .BSLINT_commands.MaxLineLengthCommand import *
 from .BSLINT_commands.CheckIndentationCommand import *
 from .BSLINT_commands.ConsecutiveEmptyLinesCommand import *
+from .BSLINT_commands.CheckTraceFreeCommand import *

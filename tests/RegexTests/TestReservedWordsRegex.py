@@ -134,7 +134,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         identifier = "PRINT"
         result, regex_type = self.lexer.regex_handler(identifier)
         self.assertEqual(identifier, result.group())
-        self.assertEqual(regex_type, const.KEYWORD)
+        self.assertEqual(regex_type, const.PRINT_KEYWORD)
 
     def testGOTO(self):
         identifier = "GOTO"
@@ -339,7 +339,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         identifier = "?"
         result, regex_type = self.lexer.regex_handler(identifier)
         self.assertEqual(identifier, result.group())
-        self.assertEqual(regex_type, const.KEYWORD)
+        self.assertEqual(regex_type, const.PRINT_KEYWORD)
 
     def testSpaceEndSub(self):
         identifier = "end sub"
