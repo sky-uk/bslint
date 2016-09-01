@@ -64,7 +64,7 @@ class TestIndentation(unittest.TestCase):
         file_name = self.filepath_prefix + "IndentWithTabsOnly.txt"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_result = [self.error.get(ErrConst.TAB_AND_SPACES, [11])]
+        exp_result = [self.error.get(ErrConst.TAB_AND_SPACES, [10])]
         self.lexer = src.Lexer(config)
         result = self.lexer.lex(file)
         self.assertEqual(exp_result, result[self.WARNINGS])

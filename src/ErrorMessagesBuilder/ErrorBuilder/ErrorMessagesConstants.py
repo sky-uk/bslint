@@ -24,7 +24,7 @@ NO_TODOS = "NO_TODOS"
 ERROR_TABLE = {
         LINE_LENGTH: ErrBuilder.Error(WARNING + ": Line length exceeds {} number of characters. Line number: {}"),
         FILE_ENCODING: ErrBuilder.Error(WARNING + ": Your current file encoding is: {}, but it should be {}"),
-        CONSECUTIVE_EMPTY_LINES: ErrBuilder.Error(WARNING + ": Cannot have consecutive empty lines. Line number: {}"),
+        CONSECUTIVE_EMPTY_LINES: ErrBuilder.Error(WARNING + ": Cannot have more than {} consecutive empty lines. Line number: {}"),
         UPPERCASE_VARIABLE: ErrBuilder.Error(WARNING + ": Variables should begin with a lowercase letter: line number: {}"),
         TAB_INDENTATION_ERROR: ErrBuilder.Error(WARNING + ": Tab indentation should be set to {} spaces. Line number: {}"),
         TAB_AND_SPACES: ErrBuilder.Error(WARNING + ": Invalid indentation, you must indent with tabs. Line number: {}"),

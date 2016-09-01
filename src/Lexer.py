@@ -13,6 +13,8 @@ class Lexer:
         self.line_length = 0
         self.indentation_level = 0
         self.current_indentation_level = 0
+        self.consecutive_empty_lines = 0
+        self.is_empty_line = True
 
     def lex(self, characters):
 
@@ -30,6 +32,7 @@ class Lexer:
                 else:
                     last_line = last_line[-2]
                 tokens = self.match_handler(match, token_type, tokens, last_line)
+
             except ValueError:
                 end_of_line = re.match(r"(.*)\n", characters[i:])
                 errors.append(("Syntax error at: " + end_of_line.group(), self.line_number))
@@ -38,6 +41,7 @@ class Lexer:
         self.warning_filter(self.execute_BSLINT_command('max_line_length',
                                                         {"line_length": self.line_length,
                                                          "line_number": self.line_number}))
+
         if len(errors) is not 0:
             return {"Status": "Error", "Tokens": errors, "Warnings": self.warnings}
         else:
@@ -48,6 +52,11 @@ class Lexer:
         self.line_length += len(match.group())
 
         if token_type is const.NEW_LINE:
+            if self.is_empty_line is True:
+                self.consecutive_empty_lines += 1
+            else:
+                self.is_empty_line = True
+                self.consecutive_empty_lines = 0
             self.warning_filter(
                 self.execute_BSLINT_command('max_line_length',
                                             {"line_length": self.line_length, "line_number": self.line_number}))
@@ -61,20 +70,25 @@ class Lexer:
             self.warning_filter(result[0])
             self.current_indentation_level = result[1]
             self.indentation_level = 0
+            self.warning_filter(self.execute_BSLINT_command('consecutive_empty_lines',
+                                                            {"empty_lines": self.consecutive_empty_lines,
+                                                             "line_number": self.line_number}))
+
             self.line_number += 1
-        elif token_type == const.BSLINT_COMMAND:
-            self.execute_BSLINT_command(match.group('command'))
-        elif token_type == const.COMMENT:
-            self.warning_filter(self.execute_BSLINT_command('check_comment', {"token": match.group(),
-                                                                              "line_number": self.line_number}))
-            self.warning_filter(self.execute_BSLINT_command('spell_check', {"token": match.group(),
-                                                                            "line_number": self.line_number,
-                                                                            "type": token_type}))
-
         elif token_type is not None:
-            token_tuple = self.build_token(match, token_type)
-            tokens.append(token_tuple)
+            self.is_empty_line = False
+            if token_type == const.BSLINT_COMMAND:
+                self.execute_BSLINT_command(match.group('command'))
+            elif token_type == const.COMMENT:
+                self.warning_filter(self.execute_BSLINT_command('check_comment', {"token": match.group(),
+                                                                                  "line_number": self.line_number}))
+                self.warning_filter(self.execute_BSLINT_command('spell_check', {"token": match.group(),
+                                                                                "line_number": self.line_number,
+                                                                                "type": token_type}))
 
+            else:
+                token_tuple = self.build_token(match, token_type)
+                tokens.append(token_tuple)
         return tokens
 
     def regex_handler(self, characters):
