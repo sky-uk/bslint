@@ -4,5 +4,5 @@ import re
 class SkipLineCommand(object):
 
     @staticmethod
-    def execute():
-        return ""
+    def execute(params):
+        return True

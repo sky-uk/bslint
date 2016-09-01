@@ -1,4 +1,8 @@
 {
+  "skip_line": {
+    "active": true,
+    "params": {}
+  },
   "check_comment": {
     "active": true,
     "params": {
