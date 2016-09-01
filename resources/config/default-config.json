@@ -50,7 +50,7 @@
     "params": {}
   },
   // Consecutive blank lines allowed.
-  "check_consecutive_empty_lines": {
+  "consecutive_empty_lines": {
     "active": true,
     "params": {
       "consecutive_empty_lines": 1

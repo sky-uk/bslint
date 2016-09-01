@@ -3,7 +3,6 @@ sub main()
 	port = CreateObject("roMessagePort")
 	screen.setMessagePort(port)
 
-
 	for true
 		jack = "is cool"
 	end for
