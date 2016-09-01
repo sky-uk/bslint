@@ -4,6 +4,7 @@ from .ConfigLoader import *
 from .BSLintCommandHandler import  *
 
 from .BSLINT_commands.SkipLineCommand import *
+from .BSLINT_commands.SkipFileCommand import *
 from .BSLINT_commands.CheckCommentCommand import *
 from .BSLINT_commands.SpellCheckCommand import *
 from .BSLINT_commands.MaxLineLengthCommand import *

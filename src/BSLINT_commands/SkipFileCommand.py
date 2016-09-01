@@ -1,4 +1,4 @@
-class SkipLineCommand(object):
+class SkipFileCommand(object):
 
     @staticmethod
     def execute(params):

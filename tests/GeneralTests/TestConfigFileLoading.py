@@ -15,7 +15,7 @@ class TestConfigFileLoading(unittest.TestCase):
 
     def testReadJsonCorrectly(self):
         config_file = self.filepath_prefix + "default-config.json"
-        exp_res = 14
+        exp_res = 15
         config_json = src.read_json(config_file)
         result = len(config_json)
         self.assertEqual(result, exp_res)
