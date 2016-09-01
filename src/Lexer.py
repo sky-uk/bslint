@@ -17,12 +17,14 @@ class Lexer:
         self.is_empty_line = True
         self.skip_styling = False
         self.skip_line_command_number = -1
+        self.skip_file_styling = False
 
     def lex(self, characters):
 
         i = 0
         tokens = []
         errors = []
+        self.skip_file_styling = False
 
         while i < len(characters):
             try:
@@ -59,12 +61,15 @@ class Lexer:
             if command_type == "skip_line":
                 self.skip_styling = self.execute_BSLINT_command(command_type)
                 self.skip_line_command_number = self.line_number
+            elif command_type == "skip_file":
+                self.skip_file_styling = self.execute_BSLINT_command(command_type)
 
+        #if not self.skip_file_styling:
         if self.skip_styling and self.skip_line_command_number + 2 == self.line_number:
             self.skip_styling = False
             self.skip_line_command_number = -1
 
-        if not self.skip_styling:
+        if not self.skip_styling and not self.skip_file_styling:
             self.apply_styling(match, token_type, characters)
 
         if token_type == const.NEW_LINE:
