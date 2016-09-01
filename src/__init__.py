@@ -5,3 +5,4 @@ from .BSLINT_commands.SkipLineCommand import *
 from .BSLINT_commands.CheckCommentCommand import *
 from .BSLINT_commands.SpellCheckCommand import *
 from .BSLINT_commands.MaxLineLengthCommand import *
+from .BSLINT_commands.CheckIndentationCommand import *

@@ -1,0 +1,23 @@
+sub Main(arguments as Dynamic)
+    m.port = CreateObject("roMessagePort")
+    m.atlasScreen = showScene("AtlasScene")
+
+    _appContext = AppContext()
+    _appContext.init(m.AtlasScene, m.port, arguments)
+
+    messageBus = Atlantis().messageBus
+    m.isRunning = true
+    while(m.isRunning)
+        message = wait(10, m.port)
+
+        m.messageBus.dispatchEvent(Event(TimerContext().TIMER_TICK))
+
+        messageType = type(msg)
+
+        if messageType = "roSGNodeEvent"
+            m.messageBus.dispatchEvent(Event(message.getNode()+"Event", {property: message.getField(), data: message.getData()}))
+        else if messageType = "roDeviceInfoEvent"
+            m.messageBus.dispatchEvent(Event(DeviceInfoContext().NETWORK_CHANGE, message))
+        end if
+    end while
+end sub

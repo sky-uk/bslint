@@ -1,0 +1,18 @@
+sub main()
+	screen = CreateObject("roSGScreen")
+	port = CreateObject("roMessagePort")
+	screen.setMessagePort(port)
+
+
+	for true
+		jack = "is cool"
+	end for
+
+scene = screen.CreateScene("SampleScene")
+	screen.show()
+
+	while true
+		jack = "is cool"
+	end while
+
+end sub

@@ -11,6 +11,8 @@ class Lexer:
         self.warnings = []
         self.config_json = config
         self.line_length = 0
+        self.indentation_level = 0
+        self.current_indentation_level = 0
 
     def lex(self, characters):
 
@@ -22,20 +24,26 @@ class Lexer:
             try:
                 match, token_type = self.regex_handler(characters[i:])
                 i += len(match.group())
-                tokens = self.match_handler(match, token_type, tokens)
+                last_line = re.findall("(?<=^).*", characters[:i], re.MULTILINE)
+                if len(last_line) == 1:
+                    last_line = last_line[-1]
+                else:
+                    last_line = last_line[-2]
+                tokens = self.match_handler(match, token_type, tokens, last_line)
             except ValueError:
                 end_of_line = re.match(r"(.*)\n", characters[i:])
                 errors.append(("Syntax error at: " + end_of_line.group(), self.line_number))
                 self.line_number += 1
                 i += len(end_of_line.group())
         self.warning_filter(self.execute_BSLINT_command('max_line_length',
-                                                    {"line_length": self.line_length, "line_number": self.line_number}))
+                                                        {"line_length": self.line_length,
+                                                         "line_number": self.line_number}))
         if len(errors) is not 0:
             return {"Status": "Error", "Tokens": errors, "Warnings": self.warnings}
         else:
             return {"Status": "Success", "Tokens": tokens, "Warnings": self.warnings}
 
-    def match_handler(self, match, token_type, tokens):
+    def match_handler(self, match, token_type, tokens, characters):
 
         self.line_length += len(match.group())
 
@@ -44,6 +52,15 @@ class Lexer:
                 self.execute_BSLINT_command('max_line_length',
                                             {"line_length": self.line_length, "line_number": self.line_number}))
             self.line_length = 0
+            result = self.execute_BSLINT_command('check_indentation',
+                                                 {"current_indentation_level": self.current_indentation_level,
+                                                  "line_number": self.line_number,
+                                                  "indentation": self.config_json["check_indentation"],
+                                                  "characters": characters,
+                                                  "indentation_level": self.indentation_level})
+            self.warning_filter(result[0])
+            self.current_indentation_level = result[1]
+            self.indentation_level = 0
             self.line_number += 1
         elif token_type == const.BSLINT_COMMAND:
             self.execute_BSLINT_command(match.group('command'))
@@ -67,6 +84,8 @@ class Lexer:
                 break
         if not match:
             raise ValueError('NO MATCH FOUND')
+        if not regex[2] == const.NO_INDENTATION:
+            self.indentation_level = regex[2]
         return match, regex[1]
 
     def build_token(self, match, regex_type):
