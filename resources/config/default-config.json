@@ -29,18 +29,6 @@
     "active": true,
     "params": {}
   },
-  // Class names should match the file name.
-  "check_classname_filename_match": {
-    "active": true,
-    "params": {}
-  },
-  // Number of classes per file.
-  "check_classes_per_file": {
-    "active": true,
-    "params": {
-      "classes_per_file": 1
-    }
-  },
   // Variables correctly spelt - checked with PyEnchant.
   "spell_check": {
     "active": true,
@@ -48,16 +36,6 @@
   },
   // No print statements.
   "check_trace_free": {
-    "active": true,
-    "params": {}
-  },
-  // No comments allowed except TODOs.
-  "check_only_todo_comments": {
-    "active": true,
-    "params": {}
-  },
-  // TODOs must be initialed. ' TODO JS.
-  "check_initialed_todos": {
     "active": true,
     "params": {}
   },
@@ -79,10 +57,11 @@
     }
   },
   // Must use spaces or tabs not both.
-  "check_spaces_or_tabs": {
+  "check_indentation": {
     "active": true,
     "params": {
-      "tab_size": 2
+      "tab_size": 4,
+      "only_tab_indents": false
     }
   },
   // Number of spaces around operators except colon.
