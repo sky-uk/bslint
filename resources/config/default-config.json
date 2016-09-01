@@ -36,7 +36,7 @@
   },
   // No print statements.
   "check_trace_free": {
-    "active": true,
+    "active": false,
     "params": {}
   },
   // Explicitly declare function and function parameter types.

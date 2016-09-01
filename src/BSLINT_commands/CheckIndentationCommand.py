@@ -21,13 +21,13 @@ class CheckIndentationCommand(object):
     def _handle_warnings(params):
         error = Err.ErrorMessageHandler()
         if re.search(r"\S", params["characters"]):
-            if params["indentation"]["params"]["only_tab_indents"]:
+            if params["only_tab_indents"]:
                 if not re.match("\t{" + str(params["current_indentation_level"]) + "}\S", params["characters"]):
                     return error.get(ErrConst.TAB_AND_SPACES, [str(params["line_number"])])
             else:
                 if not re.match("\s{" + str(
-                                params["indentation"]["params"]["tab_size"] *
+                                params["tab_size"] *
                                 params["current_indentation_level"]) + "}\S",
                                 params["characters"]):
                     return error.get(ErrConst.TAB_INDENTATION_ERROR,
-                                     [params["indentation"]["params"]["tab_size"], str(params["line_number"])])
+                                     [params["tab_size"], str(params["line_number"])])

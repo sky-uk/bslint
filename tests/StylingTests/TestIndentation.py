@@ -24,9 +24,8 @@ class TestIndentation(unittest.TestCase):
         exp_result = None
         result = self.indentCheck.execute({"current_indentation_level": 0,
                                            "line_number": 1,
-                                           "indentation": config["check_indentation"],
                                            "characters": "var i = 3",
-                                           "indentation_level": 0})
+                                           "indentation_level": 0, **config['check_indentation']['params']})
         self.assertEqual(result[0], exp_result)
 
     def testSingleIndentation(self):
@@ -34,9 +33,8 @@ class TestIndentation(unittest.TestCase):
         exp_result = None
         result = self.indentCheck.execute({"current_indentation_level": 1,
                                            "line_number": 1,
-                                           "indentation": config["check_indentation"],
                                            "characters": "    var i = 3",
-                                           "indentation_level": 0})
+                                           "indentation_level": 0, **config['check_indentation']['params']})
         self.assertEqual(result[0], exp_result)
 
     def testIndentationError(self):

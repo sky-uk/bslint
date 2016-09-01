@@ -64,7 +64,6 @@ class Lexer:
             result = self.execute_BSLINT_command('check_indentation',
                                                  {"current_indentation_level": self.current_indentation_level,
                                                   "line_number": self.line_number,
-                                                  "indentation": self.config_json["check_indentation"],
                                                   "characters": characters,
                                                   "indentation_level": self.indentation_level})
             self.warning_filter(result[0])
@@ -85,8 +84,9 @@ class Lexer:
                 self.warning_filter(self.execute_BSLINT_command('spell_check', {"token": match.group(),
                                                                                 "line_number": self.line_number,
                                                                                 "type": token_type}))
-
             else:
+                if token_type == const.PRINT_KEYWORD:
+                    self.warning_filter(self.execute_BSLINT_command('check_trace_free', {"line_number": self.line_number}))
                 token_tuple = self.build_token(match, token_type)
                 tokens.append(token_tuple)
         return tokens

@@ -74,7 +74,7 @@ List = [
     ("FUNCTION(?:\t*)", const.KEYWORD, const.INCREMENT_INDENTATION),
     ("AS(?:\t*)", const.KEYWORD, const.NO_INDENTATION),
     ("RETURN(?:\t*)", const.KEYWORD, const.NO_INDENTATION),
-    ("PRINT(?:\t*)", const.KEYWORD, const.NO_INDENTATION),
+    ("PRINT(?:\t*)", const.PRINT_KEYWORD, const.NO_INDENTATION),
     ("DIM(?:\t*)", const.KEYWORD, const.NO_INDENTATION),
     ("END(?:\t*)", const.KEYWORD, const.DECREMENT_INDENTATION),
     ("MOD(?:\t*)", const.KEYWORD, const.NO_INDENTATION),
@@ -99,7 +99,7 @@ List = [
 
 
     ("MAIN(?:\t*)", const.KEYWORD, const.NO_INDENTATION),
-    ("\?", const.KEYWORD, const.NO_INDENTATION),
+    ("\?", const.PRINT_KEYWORD, const.NO_INDENTATION),
 
     (r"(?P<value>^[a-z_][a-z0-9_]*)(?P<type>\$|%|!|#|&?)", const.ID, const.NO_INDENTATION),
     ('\"(.*)\"', const.STRING, const.NO_INDENTATION),
