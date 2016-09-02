@@ -17,6 +17,8 @@ class Lexer:
         self.skip_styling = False
         self.skip_line_command_number = -1
         self.skip_file_styling = False
+        self.white_space_count = 0
+        self.on_operator = False
 
     def lex(self, characters):
 
@@ -80,6 +82,8 @@ class Lexer:
 
     def apply_styling(self, match, token_type, characters):
         if token_type is const.NEW_LINE:
+            self.on_operator = False
+            self.white_space_count = 0
             if self.is_empty_line is True:
                 self.consecutive_empty_lines += 1
             else:
@@ -101,21 +105,43 @@ class Lexer:
                                                             {"empty_lines": self.consecutive_empty_lines,
                                                              "line_number": self.line_number}))
 
-        elif token_type is not None:
+        elif token_type is None:
+            self.white_space_count += 1
+        else:
+            self.warning_filter(
+                self.execute_bslint_command('spaces_around_operators', {"line_number": self.line_number,
+                                                                        "white_space": self.white_space_count,
+                                                                        "on_operator": self.on_operator,
+                                                                        "operator": match.group()}))
+            self.on_operator = False
             self.is_empty_line = False
             if token_type == const.BSLINT_COMMAND:
                 self.execute_bslint_command(match.group('command'))
+
             elif token_type == const.COMMENT:
                 self.warning_filter(self.execute_bslint_command('check_comment', {"token": match.group(),
                                                                                   "line_number": self.line_number}))
                 self.warning_filter(self.execute_bslint_command('spell_check', {"token": match.group(),
                                                                                 "line_number": self.line_number,
                                                                                 "type": token_type}))
+            elif token_type == const.OPERATOR:
+                self.on_operator = True
+                self.warning_filter(
+                    self.execute_bslint_command('spaces_around_operators', {"line_number": self.line_number,
+                                                                            "white_space": self.white_space_count,
+                                                                            "on_operator": self.on_operator,
+                                                                            "operator": match.group()}))
+
             elif token_type == const.ID:
-                self.warning_filter(self.execute_bslint_command('spell_check', {'token': match.group(), "line_number": self.line_number,
-                                                        "type": token_type}))
+                self.warning_filter(
+                    self.execute_bslint_command('spell_check',
+                                                {'token': match.group(), "line_number": self.line_number,
+                                                 "type": token_type}))
             elif token_type == const.PRINT_KEYWORD:
-                self.warning_filter(self.execute_bslint_command('check_trace_free', {"line_number": self.line_number}))
+                self.warning_filter(
+                    self.execute_bslint_command('check_trace_free', {"line_number": self.line_number}))
+
+            self.white_space_count = 0
 
     def regex_handler(self, characters):
         for regex in regexs.List:

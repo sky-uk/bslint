@@ -5,9 +5,8 @@ import src
 
 
 class TestNumericRegex(unittest.TestCase):
-    
     TOKENS = 'Tokens'
-    
+
     def setUp(self):
         config = src.load_config_file()
         self.lexer = src.Lexer(config)
@@ -26,19 +25,19 @@ class TestNumericRegex(unittest.TestCase):
 
     def testIntegerWithTrailingPoints(self):
         identifier = "123."
-        exp_result = [('123', const.NUMERIC, 1), ('.', const.OPERATOR, 1)]
+        exp_result = [('123', const.NUMERIC, 1), ('.', const.SPECIAL_OPERATOR, 1)]
         result = self.lexer.lex(identifier)
         self.assertEqual(result[self.TOKENS], exp_result)
 
     def testMultipleDecimalNumbers(self):
         identifier = "123.123.123"
-        exp_result = [('123.123', const.NUMERIC, 1), ('.', const.OPERATOR, 1), ('123', const.NUMERIC, 1)]
+        exp_result = [('123.123', const.NUMERIC, 1), ('.', const.SPECIAL_OPERATOR, 1), ('123', const.NUMERIC, 1)]
         result = self.lexer.lex(identifier)
         self.assertEqual(result[self.TOKENS], exp_result)
 
     def testMultipleDecimalPoints(self):
         identifier = "123..123"
-        exp_result = [('123', const.NUMERIC, 1), ('.', const.OPERATOR, 1), ('.', const.OPERATOR, 1), ('123', const.NUMERIC, 1)]
+        exp_result = [('123', const.NUMERIC, 1), ('.', const.SPECIAL_OPERATOR, 1), ('.', const.SPECIAL_OPERATOR, 1),
+                      ('123', const.NUMERIC, 1)]
         result = self.lexer.lex(identifier)
         self.assertEqual(result[self.TOKENS], exp_result)
-
