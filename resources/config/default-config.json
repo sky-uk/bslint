@@ -1,4 +1,12 @@
 {
+  "skip_line": {
+    "active": true,
+    "params": {}
+  },
+  "skip_file": {
+    "active": true,
+    "params": {}
+  },
   "check_comment": {
     "active": true,
     "params": {

@@ -3,6 +3,7 @@ import Constants as const
 import src.regexs as regexs
 import src
 
+
 class Lexer:
     def __init__(self, config):
         self.line_number = 1
@@ -13,12 +14,16 @@ class Lexer:
         self.consecutive_empty_lines = 0
         self.is_empty_line = True
         self.bslint_command_executor = src.BSLintCommandHandler(config)
+        self.skip_styling = False
+        self.skip_line_command_number = -1
+        self.skip_file_styling = False
 
     def lex(self, characters):
 
         i = 0
         tokens = []
         errors = []
+        self.skip_file_styling = False
 
         while i < len(characters):
             try:
@@ -36,9 +41,10 @@ class Lexer:
                 errors.append(("Syntax error at: " + end_of_line.group(), self.line_number))
                 self.line_number += 1
                 i += len(end_of_line.group())
-        self.warning_filter(self.execute_bslint_command('max_line_length',
-                                                        {"line_length": self.line_length,
-                                                         "line_number": self.line_number}))
+        if not self.skip_styling:
+            self.warning_filter(self.execute_bslint_command('max_line_length',
+                                                            {"line_length": self.line_length,
+                                                             "line_number": self.line_number}))
 
         if len(errors) is not 0:
             return {"Status": "Error", "Tokens": errors, "Warnings": self.warnings}
@@ -46,9 +52,33 @@ class Lexer:
             return {"Status": "Success", "Tokens": tokens, "Warnings": self.warnings}
 
     def match_handler(self, match, token_type, tokens, characters):
-
         self.line_length += len(match.group())
 
+        if token_type == const.BSLINT_COMMAND:
+            command_type = match.group('command')
+            if command_type == "skip_line":
+                self.skip_styling = self.execute_bslint_command(command_type)
+                self.skip_line_command_number = self.line_number
+            elif command_type == "skip_file":
+                self.skip_file_styling = self.execute_bslint_command(command_type)
+
+        if self.skip_styling and self.skip_line_command_number + 2 == self.line_number:
+            self.skip_styling = False
+            self.skip_line_command_number = -1
+
+        if not self.skip_styling and not self.skip_file_styling:
+            self.apply_styling(match, token_type, characters)
+
+        if token_type == const.NEW_LINE:
+            self.line_number += 1
+
+        elif token_type is not None:
+            if token_type != const.BSLINT_COMMAND and token_type != const.COMMENT:
+                token_tuple = self.build_token(match, token_type)
+                tokens.append(token_tuple)
+        return tokens
+
+    def apply_styling(self, match, token_type, characters):
         if token_type is const.NEW_LINE:
             if self.is_empty_line is True:
                 self.consecutive_empty_lines += 1
@@ -71,7 +101,6 @@ class Lexer:
                                                             {"empty_lines": self.consecutive_empty_lines,
                                                              "line_number": self.line_number}))
 
-            self.line_number += 1
         elif token_type is not None:
             self.is_empty_line = False
             if token_type == const.BSLINT_COMMAND:
@@ -82,12 +111,11 @@ class Lexer:
                 self.warning_filter(self.execute_bslint_command('spell_check', {"token": match.group(),
                                                                                 "line_number": self.line_number,
                                                                                 "type": token_type}))
-            else:
-                if token_type == const.PRINT_KEYWORD:
-                    self.warning_filter(self.execute_bslint_command('check_trace_free', {"line_number": self.line_number}))
-                token_tuple = self.build_token(match, token_type)
-                tokens.append(token_tuple)
-        return tokens
+            elif token_type == const.ID:
+                self.warning_filter(self.execute_bslint_command('spell_check', {'token': match.group(), "line_number": self.line_number,
+                                                        "type": token_type}))
+            elif token_type == const.PRINT_KEYWORD:
+                self.warning_filter(self.execute_bslint_command('check_trace_free', {"line_number": self.line_number}))
 
     def regex_handler(self, characters):
         for regex in regexs.List:
@@ -106,9 +134,6 @@ class Lexer:
             tuple_token = self.build_string_tuple(match, regex_type)
         elif regex_type == const.ID:
             tuple_token = self.build_id_tuple(match, regex_type)
-            self.warning_filter(
-                self.execute_bslint_command('spell_check', {'token': match.group(), "line_number": self.line_number,
-                                                            "type": regex_type}))
         else:
             tuple_token = (group, regex_type)
         return tuple_token + (self.line_number,)
