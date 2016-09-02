@@ -73,10 +73,10 @@
     }
   },
   // Number of spaces around operators except colon.
-  "check_spaces_around_operators": {
+  "spaces_around_operators": {
     "active": true,
     "params": {
-      "spaces_around_operators": 2
+      "spaces_around_operators": 1
     }
   }, 
   // Spaces between method name and parameter list.

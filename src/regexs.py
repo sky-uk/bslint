@@ -23,7 +23,8 @@ List = [
     (">>", const.OPERATOR, const.NO_INDENTATION),
     ("<<", const.OPERATOR, const.NO_INDENTATION),
 
-    (r"\.", const.OPERATOR, const.NO_INDENTATION),
+    (r"\.", const.SPECIAL_OPERATOR, const.NO_INDENTATION),
+    (":", const.SPECIAL_OPERATOR, const.NO_INDENTATION),
     (r"\^", const.OPERATOR, const.NO_INDENTATION),
     ("=", const.OPERATOR, const.NO_INDENTATION),
     ("-", const.OPERATOR, const.NO_INDENTATION),

@@ -15,7 +15,7 @@ sub Main(arguments as Dynamic)
         messageType = type(msg)
 
         if messageType = "roSGNodeEvent"
-            m.messageBus.dispatchEvent(Event(message.getNode()+"Event", {property: message.getField(), data: message.getData()}))
+            m.messageBus.dispatchEvent(Event(message.getNode() + "Event", {property: message.getField(), data: message.getData()}))
         else if messageType = "roDeviceInfoEvent"
             m.messageBus.dispatchEvent(Event(DeviceInfoContext().NETWORK_CHANGE, message))
         end if

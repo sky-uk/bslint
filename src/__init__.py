@@ -12,3 +12,4 @@ from .BSLINT_commands.CheckIndentationCommand import *
 from .BSLINT_commands.ConsecutiveEmptyLinesCommand import *
 from .BSLINT_commands.CheckTraceFreeCommand import *
 from .BSLINT_commands.CheckFileEncodingCommand import *
+from .BSLINT_commands.SpacesAroundOperatorsCommand import *
