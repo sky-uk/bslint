@@ -11,7 +11,7 @@ class FileReader:
         str_to_lex = fo.read()
 
         bslint_command_executor = src.BSLintCommandHandler(config_json)
-        bslint_command_executor.execute_bslint_command("check_file_encoding", {"chars": str_to_lex})
+        bslint_command_executor.execute_bslint_command("check_file_encoding", {"file_path": file_to_lex})
         lexer = src.Lexer(config_json)
 
 
