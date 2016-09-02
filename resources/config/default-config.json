@@ -13,10 +13,10 @@
     }
   },
   // Source File Encoding.
-  "check_source_file_encoding": {
-    "active": true,
+  "check_file_encoding": {
+    "active": false,
     "params": {
-      "source_file_encoding": "UTF-8"
+      "source_file_encoding": "ASCII"
     }
   },
   // Variables should begin with a lower case first letter.

@@ -1,0 +1,8 @@
+{
+   "check_file_encoding": {
+    "active": true,
+    "params": {
+      "source_file_encoding": "UTF-8"
+    }
+  }
+}
