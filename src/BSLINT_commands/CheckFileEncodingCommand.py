@@ -10,8 +10,7 @@ class CheckFileEncodingCommand(object):
 
         try:
             # or codecs.open on Python 2
-            file_content = codecs.open(params["file_path"], encoding=params["source_file_encoding"]).read()
-            print(file_content)
+            codecs.open(params["file_path"], encoding=params["source_file_encoding"]).read()
         except:
             return error.get(ErrConst.FILE_ENCODING,
                              [params["source_file_encoding"]])
