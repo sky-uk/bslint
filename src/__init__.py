@@ -1,7 +1,8 @@
 from .Lexer import Lexer
 from .Main import main
 from .ConfigLoader import *
-from .BSLintCommandHandler import  *
+from .BSLintCommandHandler import *
+from src.FileReader import *
 
 from .BSLINT_commands.SkipLineCommand import *
 from .BSLINT_commands.SkipFileCommand import *
