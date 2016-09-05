@@ -2,10 +2,13 @@ import re
 import Constants as const
 import src.regexs as regexs
 import src
+import src.ErrorMessagesBuilder.ErrorMessageHandler as Err
+import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
 
 
 class Lexer:
     def __init__(self, config):
+        self.error = Err.ErrorMessageHandler()
         self.line_number = 1
         self.warnings = []
         self.line_length = 0
@@ -40,7 +43,8 @@ class Lexer:
 
             except ValueError:
                 end_of_line = re.match(r"(.*)\n", characters[i:])
-                errors.append(("Syntax error at: " + end_of_line.group(), self.line_number))
+                errors.append(
+                    self.error.get(ErrConst.UNMATCHED_QUOTATION_MARK, [(end_of_line.group()[:-2]), self.line_number]))
                 self.line_number += 1
                 i += len(end_of_line.group())
         if not self.skip_styling:

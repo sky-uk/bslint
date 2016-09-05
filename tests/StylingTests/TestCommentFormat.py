@@ -1,6 +1,8 @@
 import unittest
 import sys
 import src
+import src.ErrorMessagesBuilder.ErrorMessageHandler as Err
+import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
 
 
 class TestCommentFormat(unittest.TestCase):
@@ -11,6 +13,7 @@ class TestCommentFormat(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        cls.error = Err.ErrorMessageHandler()
         if sys.argv[0].endswith('nosetests'):
             cls.filepath_prefix = "./resources/"
         else:
@@ -33,7 +36,7 @@ class TestCommentFormat(unittest.TestCase):
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ['WARNING: TODOs must follow convention. Line number: 17']
+        exp_res = [self.error.get(ErrConst.NON_CONVENTIONAL_TODO, [17])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -44,9 +47,9 @@ class TestCommentFormat(unittest.TestCase):
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ['WARNING: Comments must be TODOs and must follow convention. Line number: 11',
-                   'WARNING: Comments must be TODOs and must follow convention. Line number: 12',
-                   'WARNING: Comments must be TODOs and must follow convention. Line number: 17']
+        exp_res = [self.error.get(ErrConst.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [11]),
+                   self.error.get(ErrConst.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [12]),
+                   self.error.get(ErrConst.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [17])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -57,8 +60,8 @@ class TestCommentFormat(unittest.TestCase):
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ['WARNING: Comments must not be TODOs. Line number: 1',
-                   'WARNING: Comments must not be TODOs. Line number: 17']
+        exp_res = [self.error.get(ErrConst.NO_TODOS, [1]),
+                   self.error.get(ErrConst.NO_TODOS, [17])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -69,10 +72,11 @@ class TestCommentFormat(unittest.TestCase):
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ['WARNING: No comments allowed. Line number: 1',
-                   'WARNING: No comments allowed. Line number: 11',
-                   'WARNING: No comments allowed. Line number: 12',
-                   'WARNING: No comments allowed. Line number: 17']
+        exp_res = [
+            self.error.get(ErrConst.COMMENTS_NOT_ALLOWED, [1]),
+            self.error.get(ErrConst.COMMENTS_NOT_ALLOWED, [11]),
+            self.error.get(ErrConst.COMMENTS_NOT_ALLOWED, [12]),
+            self.error.get(ErrConst.COMMENTS_NOT_ALLOWED, [17])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
