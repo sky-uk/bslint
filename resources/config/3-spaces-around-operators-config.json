@@ -1,0 +1,8 @@
+{
+  "spaces_around_operators": {
+    "active": true,
+    "params": {
+      "spaces_around_operators": 3
+    }
+  }
+}
