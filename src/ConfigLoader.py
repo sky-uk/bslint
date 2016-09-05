@@ -3,7 +3,7 @@ import sys
 
 
 def load_config_file(user_filepath=None,out=sys.stdout):
-    if sys.argv[0].endswith('nosetests'):
+    if sys.argv[0].endswith('nosetests') or sys.argv[0] == 'Main.py':
         if not user_filepath:
             user_filepath = "./resources/config/user-config.json"
         default_filepath = "./resources/config/default-config.json"
@@ -20,7 +20,7 @@ def load_config_file(user_filepath=None,out=sys.stdout):
     except FileNotFoundError as e:
         out.write("Cannot find file: " + e.filename)
     else:
-        out.write("Read styling config JSON correctly.")
+        #out.write("Read styling config JSON correctly. \n")
         return default_json
 
 
