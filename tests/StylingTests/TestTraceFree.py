@@ -1,6 +1,8 @@
 import unittest
 import sys
 import src
+import src.ErrorMessagesBuilder.ErrorMessageHandler as Err
+import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
 
 
 class TestTraceFree(unittest.TestCase):
@@ -10,6 +12,7 @@ class TestTraceFree(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        cls.error = Err.ErrorMessageHandler()
         if sys.argv[0].endswith('nosetests'):
             cls.filepath_prefix = "./resources/"
             cls.tests_filepath_prefix = "./resources/TraceTestFiles/"
@@ -23,7 +26,7 @@ class TestTraceFree(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "Print.brs"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ["WARNING: Print statements not allowed. Line number: 3"]
+        exp_res = [self.error.get(ErrConst.TRACEABLE_CODE, [3])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -34,7 +37,7 @@ class TestTraceFree(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "QuestionMark.brs"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ["WARNING: Print statements not allowed. Line number: 3"]
+        exp_res = [self.error.get(ErrConst.TRACEABLE_CODE, [3])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -45,8 +48,8 @@ class TestTraceFree(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "PrintAndQuestionMark.brs"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ["WARNING: Print statements not allowed. Line number: 3",
-                   "WARNING: Print statements not allowed. Line number: 4"]
+        exp_res = [self.error.get(ErrConst.TRACEABLE_CODE, [3]),
+                   self.error.get(ErrConst.TRACEABLE_CODE, [4])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)

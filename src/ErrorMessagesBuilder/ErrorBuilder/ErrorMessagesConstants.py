@@ -36,7 +36,7 @@ ERROR_TABLE = {
         NOT_CAPITALISED_VARIABLE_NAMES: ErrBuilder.Error(WARNING + ": Variable types must be capitalised. Line number: {}"),
         NO_SPACE_AROUND_OPERATORS: ErrBuilder.Error(WARNING + ": Operators must be surrounded by {} space(s). Line number: {}"),
         NO_SPACE_BETWEEN_METHOD_AND_PARAMETERS: ErrBuilder.Error( WARNING + ": You must put a space between method name and parameter list. Line number: {}"),
-        UNMATCHED_QUOTATION_MARK: ErrBuilder.Error(ERROR + ": You have unmatched quotation marks on line number:  {}"),
+        UNMATCHED_QUOTATION_MARK: ErrBuilder.Error(ERROR + ": You have unmatched quotation marks at {} on line number:  {}"),
         NON_CONVENTIONAL_TODO: ErrBuilder.Error(WARNING + ": TODOs must follow convention. Line number: {}"),
         NO_TODOS: ErrBuilder.Error(WARNING + ": Comments must not be TODOs. Line number: {}"),
 

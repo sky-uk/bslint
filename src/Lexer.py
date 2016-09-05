@@ -2,12 +2,14 @@ import re
 import Constants as const
 import src.regexs as regexs
 import src
-import string
+import src.ErrorMessagesBuilder.ErrorMessageHandler as Err
+import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
 
 
 class Lexer:
 
     def __init__(self, config):
+        self.error = Err.ErrorMessageHandler()
         self.line_number = 1
         self.warnings = []
         self.config_json = config
@@ -21,6 +23,7 @@ class Lexer:
         self.skip_file_styling = False
         self.white_space_count = 0
         self.on_operator = False
+        self.bslint_command_executor = src.BSLintCommandHandler(config)
 
     def lex(self, characters):
 
@@ -42,7 +45,8 @@ class Lexer:
 
             except ValueError:
                 end_of_line = re.match(r"(.*)\n", characters[i:])
-                errors.append(("Syntax error at: " + end_of_line.group(), self.line_number))
+                errors.append(
+                    self.error.get(ErrConst.UNMATCHED_QUOTATION_MARK, [(end_of_line.group()[:-2]), self.line_number]))
                 self.line_number += 1
                 i += len(end_of_line.group())
 
@@ -67,7 +71,6 @@ class Lexer:
             elif command_type == "skip_file":
                 self.skip_file_styling = self.execute_bslint_command(command_type)
 
-        #if not self.skip_file_styling:
         if self.skip_styling and self.skip_line_command_number + 2 == self.line_number:
             self.skip_styling = False
             self.skip_line_command_number = -1
@@ -182,9 +185,7 @@ class Lexer:
         return tuple_token
 
     def execute_bslint_command(self, command, params={}):
-        class_name = string.capwords(command, "_").replace("_", "") + "Command"
-        if self.config_json[command]['active'] is True:
-            return getattr(src, class_name).execute({**params, **self.config_json[command]['params']})
+        return self.bslint_command_executor.execute_bslint_command(command, params)
 
     def warning_filter(self, result):
         self.warnings += filter(None, [result])

@@ -1,6 +1,8 @@
 import unittest
 import sys
 import src
+import src.ErrorMessagesBuilder.ErrorMessageHandler as Err
+import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
 
 
 class TestConsecutiveEmptyLines(unittest.TestCase):
@@ -10,6 +12,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        cls.error = Err.ErrorMessageHandler()
         if sys.argv[0].endswith('nosetests'):
             cls.filepath_prefix = "./resources/"
             cls.tests_filepath_prefix = "./resources/EmptyLinesTestFiles/"
@@ -46,8 +49,9 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "OnlyEmptyLines.brs"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ["WARNING: Cannot have more than 1 consecutive empty lines. Line number: 2",
-                   "WARNING: Cannot have more than 1 consecutive empty lines. Line number: 3"]
+        exp_res = [
+            self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1,2]),
+            self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1,3])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -58,7 +62,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "EmptyLinesAtEnd.brs"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ["WARNING: Cannot have more than 1 consecutive empty lines. Line number: 3"]
+        exp_res = [self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1,3])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -69,8 +73,8 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "EmptyLinesAtStart.brs"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ["WARNING: Cannot have more than 1 consecutive empty lines. Line number: 2",
-                   "WARNING: Cannot have more than 1 consecutive empty lines. Line number: 3"]
+        exp_res = [self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1,2]),
+                   self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1,3])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -81,7 +85,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "EmptyLinesInMiddle.brs"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ["WARNING: Cannot have more than 1 consecutive empty lines. Line number: 4"]
+        exp_res = [self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1,4])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -92,7 +96,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "CommentNotEmptyLines.brs"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ['WARNING: Comments must be TODOs and must follow convention. Line number: 2']
+        exp_res = [self.error.get(ErrConst.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [2])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -103,7 +107,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "MultipleTokensAndEmptyLines.brs"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ["WARNING: Cannot have more than 1 consecutive empty lines. Line number: 3"]
+        exp_res = [self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1,3])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -125,7 +129,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "OnlyEmptyLines.brs"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = ["WARNING: Cannot have more than 2 consecutive empty lines. Line number: 3"]
+        exp_res = [self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [2,3])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
