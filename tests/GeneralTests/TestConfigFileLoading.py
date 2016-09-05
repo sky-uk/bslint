@@ -26,7 +26,7 @@ class TestConfigFileLoading(unittest.TestCase):
             src.read_json(config_file)
 
     def testLoadConfigFileCheckRead(self):
-        exp_res = "Read styling config JSON correctly."
+        exp_res = ""
         out = StringIO()
         src.load_config_file(out=out)
         result = out.getvalue().strip()
