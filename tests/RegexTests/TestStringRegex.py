@@ -1,6 +1,5 @@
 import sys
 import unittest
-
 import Constants as const
 import src
 
@@ -11,29 +10,31 @@ class TestStringRegex(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        cls.regex_handler = src.RegexHandler()
         if sys.argv[0].endswith('nosetests'):
-            cls.string_file = src.main("./resources/BasicStringAssignment.txt")
-            cls.multi_line_file = src.main("./resources/MultilineAssignment.txt")
+            cls.string_file = src.main("./resources/LexingTestFiles/BasicStringAssignment.txt")
+            cls.multi_line_file = src.main("./resources/StylingTestFiles/MultilineAssignment.txt")
         else:
-            cls.string_file = src.main("../resources/BasicStringAssignment.txt")
-            cls.multi_line_file = src.main("../resources/MultilineAssignment.txt")
+            cls.string_file = src.main("../resources/LexingTestFiles/BasicStringAssignment.txt")
+            cls.multi_line_file = src.main("../resources/StylingTestFiles/MultilineAssignment.txt")
 
     def setUp(self):
-        config = src.load_config_file()
+        config = src.load_config_file(default='test-config.json')
         self.lexer = src.Lexer(config)
 
     def testString(self):
         test_string = '"test123ID"'
-        result, regex_type = self.lexer.regex_handler(test_string)
-        self.assertEqual(test_string, result.group())
-        self.assertEqual(regex_type, const.STRING)
+        result = self.regex_handler.find_match(test_string)
+        self.assertEqual(result["match"].group(), test_string)
+        self.assertEqual(result["token_type"], const.STRING)
 
     def testUnclosedQuotes(self):
         test_string = '"test123ID\n'
         exp_result = "NO MATCH FOUND"
         with self.assertRaises(ValueError):
-            result = self.lexer.regex_handler(test_string)
-            self.assertEqual(exp_result, result)
+            result = self.regex_handler.find_match(test_string)
+            self.assertEqual(result["match"].group(), test_string)
+            self.assertEqual(result["token_type"], const.STRING)
 
     def testVariableAssignmentString(self):
         exp_result = [('string', const.ID, 1), ('=', const.OPERATOR, 1), ("words", const.STRING, 1)]
@@ -43,9 +44,9 @@ class TestStringRegex(unittest.TestCase):
     def testDoubleQuoteString(self):
         test_string = '""""'
         exp_result = '""'
-        result, regex_type = self.lexer.regex_handler(test_string)
-        self.assertEqual(test_string, result.group())
-        self.assertEqual(regex_type, const.STRING)
+        result = self.regex_handler.find_match(test_string)
+        self.assertEqual(result["match"].group(1), exp_result)
+        self.assertEqual(result["token_type"], const.STRING)
 
     def testMultilineAssignment(self):
         exp_result = [('string', const.ID, 1), ('=', const.OPERATOR, 1), ("words", const.STRING, 1),

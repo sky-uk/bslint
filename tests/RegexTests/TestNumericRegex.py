@@ -1,5 +1,4 @@
 import unittest
-
 import Constants as const
 import src
 
@@ -8,20 +7,21 @@ class TestNumericRegex(unittest.TestCase):
     TOKENS = 'Tokens'
 
     def setUp(self):
-        config = src.load_config_file()
+        config = src.load_config_file(default='test-config.json')
         self.lexer = src.Lexer(config)
+        self.regex_handler = src.RegexHandler()
 
     def testInteger(self):
         identifier = "1234"
-        result, regex_type = self.lexer.regex_handler(identifier)
-        self.assertEqual(identifier, result.group())
-        self.assertEqual(regex_type, const.NUMERIC)
+        result = self.regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.NUMERIC)
 
     def testDecimal(self):
         identifier = "123.456"
-        result, regex_type = self.lexer.regex_handler(identifier)
-        self.assertEqual(identifier, result.group())
-        self.assertEqual(regex_type, const.NUMERIC)
+        result = self.regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.NUMERIC)
 
     def testIntegerWithTrailingPoints(self):
         identifier = "123."

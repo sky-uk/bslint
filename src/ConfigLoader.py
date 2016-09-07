@@ -2,15 +2,13 @@ import json
 import sys
 
 
-def load_config_file(user_filepath=None,out=sys.stdout):
+def load_config_file(user='user-config.json', default='default-config.json', out=sys.stdout):
     if sys.argv[0].endswith('nosetests') or sys.argv[0] == 'Main.py':
-        if not user_filepath:
-            user_filepath = "./resources/config/user-config.json"
-        default_filepath = "./resources/config/default-config.json"
+        user_filepath = "./resources/config/" + user
+        default_filepath = "./resources/config/" + default
     else:
-        if not user_filepath:
-            user_filepath = "../resources/config/user-config.json"
-        default_filepath = "../resources/config/default-config.json"
+        user_filepath = "../resources/config/" + user
+        default_filepath = "../resources/config/" + default
 
     try:
         default_json = read_json(default_filepath)

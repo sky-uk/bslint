@@ -10,9 +10,9 @@ class TestLexSkeletonMain(unittest.TestCase):
     def setUpClass(cls):
         cls.error = Err.ErrorMessageHandler()
         if sys.argv[0].endswith('nosetests'):
-            cls.filepath_prefix = "./resources/"
+            cls.filepath_prefix = "./resources/LexingTestFiles/"
         else:
-            cls.filepath_prefix = "../resources/"
+            cls.filepath_prefix = "../resources/LexingTestFiles/"
 
     def setUp(self):
         config = src.load_config_file()

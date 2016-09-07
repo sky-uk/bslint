@@ -1,0 +1,7 @@
+{
+  // Variables correctly spelt - checked with PyEnchant.
+  "spell_check": {
+    "active": true,
+    "params": {}
+  }
+}

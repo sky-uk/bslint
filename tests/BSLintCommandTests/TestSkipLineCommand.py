@@ -13,10 +13,6 @@ class TestSkipLineCommand(unittest.TestCase):
     def setUpClass(cls):
         cls.error = Err.ErrorMessageHandler()
         cls.indentCheck = src.CheckIndentationCommand()
-        if sys.argv[0].endswith('nosetests'):
-            cls.filepath_prefix = "./resources/"
-        else:
-            cls.filepath_prefix = "../resources/"
 
     def testSkipLineCommandSkipTypo(self):
         config = src.load_config_file()
@@ -40,7 +36,7 @@ class TestSkipLineCommand(unittest.TestCase):
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testSkipLineCommandInactive(self):
-        config = src.load_config_file(self.filepath_prefix + "config/inactive-skip-line-config.json")
+        config = src.load_config_file("BSLintCommands/inactive-skip-line-config.json")
         src.lexer = src.Lexer(config)
         exp_result = [self.error.get(ErrConst.TYPO_IN_CODE, [2])]
         result = src.lexer.lex("'BSLint_skip_line \nxgygu = 22\ny = 4")
