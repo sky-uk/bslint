@@ -38,8 +38,8 @@ class Lexer:
                 self.token_type = result["token_type"]
                 if not result["indentation_level"] == const.NO_INDENTATION:
                     self.indentation_level = result["indentation_level"]
-                
-                self.line_length += len(self.match.group())
+
+                self.current_char_index += len(self.match.group())
                 tokens = self.match_handler(tokens)
 
             except ValueError:
@@ -69,7 +69,7 @@ class Lexer:
         return last_line
 
     def match_handler(self, tokens):
-        self.current_char_index += len(self.match.group())
+        self.line_length += len(self.match.group())
         if self.style_checking_is_active():
             self.apply_styling(self.get_last_line())
         if self.token_type == const.NEW_LINE:
