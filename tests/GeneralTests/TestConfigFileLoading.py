@@ -9,9 +9,9 @@ class TestConfigFileLoading(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         if sys.argv[0].endswith('nosetests'):
-            cls.filepath_prefix = "./resources/config/"
+            cls.filepath_prefix = "./src/config/"
         else:
-            cls.filepath_prefix = "../resources/config/"
+            cls.filepath_prefix = "../src/config/"
 
     def testReadJsonCorrectly(self):
         config_file = self.filepath_prefix + "default-config.json"

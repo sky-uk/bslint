@@ -1,6 +1,6 @@
 import unittest
 import src
-import Constants as const
+import src.Constants as const
 
 
 class TestSkipLineRegex(unittest.TestCase):

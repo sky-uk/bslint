@@ -1,4 +1,11 @@
 .idea
 __pycache__
-*.pyc
+
 .DS_Store
+
+# Build files
+build
+dist
+bslint.egg-info
+
+*.pyc
