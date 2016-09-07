@@ -1,5 +1,4 @@
 import re
-import src.ErrorMessagesBuilder.ErrorMessageHandler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
 import Constants as const
 
@@ -19,15 +18,13 @@ class CheckIndentationCommand(object):
 
     @staticmethod
     def _handle_warnings(params):
-        error = Err.ErrorMessageHandler()
         if re.search(r"\S", params["characters"]):
             if params["only_tab_indents"]:
                 if not re.match("\t{" + str(params["current_indentation_level"]) + "}\S", params["characters"]):
-                    return error.get(ErrConst.TAB_AND_SPACES, [str(params["line_number"])])
+                    return {"error_key": ErrConst.TAB_AND_SPACES, "error_params": []}
             else:
                 if not re.match("\s{" + str(
                                 params["tab_size"] *
                                 params["current_indentation_level"]) + "}\S",
                                 params["characters"]):
-                    return error.get(ErrConst.TAB_INDENTATION_ERROR,
-                                     [params["tab_size"], str(params["line_number"])])
+                    return {"error_key": ErrConst.TAB_INDENTATION_ERROR, "error_params": [params["tab_size"]]}

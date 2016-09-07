@@ -18,15 +18,13 @@ class TestSpacesAroundOperators(unittest.TestCase):
 
     def testCorrectSpaceBefore(self):
         exp_result = None
-        result = self.spacesAroundOperatorsCheck.execute({"line_number": 1,
-                                                          "characters": "a = 1",
-                                                          "spaces_around_operators": 1 })
+        result = self.spacesAroundOperatorsCheck.execute({"characters": "a = 1",
+                                                          "spaces_around_operators": 1})
         self.assertEqual(result, exp_result)
 
     def testIncorrectSpaceBefore(self):
-        exp_result = self.error.get(ErrConst.NO_SPACE_AROUND_OPERATORS, [1, 1])
-        result = self.spacesAroundOperatorsCheck.execute({"line_number": 1,
-                                                          "characters": "a= 1",
+        exp_result = {"error_key": ErrConst.NO_SPACE_AROUND_OPERATORS, "error_params": [1]}
+        result = self.spacesAroundOperatorsCheck.execute({"characters": "a= 1",
                                                           "spaces_around_operators": 1})
         self.assertEqual(result, exp_result)
 

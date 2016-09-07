@@ -23,7 +23,6 @@ class TestIndentation(unittest.TestCase):
         config = src.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
         exp_result = None
         result = self.indentCheck.execute({"current_indentation_level": 0,
-                                           "line_number": 1,
                                            "characters": "var i = 3",
                                            "indentation_level": 0, **config['check_indentation']['params']})
         self.assertEqual(result[0], exp_result)
@@ -32,7 +31,6 @@ class TestIndentation(unittest.TestCase):
         config = src.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
         exp_result = None
         result = self.indentCheck.execute({"current_indentation_level": 1,
-                                           "line_number": 1,
                                            "characters": "    var i = 3",
                                            "indentation_level": 0, **config['check_indentation']['params']})
         self.assertEqual(result[0], exp_result)
@@ -41,7 +39,6 @@ class TestIndentation(unittest.TestCase):
         config = src.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
         file_name = self.filepath_prefix + "BasicIndentation.txt"
         file = src.main(file_name)
-        self.assertNotEqual(file, "")
         exp_result = [self.error.get(ErrConst.TAB_INDENTATION_ERROR, [4, 2])]
         self.lexer = src.Lexer(config)
         result = self.lexer.lex(file)
@@ -51,7 +48,6 @@ class TestIndentation(unittest.TestCase):
         config = src.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
         file_name = self.filepath_prefix + "AdvancedIndentation.txt"
         file = src.main(file_name)
-        self.assertNotEqual(file, "")
         exp_result = []
         self.lexer = src.Lexer(config)
         result = self.lexer.lex(file)
@@ -61,7 +57,6 @@ class TestIndentation(unittest.TestCase):
         config = src.load_config_file(user="Indentation/tab-only-indentation.json", default='test-config.json')
         file_name = self.filepath_prefix + "IndentWithTabsOnly.txt"
         file = src.main(file_name)
-        self.assertNotEqual(file, "")
         exp_result = [self.error.get(ErrConst.TAB_AND_SPACES, [10])]
         self.lexer = src.Lexer(config)
         result = self.lexer.lex(file)
