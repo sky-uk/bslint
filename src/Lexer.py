@@ -22,6 +22,7 @@ class Lexer:
         self.line_not_to_style_check = -1
         self.skip_styling_on_file = False
         self.characters = ""
+        self.error_message_handler = Err.ErrorMessageHandler()
         self.spaces_around_operators_config = config['spaces_around_operators']["params"]['spaces_around_operators']
         self.current_char_index = 0
         self.match = None
@@ -104,26 +105,23 @@ class Lexer:
             self.check_trace_free()
 
     def check_trace_free(self):
-        is_trace_free = self.check_style_rule('check_trace_free', {"line_number": self.line_number})
+        is_trace_free = self.check_style_rule('check_trace_free')
         self.warning_filter(is_trace_free)
 
     def check_spelling(self):
         is_spelt_correctly = self.check_style_rule('spell_check',
-                                                   {'token': self.match.group(), "line_number": self.line_number,
-                                                    "type": self.token_type})
+                                                   {'token': self.match.group(), "type": self.token_type})
         self.warning_filter(is_spelt_correctly)
 
     def check_operator_spacing(self):
         before_index = self.current_char_index - self.spaces_around_operators_config - 2
         after_index = self.current_char_index + self.spaces_around_operators_config + 1
         characters_around_operator = self.characters[before_index:after_index]
-        correct_spacing = self.check_style_rule('spaces_around_operators', {"line_number": self.line_number,
-                                                                            "characters": characters_around_operator})
+        correct_spacing = self.check_style_rule('spaces_around_operators', {"characters": characters_around_operator})
         self.warning_filter(correct_spacing)
 
     def check_comment_styling(self):
-        is_correct_comment = self.check_style_rule('check_comment', {"token": self.match.group(),
-                                                                     "line_number": self.line_number})
+        is_correct_comment = self.check_style_rule('check_comment', {"token": self.match.group()})
         self.warning_filter(is_correct_comment)
         self.check_spelling()
 
@@ -131,12 +129,10 @@ class Lexer:
         self.get_last_line()
         self.count_consecutive_new_lines()
         is_correct_line_length = self.check_style_rule('max_line_length',
-                                                       {"line_length": self.line_length,
-                                                        "line_number": self.line_number})
+                                                       {"line_length": self.line_length})
         self.warning_filter(is_correct_line_length)
         is_consecutive_empty_lines = self.check_style_rule('consecutive_empty_lines',
-                                                           {"empty_lines": self.consecutive_empty_lines,
-                                                            "line_number": self.line_number})
+                                                           {"empty_lines": self.consecutive_empty_lines})
         self.warning_filter(is_consecutive_empty_lines)
         self.apply_indentation_styling()
         self.line_length = 0
@@ -144,7 +140,6 @@ class Lexer:
     def apply_indentation_styling(self):
         is_correct_indentation = self.check_style_rule('check_indentation',
                                                        {"current_indentation_level": self.current_indentation_level,
-                                                        "line_number": self.line_number,
                                                         "characters": self.last_read_line,
                                                         "indentation_level": self.indentation_level})
         if is_correct_indentation:
@@ -183,4 +178,7 @@ class Lexer:
         return self.styling_rule_handler.apply(command, params)
 
     def warning_filter(self, result):
-        self.warnings += filter(None, [result])
+        if result is not None:
+            result["error_params"].append(str(self.line_number))
+            warning = self.error_message_handler.get(result["error_key"], result["error_params"])
+            self.warnings += [warning]

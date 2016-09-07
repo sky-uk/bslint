@@ -1,7 +1,6 @@
 import unittest
 import src
 import sys
-import src.ErrorMessagesBuilder.ErrorMessageHandler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
 
 
@@ -36,10 +35,7 @@ class TestEncodingCheck(unittest.TestCase):
         config = src.load_config_file(user="FileEncoding/ASCII-encoding-config.json")
         file_path = self.tests_filepath_prefix + "NON-ASCII-chars.brs"
         result = self.encodingCheck.execute({"file_path": file_path, **config['check_file_encoding']['params']})
-        error = Err.ErrorMessageHandler()
-        exp_result = error.get(ErrConst.FILE_ENCODING,
-                               [config['check_file_encoding']['params']["source_file_encoding"]])
-        self.assertEqual(result, exp_result)
+        self.assertEqual(result['error_key'], ErrConst.FILE_ENCODING)
 
     def testUTF8Chars(self):
         config = src.load_config_file(user="FileEncoding/UTF8-encoding-config.json")

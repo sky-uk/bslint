@@ -1,6 +1,5 @@
 import enchant
 import Constants as const
-import src.ErrorMessagesBuilder.ErrorMessageHandler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
 
 
@@ -8,7 +7,6 @@ class SpellCheckCommand(object):
 
     @staticmethod
     def execute(params):
-        error = Err.ErrorMessageHandler()
         d = enchant.Dict("en_UK")
         words = []
         if params['type'] == const.COMMENT:
@@ -19,8 +17,7 @@ class SpellCheckCommand(object):
         for word in words:
             spelt_correct = d.check(word)
             if not spelt_correct:
-                return error.get(ErrConst.TYPO_IN_CODE, [str(params["line_number"])])
-        return None
+                return {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
 
     @staticmethod
     def _parse_words(identifier_str):

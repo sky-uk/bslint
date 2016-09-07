@@ -78,19 +78,19 @@ class TestSpellCheck(unittest.TestCase):
 
     def testStartUCaseIncorrect(self):
         test_string = "Badsfddsf"
-        exp_result = self.error.get(ErrConst.TYPO_IN_CODE, [1])
+        exp_result = {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
         result = self.spellCheck.execute({self.TOKEN: test_string, self.LINE_NUMBER: 1, self.TYPE: const.ID})
         self.assertEqual(result, exp_result)
 
     def testIncorrectSpelling(self):
         test_string = "sfgsdrgser"
-        exp_result = self.error.get(ErrConst.TYPO_IN_CODE, [1])
+        exp_result = {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
         result = self.spellCheck.execute({self.TOKEN : test_string, self.LINE_NUMBER: 1, self.TYPE: const.ID})
         self.assertEqual(result, exp_result)
 
     def testIncorrectCamelCase(self):
         test_string = "badGrgdrfdfg"
-        exp_result = self.error.get(ErrConst.TYPO_IN_CODE, [1])
+        exp_result = {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
         result = self.spellCheck.execute({self.TOKEN : test_string, self.LINE_NUMBER: 1, self.TYPE: const.ID})
         self.assertEqual(result, exp_result)
 
