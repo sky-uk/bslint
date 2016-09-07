@@ -20,12 +20,12 @@ class TestSpellCheck(unittest.TestCase):
         cls.spellCheck = src.SpellCheckCommand()
         cls.error = Err.ErrorMessageHandler()
         if sys.argv[0].endswith('nosetests'):
-            cls.filepath_prefix = "./resources/"
+            cls.filepath_prefix = "./resources/StylingTestFiles/"
         else:
-            cls.filepath_prefix = "../resources/"
+            cls.filepath_prefix = "../resources/StylingTestFiles/"
 
     def setUp(self):
-        config = src.load_config_file()
+        config = src.load_config_file(user='SpellCheck/spellcheck-config.json', default='test-config.json')
         self.lexer = src.Lexer(config)
 
     def testSingleLCase(self):

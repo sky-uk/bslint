@@ -26,14 +26,14 @@ class TestEncodingCheck(unittest.TestCase):
             cls.tests_filepath_prefix = "../resources/EncodingTestFiles/"
 
     def testASCIIChars(self):
-        config = src.load_config_file(self.filepath_prefix + "config/ASCII-encoding.json")
+        config = src.load_config_file(user="FileEncoding/ASCII-encoding-config.json")
         file_path = self.tests_filepath_prefix + "ASCII-chars.brs"
         result = self.encodingCheck.execute({"file_path": file_path, **config['check_file_encoding']['params']})
         exp_result = None
         self.assertEqual(result, exp_result)
 
     def testNonASCIIChars(self):
-        config = src.load_config_file(self.filepath_prefix + "config/ASCII-encoding.json")
+        config = src.load_config_file(user="FileEncoding/ASCII-encoding-config.json")
         file_path = self.tests_filepath_prefix + "NON-ASCII-chars.brs"
         result = self.encodingCheck.execute({"file_path": file_path, **config['check_file_encoding']['params']})
         error = Err.ErrorMessageHandler()
@@ -42,7 +42,7 @@ class TestEncodingCheck(unittest.TestCase):
         self.assertEqual(result, exp_result)
 
     def testUTF8Chars(self):
-        config = src.load_config_file(self.filepath_prefix + "config/UTF8-encoding.json")
+        config = src.load_config_file(user="FileEncoding/UTF8-encoding-config.json")
         file_path = self.tests_filepath_prefix + "NON-ASCII-chars.brs"
         result = self.encodingCheck.execute({"file_path": file_path, **config['check_file_encoding']['params']})
         exp_result = None

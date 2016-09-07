@@ -14,11 +14,7 @@ class TestSpacesAroundOperators(unittest.TestCase):
     def setUpClass(cls):
         cls.error = Err.ErrorMessageHandler()
         cls.spacesAroundOperatorsCheck = src.SpacesAroundOperatorsCommand()
-        if sys.argv[0].endswith('nosetests'):
-            cls.filepath_prefix = "./resources/"
-        else:
-            cls.filepath_prefix = "../resources/"
-        cls.config = src.load_config_file(cls.filepath_prefix + "config/spaces-around-operators-config.json")
+        cls.config = src.load_config_file(user="SpacesAroundOperators/spaces-around-operators-config.json", default="test-config.json")
 
     def testCorrectSpaceBefore(self):
         exp_result = None
@@ -59,7 +55,7 @@ class TestSpacesAroundOperators(unittest.TestCase):
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testManySpacesAroundOperatorWithConfig(self):
-        config = src.load_config_file(self.filepath_prefix + "config/3-spaces-around-operators-config.json")
+        config = src.load_config_file("SpacesAroundOperators/3-spaces-around-operators-config.json")
         exp_result = [self.error.get(ErrConst.NO_SPACE_AROUND_OPERATORS, [3, 1])]
         self.lexer = src.Lexer(config)
         result = self.lexer.lex('this   =        "words"')

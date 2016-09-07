@@ -1,6 +1,5 @@
 import re
 import Constants as const
-import src.regexs as regexs
 import src
 import src.ErrorMessagesBuilder.ErrorMessageHandler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
@@ -8,6 +7,7 @@ import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
 
 class Lexer:
     def __init__(self, config):
+        self.regex_handler = src.RegexHandler()
         self.error = Err.ErrorMessageHandler()
         self.line_number = 1
         self.warnings = []
@@ -16,161 +16,181 @@ class Lexer:
         self.current_indentation_level = 0
         self.consecutive_empty_lines = 0
         self.is_empty_line = True
-        self.bslint_command_executor = src.BSLintCommandHandler(config)
-        self.skip_styling = False
+        self.styling_rule_handler = src.StylingRulesHandler(config)
+        self.skip_styling_on_line = False
         self.skip_line_command_number = -1
-        self.skip_file_styling = False
-        self.all_characters = ""
+        self.skip_styling_on_file = False
+        self.characters = ""
         self.spaces_around_operators_config = config['spaces_around_operators']["params"]['spaces_around_operators']
-        self.i = 0
+        self.current_char_index = 0
+        self.match = None
+        self.token_type = None
 
     def lex(self, characters):
-
-        self.all_characters = characters
+        self.characters = characters
         tokens = []
         errors = []
-        self.skip_file_styling = False
+        self.skip_styling_on_file = False
 
-        while self.i < len(characters):
+        while self.current_char_index < len(self.characters):
             try:
-                match, token_type = self.regex_handler(characters[self.i:])
-                self.i += len(match.group())
-                last_line = re.findall("(?<=^).*", characters[:self.i], re.MULTILINE)
-                if len(last_line) == 1:
-                    last_line = last_line[-1]
-                else:
-                    last_line = last_line[-2]
-                tokens = self.match_handler(match, token_type, tokens, last_line)
+                result = self.regex_handler.find_match(self.characters[self.current_char_index:])
+                self.match = result["match"]
+                self.token_type = result["token_type"]
+                if not result["indentation_level"] == const.NO_INDENTATION:
+                    self.indentation_level = result["indentation_level"]
+
+                self.current_char_index += len(self.match.group())
+                tokens = self.match_handler(tokens, self.get_last_line())
 
             except ValueError:
-                end_of_line = re.match(r"(.*)\n", characters[self.i:])
+                end_of_line = re.match(r"(.*)\n", self.characters[self.current_char_index:])
                 errors.append(self.error.get(ErrConst.UNMATCHED_QUOTATION_MARK,
-                                                        [(end_of_line.group()[:-2]), self.line_number]))
+                                             [(end_of_line.group()[:const.PENULTIMATE_CHARACTER]), self.line_number]))
                 self.line_number += 1
-                self.i += len(end_of_line.group())
-        if not self.skip_styling:
-            self.warning_filter(self.execute_bslint_command('max_line_length',
-                                                            {"line_length": self.line_length,
-                                                             "line_number": self.line_number}))
+                self.current_char_index += len(end_of_line.group())
+        # TODO check for end of file
+        if not self.skip_styling_on_line:
+            is_correct_line_length = self.check_style_rule('max_line_length',
+                                                           {"line_length": self.line_length,
+                                                            "line_number": self.line_number})
+            self.warning_filter(is_correct_line_length)
 
         if len(errors) is not 0:
             return {"Status": "Error", "Tokens": errors, "Warnings": self.warnings}
         else:
             return {"Status": "Success", "Tokens": tokens, "Warnings": self.warnings}
 
-    def match_handler(self, match, token_type, tokens, characters):
-        self.line_length += len(match.group())
+    def get_last_line(self):
+        last_line = re.findall("(?<=^).*", self.characters[:self.current_char_index], re.MULTILINE)
+        if len(last_line) == 1:
+            last_line = last_line[-1]
+        else:
+            last_line = last_line[-2]
+        return last_line
 
-        if token_type == const.BSLINT_COMMAND:
-            command_type = match.group('command')
-            if command_type == "skip_line":
-                self.skip_styling = self.execute_bslint_command(command_type)
-                self.skip_line_command_number = self.line_number
-            elif command_type == "skip_file":
-                self.skip_file_styling = self.execute_bslint_command(command_type)
+    def match_handler(self, tokens, last_line):
+        self.line_length += len(self.match.group())
 
-        if self.skip_styling and self.skip_line_command_number + 2 == self.line_number:
-            self.skip_styling = False
-            self.skip_line_command_number = -1
+        if self.token_type == const.BSLINT_COMMAND:
+            self.apply_bslint_command()
 
-        if not self.skip_styling and not self.skip_file_styling:
-            self.apply_styling(match, token_type, characters)
+        if self.skip_styling_on_line and self.skip_line_command_number + const.LINE_SKIPPED == self.line_number:
+            self.skip_styling_on_line = False
 
-        if token_type == const.NEW_LINE:
+        if not self.skip_styling_on_line and not self.skip_styling_on_file:
+            self.apply_styling(last_line)
+
+        if self.token_type == const.NEW_LINE:
             self.line_number += 1
 
-        elif token_type is not None:
-            if token_type != const.BSLINT_COMMAND and token_type != const.COMMENT:
-                token_tuple = self.build_token(match, token_type)
+        elif self.token_type is not None:
+            if self.token_type != const.BSLINT_COMMAND and self.token_type != const.COMMENT:
+                token_tuple = self.build_token()
                 tokens.append(token_tuple)
         return tokens
 
-    def apply_styling(self, match, token_type, characters):
-        if token_type is const.NEW_LINE:
-            if self.is_empty_line is True:
-                self.consecutive_empty_lines += 1
-            else:
-                self.is_empty_line = True
-                self.consecutive_empty_lines = 0
-            self.warning_filter(
-                self.execute_bslint_command('max_line_length',
-                                            {"line_length": self.line_length, "line_number": self.line_number}))
-            self.line_length = 0
-            result = self.execute_bslint_command('check_indentation',
-                                                 {"current_indentation_level": self.current_indentation_level,
-                                                  "line_number": self.line_number,
-                                                  "characters": characters,
-                                                  "indentation_level": self.indentation_level})
-            self.warning_filter(result[0])
-            self.current_indentation_level = result[1]
-            self.indentation_level = 0
-            self.warning_filter(self.execute_bslint_command('consecutive_empty_lines',
-                                                            {"empty_lines": self.consecutive_empty_lines,
-                                                             "line_number": self.line_number}))
+    def apply_bslint_command(self):
+        command_type = self.match.group('command')
+        if command_type == "skip_line":
+            self.skip_styling_on_line = self.check_style_rule(command_type)
+            self.skip_line_command_number = self.line_number
+        elif command_type == "skip_file":
+            self.skip_styling_on_file = self.check_style_rule(command_type)
 
+    def apply_styling(self, last_line):
+        if self.token_type is const.NEW_LINE:
+            self.count_consecutive_new_lines()
+            self.apply_new_line_styling(last_line)
         else:
-            self.is_empty_line = False
-            if token_type == const.BSLINT_COMMAND:
+            self.apply_common_styling()
 
-                self.execute_bslint_command(match.group('command'))
-            elif token_type == const.COMMENT:
-                self.warning_filter(self.execute_bslint_command('check_comment', {"token": match.group(),
-                                                                                  "line_number": self.line_number}))
-                self.warning_filter(self.execute_bslint_command('spell_check', {"token": match.group(),
-                                                                                "line_number": self.line_number,
-                                                                                "type": token_type}))
-            elif token_type == const.OPERATOR:
-                before_index = self.i - self.spaces_around_operators_config
-                after_index = self.i + self.spaces_around_operators_config
+    def apply_common_styling(self):
+        self.is_empty_line = False
+        if self.token_type == const.BSLINT_COMMAND:
+            self.check_style_rule(self.match.group('command'))
+        elif self.token_type == const.COMMENT:
+            self.check_comment_styling()
+        elif self.token_type == const.OPERATOR:
+            self.check_operator_spacing()
+        elif self.token_type == const.ID:
+            self.check_spelling()
+        elif self.token_type == const.PRINT_KEYWORD:
+            self.check_trace_free()
 
-                characters_around_operator = self.all_characters[before_index - 2:after_index + 1]
-                self.warning_filter(
-                    self.execute_bslint_command('spaces_around_operators', {"line_number": self.line_number,
-                                                                            "characters": characters_around_operator}))
-            elif token_type == const.ID:
-                self.warning_filter(
-                    self.execute_bslint_command('spell_check',
-                                                {'token': match.group(), "line_number": self.line_number,
-                                                 "type": token_type}))
-            elif token_type == const.PRINT_KEYWORD:
-                self.warning_filter(
-                    self.execute_bslint_command('check_trace_free', {"line_number": self.line_number}))
-    def regex_handler(self, characters):
-        for regex in regexs.List:
-            match = re.match(regex[0], characters, re.IGNORECASE)
-            if match:
-                break
-        if not match:
-            raise ValueError('NO MATCH FOUND')
-        if not regex[2] == const.NO_INDENTATION:
-            self.indentation_level = regex[2]
-        return match, regex[1]
+    def check_trace_free(self):
+        is_trace_free = self.check_style_rule('check_trace_free', {"line_number": self.line_number})
+        self.warning_filter(is_trace_free)
 
-    def build_token(self, match, regex_type):
-        group = match.group()
-        if regex_type == const.STRING:
-            tuple_token = self.build_string_tuple(match, regex_type)
-        elif regex_type == const.ID:
-            tuple_token = self.build_id_tuple(match, regex_type)
+    def check_spelling(self):
+        is_spelt_correctly = self.check_style_rule('spell_check',
+                                                   {'token': self.match.group(), "line_number": self.line_number,
+                                                    "type": self.token_type})
+        self.warning_filter(is_spelt_correctly)
+
+    def check_operator_spacing(self):
+        before_index = self.current_char_index - self.spaces_around_operators_config - 2
+        after_index = self.current_char_index + self.spaces_around_operators_config + 1
+        characters_around_operator = self.characters[before_index:after_index]
+        correct_spacing = self.check_style_rule('spaces_around_operators', {"line_number": self.line_number,
+                                                                            "characters": characters_around_operator})
+        self.warning_filter(correct_spacing)
+
+    def check_comment_styling(self):
+        is_correct_comment = self.check_style_rule('check_comment', {"token": self.match.group(),
+                                                                     "line_number": self.line_number})
+        self.warning_filter(is_correct_comment)
+        self.check_spelling()
+
+    def apply_new_line_styling(self, characters):
+        is_correct_line_length = self.check_style_rule('max_line_length',
+                                                       {"line_length": self.line_length,
+                                                        "line_number": self.line_number})
+        self.warning_filter(is_correct_line_length)
+        self.line_length = 0
+        is_correct_indentation = self.check_style_rule('check_indentation',
+                                                       {"current_indentation_level": self.current_indentation_level,
+                                                        "line_number": self.line_number,
+                                                        "characters": characters,
+                                                        "indentation_level": self.indentation_level})
+        if is_correct_indentation:
+            self.warning_filter(is_correct_indentation[0])
+            self.current_indentation_level = is_correct_indentation[1]
+        self.indentation_level = 0
+        is_consecutive_empty_lines = self.check_style_rule('consecutive_empty_lines',
+                                                           {"empty_lines": self.consecutive_empty_lines,
+                                                            "line_number": self.line_number})
+        self.warning_filter(is_consecutive_empty_lines)
+
+    def count_consecutive_new_lines(self):
+        if self.is_empty_line is True:
+            self.consecutive_empty_lines += 1
         else:
-            tuple_token = (group, regex_type)
+            self.is_empty_line = True
+            self.consecutive_empty_lines = 0
+
+    def build_token(self):
+        if self.token_type == const.STRING:
+            tuple_token = self.build_string_tuple()
+        elif self.token_type == const.ID:
+            tuple_token = self.build_id_tuple()
+        else:
+            tuple_token = (self.match.group(), self.token_type)
         return tuple_token + (self.line_number,)
 
-    @staticmethod
-    def build_string_tuple(match, regex_type):
-        group = match.group()
-        return group[1:-1], regex_type
+    def build_string_tuple(self):
+        group = self.match.group()
+        return group[1:-1], self.token_type
 
-    @staticmethod
-    def build_id_tuple(match, regex_type):
-        group = match.group('value')
-        tuple_token = (group, regex_type)
-        if match.group('type') is not '':
-            tuple_token = (group, regex_type, match.group('type'))
+    def build_id_tuple(self):
+        group = self.match.group('value')
+        tuple_token = (group, self.token_type)
+        if self.match.group('type') is not '':
+            tuple_token = (group, self.token_type, self.match.group('type'))
         return tuple_token
 
-    def execute_bslint_command(self, command, params={}):
-        return self.bslint_command_executor.execute_bslint_command(command, params)
+    def check_style_rule(self, command, params={}):
+        return self.styling_rule_handler.apply(command, params)
 
     def warning_filter(self, result):
         self.warnings += filter(None, [result])

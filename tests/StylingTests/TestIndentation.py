@@ -15,12 +15,12 @@ class TestIndentation(unittest.TestCase):
         cls.error = Err.ErrorMessageHandler()
         cls.indentCheck = src.CheckIndentationCommand()
         if sys.argv[0].endswith('nosetests'):
-            cls.filepath_prefix = "./resources/"
+            cls.filepath_prefix = "./resources/StylingTestFiles/"
         else:
-            cls.filepath_prefix = "../resources/"
+            cls.filepath_prefix = "../resources/StylingTestFiles/"
 
     def testNoIndentation(self):
-        config = src.load_config_file()
+        config = src.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
         exp_result = None
         result = self.indentCheck.execute({"current_indentation_level": 0,
                                            "line_number": 1,
@@ -29,7 +29,7 @@ class TestIndentation(unittest.TestCase):
         self.assertEqual(result[0], exp_result)
 
     def testSingleIndentation(self):
-        config = src.load_config_file()
+        config = src.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
         exp_result = None
         result = self.indentCheck.execute({"current_indentation_level": 1,
                                            "line_number": 1,
@@ -38,7 +38,7 @@ class TestIndentation(unittest.TestCase):
         self.assertEqual(result[0], exp_result)
 
     def testIndentationError(self):
-        config = src.load_config_file()
+        config = src.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
         file_name = self.filepath_prefix + "BasicIndentation.txt"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
@@ -48,7 +48,7 @@ class TestIndentation(unittest.TestCase):
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testAdvancedIndentationSuccess(self):
-        config = src.load_config_file(self.filepath_prefix + "config/no-spell-check-config.json")
+        config = src.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
         file_name = self.filepath_prefix + "AdvancedIndentation.txt"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
@@ -58,7 +58,7 @@ class TestIndentation(unittest.TestCase):
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testIndentWithOnlyTabsWithError(self):
-        config = src.load_config_file(self.filepath_prefix + "config/no-spell-check-only-tab-indent-config.json")
+        config = src.load_config_file(user="Indentation/tab-only-indentation.json", default='test-config.json')
         file_name = self.filepath_prefix + "IndentWithTabsOnly.txt"
         file = src.main(file_name)
         self.assertNotEqual(file, "")

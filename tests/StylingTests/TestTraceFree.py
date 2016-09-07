@@ -14,14 +14,12 @@ class TestTraceFree(unittest.TestCase):
     def setUpClass(cls):
         cls.error = Err.ErrorMessageHandler()
         if sys.argv[0].endswith('nosetests'):
-            cls.filepath_prefix = "./resources/"
             cls.tests_filepath_prefix = "./resources/TraceTestFiles/"
         else:
-            cls.filepath_prefix = "../resources/"
             cls.tests_filepath_prefix = "../resources/TraceTestFiles/"
 
     def testPRINT(self):
-        config = src.load_config_file(self.filepath_prefix + "config/trace-free-config.json")
+        config = src.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "Print.brs"
         file = src.main(file_name)
@@ -32,7 +30,7 @@ class TestTraceFree(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testQuestionMark(self):
-        config = src.load_config_file(self.filepath_prefix + "config/trace-free-config.json")
+        config = src.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "QuestionMark.brs"
         file = src.main(file_name)
@@ -43,7 +41,7 @@ class TestTraceFree(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testPrintAndQuestionMark(self):
-        config = src.load_config_file(self.filepath_prefix + "config/trace-free-config.json")
+        config = src.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "PrintAndQuestionMark.brs"
         file = src.main(file_name)
@@ -55,7 +53,7 @@ class TestTraceFree(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testNoPrintNoQuestionMark(self):
-        config = src.load_config_file(self.filepath_prefix + "config/trace-free-config.json")
+        config = src.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "NoPrintNoQuestionMark.brs"
         file = src.main(file_name)
@@ -66,7 +64,7 @@ class TestTraceFree(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testInactivePrintAndQuestionMark(self):
-        config = src.load_config_file()
+        config = src.load_config_file(default="test-config.json")
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "PrintAndQuestionMark.brs"
         file = src.main(file_name)

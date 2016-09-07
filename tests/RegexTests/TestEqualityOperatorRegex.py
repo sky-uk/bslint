@@ -1,5 +1,4 @@
 import unittest
-
 import Constants as const
 import src
 
@@ -7,89 +6,76 @@ import src
 class TestEqualityOperatorRegex(unittest.TestCase):
 
     def setUp(self):
-        config = src.load_config_file()
-        self.lexer = src.Lexer(config)
+        self.regex_handler = src.RegexHandler()
 
     def testNotEquals(self):
         identifier = "<>"
-        exp_result = ('<>', const.OPERATOR, 1)
-        match, token_type = self.lexer.regex_handler(identifier)
-        result = self.lexer.build_token(match, token_type)
-        self.assertEqual(result, exp_result)
+        result = self.regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.OPERATOR)
 
     def testLessThanOrEqual(self):
         identifier = "<="
-        exp_result = ('<=', const.OPERATOR, 1)
-        match, token_type = self.lexer.regex_handler(identifier)
-        result = self.lexer.build_token(match, token_type)
-        self.assertEqual(result, exp_result)
+        result = self.regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.OPERATOR)
 
     def testLessThanOrEqualSec(self):
         identifier = "=<"
-        exp_result = ('=<', const.OPERATOR, 1)
-        match, token_type = self.lexer.regex_handler(identifier)
-        result = self.lexer.build_token(match, token_type)
-        self.assertEqual(result, exp_result)
+        result = self.regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.OPERATOR)
 
     def testGreaterThanOrEqual(self):
         identifier = ">="
-        exp_result = ('>=', const.OPERATOR, 1)
-        match, token_type = self.lexer.regex_handler(identifier)
-        result = self.lexer.build_token(match, token_type)
-        self.assertEqual(result, exp_result)
+        result = self.regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.OPERATOR)
 
     def testGreaterThanOrEqualSec(self):
         identifier = "=>"
-        exp_result = ('=>', const.OPERATOR, 1)
-        match, token_type = self.lexer.regex_handler(identifier)
-        result = self.lexer.build_token(match, token_type)
-        self.assertEqual(result, exp_result)
+        result = self.regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.OPERATOR)
 
     def testGreaterThan(self):
         identifier = ">"
-        exp_result = ('>', const.OPERATOR, 1)
-        match, token_type = self.lexer.regex_handler(identifier)
-        result = self.lexer.build_token(match, token_type)
-        self.assertEqual(result, exp_result)
+        result = self.regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.OPERATOR)
 
     def testLessThan(self):
         identifier = "<"
-        exp_result = ('<', const.OPERATOR, 1)
-        match, token_type = self.lexer.regex_handler(identifier)
-        result = self.lexer.build_token(match, token_type)
-        self.assertEqual(result, exp_result)
+        result = self.regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.OPERATOR)
 
     def testLessThan(self):
         identifier = "<"
-        exp_result = ('<', const.OPERATOR, 1)
-        match, token_type = self.lexer.regex_handler(identifier)
-        result = self.lexer.build_token(match, token_type)
-        self.assertEqual(result, exp_result)
+        result = self.regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.OPERATOR)
 
     def testMOD(self):
         identifier = "MOD"
-        exp_result = ('MOD', const.KEYWORD, 1)
-        match, token_type = self.lexer.regex_handler(identifier)
-        result = self.lexer.build_token(match, token_type)
-        self.assertEqual(result, exp_result)
+        result = self.regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.KEYWORD)
 
     def testNOT(self):
         identifier = "NOT"
-        exp_result = ('NOT', const.KEYWORD, 1)
-        match, token_type = self.lexer.regex_handler(identifier)
-        result = self.lexer.build_token(match, token_type)
-        self.assertEqual(result, exp_result)
+        result = self.regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.KEYWORD)
 
     def testAND(self):
         identifier = "AND"
-        exp_result = ('AND', const.KEYWORD, 1)
-        match, token_type = self.lexer.regex_handler(identifier)
-        result = self.lexer.build_token(match, token_type)
-        self.assertEqual(result, exp_result)
+        result = self.regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.KEYWORD)
 
     def testOR(self):
         identifier = "OR"
-        exp_result = ('OR', const.KEYWORD, 1)
-        match, token_type = self.lexer.regex_handler(identifier)
-        result = self.lexer.build_token(match, token_type)
-        self.assertEqual(result, exp_result)
+        result = self.regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.KEYWORD)

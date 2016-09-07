@@ -15,12 +15,12 @@ class TestCommentFormat(unittest.TestCase):
     def setUpClass(cls):
         cls.error = Err.ErrorMessageHandler()
         if sys.argv[0].endswith('nosetests'):
-            cls.filepath_prefix = "./resources/"
+            cls.filepath_prefix = "./resources/StylingTestFiles/"
         else:
-            cls.filepath_prefix = "../resources/"
+            cls.filepath_prefix = "../resources/StylingTestFiles/"
 
     def testNoCommentCheck(self):
-        config = src.load_config_file(self.filepath_prefix + "config/no-comment-check-config.json")
+        config = src.load_config_file(default='test-config.json')
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.main(file_name)
@@ -31,7 +31,7 @@ class TestCommentFormat(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testTODOComment(self):
-        config = src.load_config_file(self.filepath_prefix + "config/TODO-comment-config.json")
+        config = src.load_config_file(user="Comments/TODO-comment-config.json", default='test-config.json')
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.main(file_name)
@@ -55,7 +55,7 @@ class TestCommentFormat(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testNoTODOComment(self):
-        config = src.load_config_file(self.filepath_prefix + "config/no-TODO-comment-config.json")
+        config = src.load_config_file(user="Comments/no-TODO-comment-config.json", default='test-config.json')
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.main(file_name)
@@ -67,7 +67,7 @@ class TestCommentFormat(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testNoTODONoComment(self):
-        config = src.load_config_file(self.filepath_prefix + "config/no-TODO-no-comment-config.json")
+        config = src.load_config_file(user="Comments/no-TODO-no-comment-config.json", default='test-config.json')
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.main(file_name)
