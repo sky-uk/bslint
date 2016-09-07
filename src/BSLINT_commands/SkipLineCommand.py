@@ -2,4 +2,4 @@ class SkipLineCommand(object):
 
     @staticmethod
     def execute(params):
-        return True
+        return params["line_number"] + 1
