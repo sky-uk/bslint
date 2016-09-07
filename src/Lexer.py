@@ -26,6 +26,7 @@ class Lexer:
         self.current_char_index = 0
         self.match = None
         self.token_type = None
+        self.last_read_line = ''
 
     def lex(self, characters):
         self.characters = characters
@@ -50,30 +51,20 @@ class Lexer:
                                              [(end_of_line.group()[:const.PENULTIMATE_CHARACTER]), self.line_number]))
                 self.line_number += 1
                 self.current_char_index += len(end_of_line.group())
-        # TODO check for end of file
         if self.style_checking_is_active():
-            is_correct_line_length = self.check_style_rule('max_line_length',
-                                                           {"line_length": self.line_length,
-                                                            "line_number": self.line_number})
-            self.warning_filter(is_correct_line_length)
-
+            self.apply_new_line_styling()
         if len(errors) is not 0:
             return {"Status": "Error", "Tokens": errors, "Warnings": self.warnings}
         else:
             return {"Status": "Success", "Tokens": tokens, "Warnings": self.warnings}
 
     def get_last_line(self):
-        last_line = re.findall("(?<=^).*", self.characters[:self.current_char_index], re.MULTILINE)
-        if len(last_line) == 1:
-            last_line = last_line[-1]
-        else:
-            last_line = last_line[-2]
-        return last_line
+        last_line = re.findall("(?:(?<=^)|(?<=\n))(.*)", self.characters[:self.current_char_index - 1], re.MULTILINE)
+        self.last_read_line = last_line[-1]
 
     def match_handler(self, tokens):
         self.line_length += len(self.match.group())
-        if self.style_checking_is_active():
-            self.apply_styling(self.get_last_line())
+        self.apply_styling()
         if self.token_type == const.NEW_LINE:
             self.line_number += 1
         elif self.token_type == const.BSLINT_COMMAND:
@@ -91,15 +82,12 @@ class Lexer:
         elif command_type == "skip_file":
             self.skip_styling_on_file = self.check_style_rule(command_type)
 
-    def apply_styling(self, last_line):
-        if self.token_type is const.NEW_LINE:
-            self.count_consecutive_new_lines()
-            self.apply_new_line_styling()
-            self.apply_indentation_styling(last_line)
-            self.line_length = 0
-
-        else:
-            self.apply_common_styling()
+    def apply_styling(self):
+        if self.style_checking_is_active():
+            if self.token_type is const.NEW_LINE:
+                self.apply_new_line_styling()
+            else:
+                self.apply_common_styling()
 
     def style_checking_is_active(self):
         return self.line_number != self.line_not_to_style_check and not self.skip_styling_on_file
@@ -140,6 +128,8 @@ class Lexer:
         self.check_spelling()
 
     def apply_new_line_styling(self):
+        self.get_last_line()
+        self.count_consecutive_new_lines()
         is_correct_line_length = self.check_style_rule('max_line_length',
                                                        {"line_length": self.line_length,
                                                         "line_number": self.line_number})
@@ -148,17 +138,20 @@ class Lexer:
                                                            {"empty_lines": self.consecutive_empty_lines,
                                                             "line_number": self.line_number})
         self.warning_filter(is_consecutive_empty_lines)
+        self.apply_indentation_styling()
+        self.line_length = 0
 
-    def apply_indentation_styling(self, last_line):
+    def apply_indentation_styling(self):
         is_correct_indentation = self.check_style_rule('check_indentation',
                                                        {"current_indentation_level": self.current_indentation_level,
                                                         "line_number": self.line_number,
-                                                        "characters": last_line,
+                                                        "characters": self.last_read_line,
                                                         "indentation_level": self.indentation_level})
         if is_correct_indentation:
             self.warning_filter(is_correct_indentation[0])
             self.current_indentation_level = is_correct_indentation[1]
         self.indentation_level = 0
+
     def count_consecutive_new_lines(self):
         if self.is_empty_line is True:
             self.consecutive_empty_lines += 1
