@@ -48,8 +48,9 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file = src.main(file_name)
         self.assertNotEqual(file, "")
         exp_res = [
-            self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1,2]),
-            self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1,3])]
+            self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1, 2]),
+            self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1, 3]),
+            self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1, 4])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -60,7 +61,8 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "EmptyLinesAtEnd.brs"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = [self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1,3])]
+        exp_res = [self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1,3]),
+                   self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [1,4])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
@@ -127,7 +129,8 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "OnlyEmptyLines.brs"
         file = src.main(file_name)
         self.assertNotEqual(file, "")
-        exp_res = [self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [2,3])]
+        exp_res = [self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [2, 3]),
+                   self.error.get(ErrConst.CONSECUTIVE_EMPTY_LINES, [2, 4])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
