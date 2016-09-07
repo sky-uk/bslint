@@ -1,6 +1,6 @@
 import re
 import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
-import Constants as const
+import src.Constants as const
 
 
 class CheckIndentationCommand(object):

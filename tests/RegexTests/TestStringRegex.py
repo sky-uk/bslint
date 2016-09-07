@@ -1,7 +1,7 @@
 import sys
 import unittest
-import Constants as const
 import src
+import src.Constants as const
 
 
 class TestStringRegex(unittest.TestCase):

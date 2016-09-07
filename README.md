@@ -7,6 +7,12 @@ Roku devices are a critical part of our OTT offering. The applications that run 
 ## Roku SDK Documentation
 [BrightScript Language Reference](https://sdkdocs.roku.com/display/sdkdoc/BrightScript+Language+Reference)
 
+## Building locally instructions
+$ python3 setup.py install
+
+bslint has now been added to your path
+$ bslint <file name(s)>
+
 ## Team Members
 
 Name | Email | Github

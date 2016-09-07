@@ -1,5 +1,5 @@
 # this characters need escaping . ^ $ * + ? { } [ ] \ | ( )
-import Constants as const
+import src.Constants as const
 
 List = [
     (r"\n", const.NEW_LINE, const.NO_INDENTATION),

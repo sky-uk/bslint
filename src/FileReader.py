@@ -5,7 +5,6 @@ class FileReader:
     @staticmethod
     def read_file(file_to_lex):
         config_json = src.load_config_file()
-        # print(config_json)
 
         fo = open(file_to_lex, "r+")
         str_to_lex = fo.read()

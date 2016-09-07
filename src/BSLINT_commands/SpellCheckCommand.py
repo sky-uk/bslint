@@ -1,5 +1,5 @@
 import enchant
-import Constants as const
+import src.Constants as const
 import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
 
 
