@@ -3,7 +3,7 @@
   "spell_check": {
     "active": true,
     "params": {
-      "dictionary": "fr_FR"
+      "dictionary": "en_US"
     }
   }
 }
