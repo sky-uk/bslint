@@ -7,7 +7,9 @@ class SpellCheckCommand(object):
 
     @staticmethod
     def execute(params):
-        d = enchant.Dict("en_UK")
+        dictionary = params["spell_check"]
+        print(dictionary)
+        d = enchant.Dict(dictionary)
         words = []
         if params['type'] == const.COMMENT:
            words = SpellCheckCommand._parse_comment_words(params['token'])

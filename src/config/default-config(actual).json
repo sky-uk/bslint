@@ -36,7 +36,9 @@
   },
   "spell_check": {
     "active": true,
-    "params": {}
+    "params": {
+      "dictionary": "en_UK"
+    }
   },
   "check_trace_free": {
     "active": false,

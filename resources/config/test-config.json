@@ -40,7 +40,9 @@
   // Variables correctly spelt - checked with PyEnchant.
   "spell_check": {
     "active": false,
-    "params": {}
+    "params": {
+      "dictionary": "en_UK"
+    }
   },
   // No print statements.
   "check_trace_free": {
