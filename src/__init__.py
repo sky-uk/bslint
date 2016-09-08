@@ -2,8 +2,8 @@ from .Lexer import Lexer
 from .Main import main
 from .ConfigLoader import *
 from .StylingRulesHandler import *
-from src.FileReader import *
-from src.Handlers.RegexHandler import *
+from .FileReader import *
+from .Handlers.RegexHandler import *
 
 from .BSLINT_commands.SkipLineCommand import *
 from .BSLINT_commands.SkipFileCommand import *
