@@ -8,10 +8,10 @@ class SpellCheckCommand(object):
     @staticmethod
     def execute(params):
         dictionary = params["dictionary"]
-        d = enchant.Dict(dictionary)
+        d = enchant.DictWithPWL(dictionary, "../src/config/personal-words-list.txt")
         words = []
         if params['type'] == const.COMMENT:
-           words = SpellCheckCommand._parse_comment_words(params['token'])
+            words = SpellCheckCommand._parse_comment_words(params['token'])
         else:
             words = SpellCheckCommand._parse_words(params['token'])
 

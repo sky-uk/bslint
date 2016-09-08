@@ -27,6 +27,13 @@ class TestSpellCheck(unittest.TestCase):
         self.config = src.load_config_file(user='SpellCheck/spellcheck-config.json', default='test-config.json')
         self.lexer = src.Lexer(self.config)
 
+    def testM(self):
+        test_string = "m"
+        exp_result = None
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.TYPE: const.ID, **self.config["spell_check"]["params"]})
+        self.assertEqual(result, exp_result)
+
     def testSingleLCase(self):
         test_string = "bad"
         exp_result = None
