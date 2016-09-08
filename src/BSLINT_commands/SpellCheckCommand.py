@@ -9,7 +9,6 @@ class SpellCheckCommand(object):
     def execute(params):
         dictionary = params["dictionary"]
         d = enchant.Dict(dictionary)
-        words = []
         if params['type'] == const.COMMENT:
            words = SpellCheckCommand._parse_comment_words(params['token'])
         else:
