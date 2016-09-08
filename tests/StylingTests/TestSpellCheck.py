@@ -7,7 +7,6 @@ import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
 
 
 class TestSpellCheck(unittest.TestCase):
-    
     WARNINGS = 'Warnings'
     STATUS = 'Status'
     SUCCESS = 'Success'
@@ -25,73 +24,84 @@ class TestSpellCheck(unittest.TestCase):
             cls.filepath_prefix = "../resources/StylingTestFiles/"
 
     def setUp(self):
-        config = src.load_config_file(user='SpellCheck/spellcheck-config.json', default='test-config.json')
-        self.lexer = src.Lexer(config)
+        self.config = src.load_config_file(user='SpellCheck/spellcheck-config.json', default='test-config.json')
+        self.lexer = src.Lexer(self.config)
 
     def testSingleLCase(self):
         test_string = "bad"
         exp_result = None
-        result = self.spellCheck.execute({self.TOKEN : test_string, self.TYPE: const.ID})
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.TYPE: const.ID, **self.config["spell_check"]["params"]})
         self.assertEqual(result, exp_result)
 
     def testCamelCase(self):
         test_string = "badGood"
         exp_result = None
-        result = self.spellCheck.execute({self.TOKEN : test_string, self.TYPE: const.ID})
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.TYPE: const.ID, **self.config["spell_check"]["params"]})
         self.assertEqual(result, exp_result)
 
     def testSingleUpperCase(self):
         test_string = "GOOD"
         exp_result = None
-        result = self.spellCheck.execute({self.TOKEN : test_string, self.TYPE: const.ID})
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.TYPE: const.ID, **self.config["spell_check"]["params"]})
         self.assertEqual(result, exp_result)
 
     def testSingleUnderscoreCamelCase(self):
         test_string = "bad_Good"
         exp_result = None
-        result = self.spellCheck.execute({self.TOKEN : test_string, self.TYPE: const.ID})
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.TYPE: const.ID, **self.config["spell_check"]["params"]})
         self.assertEqual(result, exp_result)
 
     def testSingleUnderscoreLowerCase(self):
         test_string = "bad_good"
         exp_result = None
-        result = self.spellCheck.execute({self.TOKEN : test_string, self.TYPE: const.ID})
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.TYPE: const.ID, **self.config["spell_check"]["params"]})
         self.assertEqual(result, exp_result)
 
     def testIncorrect(self):
         test_string = "bad_Good"
         exp_result = None
-        result = self.spellCheck.execute({self.TOKEN : test_string, self.TYPE: const.ID})
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.TYPE: const.ID, **self.config["spell_check"]["params"]})
         self.assertEqual(result, exp_result)
 
     def testNonLetter(self):
         test_string = "bad_Good$"
         exp_result = None
-        result = self.spellCheck.execute({self.TOKEN : test_string, self.TYPE: const.ID})
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.TYPE: const.ID, **self.config["spell_check"]["params"]})
         self.assertEqual(result, exp_result)
 
     def testStartLCaseCorrect(self):
         test_string = "Brother"
         exp_result = None
-        result = self.spellCheck.execute({self.TOKEN: test_string, self.TYPE: const.ID})
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.TYPE: const.ID, **self.config["spell_check"]["params"]})
         self.assertEqual(result, exp_result)
 
     def testStartUCaseIncorrect(self):
         test_string = "Badsfddsf"
         exp_result = {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
-        result = self.spellCheck.execute({self.TOKEN: test_string, self.LINE_NUMBER: 1, self.TYPE: const.ID})
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.LINE_NUMBER: 1, self.TYPE: const.ID, **self.config["spell_check"]["params"]})
         self.assertEqual(result, exp_result)
 
     def testIncorrectSpelling(self):
         test_string = "sfgsdrgser"
         exp_result = {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
-        result = self.spellCheck.execute({self.TOKEN : test_string, self.LINE_NUMBER: 1, self.TYPE: const.ID})
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.LINE_NUMBER: 1, self.TYPE: const.ID, **self.config["spell_check"]["params"]})
         self.assertEqual(result, exp_result)
 
     def testIncorrectCamelCase(self):
         test_string = "badGrgdrfdfg"
         exp_result = {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
-        result = self.spellCheck.execute({self.TOKEN : test_string, self.LINE_NUMBER: 1, self.TYPE: const.ID})
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.LINE_NUMBER: 1, self.TYPE: const.ID, **self.config["spell_check"]["params"]})
         self.assertEqual(result, exp_result)
 
     def testRealFile(self):
@@ -111,3 +121,21 @@ class TestSpellCheck(unittest.TestCase):
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
+
+    def testUSDictionaryFailing(self):
+        us_config = src.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
+        self.lexer = src.Lexer(us_config)
+        test_string = "specialised"
+        exp_result = {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.TYPE: const.ID, **us_config["spell_check"]["params"]})
+        self.assertEqual(result, exp_result)
+
+    def testUSDictionaryPassing(self):
+        us_config = src.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
+        self.lexer = src.Lexer(us_config)
+        test_string = "specialized"
+        exp_result = None
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.TYPE: const.ID, **us_config["spell_check"]["params"]})
+        self.assertEqual(result, exp_result)
