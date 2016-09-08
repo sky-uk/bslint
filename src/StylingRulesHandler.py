@@ -10,4 +10,5 @@ class StylingRulesHandler:
     def apply(self, command, params={}):
         class_name = string.capwords(command, "_").replace("_", "") + "Command"
         if self.config[command]['active'] is True:
-            return getattr(src, class_name).execute({**params, **self.config[command]['params']})
+            params.update(self.config[command]['params'])
+            return getattr(src, class_name).execute(params)
