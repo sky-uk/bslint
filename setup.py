@@ -33,5 +33,5 @@ setup(
     author = "BSLint",
     author_email = "zachary.robinson@sky.uk",
     url = "https://github.com/sky-uk/roku-linter",
-    download_url = 'https://github.com/sky-uk/bslint/archive/0.2.1.tar.gz',
+    download_url = 'https://github.com/sky-uk/bslint/archive/0.2.2.tar.gz',
     )
