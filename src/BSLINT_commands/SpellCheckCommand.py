@@ -1,5 +1,6 @@
 import sys
 import enchant
+import os
 import src.Constants as const
 import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
 
@@ -69,7 +70,12 @@ class SpellCheckCommand(object):
 
     @staticmethod
     def personal_words_filepath():
-        if sys.argv[0].endswith('nosetests'):
+        if sys.argv[0].endswith('bslint'):
+
+            this_dir, this_filename= os.path.split(__file__)
+            personal_words_list = os.path.join(this_dir, "../config/personal-words-list.txt")
+
+        elif sys.argv[0].endswith('nosetests'):
             personal_words_list = "./src/config/personal-words-list.txt"
         else:
             personal_words_list = "../src/config/personal-words-list.txt"
