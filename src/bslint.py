@@ -12,22 +12,29 @@ def main():
     print(const.TITLE_COLOUR + "BSLint: A linter for BrightScript. %s. \n" % __version__ + const.END_COLOUR)
     global is_lexed_correctly
     if len(sys.argv) == 1:
-        lint_all()
+        lint_all("")
     else:
-        file = os.getcwd() + '/' + sys.argv[1]
-        lint_specific(file)
+        filename = '/' + sys.argv[1]
+        file = os.getcwd() + filename
+        if not os.path.exists(file):
+            is_lexed_correctly = False
+        if os.path.isfile(file):
+            lint_specific(file)
+        else:
+            lint_all(filename)
     if is_lexed_correctly:
         print(const.PASS_COLOUR + 'All lexed correctly' + const.END_COLOUR)
         print("\n")
 
 
-def lint_all():
-    for root, dirs, files in os.walk(os.getcwd() + ''):
+def lint_all(directory):
+    for root, dirs, files in os.walk(os.getcwd() + directory):
 
         for file in files:
-            filepath = os.path.join(root, file)
-            filepath = filepath.replace(os.getcwd() + '/', '')
-            lint_specific(filepath)
+            if file.endswith(".brs"):
+                filepath = os.path.join(root, file)
+                filepath = filepath.replace(os.getcwd() + '/', '')
+                lint_specific(filepath)
 
 
 def lint_specific(filename):
