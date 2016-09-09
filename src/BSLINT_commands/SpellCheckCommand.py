@@ -9,17 +9,18 @@ class SpellCheckCommand(object):
 
     @staticmethod
     def execute(params):
-        dictionary = params["dictionary"]
-        personal_words_list = SpellCheckCommand.personal_words_filepath()
-        d = enchant.DictWithPWL(dictionary, personal_words_list)
-        words = []
+        # dictionary = params["dictionary"]
+        # personal_words_list = SpellCheckCommand.personal_words_filepath()
+        # d = enchant.DictWithPWL(dictionary, personal_words_list)
+        combined_dictionary = params["combined_dictionary"]
+
         if params['type'] == const.COMMENT:
             words = SpellCheckCommand._parse_comment_words(params['token'])
         else:
             words = SpellCheckCommand._parse_words(params['token'])
 
         for word in words:
-            spelt_correct = d.check(word)
+            spelt_correct = combined_dictionary.check(word)
             if not spelt_correct:
                 return {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
 
@@ -66,17 +67,3 @@ class SpellCheckCommand(object):
                 if not word == '':
                     words.append(word)
         return words
-
-    @staticmethod
-    def personal_words_filepath():
-        if sys.argv[0].endswith('bslint'):
-
-            this_dir, this_filename= os.path.split(__file__)
-            personal_words_list = os.path.join(this_dir, "../config/personal-words-list.txt")
-
-        elif sys.argv[0].endswith('nosetests'):
-            personal_words_list = "./src/config/personal-words-list.txt"
-        else:
-            personal_words_list = "../src/config/personal-words-list.txt"
-
-        return personal_words_list
