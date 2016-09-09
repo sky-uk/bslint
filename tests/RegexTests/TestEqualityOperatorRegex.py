@@ -50,32 +50,30 @@ class TestEqualityOperatorRegex(unittest.TestCase):
         self.assertEqual(result["match"].group(), identifier)
         self.assertEqual(result["token_type"], const.OPERATOR)
 
-    def testLessThan(self):
-        identifier = "<"
-        result = self.regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_type"], const.OPERATOR)
-
     def testMOD(self):
-        identifier = "MOD"
+        identifier = "MOD "
+        exp_result = "MOD"
         result = self.regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_type"], const.KEYWORD)
 
     def testNOT(self):
-        identifier = "NOT"
+        identifier = "NOT "
+        exp_result = "NOT"
         result = self.regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_type"], const.KEYWORD)
 
     def testAND(self):
-        identifier = "AND"
+        identifier = "AND "
+        exp_result = "AND"
         result = self.regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_type"], const.KEYWORD)
 
     def testOR(self):
-        identifier = "OR"
+        identifier = "OR "
+        exp_result = "OR"
         result = self.regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_type"], const.KEYWORD)

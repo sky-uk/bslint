@@ -61,3 +61,14 @@ class TestIndentation(unittest.TestCase):
         self.lexer = src.Lexer(config)
         result = self.lexer.lex(file)
         self.assertEqual(exp_result, result[self.WARNINGS])
+
+    def testReallyAdvancedIndentation(self):
+        config = src.load_config_file(user="Indentation/indentation-config.json", default='test-config.json')
+        file_name = self.filepath_prefix + "SampleAdvancedIndentation.txt"
+        file = src.main(file_name)
+        exp_result = []
+        exp_status = "Success"
+        self.lexer = src.Lexer(config)
+        result = self.lexer.lex(file)
+        self.assertEqual(exp_result, result[self.WARNINGS])
+        self.assertEqual(exp_status, result[self.STATUS])
