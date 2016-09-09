@@ -22,7 +22,6 @@ with open("README.rst", "rb") as f:
 setup(
     name = "bslint",
     packages = find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
-    package_dir={'src': 'src'},
     package_data={'src': ['config/*.json']},
     entry_points = { "console_scripts": ['bslint = src.bslint:main'] },
     version = version,
