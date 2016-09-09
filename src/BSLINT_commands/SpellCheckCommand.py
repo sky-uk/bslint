@@ -9,7 +9,6 @@ class SpellCheckCommand(object):
 
     @staticmethod
     def execute(params):
-
         dictionary = params["dictionary"]
         personal_words_list = SpellCheckCommand.personal_words_filepath()
         d = enchant.DictWithPWL(dictionary, personal_words_list)
