@@ -1,0 +1,91 @@
+{
+  "skip_line": {
+    "active": true,
+    "params": {}
+  },
+  "skip_file": {
+    "active": true,
+    "params": {}
+  },
+  "check_comment": {
+    "active": true,
+    "params": {
+      "TODOs": {"allow_TODOs": true, "format": "('|rem)\\s*TODO\\s+([A-Z]{2,3})"},
+      "allow_generic_comments": false
+    }
+  },
+  "max_line_length": {
+    "active": true,
+    "params": {
+      "max_line_length": 80
+    }
+  },
+  // Source File Encoding.
+  "check_file_encoding": {
+    "active": true,
+    "params": {
+      "source_file_encoding": "ASCII"
+    }
+  },
+  // Variables should begin with a lower case first letter.
+  "check_variable_lowercase_start": {
+    "active": true,
+    "params": {}
+  },
+  // Variable types should be capitalised eg Boolean, Void, String.
+  "check_variable_types_capitalised": {
+    "active": true,
+    "params": {}
+  },
+  // Variables correctly spelt - checked with PyEnchant.
+  "spell_check": {
+    "active": true,
+    "params": {
+      "dictionary": "en_GB"
+    }
+  },
+  // No print statements.
+  "check_trace_free": {
+    "active": true,
+    "params": {}
+  },
+  // Explicitly declare function and function parameter types.
+  "check_fn_and_fn_param_types": {
+    "active": true,
+    "params": {}
+  },
+  // All function parameters prefixed with an underscore.
+  "check_underscore_fn_params": {
+    "active": true,
+    "params": {}
+  },
+  // Consecutive blank lines allowed.
+  "consecutive_empty_lines": {
+    "active": true,
+    "params": {
+      "consecutive_empty_lines": 1
+    }
+  },
+  // Must use spaces or tabs not both.
+  "check_indentation": {
+    "active": true,
+    "params": {
+      "tab_size": 4,
+      "only_tab_indents": false
+    }
+  },
+  // Number of spaces around operators except colon.
+  "spaces_around_operators": {
+    "active": true,
+    "params": {
+      "spaces_around_operators": 1
+    }
+  }, 
+  // Spaces between method name and parameter list.
+  "check_method_spaces": {
+    "active": true,
+    "params": {
+      "method_spaces": 1
+    }
+  } 
+}

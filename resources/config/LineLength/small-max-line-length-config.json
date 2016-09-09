@@ -1,0 +1,8 @@
+{
+  "max_line_length": {
+    "active": true,
+    "params": {
+      "max_line_length": 11
+    }
+  }
+}
