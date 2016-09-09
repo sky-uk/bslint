@@ -22,7 +22,7 @@ with open("README.rst", "rb") as f:
 setup(
     name = "bslint",
     packages = find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
-    package_data={'src': ['config/*.json']},
+    package_data={'src': ['config/*.json', 'config/personal-words-list.txt']},
     entry_points = { "console_scripts": ['bslint = src.bslint:main'] },
     version = version,
     description = "A linter tool for the BrightScript language.",
