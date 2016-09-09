@@ -30,5 +30,5 @@ setup(
     long_description = long_descr,
     author = "BSLint",
     author_email = "",
-    url = "https://github.com/sky-uk/roku-linter",
+    url = "https://github.com/sky-uk/bslint",
     )
