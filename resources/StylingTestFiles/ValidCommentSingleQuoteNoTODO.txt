@@ -1,0 +1,17 @@
+rem TODO ZRV Check comments
+sub main()
+    screen = CreateObject("roSGScreen")
+    port = CreateObject("roMessagePort")
+    screen.setMessagePort(port)
+
+    scene = screen.CreateScene("SampleScene")
+    screen.show()
+
+    while true
+        ' do stuff
+        rem second comment
+    end while
+
+end sub
+
+' TODO non initialled

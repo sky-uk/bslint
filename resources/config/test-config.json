@@ -1,0 +1,91 @@
+{
+  "skip_line": {
+    "active": false,
+    "params": {}
+  },
+  "skip_file": {
+    "active": false,
+    "params": {}
+  },
+  "check_comment": {
+    "active": false,
+    "params": {
+      "TODOs": {"allow_TODOs": false, "format": "('|rem)\\s*TODO\\s+([A-Z]{2,3})"},
+      "allow_generic_comments": false
+    }
+  },
+  "max_line_length": {
+    "active": false,
+    "params": {
+      "max_line_length": 80
+    }
+  },
+  // Source File Encoding.
+  "check_file_encoding": {
+    "active": false,
+    "params": {
+      "source_file_encoding": "ASCII"
+    }
+  },
+  // Variables should begin with a lower case first letter.
+  "check_variable_lowercase_start": {
+    "active": false,
+    "params": {}
+  },
+  // Variable types should be capitalised eg Boolean, Void, String.
+  "check_variable_types_capitalised": {
+    "active": false,
+    "params": {}
+  },
+  // Variables correctly spelt - checked with PyEnchant.
+  "spell_check": {
+    "active": false,
+    "params": {
+      "dictionary": "en_GB"
+    }
+  },
+  // No print statements.
+  "check_trace_free": {
+    "active": false,
+    "params": {}
+  },
+  // Explicitly declare function and function parameter types.
+  "check_fn_and_fn_param_types": {
+    "active": false,
+    "params": {}
+  },
+  // All function parameters prefixed with an underscore.
+  "check_underscore_fn_params": {
+    "active": false,
+    "params": {}
+  },
+  // Consecutive blank lines allowed.
+  "consecutive_empty_lines": {
+    "active": false,
+    "params": {
+      "consecutive_empty_lines": 1
+    }
+  },
+  // Must use spaces or tabs not both.
+  "check_indentation": {
+    "active": false,
+    "params": {
+      "tab_size": 4,
+      "only_tab_indents": false
+    }
+  },
+  // Number of spaces around operators except colon.
+  "spaces_around_operators": {
+    "active": false,
+    "params": {
+      "spaces_around_operators": 1
+    }
+  }, 
+  // Spaces between method name and parameter list.
+  "check_method_spaces": {
+    "active": false,
+    "params": {
+      "method_spaces": 1
+    }
+  } 
+}

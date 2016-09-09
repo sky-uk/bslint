@@ -1,12 +1,12 @@
+.cache
+.idea
+__pycache__
+
 .DS_Store
-*.pyc
-*.pyo
-env
-env*
-dist
+
+# Build files
 build
-*.egg
-*.egg-info
-.tox
-.cache/
-.idea/
+dist
+bslint.egg-info
+
+*.pyc
