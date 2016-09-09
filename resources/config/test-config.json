@@ -41,7 +41,8 @@
   "spell_check": {
     "active": false,
     "params": {
-      "dictionary": "en_UK"
+
+      "dictionary": "en_GB"
     }
   },
   // No print statements.

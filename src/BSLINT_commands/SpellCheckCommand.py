@@ -1,4 +1,6 @@
+import sys
 import enchant
+import os
 import src.Constants as const
 import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
 
@@ -8,9 +10,10 @@ class SpellCheckCommand(object):
     @staticmethod
     def execute(params):
         dictionary = params["dictionary"]
-        d = enchant.Dict(dictionary)
+        personal_words_list = SpellCheckCommand.personal_words_filepath()
+        d = enchant.DictWithPWL(dictionary, personal_words_list)
         if params['type'] == const.COMMENT:
-           words = SpellCheckCommand._parse_comment_words(params['token'])
+            words = SpellCheckCommand._parse_comment_words(params['token'])
         else:
             words = SpellCheckCommand._parse_words(params['token'])
 
@@ -63,3 +66,16 @@ class SpellCheckCommand(object):
                     words.append(word)
         return words
 
+    @staticmethod
+    def personal_words_filepath():
+        if sys.argv[0].endswith('bslint'):
+
+            this_dir, this_filename= os.path.split(__file__)
+            personal_words_list = os.path.join(this_dir, "../config/personal-words-list.txt")
+
+        elif sys.argv[0].endswith('nosetests'):
+            personal_words_list = "./src/config/personal-words-list.txt"
+        else:
+            personal_words_list = "../src/config/personal-words-list.txt"
+
+        return personal_words_list

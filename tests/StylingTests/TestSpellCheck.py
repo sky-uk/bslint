@@ -27,6 +27,13 @@ class TestSpellCheck(unittest.TestCase):
         self.config = src.load_config_file(user='SpellCheck/spellcheck-config.json', default='test-config.json')
         self.lexer = src.Lexer(self.config)
 
+    def testM(self):
+        test_string = "m"
+        exp_result = None
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.TYPE: const.ID, **self.config["spell_check"]["params"]})
+        self.assertEqual(result, exp_result)
+
     def testSingleLCase(self):
         test_string = "bad"
         exp_result = None
@@ -121,3 +128,21 @@ class TestSpellCheck(unittest.TestCase):
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
+
+    def testUSDictionaryFailing(self):
+        us_config = src.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
+        self.lexer = src.Lexer(us_config)
+        test_string = "specialised"
+        exp_result = {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.TYPE: const.ID, **us_config["spell_check"]["params"]})
+        self.assertEqual(result, exp_result)
+
+    def testUSDictionaryPassing(self):
+        us_config = src.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
+        self.lexer = src.Lexer(us_config)
+        test_string = "specialized"
+        exp_result = None
+        result = self.spellCheck.execute(
+            {self.TOKEN: test_string, self.TYPE: const.ID, **us_config["spell_check"]["params"]})
+        self.assertEqual(result, exp_result)
