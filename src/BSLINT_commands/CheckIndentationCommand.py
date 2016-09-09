@@ -8,7 +8,7 @@ class CheckIndentationCommand(object):
     def execute(params):
         if params["indentation_level"] == const.DECREMENT_INDENTATION or \
                         params["indentation_level"] == const.SPECIAL_INDENTATION:
-            params["current_indentation_level"] += -1
+            params["current_indentation_level"] -= 1
         warning = CheckIndentationCommand._handle_warnings(params)
         if params["indentation_level"] == const.INCREMENT_INDENTATION or \
                         params["indentation_level"] == const.SPECIAL_INDENTATION:

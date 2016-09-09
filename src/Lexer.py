@@ -38,11 +38,13 @@ class Lexer:
                 result = self.regex_handler.find_match(self.characters[self.current_char_index:])
                 self.match = result["match"]
                 self.token_type = result["token_type"]
-                if not result["indentation_level"] == const.NO_INDENTATION:
+                if result["indentation_level"] != const.NO_INDENTATION:
                     self.indentation_level = result["indentation_level"]
 
                 self.current_char_index += len(self.match.group())
-                tokens = self.match_handler(tokens)
+                self.line_length += len(self.match.group())
+                if self.token_type is not None:
+                    tokens = self.match_handler(tokens)
 
             except ValueError:
                 end_of_line = re.match(r"(.*)\n", self.characters[self.current_char_index:])
@@ -62,16 +64,14 @@ class Lexer:
         self.last_read_line = last_line[-1]
 
     def match_handler(self, tokens):
-        self.line_length += len(self.match.group())
         self.apply_styling()
         if self.token_type == const.NEW_LINE:
             self.line_number += 1
         elif self.token_type == const.BSLINT_COMMAND:
             self.apply_bslint_command()
-        elif self.token_type is not None:
-            if self.token_type != const.COMMENT:
-                token_tuple = self.build_token()
-                tokens.append(token_tuple)
+        elif self.token_type != const.COMMENT:
+            token_tuple = self.build_token()
+            tokens.append(token_tuple)
         return tokens
 
     def apply_bslint_command(self):
@@ -124,7 +124,6 @@ class Lexer:
         self.check_spelling()
 
     def apply_new_line_styling(self):
-        self.get_last_line()
         self.count_consecutive_new_lines()
         is_correct_line_length = self.check_style_rule('max_line_length',
                                                        {"line_length": self.line_length})
@@ -136,6 +135,7 @@ class Lexer:
         self.line_length = 0
 
     def apply_indentation_styling(self):
+        self.get_last_line()
         is_correct_indentation = self.check_style_rule('check_indentation',
                                                        {"current_indentation_level": self.current_indentation_level,
                                                         "characters": self.last_read_line,
@@ -143,7 +143,7 @@ class Lexer:
         if is_correct_indentation:
             self.warning_filter(is_correct_indentation[0])
             self.current_indentation_level = is_correct_indentation[1]
-        self.indentation_level = 0
+            self.indentation_level = 0
 
     def count_consecutive_new_lines(self):
         if self.is_empty_line is True:
