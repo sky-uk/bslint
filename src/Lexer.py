@@ -1,4 +1,7 @@
 import re
+import sys
+import os
+import enchant
 import src.Constants as const
 import src
 import src.ErrorMessagesBuilder.ErrorMessageHandler as Err
@@ -28,6 +31,9 @@ class Lexer:
         self.match = None
         self.token_type = None
         self.last_read_line = ''
+        self.dictionary = config["spell_check"]["params"]["dictionary"]
+        self.personal_words_list = Lexer.personal_words_filepath()
+        self.combined_dictionary = enchant.DictWithPWL(self.dictionary, self.personal_words_list)
 
     def lex(self, characters):
         self.characters = characters
@@ -110,7 +116,8 @@ class Lexer:
 
     def check_spelling(self):
         is_spelt_correctly = self.check_style_rule('spell_check',
-                                                   {'token': self.match.group(), "type": self.token_type})
+                                                   {'token': self.match.group(), "type": self.token_type,
+                                                    "combined_dictionary": self.combined_dictionary})
         self.warning_filter(is_spelt_correctly)
 
     def check_operator_spacing(self):
@@ -182,3 +189,16 @@ class Lexer:
             result["error_params"].append(str(self.line_number))
             warning = self.error_message_handler.get(result["error_key"], result["error_params"])
             self.warnings += [warning]
+
+    @staticmethod
+    def personal_words_filepath():
+        if sys.argv[0].endswith('bslint'):
+            this_dir, this_filename = os.path.split(__file__)
+            personal_words_list = os.path.join(this_dir, "config/personal-words-list.txt")
+
+        elif sys.argv[0].endswith('nosetests'):
+            personal_words_list = "./src/config/personal-words-list.txt"
+        else:
+            personal_words_list = "../src/config/personal-words-list.txt"
+
+        return personal_words_list

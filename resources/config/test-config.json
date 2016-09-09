@@ -41,7 +41,6 @@
   "spell_check": {
     "active": false,
     "params": {
-
       "dictionary": "en_GB"
     }
   },
