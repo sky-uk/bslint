@@ -1,22 +1,20 @@
-import sys
 import unittest
 import src
 import src.constants as const
+import os
+
 
 
 class TestStringRegex(unittest.TestCase):
-
     TOKENS = 'Tokens'
 
     @classmethod
     def setUpClass(cls):
         cls.regex_handler = src.RegexHandler()
-        if sys.argv[0].endswith('nosetests'):
-            cls.string_file = src.main("./resources/LexingTestFiles/BasicStringAssignment.txt")
-            cls.multi_line_file = src.main("./resources/StylingTestFiles/MultilineAssignment.txt")
-        else:
-            cls.string_file = src.main("../resources/LexingTestFiles/BasicStringAssignment.txt")
-            cls.multi_line_file = src.main("../resources/StylingTestFiles/MultilineAssignment.txt")
+        this_dir, this_filename = os.path.split(__file__)
+        cls.string_file = src.get_string_to_parse(os.path.join(this_dir, "../LexingTestFiles/BasicStringAssignment.txt"))
+        cls.multi_line_file = src.get_string_to_parse(
+            os.path.join(this_dir, "../StylingTestFiles/MultilineAssignment.txt"))
 
     def setUp(self):
         config = src.load_config_file(default='test-config.json')
@@ -30,7 +28,6 @@ class TestStringRegex(unittest.TestCase):
 
     def testUnclosedQuotes(self):
         test_string = '"test123ID\n'
-        exp_result = "NO MATCH FOUND"
         with self.assertRaises(ValueError):
             result = self.regex_handler.find_match(test_string)
             self.assertEqual(result["match"].group(), test_string)

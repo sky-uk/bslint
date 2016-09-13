@@ -1,7 +1,8 @@
 import unittest
 import src
-import sys
 import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
+import os
+
 
 
 class TestEncodingCheck(unittest.TestCase):
@@ -17,12 +18,9 @@ class TestEncodingCheck(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        if sys.argv[0].endswith('nosetests'):
-            cls.filepath_prefix = "./resources/"
-            cls.tests_filepath_prefix = "./resources/EncodingTestFiles/"
-        else:
-            cls.filepath_prefix = "../resources/"
-            cls.tests_filepath_prefix = "../resources/EncodingTestFiles/"
+        this_dir, this_filename = os.path.split(__file__)
+        cls.filepath_prefix = os.path.join(this_dir, "../../resources/")
+        cls.tests_filepath_prefix = os.path.join(this_dir, "../EncodingTestFiles/")
 
     def testASCIIChars(self):
         config = src.load_config_file(user="FileEncoding/ASCII-encoding-config.json")

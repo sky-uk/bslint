@@ -1,8 +1,9 @@
 import unittest
-import sys
 import src
 import src.ErrorMessagesBuilder.error_message_handler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
+import os
+
 
 
 class TestIndentation(unittest.TestCase):
@@ -14,10 +15,8 @@ class TestIndentation(unittest.TestCase):
     def setUpClass(cls):
         cls.error = Err.ErrorMessageHandler()
         cls.indentCheck = src.CheckIndentationCommand()
-        if sys.argv[0].endswith('nosetests'):
-            cls.filepath_prefix = "./resources/StylingTestFiles/"
-        else:
-            cls.filepath_prefix = "../resources/StylingTestFiles/"
+        this_dir, this_filename = os.path.split(__file__)
+        cls.filepath_prefix = os.path.join(this_dir, "../StylingTestFiles/")
 
     def testNoIndentation(self):
         config = src.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
@@ -38,7 +37,7 @@ class TestIndentation(unittest.TestCase):
     def testIndentationError(self):
         config = src.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
         file_name = self.filepath_prefix + "BasicIndentation.txt"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         exp_result = [self.error.get(ErrConst.TAB_INDENTATION_ERROR, [4, 2])]
         self.lexer = src.Lexer(config)
         result = self.lexer.lex(file)
@@ -47,7 +46,7 @@ class TestIndentation(unittest.TestCase):
     def testAdvancedIndentationSuccess(self):
         config = src.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
         file_name = self.filepath_prefix + "AdvancedIndentation.txt"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         exp_result = []
         self.lexer = src.Lexer(config)
         result = self.lexer.lex(file)
@@ -56,7 +55,7 @@ class TestIndentation(unittest.TestCase):
     def testIndentWithOnlyTabsWithError(self):
         config = src.load_config_file(user="Indentation/tab-only-indentation.json", default='test-config.json')
         file_name = self.filepath_prefix + "IndentWithTabsOnly.txt"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         exp_result = [self.error.get(ErrConst.TAB_AND_SPACES, [10])]
         self.lexer = src.Lexer(config)
         result = self.lexer.lex(file)
@@ -65,7 +64,7 @@ class TestIndentation(unittest.TestCase):
     def testReallyAdvancedIndentation(self):
         config = src.load_config_file(user="Indentation/indentation-config.json", default='test-config.json')
         file_name = self.filepath_prefix + "SampleAdvancedIndentation.txt"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         exp_result = []
         exp_status = "Success"
         self.lexer = src.Lexer(config)

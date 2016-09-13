@@ -1,10 +1,11 @@
 import unittest
 import enchant
 import src
-import sys
 import src.constants as const
 import src.ErrorMessagesBuilder.error_message_handler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
+import os
+
 
 
 class TestSpellCheck(unittest.TestCase):
@@ -20,10 +21,8 @@ class TestSpellCheck(unittest.TestCase):
     def setUpClass(cls):
         cls.spellCheck = src.SpellCheckCommand()
         cls.error = Err.ErrorMessageHandler()
-        if sys.argv[0].endswith('nosetests'):
-            cls.filepath_prefix = "./resources/StylingTestFiles/"
-        else:
-            cls.filepath_prefix = "../resources/StylingTestFiles/"
+        this_dir, this_filename = os.path.split(__file__)
+        cls.filepath_prefix = os.path.join(this_dir, "../StylingTestFiles/")
 
     def setUp(self):
         self.config = src.load_config_file(user='SpellCheck/spellcheck-config.json', default='test-config.json')
@@ -121,7 +120,7 @@ class TestSpellCheck(unittest.TestCase):
 
     def testRealFile(self):
         file_name = self.filepath_prefix + "SpellCheck.brs"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = [self.error.get(ErrConst.TYPO_IN_CODE, [2])]
         result = self.lexer.lex(file)
@@ -130,7 +129,7 @@ class TestSpellCheck(unittest.TestCase):
 
     def testMisspelledCommentFromFile(self):
         file_name = self.filepath_prefix + "IncorrectCommentSpelling.brs"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = [self.error.get(ErrConst.TYPO_IN_CODE, [1])]
         result = self.lexer.lex(file)

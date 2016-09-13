@@ -1,6 +1,6 @@
 import unittest
 import src
-import sys
+import os
 from io import StringIO
 
 
@@ -8,10 +8,8 @@ class TestConfigFileLoading(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        if sys.argv[0].endswith('nosetests'):
-            cls.filepath_prefix = "./src/config/"
-        else:
-            cls.filepath_prefix = "../src/config/"
+        this_dir, this_filename = os.path.split(__file__)
+        cls.filepath_prefix = os.path.join(this_dir, "../../src/config/")
 
     def testReadJsonCorrectly(self):
         config_file = self.filepath_prefix + "default-config.json"

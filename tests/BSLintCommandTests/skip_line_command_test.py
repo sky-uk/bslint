@@ -2,7 +2,6 @@ import unittest
 import src
 import src.ErrorMessagesBuilder.error_message_handler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
-import sys
 
 
 class TestSkipLineCommand(unittest.TestCase):

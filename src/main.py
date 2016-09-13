@@ -1,7 +1,7 @@
 import src
 
 
-def main(filepath):
+def get_string_to_parse(filepath):
     fo = open(filepath, "r+")
     str_to_parse = fo.read()
 
