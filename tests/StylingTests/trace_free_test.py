@@ -1,5 +1,5 @@
 import unittest
-import sys
+import os
 import src
 import src.ErrorMessagesBuilder.error_message_handler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
@@ -13,16 +13,14 @@ class TestTraceFree(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.error = Err.ErrorMessageHandler()
-        if sys.argv[0].endswith('nosetests'):
-            cls.tests_filepath_prefix = "./resources/TraceTestFiles/"
-        else:
-            cls.tests_filepath_prefix = "../resources/TraceTestFiles/"
+        this_dir, this_filename = os.path.split(__file__)
+        cls.tests_filepath_prefix = os.path.join(this_dir, "../TraceTestFiles/")
 
     def testPRINT(self):
         config = src.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "Print.brs"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = [self.error.get(ErrConst.TRACEABLE_CODE, [3])]
         result = self.lexer.lex(file)
@@ -33,7 +31,7 @@ class TestTraceFree(unittest.TestCase):
         config = src.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "QuestionMark.brs"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = [self.error.get(ErrConst.TRACEABLE_CODE, [3])]
         result = self.lexer.lex(file)
@@ -44,7 +42,7 @@ class TestTraceFree(unittest.TestCase):
         config = src.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "PrintAndQuestionMark.brs"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = [self.error.get(ErrConst.TRACEABLE_CODE, [3]),
                    self.error.get(ErrConst.TRACEABLE_CODE, [4])]
@@ -56,7 +54,7 @@ class TestTraceFree(unittest.TestCase):
         config = src.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "NoPrintNoQuestionMark.brs"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = []
         result = self.lexer.lex(file)
@@ -67,7 +65,7 @@ class TestTraceFree(unittest.TestCase):
         config = src.load_config_file(default="test-config.json")
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "PrintAndQuestionMark.brs"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = []
         result = self.lexer.lex(file)

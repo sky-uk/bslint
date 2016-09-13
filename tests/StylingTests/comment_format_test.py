@@ -1,8 +1,8 @@
 import unittest
-import sys
 import src
 import src.ErrorMessagesBuilder.error_message_handler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
+import os
 
 
 class TestCommentFormat(unittest.TestCase):
@@ -14,16 +14,14 @@ class TestCommentFormat(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.error = Err.ErrorMessageHandler()
-        if sys.argv[0].endswith('nosetests'):
-            cls.filepath_prefix = "./resources/StylingTestFiles/"
-        else:
-            cls.filepath_prefix = "../resources/StylingTestFiles/"
+        this_dir, this_filename = os.path.split(__file__)
+        cls.filepath_prefix = os.path.join(this_dir, "../StylingTestFiles/")
 
     def testNoCommentCheck(self):
         config = src.load_config_file(default='test-config.json')
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = []
         result = self.lexer.lex(file)
@@ -34,7 +32,7 @@ class TestCommentFormat(unittest.TestCase):
         config = src.load_config_file(user="Comments/TODO-comment-config.json", default='test-config.json')
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = [self.error.get(ErrConst.NON_CONVENTIONAL_TODO, [17])]
         result = self.lexer.lex(file)
@@ -45,7 +43,7 @@ class TestCommentFormat(unittest.TestCase):
         config = src.load_config_file()
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = [self.error.get(ErrConst.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [11]),
                    self.error.get(ErrConst.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [12]),
@@ -58,7 +56,7 @@ class TestCommentFormat(unittest.TestCase):
         config = src.load_config_file(user="Comments/no-TODO-comment-config.json", default='test-config.json')
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = [self.error.get(ErrConst.NO_TODOS, [1]),
                    self.error.get(ErrConst.NO_TODOS, [17])]
@@ -70,7 +68,7 @@ class TestCommentFormat(unittest.TestCase):
         config = src.load_config_file(user="Comments/no-TODO-no-comment-config.json", default='test-config.json')
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
-        file = src.main(file_name)
+        file = src.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = [
             self.error.get(ErrConst.COMMENTS_NOT_ALLOWED, [1]),

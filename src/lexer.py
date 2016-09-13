@@ -12,7 +12,6 @@ class Lexer:
 
     def __init__(self, config):
         self.regex_handler = src.RegexHandler()
-        self.error = Err.ErrorMessageHandler()
         self.line_number = 1
         self.warnings = []
         self.config_json = config
@@ -56,7 +55,7 @@ class Lexer:
 
             except ValueError:
                 end_of_line = re.match(r"(.*)\n", self.characters[self.current_char_index:])
-                errors.append(self.error.get(ErrConst.UNMATCHED_QUOTATION_MARK,
+                errors.append(self.error_message_handler.get(ErrConst.UNMATCHED_QUOTATION_MARK,
                                              [(end_of_line.group()[:const.PENULTIMATE_CHARACTER]), self.line_number]))
                 self.line_number += 1
                 self.current_char_index += len(end_of_line.group())
@@ -192,13 +191,8 @@ class Lexer:
 
     @staticmethod
     def personal_words_filepath():
-        if sys.argv[0].endswith('bslint'):
-            this_dir, this_filename = os.path.split(__file__)
-            personal_words_list = os.path.join(this_dir, "config/personal-words-list.txt")
 
-        elif sys.argv[0].endswith('nosetests'):
-            personal_words_list = "./src/config/personal-words-list.txt"
-        else:
-            personal_words_list = "../src/config/personal-words-list.txt"
+        this_dir, this_filename = os.path.split(__file__)
+        personal_words_list = os.path.join(this_dir, "config/personal-words-list.txt")
 
         return personal_words_list

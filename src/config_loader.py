@@ -1,38 +1,21 @@
 import json
 import sys
-import pkgutil
+import os
 
 
 def load_config_file(user=None, default=None, out=sys.stdout):
-    if sys.argv[0].endswith('bslint'):
-        user_json = pkgutil.get_data('src', 'config/user-config.json')
-        default_json = pkgutil.get_data('src', 'config/default-config(actual).json')
+    this_dir, this_filename = os.path.split(__file__)
+    tests_filepath_prefix = os.path.join(this_dir, "../tests/config/")
+    filepath_prefix = os.path.join(this_dir, "../src/config/")
 
-        user_json = json.loads(user_json.decode('ascii'))
-        default_json = json.loads(default_json.decode('ascii'))
-
-        for property in user_json:
-            default_json[property] = user_json[property]
-        return default_json
-
-    elif sys.argv[0].endswith('nosetests') or sys.argv[0] == 'main.py':
-        if user:
-            user_filepath = "./resources/config/" + user
-        else:
-            user_filepath = "./src/config/user-config.json"
-        if default:
-            default_filepath = "./resources/config/" + default
-        else:
-            default_filepath = "./src/config/default-config.json"
+    if user:
+        user_filepath = tests_filepath_prefix + user
     else:
-        if user:
-            user_filepath = "../resources/config/" + user
-        else:
-            user_filepath = "../src/config/user-config.json"
-        if default:
-            default_filepath = "../resources/config/" + default
-        else:
-            default_filepath = "../src/config/default-config.json"
+        user_filepath = filepath_prefix + "user-config.json"
+    if default:
+        default_filepath = tests_filepath_prefix + default
+    else:
+        default_filepath = filepath_prefix + "default-config.json"
 
     try:
         default_json = read_json(default_filepath)
