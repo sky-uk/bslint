@@ -1,6 +1,6 @@
-import sys
 import unittest
 import src
+import os
 import src.ErrorMessagesBuilder.ErrorMessageHandler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.ErrorMessagesConstants as ErrConst
 
@@ -9,22 +9,20 @@ class TestLexSkeletonMain(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.error = Err.ErrorMessageHandler()
-        if sys.argv[0].endswith('nosetests'):
-            cls.filepath_prefix = "./resources/LexingTestFiles/"
-        else:
-            cls.filepath_prefix = "../resources/LexingTestFiles/"
+        this_dir, this_filename = os.path.split(__file__)
+        cls.filepath_prefix = os.path.join(this_dir, "../LexingTestFiles/")
 
     def setUp(self):
         config = src.load_config_file()
         self.lexer = src.Lexer(config)
 
     def testLexWholeFile(self):
-        file = src.main(self.filepath_prefix + "SkeletonMain.brs")
+        file = src.get_string_to_parse(self.filepath_prefix + "SkeletonMain.brs")
         result = self.lexer.lex(file)
         self.assertEqual(result["Status"], 'Success')
 
     def testLexWholeFileWithMultipleErrors(self):
-        file = src.main(self.filepath_prefix + "SkeletonMainWithErrors.brs")
+        file = src.get_string_to_parse(self.filepath_prefix + "SkeletonMainWithErrors.brs")
         result = self.lexer.lex(file)
         exp_result = [self.error.get(ErrConst.UNMATCHED_QUOTATION_MARK, ['"roSGScreen', 2]),
                       self.error.get(ErrConst.UNMATCHED_QUOTATION_MARK, ['"SampleScene', 6])]

@@ -1,5 +1,5 @@
 from .Lexer import Lexer
-from .Main import main
+from .Main import get_string_to_parse
 from .ConfigLoader import *
 from .StylingRulesHandler import *
 from .FileReader import *
