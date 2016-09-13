@@ -3,7 +3,7 @@ __version__ = "0.3.0"
 import os
 import sys
 import src
-import src.Constants as const
+import src.constants as const
 
 is_lexed_correctly = True
 
