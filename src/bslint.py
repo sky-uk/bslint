@@ -31,14 +31,14 @@ def lint_all(directory):
     for root, dirs, files in os.walk(os.getcwd() + directory):
 
         for file in files:
-            if file.endswith(".brs"):
+            if file.endswith(".brs") or file.endswith(".bs"):
                 filepath = os.path.join(root, file)
                 filepath = filepath.replace(os.getcwd() + '/', '')
                 lint_specific(filepath)
 
 
 def lint_specific(filename):
-    if filename.endswith(".brs"):
+    if filename.endswith(".brs") or filename.endswith(".bs"):
         file_reader = src.FileReader()
         result = file_reader.read_file(filename)
         lexer = src.Lexer(result[2])
