@@ -7,7 +7,6 @@ dist
 build
 *.egg
 *.egg-info
-_mailinglist
 .tox
 .cache/
 .idea/
