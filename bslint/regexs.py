@@ -1,5 +1,5 @@
 # this characters need escaping . ^ $ * + ? { } [ ] \ | ( )
-import src.constants as const
+import bslint.constants as const
 
 List = [
     (r"\n", const.NEW_LINE, const.NO_INDENTATION),

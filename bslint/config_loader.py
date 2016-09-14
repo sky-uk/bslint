@@ -6,7 +6,7 @@ import os
 def load_config_file(user=None, default=None, out=sys.stdout):
     this_dir, this_filename = os.path.split(__file__)
     tests_filepath_prefix = os.path.join(this_dir, "../tests/config/")
-    filepath_prefix = os.path.join(this_dir, "../src/config/")
+    filepath_prefix = os.path.join(this_dir, "../bslint/config/")
 
     if user:
         user_filepath = tests_filepath_prefix + user

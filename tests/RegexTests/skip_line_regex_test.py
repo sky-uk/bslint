@@ -1,6 +1,6 @@
 import unittest
-import src
-import src.constants as const
+import bslint
+import bslint.constants as const
 
 
 class TestSkipLineRegex(unittest.TestCase):
@@ -10,7 +10,7 @@ class TestSkipLineRegex(unittest.TestCase):
     SKIP_FILE = 'skip_file'
 
     def setUp(self):
-        self.regex_handler = src.RegexHandler()
+        self.regex_handler = bslint.RegexHandler()
 
     def testSkipLineSingleSpace(self):
         identifier = "' BSLINT_skip_line\n"
