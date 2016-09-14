@@ -1,5 +1,6 @@
 import unittest
 import src
+import src.commands as commands
 import src.ErrorMessagesBuilder.error_message_handler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
 import os
@@ -18,6 +19,7 @@ class TestMaxLineLength(unittest.TestCase):
 
     def testValidLineLength(self):
         config = src.load_config_file(default='test-config.json')
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ShortLineLength.txt"
         file = src.get_string_to_parse(file_name)
@@ -29,6 +31,7 @@ class TestMaxLineLength(unittest.TestCase):
 
     def testExceedMaxLineLength(self):
         config = src.load_config_file(user="LineLength/small-max-line-length-config.json", default='test-config.json')
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ShortLineLength.txt"
         file = src.get_string_to_parse(file_name)

@@ -1,5 +1,6 @@
 import unittest
 import src
+import src.commands as commands
 import src.ErrorMessagesBuilder.error_message_handler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
 import os
@@ -19,6 +20,7 @@ class TestCommentFormat(unittest.TestCase):
 
     def testNoCommentCheck(self):
         config = src.load_config_file(default='test-config.json')
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.get_string_to_parse(file_name)
@@ -30,6 +32,7 @@ class TestCommentFormat(unittest.TestCase):
 
     def testTODOComment(self):
         config = src.load_config_file(user="Comments/TODO-comment-config.json", default='test-config.json')
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.get_string_to_parse(file_name)
@@ -41,6 +44,7 @@ class TestCommentFormat(unittest.TestCase):
 
     def testTODONoComment(self):
         config = src.load_config_file()
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.get_string_to_parse(file_name)
@@ -54,6 +58,7 @@ class TestCommentFormat(unittest.TestCase):
 
     def testNoTODOComment(self):
         config = src.load_config_file(user="Comments/no-TODO-comment-config.json", default='test-config.json')
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.get_string_to_parse(file_name)
@@ -66,6 +71,7 @@ class TestCommentFormat(unittest.TestCase):
 
     def testNoTODONoComment(self):
         config = src.load_config_file(user="Comments/no-TODO-no-comment-config.json", default='test-config.json')
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = src.get_string_to_parse(file_name)

@@ -2,6 +2,7 @@ import unittest
 import src
 import src.ErrorMessagesBuilder.error_message_handler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
+import src.commands as commands
 
 
 class TestSkipLineCommand(unittest.TestCase):
@@ -11,10 +12,10 @@ class TestSkipLineCommand(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.error = Err.ErrorMessageHandler()
-        cls.indentCheck = src.CheckIndentationCommand()
 
     def testSkipLineCommandSkipTypo(self):
         config = src.load_config_file()
+        commands.config = config
         lexer = src.Lexer(config)
         exp_result = []
         result = lexer.lex("'BSLint_skip_line \nxgygu= 22\ny = 4")
@@ -29,6 +30,7 @@ class TestSkipLineCommand(unittest.TestCase):
 
     def testSkipLineCommandWithTypo(self):
         config = src.load_config_file()
+        commands.config = config
         lexer = src.Lexer(config)
         exp_result = [self.error.get(ErrConst.TYPO_IN_CODE, [3])]
         result = lexer.lex("'BSLint_skip_line \ny=4\nxgygu = 22\n")
@@ -36,6 +38,7 @@ class TestSkipLineCommand(unittest.TestCase):
 
     def testSkipLineCommandInactive(self):
         config = src.load_config_file("BSLintCommands/inactive-skip-line-config.json")
+        commands.config = config
         lexer = src.Lexer(config)
         exp_result = [self.error.get(ErrConst.TYPO_IN_CODE, [2])]
         result = lexer.lex("'BSLint_skip_line \nxgygu = 22\ny = 4")

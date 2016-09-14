@@ -3,6 +3,7 @@ import src
 import src.ErrorMessagesBuilder.error_message_handler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
 import os
+import src.commands as commands
 
 
 class TestConsecutiveEmptyLines(unittest.TestCase):
@@ -16,9 +17,9 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         this_dir, this_filename = os.path.split(__file__)
         cls.tests_filepath_prefix = os.path.join(this_dir, "../EmptyLinesTestFiles/")
 
-
     def testNoEmptyLines(self):
         config = src.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "NoEmptyLines.brs"
         file = src.get_string_to_parse(file_name)
@@ -30,6 +31,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
 
     def testOneConsecutiveEmptyLine(self):
         config = src.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "OneConsecutiveEmptyLine.brs"
         file = src.get_string_to_parse(file_name)
@@ -41,6 +43,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
 
     def testOnlyEmptyLines(self):
         config = src.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "OnlyEmptyLines.brs"
         file = src.get_string_to_parse(file_name)
@@ -55,6 +58,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
 
     def testEmptyLinesAtEnd(self):
         config = src.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "EmptyLinesAtEnd.brs"
         file = src.get_string_to_parse(file_name)
@@ -67,6 +71,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
 
     def testEmptyLinesAtStart(self):
         config = src.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "EmptyLinesAtStart.brs"
         file = src.get_string_to_parse(file_name)
@@ -101,6 +106,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
 
     def testMultipleTokensAndEmptyLines(self):
         config = src.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "MultipleTokensAndEmptyLines.brs"
         file = src.get_string_to_parse(file_name)
@@ -112,6 +118,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
 
     def testEmptyLinesInMiddleCustomConfig(self):
         config = src.load_config_file(user="EmptyLines/double-empty-lines-config.json", default='test-config.json')
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "EmptyLinesInMiddle.brs"
         file = src.get_string_to_parse(file_name)
@@ -123,6 +130,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
 
     def testOnlyEmptyLinesCustomConfig(self):
         config = src.load_config_file(user="EmptyLines/double-empty-lines-config.json", default='test-config.json')
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "OnlyEmptyLines.brs"
         file = src.get_string_to_parse(file_name)
