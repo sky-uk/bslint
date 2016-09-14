@@ -1,5 +1,5 @@
 """bslint.bslint: provides entry point main()."""
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 import os
 import sys
 import src
