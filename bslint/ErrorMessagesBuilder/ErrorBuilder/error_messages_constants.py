@@ -1,4 +1,4 @@
-import src.ErrorMessagesBuilder.ErrorBuilder.error_message_builder as ErrBuilder
+import bslint.ErrorMessagesBuilder.ErrorBuilder.error_message_builder as ErrBuilder
 
 ERROR = "ERROR"
 WARNING = "WARNING"

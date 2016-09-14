@@ -1,6 +1,6 @@
 import unittest
-import src
-import src.constants as const
+import bslint
+import bslint.constants as const
 import os
 
 
@@ -10,15 +10,15 @@ class TestStringRegex(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.regex_handler = src.RegexHandler()
+        cls.regex_handler = bslint.RegexHandler()
         this_dir, this_filename = os.path.split(__file__)
-        cls.string_file = src.get_string_to_parse(os.path.join(this_dir, "../LexingTestFiles/BasicStringAssignment.txt"))
-        cls.multi_line_file = src.get_string_to_parse(
+        cls.string_file = bslint.get_string_to_parse(os.path.join(this_dir, "../LexingTestFiles/BasicStringAssignment.txt"))
+        cls.multi_line_file = bslint.get_string_to_parse(
             os.path.join(this_dir, "../StylingTestFiles/MultilineAssignment.txt"))
 
     def setUp(self):
-        config = src.load_config_file(default='test-config.json')
-        self.lexer = src.Lexer(config)
+        config = bslint.load_config_file(default='test-config.json')
+        self.lexer = bslint.Lexer(config)
 
     def testString(self):
         test_string = '"test123ID"'

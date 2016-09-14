@@ -1,6 +1,6 @@
 import unittest
-import src.constants as const
-import src
+import bslint.constants as const
+import bslint
 
 
 class TestMiscRegex(unittest.TestCase):
@@ -8,9 +8,9 @@ class TestMiscRegex(unittest.TestCase):
     TOKENS = 'Tokens'
 
     def setUp(self):
-        config = src.load_config_file(default='test-config.json')
-        self.lexer = src.Lexer(config)
-        self.regex_handler = src.RegexHandler()
+        config = bslint.load_config_file(default='test-config.json')
+        self.lexer = bslint.Lexer(config)
+        self.regex_handler = bslint.RegexHandler()
         
     def testWhiteSpace(self):
         identifier = " "

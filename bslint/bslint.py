@@ -2,8 +2,8 @@
 __version__ = "0.3.5"
 import os
 import sys
-import src
-import src.constants as const
+import bslint
+import bslint.constants as const
 
 is_lexed_correctly = True
 
@@ -39,9 +39,9 @@ def lint_all(directory):
 
 def lint_specific(filename):
     if filename.endswith(".brs") or filename.endswith(".bs"):
-        file_reader = src.FileReader()
+        file_reader = bslint.FileReader()
         result = file_reader.read_file(filename)
-        lexer = src.Lexer(result[2])
+        lexer = bslint.Lexer(result[2])
         if result[0]:
             print(result[0])
 
