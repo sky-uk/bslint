@@ -3,6 +3,7 @@ import os
 import src
 import src.ErrorMessagesBuilder.error_message_handler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
+import src.commands as commands
 
 
 class TestTraceFree(unittest.TestCase):
@@ -18,6 +19,7 @@ class TestTraceFree(unittest.TestCase):
 
     def testPRINT(self):
         config = src.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "Print.brs"
         file = src.get_string_to_parse(file_name)
@@ -29,6 +31,7 @@ class TestTraceFree(unittest.TestCase):
 
     def testQuestionMark(self):
         config = src.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "QuestionMark.brs"
         file = src.get_string_to_parse(file_name)
@@ -40,6 +43,7 @@ class TestTraceFree(unittest.TestCase):
 
     def testPrintAndQuestionMark(self):
         config = src.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "PrintAndQuestionMark.brs"
         file = src.get_string_to_parse(file_name)
@@ -52,6 +56,7 @@ class TestTraceFree(unittest.TestCase):
 
     def testNoPrintNoQuestionMark(self):
         config = src.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "NoPrintNoQuestionMark.brs"
         file = src.get_string_to_parse(file_name)
@@ -63,6 +68,7 @@ class TestTraceFree(unittest.TestCase):
 
     def testInactivePrintAndQuestionMark(self):
         config = src.load_config_file(default="test-config.json")
+        commands.config = config
         self.lexer = src.Lexer(config)
         file_name = self.tests_filepath_prefix + "PrintAndQuestionMark.brs"
         file = src.get_string_to_parse(file_name)

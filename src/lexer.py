@@ -4,6 +4,7 @@ import os
 import enchant
 import src.constants as const
 import src
+import src.commands as commands
 import src.ErrorMessagesBuilder.error_message_handler as Err
 import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
 
@@ -18,19 +19,14 @@ class Lexer:
         self.current_indentation_level = 0
         self.consecutive_empty_lines = 0
         self.is_empty_line = True
-        self.styling_rule_handler = src.StylingRulesHandler(config)
         self.line_not_to_style_check = -1
         self.skip_styling_on_file = False
         self.characters = ""
         self.error_message_handler = Err.ErrorMessageHandler()
-        self.spaces_around_operators_config = config['spaces_around_operators']["params"]['spaces_around_operators']
         self.current_char_index = 0
         self.match = None
         self.token_type = None
         self.last_read_line = ''
-        self.dictionary = config["spell_check"]["params"]["dictionary"]
-        self.personal_words_list = Lexer.personal_words_filepath()
-        self.combined_dictionary = enchant.DictWithPWL(self.dictionary, self.personal_words_list)
 
     def lex(self, characters):
         self.characters = characters
@@ -54,7 +50,8 @@ class Lexer:
             except ValueError:
                 end_of_line = re.match(r"(.*)\n", self.characters[self.current_char_index:])
                 errors.append(self.error_message_handler.get(ErrConst.UNMATCHED_QUOTATION_MARK,
-                                             [(end_of_line.group()[:const.PENULTIMATE_CHARACTER]), self.line_number]))
+                                                             [(end_of_line.group()[:const.PENULTIMATE_CHARACTER]),
+                                                              self.line_number]))
                 self.line_number += 1
                 self.current_char_index += len(end_of_line.group())
         if self.style_checking_is_active():
@@ -82,9 +79,9 @@ class Lexer:
     def apply_bslint_command(self):
         command_type = self.match.group('command')
         if command_type == "skip_line":
-            self.line_not_to_style_check = self.check_style_rule(command_type, {"line_number": self.line_number})
+            self.line_not_to_style_check = commands.check_skip_line(self.line_number)
         elif command_type == "skip_file":
-            self.skip_styling_on_file = self.check_style_rule(command_type)
+            self.skip_styling_on_file = commands.check_skip_file()
 
     def apply_styling(self):
         if self.style_checking_is_active():
@@ -108,44 +105,37 @@ class Lexer:
             self.check_trace_free()
 
     def check_trace_free(self):
-        is_trace_free = self.check_style_rule('check_trace_free')
+        is_trace_free = commands.check_trace_free()
         self.warning_filter(is_trace_free)
 
     def check_spelling(self):
-        is_spelt_correctly = self.check_style_rule('spell_check',
-                                                   {'token': self.match.group(), "type": self.token_type,
-                                                    "combined_dictionary": self.combined_dictionary})
+        is_spelt_correctly = commands.check_spelling(self.match.group(), self.token_type)
         self.warning_filter(is_spelt_correctly)
 
     def check_operator_spacing(self):
-        before_index = self.current_char_index - self.spaces_around_operators_config - 2
-        after_index = self.current_char_index + self.spaces_around_operators_config + 1
-        characters_around_operator = self.characters[before_index:after_index]
-        correct_spacing = self.check_style_rule('spaces_around_operators', {"characters": characters_around_operator})
+        correct_spacing = commands.check_spaces_around_operators(self.characters, self.current_char_index)
         self.warning_filter(correct_spacing)
 
     def check_comment_styling(self):
-        is_correct_comment = self.check_style_rule('check_comment', {"token": self.match.group()})
+        is_correct_comment = commands.check_comment(self.match.group())
         self.warning_filter(is_correct_comment)
         self.check_spelling()
 
     def apply_new_line_styling(self):
         self.count_consecutive_new_lines()
-        is_correct_line_length = self.check_style_rule('max_line_length',
-                                                       {"line_length": self.line_length})
+        is_correct_line_length = commands.check_max_line_length(self.line_length)
         self.warning_filter(is_correct_line_length)
-        is_consecutive_empty_lines = self.check_style_rule('consecutive_empty_lines',
-                                                           {"empty_lines": self.consecutive_empty_lines})
+
+        is_consecutive_empty_lines = commands.check_consecutive_empty_lines(self.consecutive_empty_lines)
         self.warning_filter(is_consecutive_empty_lines)
+
         self.apply_indentation_styling()
         self.line_length = 0
 
     def apply_indentation_styling(self):
         self.get_last_line()
-        is_correct_indentation = self.check_style_rule('check_indentation',
-                                                       {"current_indentation_level": self.current_indentation_level,
-                                                        "characters": self.last_read_line,
-                                                        "indentation_level": self.indentation_level})
+        is_correct_indentation = commands.check_indentation(self.current_indentation_level, self.last_read_line,
+                                                            self.indentation_level)
         if is_correct_indentation:
             self.warning_filter(is_correct_indentation[0])
             self.current_indentation_level = is_correct_indentation[1]
@@ -178,8 +168,6 @@ class Lexer:
             tuple_token = (group, self.token_type, self.match.group('type'))
         return tuple_token
 
-    def check_style_rule(self, command, params={}):
-        return self.styling_rule_handler.apply(command, params)
 
     def warning_filter(self, result):
         if result is not None:

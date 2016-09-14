@@ -38,5 +38,7 @@ def read_json(filepath):
     config_json = json.loads(config_string)
     return config_json
 
+CONFIG = load_config_file()
+
 if __name__ == "__main__":
     load_config_file()
