@@ -5,6 +5,7 @@ import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrC
 import os
 import bslint.commands as commands
 
+
 class TestIndentation(unittest.TestCase):
     WARNINGS = 'Warnings'
     STATUS = 'Status'

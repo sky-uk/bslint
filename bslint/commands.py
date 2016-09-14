@@ -130,7 +130,6 @@ def check_spelling(token, token_type):
  Private helper functions
 """
 
-
 def _command_is_active(command_name):
     return config[command_name]["active"]
 
