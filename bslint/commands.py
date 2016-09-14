@@ -9,15 +9,9 @@ import bslint.words_dictionary as words_dict
 config = config_loader.CONFIG
 dictionary = words_dict._get_new_dictionary()
 
-def _change_dict_lang(dict_lang):
-    global dictionary
-    dictionary = words_dict._get_new_dictionary(dict_lang)
-
 
 def check_comment(token):
-    check_comment_isactive = config["check_comment"]['active']
-
-    if check_comment_isactive is not True:
+    if _command_is_active("check_comment") is not True:
         return
 
     check_comment_config = config["check_comment"]["params"]
@@ -44,6 +38,9 @@ def check_comment(token):
 
 
 def check_file_encoding(file_path):
+    if _command_is_active("check_file_encoding") is not True:
+        return
+
     file_encoding = config['check_file_encoding']['params']
     try:
         codecs.open(file_path, encoding=file_encoding["source_file_encoding"]).read()
@@ -63,36 +60,24 @@ def check_indentation(current_indentation_level, characters, indentation_level):
     return warning, current_indentation_level
 
 
-def _handle_warnings(current_indentation_level, characters):
-    indent_config = config['check_indentation']['params']
-    only_tab_indents = indent_config["only_tab_indents"]
-    tab_size = indent_config["tab_size"]
-    if re.search(r"\S", characters):
-        if only_tab_indents:
-            if not re.match("\t{" + str(current_indentation_level) + "}\S", characters):
-                return {"error_key": ErrConst.TAB_AND_SPACES, "error_params": []}
-        else:
-            if not re.match("\s{" + str(
-                            tab_size *
-                            current_indentation_level) + "}\S",
-                            characters):
-                return {"error_key": ErrConst.TAB_INDENTATION_ERROR,
-                        "error_params": [tab_size]}
-
-
 def check_trace_free():
-    trace_free_config = config["check_trace_free"]["active"]
-    if trace_free_config is True:
+    if _command_is_active("check_trace_free") is True:
         return {"error_key": ErrConst.TRACEABLE_CODE, "error_params": []}
 
 
 def check_max_line_length(line_length):
+    if _command_is_active("max_line_length") is not True:
+        return
+
     max_len = config['max_line_length']['params']['max_line_length']
     if max_len < line_length:
         return {"error_key": ErrConst.LINE_LENGTH, "error_params": [max_len]}
 
 
 def check_consecutive_empty_lines(empty_lines):
+    if _command_is_active("consecutive_empty_lines") is not True:
+        return
+
     params = config["consecutive_empty_lines"]["params"]
     empty_lines_allowed = params["consecutive_empty_lines"]
     if empty_lines > empty_lines_allowed:
@@ -111,6 +96,7 @@ def check_skip_line(line_number):
 
     return line_number + 1
 
+
 def check_spaces_around_operators(characters, current_char_index):
     if _command_is_active("spaces_around_operators") is not True:
         return
@@ -123,6 +109,7 @@ def check_spaces_around_operators(characters, current_char_index):
             allowed_num_spaces) + "}\S{0,1}$", chars_around_operator):
         return {"error_key": ErrConst.NO_SPACE_AROUND_OPERATORS,
                 "error_params": [allowed_num_spaces]}
+
 
 def check_spelling(token, token_type):
     if _command_is_active("spell_check") is not True:
@@ -137,6 +124,36 @@ def check_spelling(token, token_type):
         spelt_correct = dictionary.check(word)
         if not spelt_correct:
             return {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
+
+"""
+ Private helper functions
+"""
+
+def _command_is_active(command_name):
+    return config[command_name]["active"]
+
+
+def _change_dict_lang(dict_lang):
+    global dictionary
+    dictionary = words_dict._get_new_dictionary(dict_lang)
+
+
+def _handle_warnings(current_indentation_level, characters):
+    indent_config = config['check_indentation']['params']
+    only_tab_indents = indent_config["only_tab_indents"]
+    tab_size = indent_config["tab_size"]
+    if re.search(r"\S", characters):
+        if only_tab_indents:
+            if not re.match("\t{" + str(current_indentation_level) + "}\S", characters):
+                return {"error_key": ErrConst.TAB_AND_SPACES, "error_params": []}
+        else:
+            if not re.match("\s{" + str(
+                            tab_size *
+                            current_indentation_level) + "}\S",
+                            characters):
+                return {"error_key": ErrConst.TAB_INDENTATION_ERROR,
+                        "error_params": [tab_size]}
+
 
 def _parse_words(identifier_str):
     words = []
@@ -180,7 +197,4 @@ def _parse_comment_words(comment):
             if not word == '':
                 words.append(word)
     return words
-
-def _command_is_active(command_name):
-    return config[command_name]["active"]
 
