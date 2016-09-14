@@ -1,12 +1,12 @@
 import unittest
-import src.constants as const
-import src
+import bslint.constants as const
+import bslint
 
 
 class TestOperatorRegex(unittest.TestCase):
 
     def setUp(self):
-        self.regex_handler = src.RegexHandler()
+        self.regex_handler = bslint.RegexHandler()
 
     def testAddEqual(self):
         identifier = "+="

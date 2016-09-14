@@ -2,17 +2,17 @@ import re
 import sys
 import os
 import enchant
-import src.constants as const
-import src
-import src.commands as commands
-import src.ErrorMessagesBuilder.error_message_handler as Err
-import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
+import bslint.constants as const
+import bslint
+import bslint.commands as commands
+import bslint.ErrorMessagesBuilder.error_message_handler as Err
+import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
 
 
 class Lexer:
 
     def __init__(self, config):
-        self.regex_handler = src.RegexHandler()
+        self.regex_handler = bslint.RegexHandler()
         self.line_number = 1
         self.warnings = []
         self.config_json = config

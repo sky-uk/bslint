@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 
 version = re.search(
     '^__version__\s*=\s*"(.*)"',
-    open('src/bslint.py').read(),
+    open('bslint/bslint.py').read(),
     re.M
 ).group(1)
 
@@ -19,8 +19,8 @@ setup(
 
     name = "bslint",
     packages = find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
-    package_data={'src': ['config/*.json', 'config/personal-words-list.txt']},
-    entry_points = { "console_scripts": ['bslint = src.bslint:main'] },
+    package_data={'bslint': ['config/*.json', 'config/personal-words-list.txt']},
+    entry_points = { "console_scripts": ['bslint = bslint.bslint:main'] },
     version = version,
     description = "A linter tool for the BrightScript language.",
     long_description = long_descr,

@@ -1,11 +1,11 @@
 import unittest
 import enchant
-import src
-import src.constants as const
-import src.ErrorMessagesBuilder.error_message_handler as Err
-import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
+import bslint
+import bslint.constants as const
+import bslint.ErrorMessagesBuilder.error_message_handler as Err
+import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
 import os
-import src.commands as commands
+import bslint.commands as commands
 
 class TestSpellCheck(unittest.TestCase):
     WARNINGS = 'Warnings'
@@ -19,9 +19,9 @@ class TestSpellCheck(unittest.TestCase):
         cls.filepath_prefix = os.path.join(this_dir, "../StylingTestFiles/")
 
     def setUp(self):
-        self.config = src.load_config_file(user='SpellCheck/spellcheck-config.json', default='test-config.json')
+        self.config = bslint.load_config_file(user='SpellCheck/spellcheck-config.json', default='test-config.json')
         commands.config = self.config
-        self.lexer = src.Lexer(self.config)
+        self.lexer = bslint.Lexer(self.config)
 
     def testM(self):
         test_string = "m"
@@ -97,7 +97,7 @@ class TestSpellCheck(unittest.TestCase):
 
     def testRealFile(self):
         file_name = self.filepath_prefix + "SpellCheck.brs"
-        file = src.get_string_to_parse(file_name)
+        file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = [self.error.get(ErrConst.TYPO_IN_CODE, [2])]
         result = self.lexer.lex(file)
@@ -106,7 +106,7 @@ class TestSpellCheck(unittest.TestCase):
 
     def testMisspelledCommentFromFile(self):
         file_name = self.filepath_prefix + "IncorrectCommentSpelling.brs"
-        file = src.get_string_to_parse(file_name)
+        file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = [self.error.get(ErrConst.TYPO_IN_CODE, [1])]
         result = self.lexer.lex(file)
@@ -114,20 +114,20 @@ class TestSpellCheck(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testUSDictionaryFailing(self):
-        us_config = src.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
+        us_config = bslint.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
         commands.config = us_config
         commands._change_dict_lang(us_config["spell_check"]["params"]["dictionary"])
-        self.lexer = src.Lexer(us_config)
+        self.lexer = bslint.Lexer(us_config)
         test_string = "specialised"
         exp_result = {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
     def testUSDictionaryPassing(self):
-        us_config = src.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
+        us_config = bslint.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
         commands.config = us_config
         commands._change_dict_lang(us_config["spell_check"]["params"]["dictionary"])
-        self.lexer = src.Lexer(us_config)
+        self.lexer = bslint.Lexer(us_config)
         test_string = "specialized"
         exp_result = None
         result = commands.check_spelling(test_string, const.ID)

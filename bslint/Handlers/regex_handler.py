@@ -1,4 +1,4 @@
-import src.regexs as regexs
+import bslint.regexs as regexs
 import re
 
 

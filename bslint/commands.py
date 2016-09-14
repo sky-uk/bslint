@@ -1,9 +1,9 @@
-import src.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
+import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
 import re
-import src.config_loader as config_loader
+import bslint.config_loader as config_loader
 import codecs
-import src.constants as const
-import src.words_dictionary as words_dict
+import bslint.constants as const
+import bslint.words_dictionary as words_dict
 
 
 config = config_loader.CONFIG
