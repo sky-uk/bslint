@@ -1,3 +1,6 @@
+"""bslint.bslint: provides entry point main()."""
+__version__ = "0.3.5"
+
 import os
 import sys
 import bslint
