@@ -24,6 +24,5 @@ setup(
     author="BSLint",
     author_email="zachary.robinson@sky.uk",
     url="https://github.com/sky-uk/bslint",
-    download_url='https://github.com/sky-uk/bslint/archive/0.2.4.tar.gz',
-    install_requires=['pyenchant==1.6.8']
+    download_url='https://github.com/sky-uk/bslint/archive/0.2.4.tar.gz'
 )
