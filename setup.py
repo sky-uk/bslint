@@ -9,14 +9,16 @@ import ast
 import re
 from setuptools import setup, find_packages
 
-_version_re = re.compile(r'__version__\s+=\s+(.*)')
 
-with open('bslint/__init__.py', 'rb') as f:
-    version = str(ast.literal_eval(_version_re.search(
-        f.read().decode('utf-8')).group(1)))
+version = re.search(
+    '^__version__\s*=\s*"(.*)"',
+    open('bslint/bslint.py').read(),
+    re.M
+).group(1)
 
 with open("README.md", "rb") as f:
     long_descr = f.read().decode("utf-8")
+    
 
 setup(
 
