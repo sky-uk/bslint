@@ -23,6 +23,5 @@ setup(
     description="A linter tool for the BrightScript language.",
     author="BSLint",
     author_email="zachary.robinson@sky.uk",
-    url="https://github.com/sky-uk/bslint",
-    download_url='https://github.com/sky-uk/bslint/archive/0.2.4.tar.gz'
+    url="https://github.com/sky-uk/bslint"
 )
