@@ -5,7 +5,6 @@ BSLint
 BSLint is a linter for the BrightScript language.
 """
 
-import ast
 import re
 from setuptools import setup, find_packages
 
@@ -24,7 +23,11 @@ setup(
     description="A linter tool for the BrightScript language.",
     author="BSLint",
     author_email="zachary.robinson@sky.uk",
+<<<<<<< HEAD
     url="https://github.com/sky-uk/bslint",
     download_url='https://github.com/sky-uk/bslint/archive/0.2.4.tar.gz',
     install_requires=['pyenchant==1.6.8']
+=======
+    url="https://github.com/sky-uk/bslint"
+>>>>>>> master
 )
