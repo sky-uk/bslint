@@ -9,28 +9,22 @@ import ast
 import re
 from setuptools import setup, find_packages
 
-
 version = re.search(
     '^__version__\s*=\s*"(.*)"',
     open('bslint/bslint.py').read(),
     re.M
 ).group(1)
 
-with open("README.md", "rb") as f:
-    long_descr = f.read().decode("utf-8")
-
-
 setup(
-    name = "bslint",
-    packages = find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
+    name="bslint",
+    packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     package_data={'bslint': ['config/*.json', 'config/personal-words-list.txt']},
-    entry_points = { "console_scripts": ['bslint = bslint.bslint:main'] },
-    version = version,
-    description = "A linter tool for the BrightScript language.",
-    long_description = long_descr,
-    author = "BSLint",
+    entry_points={"console_scripts": ['bslint = bslint.bslint:main']},
+    version=version,
+    description="A linter tool for the BrightScript language.",
+    author="BSLint",
     author_email="zachary.robinson@sky.uk",
-    url = "https://github.com/sky-uk/bslint",
+    url="https://github.com/sky-uk/bslint",
     download_url='https://github.com/sky-uk/bslint/archive/0.2.4.tar.gz',
     install_requires=['pyenchant==1.6.8']
-    )
+)
