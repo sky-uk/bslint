@@ -1,7 +1,5 @@
 import re
-import sys
 import os
-import enchant
 import bslint.constants as const
 import bslint
 import bslint.commands as commands
@@ -10,7 +8,7 @@ import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrC
 
 
 class Lexer:
-    def __init__(self, config):
+    def __init__(self):
         self.regex_handler = bslint.RegexHandler()
         self.line_number = 1
         self.warnings = []
@@ -167,7 +165,6 @@ class Lexer:
         if self.match.group('type') is not '':
             tuple_token = (group, self.token_type, self.match.group('type'))
         return tuple_token
-
 
     def warning_filter(self, result):
         if result is not None:

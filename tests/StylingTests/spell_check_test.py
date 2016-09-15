@@ -20,9 +20,9 @@ class TestSpellCheck(unittest.TestCase):
         cls.filepath_prefix = os.path.join(this_dir, "../StylingTestFiles/")
 
     def setUp(self):
-        self.config = bslint.load_config_file(user='SpellCheck/spellcheck-config.json', default='test-config.json')
-        commands.config = self.config
-        self.lexer = bslint.Lexer(self.config)
+        config = bslint.load_config_file(user='SpellCheck/spellcheck-config.json', default='test-config.json')
+        commands.config = config
+        self.lexer = bslint.Lexer()
 
     def testM(self):
         test_string = "m"
@@ -118,7 +118,7 @@ class TestSpellCheck(unittest.TestCase):
         us_config = bslint.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
         commands.config = us_config
         commands._change_dict_lang(us_config["spell_check"]["params"]["dictionary"])
-        self.lexer = bslint.Lexer(us_config)
+        self.lexer = bslint.Lexer()
         test_string = "specialised"
         exp_result = {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
         result = commands.check_spelling(test_string, const.ID)
@@ -128,7 +128,7 @@ class TestSpellCheck(unittest.TestCase):
         us_config = bslint.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
         commands.config = us_config
         commands._change_dict_lang(us_config["spell_check"]["params"]["dictionary"])
-        self.lexer = bslint.Lexer(us_config)
+        self.lexer = bslint.Lexer()
         test_string = "specialized"
         exp_result = None
         result = commands.check_spelling(test_string, const.ID)
