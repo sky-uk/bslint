@@ -49,5 +49,5 @@ class TestEncodingCheck(unittest.TestCase):
         fo = open(file_path, "r+")
         str_to_lex = fo.read()
         result = bslint.FileReader.read_file(file_path)
-        exp_result = (None, str_to_lex)
+        exp_result = {"invalid_encoding": None, "str_to_lex": str_to_lex}
         self.assertEqual(result, exp_result)

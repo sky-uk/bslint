@@ -15,4 +15,5 @@ from .file_reader import *
 from .Handlers.regex_handler import *
 
 from .commands import *
+from .bslint import *
 
