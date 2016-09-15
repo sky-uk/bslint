@@ -1,5 +1,5 @@
 """bslint.bslint: provides entry point main()."""
-__version__ = "0.4.3"
+__version__ = "0.4.4"
 
 
 import os
@@ -28,7 +28,7 @@ def main():
         bslintrc = {"ignore": ""}
 
     if is_not_specific_path():
-        pathname = sys.argv
+        pathname = os.getcwd()
         lint_all(pathname, bslintrc["ignore"])
     else:
         filename = sys.argv[1]
