@@ -22,7 +22,7 @@ class TestCommentFormat(unittest.TestCase):
     def testNoCommentCheck(self):
         config = bslint.load_config_file(default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -34,7 +34,7 @@ class TestCommentFormat(unittest.TestCase):
     def testTODOComment(self):
         config = bslint.load_config_file(user="Comments/TODO-comment-config.json", default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -46,7 +46,7 @@ class TestCommentFormat(unittest.TestCase):
     def testTODONoComment(self):
         config = bslint.load_config_file()
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -60,7 +60,7 @@ class TestCommentFormat(unittest.TestCase):
     def testNoTODOComment(self):
         config = bslint.load_config_file(user="Comments/no-TODO-comment-config.json", default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -73,7 +73,7 @@ class TestCommentFormat(unittest.TestCase):
     def testNoTODONoComment(self):
         config = bslint.load_config_file(user="Comments/no-TODO-no-comment-config.json", default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")

@@ -1,5 +1,5 @@
 """bslint.bslint: provides entry point main()."""
-__version__ = "0.3.6"
+__version__ = "0.3.7"
 
 
 import os
@@ -43,7 +43,7 @@ def lint_specific(filename):
     if filename.endswith(".brs") or filename.endswith(".bs"):
         file_reader = bslint.FileReader()
         result = file_reader.read_file(filename)
-        lexer = bslint.Lexer(result[2])
+        lexer = bslint.Lexer()
         if result[0]:
             print(result[0])
 

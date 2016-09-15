@@ -14,8 +14,7 @@ class TestLexSkeletonMain(unittest.TestCase):
         cls.filepath_prefix = os.path.join(this_dir, "../LexingTestFiles/")
 
     def setUp(self):
-        config = bslint.load_config_file()
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
 
     def testLexWholeFile(self):
         file = bslint.get_string_to_parse(self.filepath_prefix + "SkeletonMain.brs")

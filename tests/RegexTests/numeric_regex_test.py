@@ -7,8 +7,7 @@ class TestNumericRegex(unittest.TestCase):
     TOKENS = 'Tokens'
 
     def setUp(self):
-        config = bslint.load_config_file(default='test-config.json')
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         self.regex_handler = bslint.RegexHandler()
 
     def testInteger(self):
