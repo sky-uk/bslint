@@ -20,7 +20,7 @@ class TestMaxLineLength(unittest.TestCase):
     def testValidLineLength(self):
         config = bslint.load_config_file(default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.filepath_prefix + "ShortLineLength.txt"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -32,7 +32,7 @@ class TestMaxLineLength(unittest.TestCase):
     def testExceedMaxLineLength(self):
         config = bslint.load_config_file(user="LineLength/small-max-line-length-config.json", default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.filepath_prefix + "ShortLineLength.txt"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -43,7 +43,8 @@ class TestMaxLineLength(unittest.TestCase):
 
     def testEqualMaxLineLength(self):
         config = bslint.load_config_file(user="LineLength/small-max-line-length-config.json", default='test-config.json')
-        self.lexer = bslint.Lexer(config)
+        commands.config = config
+        self.lexer = bslint.Lexer()
         file_name = self.filepath_prefix + "EqualMaxLineLength.txt"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -54,7 +55,8 @@ class TestMaxLineLength(unittest.TestCase):
 
     def testMultiLineErrors(self):
         config = bslint.load_config_file(user="LineLength/small-max-line-length-config.json", default='test-config.json')
-        self.lexer = bslint.Lexer(config)
+        commands.config = config
+        self.lexer = bslint.Lexer()
         file_name = self.filepath_prefix + "MultilineAssignment.txt"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")

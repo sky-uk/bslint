@@ -16,8 +16,7 @@ class TestStringRegex(unittest.TestCase):
             os.path.join(this_dir, "../StylingTestFiles/MultilineAssignment.txt"))
 
     def setUp(self):
-        config = bslint.load_config_file(default='test-config.json')
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
 
     def testString(self):
         test_string = '"test123ID"'

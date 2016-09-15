@@ -20,7 +20,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
     def testNoEmptyLines(self):
         config = bslint.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "NoEmptyLines.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -32,7 +32,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
     def testOneConsecutiveEmptyLine(self):
         config = bslint.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "OneConsecutiveEmptyLine.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -44,7 +44,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
     def testOnlyEmptyLines(self):
         config = bslint.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "OnlyEmptyLines.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -59,7 +59,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
     def testEmptyLinesAtEnd(self):
         config = bslint.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "EmptyLinesAtEnd.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -72,7 +72,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
     def testEmptyLinesAtStart(self):
         config = bslint.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "EmptyLinesAtStart.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -84,7 +84,8 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
 
     def testEmptyLinesInMiddle(self):
         config = bslint.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')
-        self.lexer = bslint.Lexer(config)
+        commands.config = config
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "EmptyLinesInMiddle.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -95,7 +96,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
 
     def testCommentNotEmptyLines(self):
         config = bslint.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "CommentNotEmptyLines.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -107,7 +108,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
     def testMultipleTokensAndEmptyLines(self):
         config = bslint.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "MultipleTokensAndEmptyLines.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -119,7 +120,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
     def testEmptyLinesInMiddleCustomConfig(self):
         config = bslint.load_config_file(user="EmptyLines/double-empty-lines-config.json", default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "EmptyLinesInMiddle.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -131,7 +132,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
     def testOnlyEmptyLinesCustomConfig(self):
         config = bslint.load_config_file(user="EmptyLines/double-empty-lines-config.json", default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "OnlyEmptyLines.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")

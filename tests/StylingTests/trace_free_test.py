@@ -20,7 +20,7 @@ class TestTraceFree(unittest.TestCase):
     def testPRINT(self):
         config = bslint.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "Print.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -32,7 +32,7 @@ class TestTraceFree(unittest.TestCase):
     def testQuestionMark(self):
         config = bslint.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "QuestionMark.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -44,7 +44,7 @@ class TestTraceFree(unittest.TestCase):
     def testPrintAndQuestionMark(self):
         config = bslint.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "PrintAndQuestionMark.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -57,7 +57,7 @@ class TestTraceFree(unittest.TestCase):
     def testNoPrintNoQuestionMark(self):
         config = bslint.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "NoPrintNoQuestionMark.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -69,7 +69,7 @@ class TestTraceFree(unittest.TestCase):
     def testInactivePrintAndQuestionMark(self):
         config = bslint.load_config_file(default="test-config.json")
         commands.config = config
-        self.lexer = bslint.Lexer(config)
+        self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "PrintAndQuestionMark.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
