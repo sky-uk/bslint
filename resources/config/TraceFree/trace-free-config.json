@@ -1,7 +1,0 @@
-{
-  // No print statements.
-  "check_trace_free": {
-    "active": true,
-    "params": {}
-  }
-}

@@ -90,7 +90,6 @@ def check_skip_file():
 
     return True
 
-
 def check_skip_line(line_number):
     if _command_is_active("skip_line") is not True:
         return

@@ -1,1 +1,0 @@
-only ascii string

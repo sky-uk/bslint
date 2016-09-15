@@ -1,2 +1,0 @@
-string = "words"
-test_String = "this is words"
