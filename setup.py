@@ -18,7 +18,7 @@ version = re.search(
 
 with open("README.md", "rb") as f:
     long_descr = f.read().decode("utf-8")
-    
+
 
 setup(
     name = "bslint",
