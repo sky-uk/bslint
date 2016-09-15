@@ -1,0 +1,27 @@
+function init()
+    m.posterImage = m.top.findNode("posterImage")
+    m.posterImageDefault = m.top.findNode("posterImageDefault")
+end function
+
+function itemContentChanged()
+    itemContent = m.top.itemContent
+
+    m.posterImage.width = itemContent.width
+    m.posterImage.height = itemContent.height
+    m.posterImage.uri = _preparePosterUrl(itemContent)
+
+    m.posterImageDefault.width = m.posterImage.width
+    m.posterImageDefault.height = m.posterImage.height
+    m.posterImageDefault.scale = m.posterImage.scale
+    m.posterImageDefault.scaleRotateCenter = m.posterImage.scaleRotateCenter
+    m.posterImageDefault.translation = m.posterImage.translation
+end function
+
+function _preparePosterUrl(itemContent as Object) as Object
+    x = 10
+    if x = "roString"
+        return 1
+    else
+        return itemContent.itemContent.poster
+    end if
+end function
