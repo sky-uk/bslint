@@ -41,3 +41,13 @@ class TestEncodingCheck(unittest.TestCase):
         result = commands.check_file_encoding(file_path)
         exp_result = None
         self.assertEqual(result, exp_result)
+
+    def testFileReader(self):
+        config = bslint.load_config_file(user="FileEncoding/ASCII-encoding-config.json")
+        commands.config = config
+        file_path = self.tests_filepath_prefix + "ASCII-chars.brs"
+        fo = open(file_path, "r+")
+        str_to_lex = fo.read()
+        result = bslint.FileReader.read_file(file_path)
+        exp_result = (None, str_to_lex)
+        self.assertEqual(result, exp_result)
