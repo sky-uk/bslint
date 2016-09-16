@@ -11,7 +11,7 @@ class TestSkipLineCommand(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.error = Err.ErrorMessageHandler()
+        cls.error = Err.error_message_handler()
 
     def testSkipLineCommandSkipTypo(self):
         config = bslint.load_config_file()

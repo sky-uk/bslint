@@ -8,7 +8,7 @@ import os
 class TestLexSkeletonMain(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.error = Err.ErrorMessageHandler()
+        cls.error = Err.error_message_handler()
         this_dir, this_filename = os.path.split(__file__)
         cls.filepath_prefix = os.path.join(this_dir, "../LexingTestFiles/")
 

@@ -1,7 +1,7 @@
 import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as Err
 
 
-class ErrorMessageHandler:
+class error_message_handler:
     @staticmethod
     def get(key, params=[]):
         if key not in Err.ERROR_TABLE:
