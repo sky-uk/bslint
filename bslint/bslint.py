@@ -18,7 +18,7 @@ def main():
     try:
         manifest_path = find_manifest()
     except FileNotFoundError:
-        manifest_path = None
+        manifest_path = ""
         print(const.ERROR_COLOUR + "No manifest file found" + const.END_COLOUR)
 
     try:
@@ -103,7 +103,6 @@ def lint_specific(filename):
 
 
 def find_manifest():
-    upper_dir = ""
     if is_not_specific_path():
         upper_dir = ""
     else:
