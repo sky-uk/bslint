@@ -103,6 +103,7 @@ def lint_specific(filename):
 
 
 def find_manifest():
+    upper_dir = ""
     if is_not_specific_path():
         upper_dir = ""
     else:
