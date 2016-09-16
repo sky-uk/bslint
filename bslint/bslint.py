@@ -54,8 +54,6 @@ def lint_all(directory, directories_to_ignore, manifest_path):
 
 
 def get_relative_path(dirName, directory):
-    print(os.getcwd())
-    print(directory)
     directory = os.path.realpath(os.path.join(os.getcwd(), directory))
     return dirName.replace(directory, '')
 
