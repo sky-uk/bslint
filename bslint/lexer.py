@@ -20,7 +20,7 @@ class Lexer:
         self.line_not_to_style_check = -1
         self.skip_styling_on_file = False
         self.characters = ""
-        self.error_message_handler = Err.ErrorMessageHandler()
+        self.error_message_handler = Err.error_message_handler()
         self.current_char_index = 0
         self.match = None
         self.token_type = None

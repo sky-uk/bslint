@@ -13,7 +13,7 @@ class TestSpacesAroundOperators(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.error = Err.ErrorMessageHandler()
+        cls.error = Err.error_message_handler()
         cls.config = bslint.load_config_file(user="SpacesAroundOperators/spaces-around-operators-config.json", default="test-config.json")
 
     def testCorrectSpaceBefore(self):

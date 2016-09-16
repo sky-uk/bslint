@@ -6,7 +6,7 @@ class TestConfigFileLoading(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.error = ErrBuilder.ErrorMessageHandler()
+        cls.error = ErrBuilder.error_message_handler()
 
     def testReadJsonBadFileName(self):
         with self.assertRaises(ValueError):

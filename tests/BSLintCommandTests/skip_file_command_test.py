@@ -11,7 +11,7 @@ class TestSkipFileCommand(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.error = Err.ErrorMessageHandler()
+        cls.error = Err.error_message_handler()
 
     def testSkipFileCommandSkipStart(self):
         lexer = bslint.Lexer()
