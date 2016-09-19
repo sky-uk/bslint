@@ -22,7 +22,9 @@ def main():
         print(const.ERROR_COLOUR + "No manifest file found" + const.END_COLOUR)
 
     try:
-        bslintrc = read_bslintrc(manifest_path)
+        bslintrc_path = os.path.join(manifest_path, ".bslintrc")
+        bslintrc = read_bslintrc(bslintrc_path)
+        bslint.config_loader.load_config_file(bslintrc_path)
     except FileNotFoundError:
         print(const.ERROR_COLOUR + "No .bslintrc file found" + const.END_COLOUR)
         bslintrc = {"ignore": ""}
@@ -124,7 +126,7 @@ def no_manifest_in_folder(upper_dir):
 
 def read_bslintrc(manifest_dir):
     if manifest_dir is not None:
-        bslintrc = bslint.config_loader.read_json(os.path.join(manifest_dir, ".bslintrc"))
+        bslintrc = bslint.config_loader.read_json(manifest_dir)
     else:
         raise FileNotFoundError
     return bslintrc

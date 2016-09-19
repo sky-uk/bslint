@@ -15,7 +15,7 @@ class TestTraceFree(unittest.TestCase):
     def setUpClass(cls):
         cls.error = Err.error_message_handler()
         this_dir, this_filename = os.path.split(__file__)
-        cls.tests_filepath_prefix = os.path.join(this_dir, "../TraceTestFiles/")
+        cls.tests_filepath_prefix = os.path.join(this_dir, "../resources/TraceTestFiles/")
 
     def testPRINT(self):
         config = bslint.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")

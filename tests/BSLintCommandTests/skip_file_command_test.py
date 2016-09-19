@@ -26,7 +26,7 @@ class TestSkipFileCommand(unittest.TestCase):
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testSkipFileCommandSkipStartInactive(self):
-        config = bslint.load_config_file(user="BSLintCommands/inactive-skip-file-config.json")
+        config = bslint.load_config_file("BSLintCommands/inactive-skip-file-config.json")
         commands.config = config
         lexer = bslint.Lexer()
         exp_result = [self.error.get(ErrConst.TYPO_IN_CODE, [2])]

@@ -11,7 +11,7 @@ class TestLexSkeletonMain(unittest.TestCase):
     def setUpClass(cls):
         cls.error = Err.error_message_handler()
         this_dir, this_filename = os.path.split(__file__)
-        cls.filepath_prefix = os.path.join(this_dir, "../LexingTestFiles/")
+        cls.filepath_prefix = os.path.join(this_dir, "../resources/LexingTestFiles/")
 
     def setUp(self):
         self.lexer = bslint.Lexer()
