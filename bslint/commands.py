@@ -90,6 +90,7 @@ def check_skip_file():
 
     return True
 
+
 def check_skip_line(line_number):
     if _command_is_active("skip_line") is not True:
         return
@@ -125,12 +126,29 @@ def check_spelling(token, token_type):
         if not spelt_correct:
             return {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
 
+
+def check_method_declaration_spacing(token):
+    if _command_is_active("check_method_declaration_spacing") is not True:
+        return
+
+    method_spaces = config["check_method_declaration_spacing"]["params"]["method_spaces"]
+
+    if re.search(r"\b(function|sub)\b", token):
+        if not re.search(r"(function|sub)\s{" + str(method_spaces) + "}[a-z0-9_A-Z]*\(([a-z0-9_A-Z]*(?:,\s{" + \
+                                 str(method_spaces) + "}[a-z0-9_A-Z]*)?)*\)", token):
+            return {"error_key": ErrConst.METHOD_DECLARATION_SPACING, "error_params": []}
+
+
 """
  Private helper functions
 """
 
+
 def _command_is_active(command_name):
-    return config[command_name]["active"]
+    if command_name in config:
+        return config[command_name]["active"]
+    else:
+        return False
 
 
 def _change_dict_lang(dict_lang):
