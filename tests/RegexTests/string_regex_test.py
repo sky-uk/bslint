@@ -11,9 +11,9 @@ class TestStringRegex(unittest.TestCase):
     def setUpClass(cls):
         cls.regex_handler = bslint.RegexHandler()
         this_dir, this_filename = os.path.split(__file__)
-        cls.string_file = bslint.get_string_to_parse(os.path.join(this_dir, "../LexingTestFiles/BasicStringAssignment.txt"))
+        cls.string_file = bslint.get_string_to_parse(os.path.join(this_dir, "../resources/LexingTestFiles/BasicStringAssignment.txt"))
         cls.multi_line_file = bslint.get_string_to_parse(
-            os.path.join(this_dir, "../StylingTestFiles/MultilineAssignment.txt"))
+            os.path.join(this_dir, "../resources/StylingTestFiles/MultilineAssignment.txt"))
 
     def setUp(self):
         self.lexer = bslint.Lexer()

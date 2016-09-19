@@ -15,7 +15,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
     def setUpClass(cls):
         cls.error = Err.error_message_handler()
         this_dir, this_filename = os.path.split(__file__)
-        cls.tests_filepath_prefix = os.path.join(this_dir, "../EmptyLinesTestFiles/")
+        cls.tests_filepath_prefix = os.path.join(this_dir, "../resources/EmptyLinesTestFiles/")
 
     def testNoEmptyLines(self):
         config = bslint.load_config_file(user='EmptyLines/single-empty-lines-config.json', default='test-config.json')

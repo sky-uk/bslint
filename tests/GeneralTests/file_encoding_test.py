@@ -17,7 +17,7 @@ class TestEncodingCheck(unittest.TestCase):
     def setUpClass(cls):
         this_dir, this_filename = os.path.split(__file__)
         cls.filepath_prefix = os.path.join(this_dir, "../../resources/")
-        cls.tests_filepath_prefix = os.path.join(this_dir, "../EncodingTestFiles/")
+        cls.tests_filepath_prefix = os.path.join(this_dir, "../resources/EncodingTestFiles/")
 
     def testASCIIChars(self):
         config = bslint.load_config_file(user="FileEncoding/ASCII-encoding-config.json")
