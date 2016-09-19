@@ -1,0 +1,8 @@
+{
+   "check_method_declaration_spacing": {
+    "active": false,
+    "params": {
+      "method_spaces": 1
+    }
+  }
+}

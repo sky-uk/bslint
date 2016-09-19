@@ -128,6 +128,8 @@ class Lexer:
         self.warning_filter(is_consecutive_empty_lines)
 
         self.apply_indentation_styling()
+        is_correct_method_declaration_spacing = commands.check_method_declaration_spacing(self.last_read_line)
+        self.warning_filter(is_correct_method_declaration_spacing)
         self.line_length = 0
 
     def apply_indentation_styling(self):

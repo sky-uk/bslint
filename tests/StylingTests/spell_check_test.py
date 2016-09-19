@@ -98,7 +98,6 @@ class TestSpellCheck(unittest.TestCase):
     def testRealFile(self):
         file_name = self.filepath_prefix + "SpellCheck.brs"
         file = bslint.get_string_to_parse(file_name)
-        self.assertNotEqual(file, "")
         exp_res = [self.error.get(ErrConst.TYPO_IN_CODE, [2])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)

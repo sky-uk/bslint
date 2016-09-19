@@ -23,7 +23,6 @@ class TestTraceFree(unittest.TestCase):
         self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "Print.brs"
         file = bslint.get_string_to_parse(file_name)
-        self.assertNotEqual(file, "")
         exp_res = [self.error.get(ErrConst.TRACEABLE_CODE, [3])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
@@ -35,7 +34,6 @@ class TestTraceFree(unittest.TestCase):
         self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "QuestionMark.brs"
         file = bslint.get_string_to_parse(file_name)
-        self.assertNotEqual(file, "")
         exp_res = [self.error.get(ErrConst.TRACEABLE_CODE, [3])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
@@ -47,7 +45,6 @@ class TestTraceFree(unittest.TestCase):
         self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "PrintAndQuestionMark.brs"
         file = bslint.get_string_to_parse(file_name)
-        self.assertNotEqual(file, "")
         exp_res = [self.error.get(ErrConst.TRACEABLE_CODE, [3]),
                    self.error.get(ErrConst.TRACEABLE_CODE, [4])]
         result = self.lexer.lex(file)
@@ -60,7 +57,6 @@ class TestTraceFree(unittest.TestCase):
         self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "NoPrintNoQuestionMark.brs"
         file = bslint.get_string_to_parse(file_name)
-        self.assertNotEqual(file, "")
         exp_res = []
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
@@ -72,7 +68,6 @@ class TestTraceFree(unittest.TestCase):
         self.lexer = bslint.Lexer()
         file_name = self.tests_filepath_prefix + "PrintAndQuestionMark.brs"
         file = bslint.get_string_to_parse(file_name)
-        self.assertNotEqual(file, "")
         exp_res = []
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)

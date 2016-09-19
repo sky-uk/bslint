@@ -6,7 +6,6 @@ import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrC
 import os
 
 
-
 class TestMaxLineLength(unittest.TestCase):
     WARNINGS = 'Warnings'
     STATUS = 'Status'
@@ -24,7 +23,6 @@ class TestMaxLineLength(unittest.TestCase):
         self.lexer = bslint.Lexer()
         file_name = self.filepath_prefix + "ShortLineLength.txt"
         file = bslint.get_string_to_parse(file_name)
-        self.assertNotEqual(file, "")
         exp_result = []
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_result)
@@ -36,7 +34,6 @@ class TestMaxLineLength(unittest.TestCase):
         self.lexer = bslint.Lexer()
         file_name = self.filepath_prefix + "ShortLineLength.txt"
         file = bslint.get_string_to_parse(file_name)
-        self.assertNotEqual(file, "")
         exp_result = [self.error.get(ErrConst.LINE_LENGTH, [11, 1])]
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_result)
@@ -48,7 +45,6 @@ class TestMaxLineLength(unittest.TestCase):
         self.lexer = bslint.Lexer()
         file_name = self.filepath_prefix + "EqualMaxLineLength.txt"
         file = bslint.get_string_to_parse(file_name)
-        self.assertNotEqual(file, "")
         exp_result = []
         result = self.lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_result)
@@ -60,7 +56,6 @@ class TestMaxLineLength(unittest.TestCase):
         self.lexer = bslint.Lexer()
         file_name = self.filepath_prefix + "MultilineAssignment.txt"
         file = bslint.get_string_to_parse(file_name)
-        self.assertNotEqual(file, "")
         exp_result = [self.error.get(ErrConst.LINE_LENGTH, [11, 1]),
                       self.error.get(ErrConst.LINE_LENGTH, [11, 2])]
         result = self.lexer.lex(file)

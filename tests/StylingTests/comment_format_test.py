@@ -44,7 +44,7 @@ class TestCommentFormat(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testTODONoComment(self):
-        config = bslint.load_config_file()
+        config = bslint.load_config_file(user="Comments/ValidCommentSingleQuoteNoTODO.json", default='test-config.json')
         commands.config = config
         self.lexer = bslint.Lexer()
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
