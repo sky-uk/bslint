@@ -17,7 +17,7 @@ class TestCommentFormat(unittest.TestCase):
     def setUpClass(cls):
         cls.error = Err.error_message_handler()
         this_dir, this_filename = os.path.split(__file__)
-        cls.filepath_prefix = os.path.join(this_dir, "../StylingTestFiles/")
+        cls.filepath_prefix = os.path.join(this_dir, "../resources/StylingTestFiles/")
 
     def testNoCommentCheck(self):
         config = bslint.load_config_file(default='test-config.json')

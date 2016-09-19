@@ -1,5 +1,5 @@
 """bslint.bslint: provides entry point main()."""
-__version__ = "0.4.4"
+__version__ = "0.4.5"
 
 
 import os
@@ -18,18 +18,20 @@ def main():
     try:
         manifest_path = find_manifest()
     except FileNotFoundError:
-        manifest_path = None
+        manifest_path = ""
         print(const.ERROR_COLOUR + "No manifest file found" + const.END_COLOUR)
 
     try:
-        bslintrc = read_bslintrc(manifest_path)
+        bslintrc_path = os.path.join(manifest_path, ".bslintrc")
+        bslintrc = read_bslintrc(bslintrc_path)
+        bslint.config_loader.load_config_file(bslintrc_path)
     except FileNotFoundError:
         print(const.ERROR_COLOUR + "No .bslintrc file found" + const.END_COLOUR)
         bslintrc = {"ignore": ""}
 
     if is_not_specific_path():
         pathname = os.getcwd()
-        lint_all(pathname, bslintrc["ignore"])
+        lint_all(pathname, bslintrc["ignore"], manifest_path)
     else:
         filename = sys.argv[1]
         if not os.path.exists(filename):
@@ -38,15 +40,15 @@ def main():
         if os.path.isfile(filename):
             lint_specific(filename)
         else:
-            lint_all(filename, bslintrc["ignore"])
+            lint_all(filename, bslintrc["ignore"], manifest_path)
     if is_lexed_correctly:
         print(const.PASS_COLOUR + 'All lexed correctly' + const.END_COLOUR)
         print("\n")
 
 
-def lint_all(directory, directories_to_ignore):
+def lint_all(directory, directories_to_ignore, manifest_path):
     for dirName, subdirList, files in os.walk(directory):
-        if not ignore_dir(get_relative_path(dirName, directory), directories_to_ignore):
+        if not ignore_dir(get_relative_path(dirName, manifest_path), directories_to_ignore):
             for file in files:
                 if file.endswith(".brs") or file.endswith(".bs"):
                     filepath = os.path.join(dirName, file)
@@ -54,6 +56,7 @@ def lint_all(directory, directories_to_ignore):
 
 
 def get_relative_path(dirName, directory):
+    directory = os.path.realpath(os.path.join(os.getcwd(), directory))
     return dirName.replace(directory, '')
 
 
@@ -61,6 +64,7 @@ def ignore_dir(relative_directory_path, directories_to_ignore):
     for directory in directories_to_ignore:
         directory = add_slashes_to_dir(directory)
         relative_directory_path = add_slashes_to_dir(relative_directory_path)
+
         if relative_directory_path.startswith(directory):
             return True
     return False
@@ -83,7 +87,6 @@ def lint_specific(filename):
         lexer = bslint.Lexer()
         if read_file["invalid_encoding"]:
             print(read_file["invalid_encoding"])
-
         lex_result = lexer.lex(read_file['str_to_lex'])
         if lex_result["Status"] == "Error" or lex_result["Warnings"]:
             global is_lexed_correctly
@@ -108,19 +111,22 @@ def find_manifest():
         else:
             upper_dir = sys.argv[1]
     count = 0
-    manifest_path_upper = os.path.join(upper_dir, "MANIFEST")
-    manifest_path_lower = os.path.join(upper_dir, "manifest")
-    while not os.path.exists(manifest_path_upper) and not os.path.exists(manifest_path_lower) and count < 5:
-        upper_dir += "../"
+    while no_manifest_in_folder(upper_dir) and count < 5:
+        upper_dir = os.path.join(upper_dir, "../")
         count += 1
     if count == 5:
         raise FileNotFoundError
     return upper_dir
 
 
+def no_manifest_in_folder(upper_dir):
+    return not os.path.exists(os.path.join(upper_dir, "MANIFEST")) and not os.path.exists(
+        os.path.join(upper_dir, "manifest"))
+
+
 def read_bslintrc(manifest_dir):
     if manifest_dir is not None:
-        bslintrc = bslint.config_loader.read_json(os.path.join(manifest_dir, ".bslintrc"))
+        bslintrc = bslint.config_loader.read_json(manifest_dir)
     else:
         raise FileNotFoundError
     return bslintrc
