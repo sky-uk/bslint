@@ -6,7 +6,7 @@
     :license: BSD, see LICENSE for more details.
 """
 
-__version__ = '0.4.8'
+__version__ = '0.4.9'
 
 from .lexer import Lexer
 from .main import get_string_to_parse
