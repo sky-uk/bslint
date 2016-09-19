@@ -24,5 +24,5 @@ setup(
     author="BSLint",
     author_email="zachary.robinson@sky.uk",
     url="https://github.com/sky-uk/bslint",
-    install_requires=['peppercorn']
+    install_requires=['dockeroo']
 )
