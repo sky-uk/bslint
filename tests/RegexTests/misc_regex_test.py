@@ -1,6 +1,6 @@
 import unittest
 import bslint.constants as const
-import bslint
+import bslint.lexer as lexer
 import bslint.utilities.regex_handler as regex_handler
 
 
@@ -8,19 +8,16 @@ class TestMiscRegex(unittest.TestCase):
 
     TOKENS = 'Tokens'
 
-    def setUp(self):
-        self.lexer = bslint.Lexer()
-        
     def testWhiteSpace(self):
         identifier = " "
         exp_result = []
-        result = self.lexer.lex(identifier)
+        result = lexer.lex(identifier)
         self.assertEqual(result[self.TOKENS], exp_result)
 
     def testSingleQuoteComment(self):
         identifier = "' do stuff \n"
         exp_result = []
-        result = self.lexer.lex(identifier)
+        result = lexer.lex(identifier)
         self.assertEqual(result[self.TOKENS], exp_result)
 
     def testOpenParenthesis(self):

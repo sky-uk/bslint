@@ -1,6 +1,6 @@
 import unittest
 import bslint.constants as const
-import bslint
+import bslint.lexer as lexer
 import bslint.utilities.regex_handler as regex_handler
 
 
@@ -9,9 +9,6 @@ class TestIdentifierRegex(unittest.TestCase):
     TYPE_GROUP = 'type'
     VALUE_GROUP = 'value'
 
-    def setUp(self):
-        self.lexer = bslint.Lexer()
-        
     def testBasicIdentifier(self):
         identifier = "testId"
         result = regex_handler.find_match(identifier)
@@ -45,13 +42,13 @@ class TestIdentifierRegex(unittest.TestCase):
     def testIdentifierInStatementWithSpace(self):
         identifier = "_testId ="
         exp_result = [('_testId', const.ID, 1), ('=', const.OPERATOR, 1)]
-        result = self.lexer.lex(identifier)
+        result = lexer.lex(identifier)
         self.assertEqual(result["Tokens"], exp_result)
 
     def testIdentifierInStatementDollar(self):
         identifier = "_testId$="
         exp_result = [('_testId', const.ID, '$', 1), ('=', const.OPERATOR, 1)]
-        result = self.lexer.lex(identifier)
+        result = lexer.lex(identifier)
         self.assertEqual(result["Tokens"], exp_result)
 
     def testIdentifierAsUnderscore(self):

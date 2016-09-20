@@ -2,7 +2,6 @@ import os
 import unittest
 
 import bslint
-import bslint.error_messages_builder.error_message_handler as Err
 import bslint.utilities.commands as commands
 
 
@@ -13,7 +12,6 @@ class TestMethodSpacingDeclaration(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.error = Err.error_message_handler()
         this_dir, this_filename = os.path.split(__file__)
         cls.filepath_prefix = os.path.join(this_dir, "../resources/StylingTestFiles/")
 

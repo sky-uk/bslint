@@ -1,14 +1,11 @@
 import unittest
 import bslint.constants as const
-import bslint
+import bslint.lexer as lexer
 import bslint.utilities.regex_handler as regex_handler
 
 
 class TestNumericRegex(unittest.TestCase):
     TOKENS = 'Tokens'
-
-    def setUp(self):
-        self.lexer = bslint.Lexer()
 
     def testInteger(self):
         identifier = "1234"
@@ -25,18 +22,18 @@ class TestNumericRegex(unittest.TestCase):
     def testIntegerWithTrailingPoints(self):
         identifier = "123."
         exp_result = [('123', const.NUMERIC, 1), ('.', const.SPECIAL_OPERATOR, 1)]
-        result = self.lexer.lex(identifier)
+        result = lexer.lex(identifier)
         self.assertEqual(result[self.TOKENS], exp_result)
 
     def testMultipleDecimalNumbers(self):
         identifier = "123.123.123"
         exp_result = [('123.123', const.NUMERIC, 1), ('.', const.SPECIAL_OPERATOR, 1), ('123', const.NUMERIC, 1)]
-        result = self.lexer.lex(identifier)
+        result = lexer.lex(identifier)
         self.assertEqual(result[self.TOKENS], exp_result)
 
     def testMultipleDecimalPoints(self):
         identifier = "123..123"
         exp_result = [('123', const.NUMERIC, 1), ('.', const.SPECIAL_OPERATOR, 1), ('.', const.SPECIAL_OPERATOR, 1),
                       ('123', const.NUMERIC, 1)]
-        result = self.lexer.lex(identifier)
+        result = lexer.lex(identifier)
         self.assertEqual(result[self.TOKENS], exp_result)

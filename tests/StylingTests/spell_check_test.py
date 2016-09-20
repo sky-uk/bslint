@@ -2,10 +2,11 @@ import os
 import unittest
 
 import bslint
-import bslint.error_messages_builder.error_builder.error_messages_constants as ErrConst
-import bslint.error_messages_builder.error_message_handler as Err
+import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
+import bslint.error_messages_builder.error_message_handler as error
 import bslint.utilities.commands as commands
 import bslint.constants as const
+import bslint.lexer as lexer
 
 
 class TestSpellCheck(unittest.TestCase):
@@ -15,14 +16,12 @@ class TestSpellCheck(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.error = Err.error_message_handler()
         this_dir, this_filename = os.path.split(__file__)
         cls.filepath_prefix = os.path.join(this_dir, "../resources/StylingTestFiles/")
 
     def setUp(self):
         config = bslint.load_config_file(user='SpellCheck/spellcheck-config.json', default='test-config.json')
         commands.config = config
-        self.lexer = bslint.Lexer()
 
     def testM(self):
         test_string = "m"
@@ -80,27 +79,27 @@ class TestSpellCheck(unittest.TestCase):
 
     def testStartUCaseIncorrect(self):
         test_string = "Badsfddsf"
-        exp_result = {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
+        exp_result = {"error_key": err_const.TYPO_IN_CODE, "error_params": []}
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
     def testIncorrectSpelling(self):
         test_string = "sfgsdrgser"
-        exp_result = {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
+        exp_result = {"error_key": err_const.TYPO_IN_CODE, "error_params": []}
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
     def testIncorrectCamelCase(self):
         test_string = "badGrgdrfdfg"
-        exp_result = {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
+        exp_result = {"error_key": err_const.TYPO_IN_CODE, "error_params": []}
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
     def testRealFile(self):
         file_name = self.filepath_prefix + "SpellCheck.brs"
         file = bslint.get_string_to_parse(file_name)
-        exp_res = [self.error.get(ErrConst.TYPO_IN_CODE, [2])]
-        result = self.lexer.lex(file)
+        exp_res = [error.get_message(err_const.TYPO_IN_CODE, [2])]
+        result = lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -108,8 +107,8 @@ class TestSpellCheck(unittest.TestCase):
         file_name = self.filepath_prefix + "IncorrectCommentSpelling.brs"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
-        exp_res = [self.error.get(ErrConst.TYPO_IN_CODE, [1])]
-        result = self.lexer.lex(file)
+        exp_res = [error.get_message(err_const.TYPO_IN_CODE, [1])]
+        result = lexer.lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -117,9 +116,8 @@ class TestSpellCheck(unittest.TestCase):
         us_config = bslint.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
         commands.config = us_config
         commands._change_dict_lang(us_config["spell_check"]["params"]["dictionary"])
-        self.lexer = bslint.Lexer()
         test_string = "specialised"
-        exp_result = {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
+        exp_result = {"error_key": err_const.TYPO_IN_CODE, "error_params": []}
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
@@ -127,7 +125,6 @@ class TestSpellCheck(unittest.TestCase):
         us_config = bslint.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
         commands.config = us_config
         commands._change_dict_lang(us_config["spell_check"]["params"]["dictionary"])
-        self.lexer = bslint.Lexer()
         test_string = "specialized"
         exp_result = None
         result = commands.check_spelling(test_string, const.ID)

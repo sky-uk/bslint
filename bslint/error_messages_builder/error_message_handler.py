@@ -1,12 +1,10 @@
-import bslint.error_messages_builder.error_builder.error_messages_constants as Err
+import bslint.error_messages_builder.error_builder.error_messages_constants as err
 
 
-class error_message_handler:
-    @staticmethod
-    def get(key, params=[]):
-        if key not in Err.ERROR_TABLE:
-            raise ValueError("No Error with such key")
-        return Err.ERROR_TABLE[key].get_message(params)
+def get_message(key, params=[]):
+    if key not in err.ERROR_TABLE:
+        raise ValueError("No Error with such key")
+    return err.ERROR_TABLE[key].get_message(params)
 
 
 
