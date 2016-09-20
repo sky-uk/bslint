@@ -1,6 +1,7 @@
-import unittest
-import bslint
 import os
+import unittest
+
+import bslint
 
 
 class TestDirectoryLexing(unittest.TestCase):

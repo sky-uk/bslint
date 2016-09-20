@@ -1,7 +1,7 @@
 import unittest
 import bslint
-import bslint.ErrorMessagesBuilder.error_message_handler as Err
-import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
+import bslint.error_messages_builder.error_message_handler as Err
+import bslint.error_messages_builder.error_builder.error_messages_constants as ErrConst
 import os
 
 

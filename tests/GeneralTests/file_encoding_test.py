@@ -1,8 +1,9 @@
-import unittest
-import bslint
-import bslint.commands as commands
-import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
 import os
+import unittest
+
+import bslint
+import bslint.error_messages_builder.error_builder.error_messages_constants as ErrConst
+import bslint.utilities.commands as commands
 
 
 class TestEncodingCheck(unittest.TestCase):

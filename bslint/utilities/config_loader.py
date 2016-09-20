@@ -5,8 +5,8 @@ import os
 
 def load_config_file(user=None, default=None, out=sys.stdout):
     this_dir, this_filename = os.path.split(__file__)
-    tests_filepath_prefix = os.path.join(this_dir, "../tests/resources/config/")
-    filepath_prefix = os.path.join(this_dir, "../bslint/config/")
+    tests_filepath_prefix = os.path.join(this_dir, "../../tests/resources/config/")
+    filepath_prefix = os.path.join(this_dir, "../../bslint/config/")
 
     user_filepath = get_user_config(filepath_prefix, tests_filepath_prefix, user)
     if default:

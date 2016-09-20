@@ -1,5 +1,5 @@
 import unittest
-import bslint.ErrorMessagesBuilder.error_message_handler as ErrBuilder
+import bslint.error_messages_builder.error_message_handler as ErrBuilder
 
 
 class TestConfigFileLoading(unittest.TestCase):

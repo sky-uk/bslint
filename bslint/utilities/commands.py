@@ -1,10 +1,10 @@
-import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
-import re
-import bslint.config_loader as config_loader
 import codecs
-import bslint.constants as const
-import bslint.words_dictionary as words_dict
+import re
 
+import bslint.error_messages_builder.error_builder.error_messages_constants as ErrConst
+import bslint.utilities.config_loader as config_loader
+import bslint.utilities.words_dictionary as words_dict
+import bslint.constants as const
 
 config = config_loader.CONFIG
 dictionary = words_dict._get_new_dictionary()
@@ -138,10 +138,7 @@ def check_method_declaration_spacing(token):
                                  str(method_spaces) + "}[a-z0-9_A-Z]*)?)*\)", token):
             return {"error_key": ErrConst.METHOD_DECLARATION_SPACING, "error_params": []}
 
-
-"""
- Private helper functions
-"""
+# region Private helper functions
 
 
 def _command_is_active(command_name):
@@ -215,3 +212,4 @@ def _parse_comment_words(comment):
             if not word == '':
                 words.append(word)
     return words
+# endregion

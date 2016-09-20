@@ -1,4 +1,4 @@
-import bslint.commands as commands
+import bslint.utilities.commands as commands
 
 
 class FileReader:

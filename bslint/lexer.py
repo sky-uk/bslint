@@ -1,15 +1,15 @@
-import re
 import os
+import re
+
+import bslint.error_messages_builder.error_builder.error_messages_constants as ErrConst
+import bslint.error_messages_builder.error_message_handler as Err
+import bslint.utilities.commands as commands
+import bslint.utilities.regex_handler as regex_handler
 import bslint.constants as const
-import bslint
-import bslint.commands as commands
-import bslint.ErrorMessagesBuilder.error_message_handler as Err
-import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
 
 
 class Lexer:
     def __init__(self):
-        self.regex_handler = bslint.RegexHandler()
         self.line_number = 1
         self.warnings = []
         self.line_length = 0
@@ -34,7 +34,7 @@ class Lexer:
 
         while self.current_char_index < len(self.characters):
             try:
-                result = self.regex_handler.find_match(self.characters[self.current_char_index:])
+                result = regex_handler.find_match(self.characters[self.current_char_index:])
                 self.match = result["match"]
                 self.token_type = result["token_type"]
                 if result["indentation_level"] != const.NO_INDENTATION:
@@ -173,11 +173,3 @@ class Lexer:
             result["error_params"].append(str(self.line_number))
             warning = self.error_message_handler.get(result["error_key"], result["error_params"])
             self.warnings += [warning]
-
-    @staticmethod
-    def personal_words_filepath():
-
-        this_dir, this_filename = os.path.split(__file__)
-        personal_words_list = os.path.join(this_dir, "config/personal-words-list.txt")
-
-        return personal_words_list
