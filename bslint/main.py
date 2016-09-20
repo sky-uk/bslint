@@ -1,4 +1,4 @@
-import bslint
+import bslint.lexer as lexer
 
 
 def get_string_to_parse(filepath):
@@ -12,7 +12,6 @@ def lex_from_file():
     filepath = "../resources/SkeletonMain.brs"
     fo = open(filepath, "r+")
     str_to_parse = fo.read()
-    lexer = bslint.Lexer()
     print(lexer.lex(str_to_parse))
 
 if __name__ == "__main__":

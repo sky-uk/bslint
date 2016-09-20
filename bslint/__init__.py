@@ -13,9 +13,6 @@ from .utilities.config_loader import *
 from .utilities.file_reader import *
 from .utilities.regex_handler import *
 from .bslint import *
-from .lexer import Lexer
+from .lexer import lex
 from .main import get_string_to_parse
-
-
-
 

@@ -2,7 +2,7 @@ import os
 import unittest
 
 import bslint
-import bslint.error_messages_builder.error_builder.error_messages_constants as ErrConst
+import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
 import bslint.utilities.commands as commands
 
 
@@ -33,7 +33,7 @@ class TestEncodingCheck(unittest.TestCase):
         commands.config = config
         file_path = self.tests_filepath_prefix + "NON-ASCII-chars.brs"
         result = commands.check_file_encoding(file_path)
-        self.assertEqual(result['error_key'], ErrConst.FILE_ENCODING)
+        self.assertEqual(result['error_key'], err_const.FILE_ENCODING)
 
     def testUTF8Chars(self):
         config = bslint.load_config_file(user="FileEncoding/UTF8-encoding-config.json")
