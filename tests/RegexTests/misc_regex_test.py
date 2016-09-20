@@ -1,6 +1,7 @@
 import unittest
 import bslint.constants as const
 import bslint
+import bslint.utilities.regex_handler as regex_handler
 
 
 class TestMiscRegex(unittest.TestCase):
@@ -9,7 +10,6 @@ class TestMiscRegex(unittest.TestCase):
 
     def setUp(self):
         self.lexer = bslint.Lexer()
-        self.regex_handler = bslint.RegexHandler()
         
     def testWhiteSpace(self):
         identifier = " "
@@ -25,24 +25,24 @@ class TestMiscRegex(unittest.TestCase):
 
     def testOpenParenthesis(self):
         identifier = "("
-        result = self.regex_handler.find_match(identifier)
+        result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(), identifier)
         self.assertEqual(result["token_type"], const.BRACKET)
 
     def testCloseParenthesis(self):
         identifier = ")"
-        result = self.regex_handler.find_match(identifier)
+        result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(), identifier)
         self.assertEqual(result["token_type"], const.BRACKET)
 
     def testOpenSquareBracket(self):
         identifier = "["
-        result = self.regex_handler.find_match(identifier)
+        result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(), identifier)
         self.assertEqual(result["token_type"], const.SQUARE_BRACKET)
 
     def testCloseSquareBracket(self):
         identifier = "]"
-        result = self.regex_handler.find_match(identifier)
+        result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(), identifier)
         self.assertEqual(result["token_type"], const.SQUARE_BRACKET)

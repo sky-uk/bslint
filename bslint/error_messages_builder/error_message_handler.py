@@ -1,4 +1,4 @@
-import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as Err
+import bslint.error_messages_builder.error_builder.error_messages_constants as Err
 
 
 class error_message_handler:

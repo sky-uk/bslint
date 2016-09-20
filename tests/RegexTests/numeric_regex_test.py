@@ -1,6 +1,7 @@
 import unittest
 import bslint.constants as const
 import bslint
+import bslint.utilities.regex_handler as regex_handler
 
 
 class TestNumericRegex(unittest.TestCase):
@@ -8,17 +9,16 @@ class TestNumericRegex(unittest.TestCase):
 
     def setUp(self):
         self.lexer = bslint.Lexer()
-        self.regex_handler = bslint.RegexHandler()
 
     def testInteger(self):
         identifier = "1234"
-        result = self.regex_handler.find_match(identifier)
+        result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(), identifier)
         self.assertEqual(result["token_type"], const.NUMERIC)
 
     def testDecimal(self):
         identifier = "123.456"
-        result = self.regex_handler.find_match(identifier)
+        result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(), identifier)
         self.assertEqual(result["token_type"], const.NUMERIC)
 
