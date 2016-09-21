@@ -1,5 +1,5 @@
 ## BrightScript Linter
-[![CircleCI](https://circleci.com/gh/sky-uk/bslint.svg?style=shield&circle-token=76170286821eb64fc0eea51cb14264b047cecd05)](https://circleci.com/gh/sky-uk/bslint/tree/master) 
+[![CircleCI](https://circleci.com/gh/sky-uk/bslint.svg?style=shield&circle-token=76170286821eb64fc0eea51cb14264b047cecd05)](https://circleci.com/gh/sky-uk/bslint/tree/master)
 
 
 Roku devices are a critical part of our OTT offering. The applications that run on these devices are written in a language called BrightScript. Being a niche language there aren’t any ‘linting’ tools available. This project is to build a linter for the BrightScript language.
