@@ -1,5 +1,5 @@
 ## BrightScript Linter
-[![CircleCI](https://circleci.com/gh/sky-uk/bslint.svg?style=shield&circle-token=a9218a324d2d7bebd187a00fdc170b6a11a17462)](https://circleci.com/gh/sky-uk/bslint)
+[![CircleCI](https://circleci.com/gh/sky-uk/bslint/tree/master.svg?style=shield&circle-token=a9218a324d2d7bebd187a00fdc170b6a11a17462)](https://circleci.com/gh/sky-uk/bslint/tree/master)
 
 #Installing via pip3
 
