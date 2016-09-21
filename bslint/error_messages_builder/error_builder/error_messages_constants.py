@@ -1,4 +1,4 @@
-import bslint.ErrorMessagesBuilder.ErrorBuilder.error_message_builder as ErrBuilder
+import bslint.error_messages_builder.error_builder.error_message_builder as ErrBuilder
 
 ERROR = "ERROR"
 WARNING = "WARNING"
@@ -20,6 +20,7 @@ NO_SPACE_BETWEEN_METHOD_AND_PARAMETERS = "NO_SPACE_BETWEEN_METHOD_AND_PARAMETERS
 UNMATCHED_QUOTATION_MARK = "UNMATCHED_QUOTATION_MARK"
 NON_CONVENTIONAL_TODO_AND_NO_COMMENTS = "NON_CONVENTIONAL_TODO_AND_NO_COMMENTS"
 NO_TODOS = "NO_TODOS"
+METHOD_DECLARATION_SPACING = "METHOD_DECLARATION_SPACING"
 
 ERROR_TABLE = {
         LINE_LENGTH: ErrBuilder.Error(WARNING + ": Line length exceeds {} number of characters. Line number: {}"),
@@ -39,5 +40,5 @@ ERROR_TABLE = {
         UNMATCHED_QUOTATION_MARK: ErrBuilder.Error(ERROR + ": You have unmatched quotation marks at {} on line number: {}"),
         NON_CONVENTIONAL_TODO: ErrBuilder.Error(WARNING + ": TODOs must follow convention. Line number: {}"),
         NO_TODOS: ErrBuilder.Error(WARNING + ": Comments must not be TODOs. Line number: {}"),
-
+        METHOD_DECLARATION_SPACING: ErrBuilder.Error(WARNING + ": The spacing on the method declaration is incorrect: {}"),
     }

@@ -1,10 +1,10 @@
-import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
-import re
-import bslint.config_loader as config_loader
 import codecs
-import bslint.constants as const
-import bslint.words_dictionary as words_dict
+import re
 
+import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
+import bslint.utilities.config_loader as config_loader
+import bslint.utilities.words_dictionary as words_dict
+import bslint.constants as const
 
 config = config_loader.CONFIG
 dictionary = words_dict._get_new_dictionary()
@@ -22,18 +22,18 @@ def check_comment(token):
     if allow_todos and allow_generic_comments:
         if re.match(r"('|rem)\s*TODO", token):
             if not re.match(todos_format, token):
-                return {"error_key": ErrConst.NON_CONVENTIONAL_TODO, "error_params": []}
+                return {"error_key": err_const.NON_CONVENTIONAL_TODO, "error_params": []}
 
     elif allow_todos and not allow_generic_comments:
         if not re.match(todos_format, token):
-            return {"error_key": ErrConst.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, "error_params": []}
+            return {"error_key": err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, "error_params": []}
 
     elif not allow_todos and allow_generic_comments:
         if re.match(r"('|rem)\s*TODO", token):
-            return {"error_key": ErrConst.NO_TODOS, "error_params": []}
+            return {"error_key": err_const.NO_TODOS, "error_params": []}
 
     else:
-        return {"error_key": ErrConst.COMMENTS_NOT_ALLOWED, "error_params": []}
+        return {"error_key": err_const.COMMENTS_NOT_ALLOWED, "error_params": []}
     return
 
 
@@ -45,7 +45,7 @@ def check_file_encoding(file_path):
     try:
         codecs.open(file_path, encoding=file_encoding["source_file_encoding"]).read()
     except:
-        return {"error_key": ErrConst.FILE_ENCODING, "error_params": []}
+        return {"error_key": err_const.FILE_ENCODING, "error_params": []}
 
 
 def check_indentation(current_indentation_level, characters, indentation_level):
@@ -62,7 +62,7 @@ def check_indentation(current_indentation_level, characters, indentation_level):
 
 def check_trace_free():
     if _command_is_active("check_trace_free") is True:
-        return {"error_key": ErrConst.TRACEABLE_CODE, "error_params": []}
+        return {"error_key": err_const.TRACEABLE_CODE, "error_params": []}
 
 
 def check_max_line_length(line_length):
@@ -71,7 +71,7 @@ def check_max_line_length(line_length):
 
     max_len = config['max_line_length']['params']['max_line_length']
     if max_len < line_length:
-        return {"error_key": ErrConst.LINE_LENGTH, "error_params": [max_len]}
+        return {"error_key": err_const.LINE_LENGTH, "error_params": [max_len]}
 
 
 def check_consecutive_empty_lines(empty_lines):
@@ -81,7 +81,7 @@ def check_consecutive_empty_lines(empty_lines):
     params = config["consecutive_empty_lines"]["params"]
     empty_lines_allowed = params["consecutive_empty_lines"]
     if empty_lines > empty_lines_allowed:
-        return {"error_key": ErrConst.CONSECUTIVE_EMPTY_LINES, "error_params": [empty_lines_allowed]}
+        return {"error_key": err_const.CONSECUTIVE_EMPTY_LINES, "error_params": [empty_lines_allowed]}
 
 
 def check_skip_file():
@@ -89,6 +89,7 @@ def check_skip_file():
         return
 
     return True
+
 
 def check_skip_line(line_number):
     if _command_is_active("skip_line") is not True:
@@ -107,7 +108,7 @@ def check_spaces_around_operators(characters, current_char_index):
     chars_around_operator = characters[before_index:after_index]
     if not re.match("(\S{0,1})\s{" + str(allowed_num_spaces) + "}\S\s{" + str(
             allowed_num_spaces) + "}\S{0,1}$", chars_around_operator):
-        return {"error_key": ErrConst.NO_SPACE_AROUND_OPERATORS,
+        return {"error_key": err_const.NO_SPACE_AROUND_OPERATORS,
                 "error_params": [allowed_num_spaces]}
 
 
@@ -123,14 +124,28 @@ def check_spelling(token, token_type):
     for word in words:
         spelt_correct = dictionary.check(word)
         if not spelt_correct:
-            return {"error_key": ErrConst.TYPO_IN_CODE, "error_params": []}
+            return {"error_key": err_const.TYPO_IN_CODE, "error_params": []}
 
-"""
- Private helper functions
-"""
+
+def check_method_declaration_spacing(token):
+    if _command_is_active("check_method_declaration_spacing") is not True:
+        return
+
+    method_spaces = config["check_method_declaration_spacing"]["params"]["method_spaces"]
+
+    if re.search(r"\b(function|sub)\b", token):
+        if not re.search(r"(function|sub)\s{" + str(method_spaces) + "}[a-z0-9_A-Z]*\(([a-z0-9_A-Z]*(?:,\s{" + \
+                                 str(method_spaces) + "}[a-z0-9_A-Z]*)?)*\)", token):
+            return {"error_key": err_const.METHOD_DECLARATION_SPACING, "error_params": []}
+
+# region Private helper functions
+
 
 def _command_is_active(command_name):
-    return config[command_name]["active"]
+    if command_name in config:
+        return config[command_name]["active"]
+    else:
+        return False
 
 
 def _change_dict_lang(dict_lang):
@@ -145,13 +160,13 @@ def _handle_warnings(current_indentation_level, characters):
     if re.search(r"\S", characters):
         if only_tab_indents:
             if not re.match("\t{" + str(current_indentation_level) + "}\S", characters):
-                return {"error_key": ErrConst.TAB_AND_SPACES, "error_params": []}
+                return {"error_key": err_const.TAB_AND_SPACES, "error_params": []}
         else:
             if not re.match("\s{" + str(
                             tab_size *
                             current_indentation_level) + "}\S",
                             characters):
-                return {"error_key": ErrConst.TAB_INDENTATION_ERROR,
+                return {"error_key": err_const.TAB_INDENTATION_ERROR,
                         "error_params": [tab_size]}
 
 
@@ -197,4 +212,4 @@ def _parse_comment_words(comment):
             if not word == '':
                 words.append(word)
     return words
-
+# endregion

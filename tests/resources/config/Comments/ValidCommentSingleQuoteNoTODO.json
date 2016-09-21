@@ -1,0 +1,9 @@
+{
+  "check_comment": {
+    "active": true,
+    "params": {
+      "TODOs": {"allow_TODOs": true, "format": "('|rem)\\s*TODO\\s+([A-Z]{2,3})"},
+      "allow_generic_comments": false
+    }
+  }
+}
