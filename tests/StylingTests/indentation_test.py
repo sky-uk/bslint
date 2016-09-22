@@ -1,9 +1,11 @@
-import unittest
-import bslint
-import bslint.ErrorMessagesBuilder.error_message_handler as Err
-import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
 import os
-import bslint.commands as commands
+import unittest
+
+import bslint
+import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
+import bslint.error_messages_builder.error_message_handler as error
+import bslint.utilities.commands as commands
+import bslint.lexer as lexer
 
 
 class TestIndentation(unittest.TestCase):
@@ -13,7 +15,6 @@ class TestIndentation(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.error = Err.error_message_handler()
         this_dir, this_filename = os.path.split(__file__)
         cls.filepath_prefix = os.path.join(this_dir, "../resources/StylingTestFiles/")
 
@@ -42,9 +43,8 @@ class TestIndentation(unittest.TestCase):
         commands.config = config
         file_name = self.filepath_prefix + "BasicIndentation.txt"
         file = bslint.get_string_to_parse(file_name)
-        exp_result = [self.error.get(ErrConst.TAB_INDENTATION_ERROR, [4, 2])]
-        self.lexer = bslint.Lexer()
-        result = self.lexer.lex(file)
+        exp_result = [error.get_message(err_const.TAB_INDENTATION_ERROR, [4, 2])]
+        result = lexer.lex(file)
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testAdvancedIndentationSuccess(self):
@@ -53,8 +53,7 @@ class TestIndentation(unittest.TestCase):
         file_name = self.filepath_prefix + "AdvancedIndentation.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = []
-        self.lexer = bslint.Lexer()
-        result = self.lexer.lex(file)
+        result = lexer.lex(file)
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testIndentWithOnlyTabsWithError(self):
@@ -62,9 +61,8 @@ class TestIndentation(unittest.TestCase):
         commands.config = config
         file_name = self.filepath_prefix + "IndentWithTabsOnly.txt"
         file = bslint.get_string_to_parse(file_name)
-        exp_result = [self.error.get(ErrConst.TAB_AND_SPACES, [10])]
-        self.lexer = bslint.Lexer()
-        result = self.lexer.lex(file)
+        exp_result = [error.get_message(err_const.TAB_AND_SPACES, [10])]
+        result = lexer.lex(file)
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testReallyAdvancedIndentation(self):
@@ -74,7 +72,6 @@ class TestIndentation(unittest.TestCase):
         file = bslint.get_string_to_parse(file_name)
         exp_result = []
         exp_status = "Success"
-        self.lexer = bslint.Lexer()
-        result = self.lexer.lex(file)
+        result = lexer.lex(file)
         self.assertEqual(exp_result, result[self.WARNINGS])
         self.assertEqual(exp_status, result[self.STATUS])

@@ -1,12 +1,12 @@
 """bslint.bslint: provides entry point main()."""
-__version__ = "0.4.5"
-
+__version__ = "0.5.0"
 
 import os
 import sys
 
 import bslint
 import bslint.constants as const
+import bslint.lexer as lexer
 
 is_lexed_correctly = True
 files = []
@@ -84,7 +84,6 @@ def lint_specific(filename):
         files.append(filename)
         file_reader = bslint.FileReader()
         read_file = file_reader.read_file(filename)
-        lexer = bslint.Lexer()
         if read_file["invalid_encoding"]:
             print(read_file["invalid_encoding"])
         lex_result = lexer.lex(read_file['str_to_lex'])

@@ -1,9 +1,10 @@
 import unittest
-import sys
+
 import bslint
-import bslint.ErrorMessagesBuilder.error_message_handler as Err
-import bslint.ErrorMessagesBuilder.ErrorBuilder.error_messages_constants as ErrConst
-import bslint.commands as commands
+import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
+import bslint.error_messages_builder.error_message_handler as error
+import bslint.utilities.commands as commands
+import bslint.lexer as lexer
 
 
 class TestSpacesAroundOperators(unittest.TestCase):
@@ -13,7 +14,6 @@ class TestSpacesAroundOperators(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.error = Err.error_message_handler()
         cls.config = bslint.load_config_file(user="SpacesAroundOperators/spaces-around-operators-config.json", default="test-config.json")
 
     def testCorrectSpaceBefore(self):
@@ -23,49 +23,43 @@ class TestSpacesAroundOperators(unittest.TestCase):
         self.assertEqual(result, exp_result)
 
     def testIncorrectSpaceBefore(self):
-        exp_result = {"error_key": ErrConst.NO_SPACE_AROUND_OPERATORS, "error_params": [1]}
+        exp_result = {"error_key": err_const.NO_SPACE_AROUND_OPERATORS, "error_params": [1]}
         result = commands.check_spaces_around_operators("a= 1", 1)
         self.assertEqual(result, exp_result)
 
     def testSpacesAfterOperator(self):
-        exp_result = [self.error.get(ErrConst.NO_SPACE_AROUND_OPERATORS, [1, 1])]
+        exp_result = [error.get_message(err_const.NO_SPACE_AROUND_OPERATORS, [1, 1])]
         commands.config = self.config
-        self.lexer = bslint.Lexer()
-        result = self.lexer.lex('this =      "words"')
+        result = lexer.lex('this =      "words"')
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testSpacesBeforeOperator(self):
-        exp_result = [self.error.get(ErrConst.NO_SPACE_AROUND_OPERATORS, [1, 1])]
+        exp_result = [error.get_message(err_const.NO_SPACE_AROUND_OPERATORS, [1, 1])]
         commands.config = self.config
-        self.lexer = bslint.Lexer()
-        result = self.lexer.lex('this       = "words"')
+        result = lexer.lex('this       = "words"')
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testCorrectSpacesAroundOperator(self):
         exp_result = []
         commands.config = self.config
-        self.lexer = bslint.Lexer()
-        result = self.lexer.lex('this = "words"')
+        result = lexer.lex('this = "words"')
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testManySpacesAroundOperator(self):
-        exp_result = [self.error.get(ErrConst.NO_SPACE_AROUND_OPERATORS, [1, 1])]
+        exp_result = [error.get_message(err_const.NO_SPACE_AROUND_OPERATORS, [1, 1])]
         commands.config = self.config
-        self.lexer = bslint.Lexer()
-        result = self.lexer.lex('this    =        "words"')
+        result = lexer.lex('this    =        "words"')
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testManySpacesAroundOperatorWithConfig(self):
         config = bslint.load_config_file("SpacesAroundOperators/3-spaces-around-operators-config.json")
         commands.config = config
-        exp_result = [self.error.get(ErrConst.NO_SPACE_AROUND_OPERATORS, [3, 1])]
-        self.lexer = bslint.Lexer()
-        result = self.lexer.lex('this   =        "words"')
+        exp_result = [error.get_message(err_const.NO_SPACE_AROUND_OPERATORS, [3, 1])]
+        result = lexer.lex('this   =        "words"')
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testNoSpacesAroundOperator(self):
-        exp_result = [self.error.get(ErrConst.NO_SPACE_AROUND_OPERATORS, [1, 1])]
+        exp_result = [error.get_message(err_const.NO_SPACE_AROUND_OPERATORS, [1, 1])]
         commands.config = self.config
-        self.lexer = bslint.Lexer()
-        result = self.lexer.lex('this="words"')
+        result = lexer.lex('this="words"')
         self.assertEqual(exp_result, result[self.WARNINGS])
