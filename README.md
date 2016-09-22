@@ -24,7 +24,7 @@ You can create a .bslintrc file, that MUST be in the same directory as your mani
 
 **Every key in the .bslintrc file is optional (you can leave the file empty)**
 
-```json
+```javascript
 {
     "ignore": ["components", "src/subdirectory_name"]
 
