@@ -49,13 +49,13 @@ class MatchHandler:
             self._skip_styling_on_file = commands.check_skip_file()
 
     def _apply_styling(self):
-        if self._style_checking_is_active():
+        if self.style_checking_is_active():
             if self._token_type is const.NEW_LINE:
-                self._apply_new_line_styling()
+                self.apply_new_line_styling()
             else:
                 self._apply_common_styling()
 
-    def _style_checking_is_active(self):
+    def style_checking_is_active(self):
         return self.line_number != self._line_not_to_style_check and not self._skip_styling_on_file
 
     def check_trace_free(self):
@@ -86,7 +86,7 @@ class MatchHandler:
         self._warning_filter(is_correct_comment)
         self._check_spelling()
 
-    def _apply_new_line_styling(self):
+    def apply_new_line_styling(self):
         self._count_consecutive_new_lines()
         is_correct_line_length = commands.check_max_line_length(self.line_length)
         self._warning_filter(is_correct_line_length)
