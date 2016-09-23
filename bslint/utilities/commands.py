@@ -6,7 +6,6 @@ import bslint.utilities.config_loader as config_loader
 import bslint.utilities.words_dictionary as words_dict
 import bslint.constants as const
 
-config = config_loader.CONFIG
 dictionary = words_dict._get_new_dictionary()
 
 
@@ -14,7 +13,7 @@ def check_comment(token):
     if _command_is_active("check_comment") is not True:
         return
 
-    check_comment_config = config["check_comment"]["params"]
+    check_comment_config = config_loader.CONFIG["check_comment"]["params"]
     allow_todos = check_comment_config["TODOs"]["allow_TODOs"]
     allow_generic_comments = check_comment_config["allow_generic_comments"]
     todos_format = check_comment_config["TODOs"]["format"]
@@ -41,7 +40,7 @@ def check_file_encoding(file_path):
     if _command_is_active("check_file_encoding") is not True:
         return
 
-    file_encoding = config['check_file_encoding']['params']
+    file_encoding = config_loader.CONFIG['check_file_encoding']['params']
     try:
         codecs.open(file_path, encoding=file_encoding["source_file_encoding"]).read()
     except:
@@ -49,6 +48,8 @@ def check_file_encoding(file_path):
 
 
 def check_indentation(current_indentation_level, characters, indentation_level):
+    if _command_is_active("check_indentation") is not True:
+        return
     if indentation_level == const.DECREMENT_INDENTATION or \
                     indentation_level == const.SPECIAL_INDENTATION:
         current_indentation_level -= 1
@@ -69,7 +70,7 @@ def check_max_line_length(line_length):
     if _command_is_active("max_line_length") is not True:
         return
 
-    max_len = config['max_line_length']['params']['max_line_length']
+    max_len = config_loader.CONFIG['max_line_length']['params']['max_line_length']
     if max_len < line_length:
         return {"error_key": err_const.LINE_LENGTH, "error_params": [max_len]}
 
@@ -78,7 +79,7 @@ def check_consecutive_empty_lines(empty_lines):
     if _command_is_active("consecutive_empty_lines") is not True:
         return
 
-    params = config["consecutive_empty_lines"]["params"]
+    params = config_loader.CONFIG["consecutive_empty_lines"]["params"]
     empty_lines_allowed = params["consecutive_empty_lines"]
     if empty_lines > empty_lines_allowed:
         return {"error_key": err_const.CONSECUTIVE_EMPTY_LINES, "error_params": [empty_lines_allowed]}
@@ -102,7 +103,7 @@ def check_spaces_around_operators(characters, current_char_index):
     if _command_is_active("spaces_around_operators") is not True:
         return
 
-    allowed_num_spaces = config["spaces_around_operators"]["params"]["spaces_around_operators"]
+    allowed_num_spaces = config_loader.CONFIG["spaces_around_operators"]["params"]["spaces_around_operators"]
     before_index = current_char_index - allowed_num_spaces - 2
     after_index = current_char_index + allowed_num_spaces + 1
     chars_around_operator = characters[before_index:after_index]
@@ -131,7 +132,7 @@ def check_method_declaration_spacing(token):
     if _command_is_active("check_method_declaration_spacing") is not True:
         return
 
-    method_spaces = config["check_method_declaration_spacing"]["params"]["method_spaces"]
+    method_spaces = config_loader.CONFIG["check_method_declaration_spacing"]["params"]["method_spaces"]
 
     if re.search(r"\b(function|sub)\b", token):
         if not re.search(r"(function|sub)\s{" + str(method_spaces) + "}[a-z0-9_A-Z]*\(([a-z0-9_A-Z]*(?:,\s{" + \
@@ -142,8 +143,8 @@ def check_method_declaration_spacing(token):
 
 
 def _command_is_active(command_name):
-    if command_name in config:
-        return config[command_name]["active"]
+    if command_name in config_loader.CONFIG:
+        return config_loader.CONFIG[command_name]["active"]
     else:
         return False
 
@@ -154,7 +155,7 @@ def _change_dict_lang(dict_lang):
 
 
 def _handle_warnings(current_indentation_level, characters):
-    indent_config = config['check_indentation']['params']
+    indent_config = config_loader.CONFIG['check_indentation']['params']
     only_tab_indents = indent_config["only_tab_indents"]
     tab_size = indent_config["tab_size"]
     if re.search(r"\S", characters):

@@ -20,8 +20,7 @@ class TestSpellCheck(unittest.TestCase):
         cls.filepath_prefix = os.path.join(this_dir, "../resources/StylingTestFiles/")
 
     def setUp(self):
-        config = bslint.load_config_file(user='SpellCheck/spellcheck-config.json', default='test-config.json')
-        commands.config = config
+        bslint.load_config_file(user='SpellCheck/spellcheck-config.json', default='test-config.json')
 
     def testM(self):
         test_string = "m"
@@ -113,18 +112,16 @@ class TestSpellCheck(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testUSDictionaryFailing(self):
-        us_config = bslint.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
-        commands.config = us_config
-        commands._change_dict_lang(us_config["spell_check"]["params"]["dictionary"])
+        bslint.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
+        commands._change_dict_lang(bslint.config_loader.CONFIG["spell_check"]["params"]["dictionary"])
         test_string = "specialised"
         exp_result = {"error_key": err_const.TYPO_IN_CODE, "error_params": []}
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
     def testUSDictionaryPassing(self):
-        us_config = bslint.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
-        commands.config = us_config
-        commands._change_dict_lang(us_config["spell_check"]["params"]["dictionary"])
+        bslint.load_config_file(user='SpellCheck/us-spellcheck-config.json', default='test-config.json')
+        commands._change_dict_lang(bslint.config_loader.CONFIG["spell_check"]["params"]["dictionary"])
         test_string = "specialized"
         exp_result = None
         result = commands.check_spelling(test_string, const.ID)

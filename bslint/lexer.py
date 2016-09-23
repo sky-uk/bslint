@@ -16,8 +16,8 @@ def lex(characters):
             dividing_chars_in_tokens(characters, handle_match, tokens)
         except ValueError:
             handle_non_matching_token(characters, errors, handle_match)
-    if handle_match._style_checking_is_active():
-        handle_match._apply_new_line_styling()
+    if handle_match.style_checking_is_active():
+        handle_match.apply_new_line_styling()
     return build_return_dict(errors, handle_match, tokens)
 
 
