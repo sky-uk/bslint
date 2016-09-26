@@ -93,7 +93,7 @@ List = [
     (r"(OR)\b", const.KEYWORD, const.NO_INDENTATION),
     (r"(POS)\b", const.KEYWORD, const.NO_INDENTATION),
     (r"('|rem) *(BSLINT)_(?P<command>[a-z_]+)(:(?P<param>[0-9]+))?.*", const.BSLINT_COMMAND, const.NO_INDENTATION),
-    (r"('|REM)(.*)", const.COMMENT, const.NO_INDENTATION),
+    (r"('|REM\b) *(.*)", const.COMMENT, const.NO_INDENTATION),
     (r"(RUN)\b", const.KEYWORD, const.NO_INDENTATION),
     (r"(SUB)\b", const.KEYWORD, const.INCREMENT_INDENTATION),
     (r"(TAB)\b", const.KEYWORD, const.NO_INDENTATION),

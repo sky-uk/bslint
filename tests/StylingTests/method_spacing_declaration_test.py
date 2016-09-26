@@ -69,3 +69,9 @@ class TestMethodSpacingDeclaration(unittest.TestCase):
         result = commands.check_method_declaration_spacing("declaration(a  )")
         exp_result = None
         self.assertEqual(exp_result, result)
+
+    def testEndFunctionIsNotChecked(self):
+        bslint.load_config_file(user="CheckMethodDeclaration/active_method_spacing_declaration.json", default='test-config.json')
+        result = commands.check_method_declaration_spacing("function  declaration(a,  b)\n\nend function")
+        exp_result = None
+        self.assertEqual(exp_result, result)
