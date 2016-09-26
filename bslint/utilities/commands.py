@@ -5,7 +5,10 @@ import bslint.error_messages_builder.error_builder.error_messages_constants as e
 import bslint.utilities.config_loader as config_loader
 import bslint.utilities.words_dictionary as words_dict
 import bslint.constants as const
+import bslint.regexs as regexs
 
+
+comment_regex = [regex[0] for regex in regexs.List if regex[1] == const.COMMENT][0]
 dictionary = words_dict._get_new_dictionary()
 
 
@@ -19,7 +22,7 @@ def check_comment(token):
     todos_format = check_comment_config["TODOs"]["format"]
 
     if allow_todos and allow_generic_comments:
-        if re.match(r"('|rem)\s*TODO", token):
+        if re.match(comment_regex + "TODO", token):
             if not re.match(todos_format, token):
                 return {"error_key": err_const.NON_CONVENTIONAL_TODO, "error_params": []}
 
@@ -28,7 +31,7 @@ def check_comment(token):
             return {"error_key": err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, "error_params": []}
 
     elif not allow_todos and allow_generic_comments:
-        if re.match(r"('|rem)\s*TODO", token):
+        if re.match(comment_regex + "TODO", token, re.IGNORECASE):
             return {"error_key": err_const.NO_TODOS, "error_params": []}
 
     else:
@@ -128,16 +131,24 @@ def check_spelling(token, token_type):
             return {"error_key": err_const.TYPO_IN_CODE, "error_params": []}
 
 
-def check_method_declaration_spacing(token):
-    if _command_is_active("check_method_declaration_spacing") is not True:
+def check_method_declaration_spacing(read_line):
+    read_line = read_line.lstrip()
+
+    if _command_is_active("check_method_declaration_spacing") is not True or re.match(comment_regex, read_line, re.IGNORECASE):
         return
 
     method_spaces = config_loader.CONFIG["check_method_declaration_spacing"]["params"]["method_spaces"]
 
-    if re.search(r"\b(function|sub)\b", token):
-        if not re.search(r"(function|sub)\s{" + str(method_spaces) + "}[a-z0-9_A-Z]*\(([a-z0-9_A-Z]*(?:,\s{" + \
-                                 str(method_spaces) + "}[a-z0-9_A-Z]*)?)*\)", token):
+    if re.search(r"\b(function|sub)\b", read_line, re.IGNORECASE) and not re.search(r"\b(end function|end sub)\b",
+                                                                     read_line) and not re.search(
+        r"\b(endfunction|endsub)\b",
+        read_line, re.IGNORECASE):
+        if not re.search(r"(function|sub)\s{" + str(method_spaces) + "}[a-z0-9_A-Z]*\(([a-z0-9_A-Z]*" + \
+                                 "(?:(\s{" + str(method_spaces) + "}as\s{" + str(
+            method_spaces) + "}([a-z0-9_A-Z]+))?)(?:,\s{" + \
+                                 str(method_spaces) + "}[a-z0-9_A-Z]*)?)*\)", read_line, re.IGNORECASE):
             return {"error_key": err_const.METHOD_DECLARATION_SPACING, "error_params": []}
+
 
 # region Private helper functions
 
@@ -213,4 +224,5 @@ def _parse_comment_words(comment):
             if not word == '':
                 words.append(word)
     return words
+
 # endregion
