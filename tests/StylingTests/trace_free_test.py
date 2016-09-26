@@ -19,7 +19,7 @@ class TestTraceFree(unittest.TestCase):
         cls.tests_filepath_prefix = os.path.join(this_dir, "../resources/TraceTestFiles/")
 
     def testPRINT(self):
-        bslint.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
+        bslint.load_config_file(user_filepath="TraceFree/trace-free-config.json", default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "Print.brs"
         file = bslint.get_string_to_parse(file_name)
         exp_res = [error.get_message(err_const.TRACEABLE_CODE, [3])]
@@ -28,7 +28,7 @@ class TestTraceFree(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testQuestionMark(self):
-        bslint.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
+        bslint.load_config_file(user_filepath="TraceFree/trace-free-config.json", default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "QuestionMark.brs"
         file = bslint.get_string_to_parse(file_name)
         exp_res = [error.get_message(err_const.TRACEABLE_CODE, [3])]
@@ -37,7 +37,7 @@ class TestTraceFree(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testPrintAndQuestionMark(self):
-        bslint.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
+        bslint.load_config_file(user_filepath="TraceFree/trace-free-config.json", default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "PrintAndQuestionMark.brs"
         file = bslint.get_string_to_parse(file_name)
         exp_res = [error.get_message(err_const.TRACEABLE_CODE, [3]),
@@ -47,7 +47,7 @@ class TestTraceFree(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testNoPrintNoQuestionMark(self):
-        bslint.load_config_file(user="TraceFree/trace-free-config.json", default="test-config.json")
+        bslint.load_config_file(user_filepath="TraceFree/trace-free-config.json", default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "NoPrintNoQuestionMark.brs"
         file = bslint.get_string_to_parse(file_name)
         exp_res = []
@@ -56,7 +56,7 @@ class TestTraceFree(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testInactivePrintAndQuestionMark(self):
-        bslint.load_config_file(default="test-config.json")
+        bslint.load_config_file(default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "PrintAndQuestionMark.brs"
         file = bslint.get_string_to_parse(file_name)
         exp_res = []

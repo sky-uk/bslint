@@ -10,6 +10,7 @@ class TestConfigFileLoading(unittest.TestCase):
     def setUpClass(cls):
         this_dir, this_filename = os.path.split(__file__)
         cls.filepath_prefix = os.path.join(this_dir, "../../bslint/config/")
+        cls.tests_filepath_prefix = os.path.join(this_dir, "../resources/")
 
     def testReadJsonCorrectly(self):
         config_file = self.filepath_prefix + "default-config.json"
@@ -31,10 +32,10 @@ class TestConfigFileLoading(unittest.TestCase):
         self.assertEqual(result, exp_res)
 
     def testDefaultConfigOverwritten(self):
-        exp_res = 666
-        config = bslint.load_config_file()
-        result = config["max_line_length"]["params"]["max_line_length"]
-        self.assertEqual(result, exp_res)
+        bslint.load_config_file(default_filepath='test-config.json')
+        bslint.bslint.runner(self.tests_filepath_prefix  + "GeneralIgnoreTestFiles")
+        self.assertEqual(False, bslint.config_loader.CONFIG["check_trace_free"]["active"])
+        self.assertEqual(["SubDirectory1TestFiles"], bslint.config_loader.CONFIG["ignore"])
 
     def testDefaultConfigPersists(self):
         exp_res = True

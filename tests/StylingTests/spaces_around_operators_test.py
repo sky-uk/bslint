@@ -13,7 +13,7 @@ class TestSpacesAroundOperators(unittest.TestCase):
     SUCCESS = 'Success'
 
     def setUp(self):
-        self.config = bslint.load_config_file(user="SpacesAroundOperators/spaces-around-operators-config.json", default="test-config.json")
+        self.config = bslint.load_config_file(user_filepath="SpacesAroundOperators/spaces-around-operators-config.json", default_filepath="test-config.json")
 
     def testCorrectSpaceBefore(self):
         exp_result = None

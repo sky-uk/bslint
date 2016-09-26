@@ -13,25 +13,25 @@ class TestDirectoryLexing(unittest.TestCase):
         os.chdir(cls.filepath_prefix)
 
     def testBRSFileWithPathLexed(self):
-        bslint.load_config_file(default='test-config.json')
+        bslint.load_config_file(default_filepath='test-config.json')
         result = bslint.bslint.runner("resources/GeneralTestFiles/SubDirectory1TestFiles/Print.brs")
         exp_result = ["resources/GeneralTestFiles/SubDirectory1TestFiles/Print.brs"]
         self.assertEqual(exp_result, result)
 
     def testBSFileWithPathLexed(self):
-        bslint.load_config_file(default='test-config.json')
+        bslint.load_config_file(default_filepath='test-config.json')
         result = bslint.bslint.runner("resources/GeneralTestFiles/IncorrectCommentSpelling.bs")
         exp_result = ["resources/GeneralTestFiles/IncorrectCommentSpelling.bs"]
         self.assertEqual(exp_result, result)
 
     def testDirectoryWithPathLexed(self):
-        bslint.load_config_file(default='test-config.json')
+        bslint.load_config_file(default_filepath='test-config.json')
         result = bslint.bslint.runner("resources/GeneralTestFiles/SubDirectory1TestFiles")
         exp_result = ["resources/GeneralTestFiles/SubDirectory1TestFiles/Print.brs"]
         self.assertEqual(exp_result, result)
 
     def testSubDirectoryLexed(self):
-        bslint.load_config_file(default='test-config.json')
+        bslint.load_config_file(default_filepath='test-config.json')
         result = bslint.bslint.runner("resources/GeneralTestFiles")
         exp_result = ["resources/GeneralTestFiles/IncorrectCommentSpelling.bs",
                       "resources/GeneralTestFiles/SubDirectory1TestFiles/Print.brs",
@@ -39,14 +39,8 @@ class TestDirectoryLexing(unittest.TestCase):
         self.assertEqual(exp_result, result)
 
     def testSubDirectoryIgnored(self):
-        bslint.load_config_file(default='test-config.json')
+        bslint.load_config_file(default_filepath='test-config.json')
         result = bslint.bslint.runner("resources/GeneralIgnoreTestFiles")
         exp_result = ["resources/GeneralIgnoreTestFiles/IncorrectCommentSpelling.bs",
                       "resources/GeneralIgnoreTestFiles/SubDirectory2TestFiles/QuestionMark.brs"]
         self.assertEqual(exp_result, result)
-
-    def testConfigurationLoaded(self):
-        bslint.load_config_file(default='test-config.json')
-        bslint.bslint.runner("resources/GeneralIgnoreTestFiles")
-        self.assertEqual(False, bslint.config_loader.CONFIG["check_trace_free"]["active"])
-        self.assertEqual(["SubDirectory1TestFiles"], bslint.config_loader.CONFIG["ignore"])

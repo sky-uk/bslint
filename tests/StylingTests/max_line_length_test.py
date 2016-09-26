@@ -19,7 +19,7 @@ class TestMaxLineLength(unittest.TestCase):
         cls.filepath_prefix = os.path.join(this_dir, "../resources/StylingTestFiles/")
 
     def testValidLineLength(self):
-        bslint.load_config_file(default='test-config.json')
+        bslint.load_config_file(default_filepath='test-config.json')
         file_name = self.filepath_prefix + "ShortLineLength.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = []
@@ -28,7 +28,7 @@ class TestMaxLineLength(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testExceedMaxLineLength(self):
-        bslint.load_config_file(user="LineLength/small-max-line-length-config.json", default='test-config.json')
+        bslint.load_config_file(user_filepath="LineLength/small-max-line-length-config.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "ShortLineLength.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = [error.get_message(err_const.LINE_LENGTH, [11, 1])]
@@ -37,7 +37,7 @@ class TestMaxLineLength(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testEqualMaxLineLength(self):
-        bslint.load_config_file(user="LineLength/small-max-line-length-config.json", default='test-config.json')
+        bslint.load_config_file(user_filepath="LineLength/small-max-line-length-config.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "EqualMaxLineLength.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = []
@@ -46,7 +46,7 @@ class TestMaxLineLength(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testMultiLineErrors(self):
-        bslint.load_config_file(user="LineLength/small-max-line-length-config.json", default='test-config.json')
+        bslint.load_config_file(user_filepath="LineLength/small-max-line-length-config.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "MultilineAssignment.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = [error.get_message(err_const.LINE_LENGTH, [11, 1]),
