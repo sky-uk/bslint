@@ -19,7 +19,7 @@ class TestIndentation(unittest.TestCase):
         cls.filepath_prefix = os.path.join(this_dir, "../resources/StylingTestFiles/")
 
     def testNoIndentation(self):
-        bslint.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
+        bslint.load_config_file(user_filepath='Indentation/indentation-config.json', default_filepath='test-config.json')
         exp_result = None
         current_indentation_level = 0
         characters = "var i = 3"
@@ -28,7 +28,7 @@ class TestIndentation(unittest.TestCase):
         self.assertEqual(result[0], exp_result)
 
     def testSingleIndentation(self):
-        bslint.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
+        bslint.load_config_file(user_filepath='Indentation/indentation-config.json', default_filepath='test-config.json')
         exp_result = None
         current_indentation_level = 1
         characters = "    var i = 3"
@@ -37,7 +37,7 @@ class TestIndentation(unittest.TestCase):
         self.assertEqual(result[0], exp_result)
 
     def testIndentationError(self):
-        bslint.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
+        bslint.load_config_file(user_filepath='Indentation/indentation-config.json', default_filepath='test-config.json')
         file_name = self.filepath_prefix + "BasicIndentation.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = [error.get_message(err_const.TAB_INDENTATION_ERROR, [4, 2])]
@@ -45,7 +45,7 @@ class TestIndentation(unittest.TestCase):
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testAdvancedIndentationSuccess(self):
-        bslint.load_config_file(user='Indentation/indentation-config.json', default='test-config.json')
+        bslint.load_config_file(user_filepath='Indentation/indentation-config.json', default_filepath='test-config.json')
         file_name = self.filepath_prefix + "AdvancedIndentation.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = []
@@ -53,7 +53,7 @@ class TestIndentation(unittest.TestCase):
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testIndentWithOnlyTabsWithError(self):
-        bslint.load_config_file(user="Indentation/tab-only-indentation.json", default='test-config.json')
+        bslint.load_config_file(user_filepath="Indentation/tab-only-indentation.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "IndentWithTabsOnly.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = [error.get_message(err_const.TAB_AND_SPACES, [10])]
@@ -61,7 +61,7 @@ class TestIndentation(unittest.TestCase):
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testReallyAdvancedIndentation(self):
-        bslint.load_config_file(user="Indentation/indentation-config.json", default='test-config.json')
+        bslint.load_config_file(user_filepath="Indentation/indentation-config.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "SampleAdvancedIndentation.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = []

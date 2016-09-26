@@ -20,7 +20,7 @@ class TestCommentFormat(unittest.TestCase):
         cls.filepath_prefix = os.path.join(this_dir, "../resources/StylingTestFiles/")
 
     def testNoCommentCheck(self):
-        bslint.load_config_file(default='test-config.json')
+        bslint.load_config_file(default_filepath='test-config.json')
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -30,7 +30,7 @@ class TestCommentFormat(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testTODOComment(self):
-        bslint.load_config_file(user="Comments/TODO-comment-config.json", default='test-config.json')
+        bslint.load_config_file(user_filepath="Comments/TODO-comment-config.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -40,7 +40,7 @@ class TestCommentFormat(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testTODONoComment(self):
-        bslint.load_config_file(user="Comments/ValidCommentSingleQuoteNoTODO.json", default='test-config.json')
+        bslint.load_config_file(user_filepath="Comments/ValidCommentSingleQuoteNoTODO.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -52,7 +52,7 @@ class TestCommentFormat(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testNoTODOComment(self):
-        bslint.load_config_file(user="Comments/no-TODO-comment-config.json", default='test-config.json')
+        bslint.load_config_file(user_filepath="Comments/no-TODO-comment-config.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
@@ -63,7 +63,7 @@ class TestCommentFormat(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def testNoTODONoComment(self):
-        bslint.load_config_file(user="Comments/no-TODO-no-comment-config.json", default='test-config.json')
+        bslint.load_config_file(user_filepath="Comments/no-TODO-no-comment-config.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "ValidCommentSingleQuoteNoTODO.txt"
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
