@@ -4,8 +4,7 @@ import unittest
 import bslint
 import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
 import bslint.error_messages_builder.error_message_handler as error
-import bslint.utilities.commands as commands
-import bslint.lexer as lexer
+from bslint.lexer import Lexer as Lexer
 
 
 class TestConsecutiveEmptyLines(unittest.TestCase):
@@ -23,7 +22,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "NoEmptyLines.brs"
         file = bslint.get_string_to_parse(file_name)
         exp_res = []
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -32,7 +31,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "OneConsecutiveEmptyLine.brs"
         file = bslint.get_string_to_parse(file_name)
         exp_res = []
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -44,7 +43,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
             error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 2]),
             error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 3]),
             error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 4])]
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -54,7 +53,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file = bslint.get_string_to_parse(file_name)
         exp_res = [error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 3]),
                    error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 4])]
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -64,7 +63,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file = bslint.get_string_to_parse(file_name)
         exp_res = [error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 2]),
                    error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 3])]
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -73,7 +72,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "EmptyLinesInMiddle.brs"
         file = bslint.get_string_to_parse(file_name)
         exp_res = [error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1,4])]
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -83,7 +82,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file = bslint.get_string_to_parse(file_name)
         
         exp_res = []
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -92,7 +91,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "MultipleTokensAndEmptyLines.brs"
         file = bslint.get_string_to_parse(file_name)
         exp_res = [error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1,3])]
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -101,7 +100,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file_name = self.tests_filepath_prefix + "EmptyLinesInMiddle.brs"
         file = bslint.get_string_to_parse(file_name)
         exp_res = []
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -111,6 +110,6 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         file = bslint.get_string_to_parse(file_name)
         exp_res = [error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [2, 3]),
                    error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [2, 4])]
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)

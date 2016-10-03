@@ -3,7 +3,7 @@ import bslint
 import bslint.error_messages_builder.error_message_handler as err
 import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
 import os
-import bslint.lexer as lexer
+from bslint.lexer import Lexer as Lexer
 
 
 class TestLexSkeletonMain(unittest.TestCase):
@@ -14,12 +14,12 @@ class TestLexSkeletonMain(unittest.TestCase):
 
     def testLexWholeFile(self):
         file = bslint.get_string_to_parse(self.filepath_prefix + "SkeletonMain.brs")
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result["Status"], 'Success')
 
     def testLexWholeFileWithMultipleErrors(self):
         file = bslint.get_string_to_parse(self.filepath_prefix + "SkeletonMainWithErrors.brs")
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         exp_result = [err.get_message(err_const.UNMATCHED_QUOTATION_MARK, ['"roSGScreen', 2]),
                       err.get_message(err_const.UNMATCHED_QUOTATION_MARK, ['"SampleScene', 6])]
         self.assertEqual(result["Tokens"], exp_result)
