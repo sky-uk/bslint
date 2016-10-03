@@ -3,7 +3,7 @@ import bslint
 import bslint.constants as const
 import os
 import bslint.utilities.regex_handler as regex_handler
-import bslint.lexer as lexer
+from bslint.lexer import Lexer as Lexer
 
 
 class TestStringRegex(unittest.TestCase):
@@ -31,7 +31,7 @@ class TestStringRegex(unittest.TestCase):
 
     def testVariableAssignmentString(self):
         exp_result = [('string', const.ID, 1), ('=', const.OPERATOR, 1), ("words", const.STRING, 1)]
-        result = lexer.lex(self.string_file)
+        result = Lexer(self.string_file).lex()
         self.assertEqual(result[self.TOKENS], exp_result)
 
     def testDoubleQuoteString(self):
@@ -44,5 +44,5 @@ class TestStringRegex(unittest.TestCase):
     def testMultilineAssignment(self):
         exp_result = [('string', const.ID, 1), ('=', const.OPERATOR, 1), ("words", const.STRING, 1),
                       ('test_String', const.ID, 2), ('=', const.OPERATOR, 2), ("this is words", const.STRING, 2)]
-        result = lexer.lex(self.multi_line_file)
+        result = Lexer(self.multi_line_file).lex()
         self.assertEqual(result[self.TOKENS], exp_result)
