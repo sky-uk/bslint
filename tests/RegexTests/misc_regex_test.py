@@ -43,3 +43,15 @@ class TestMiscRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(), identifier)
         self.assertEqual(result["token_type"], const.SQUARE_BRACKET)
+
+    def testOpenCurlyBracket(self):
+        identifier = "{"
+        result = regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.CURLY_BRACKET)
+
+    def testCloseCurlyBracket(self):
+        identifier = "}"
+        result = regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_type"], const.CURLY_BRACKET)
