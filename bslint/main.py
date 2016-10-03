@@ -9,7 +9,7 @@ def get_string_to_parse(filepath):
 
 
 def lex_from_file():
-    filepath = "../resources/SkeletonMain.brs"
+    filepath = "../resources/skeleton-main.brs"
     fo = open(filepath, "r+")
     str_to_parse = fo.read()
     print(lexer.lex(str_to_parse))
