@@ -95,7 +95,7 @@ class TestSpellCheck(unittest.TestCase):
         self.assertEqual(result, exp_result)
 
     def testRealFile(self):
-        file_name = self.filepath_prefix + "spell_check.brs"
+        file_name = self.filepath_prefix + "spell-check.brs"
         file = bslint.get_string_to_parse(file_name)
         exp_res = [error.get_message(err_const.TYPO_IN_CODE, [2])]
         result = lexer.lex(file)
