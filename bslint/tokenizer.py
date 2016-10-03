@@ -41,7 +41,7 @@ class Tokenizer:
                 token_tuple = self.handle_match.match_handler(regex_match)
                 if token_tuple is not None:
                     self.tokens.append(token_tuple + (self.handle_style.line_number,))
-                    self.check_valid_token(self.preceding_token, self.tokens[-1])
+                    self.is_valid_token(self.preceding_token, self.tokens[-1])
                     self.preceding_token = self.tokens[-1]
 
     def handle_unexpected_token(self):
@@ -52,5 +52,6 @@ class Tokenizer:
         self.handle_style.line_number += 1
         self.handle_style.current_char_index += len(end_of_line.group())
 
-    def check_valid_token(self, preceding_token, current_token):
-        raise NotImplementedError("Please Implement this method")
+    @staticmethod
+    def is_valid_token(preceding_token, current_token):
+        return

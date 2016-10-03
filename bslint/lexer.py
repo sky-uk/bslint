@@ -8,6 +8,3 @@ class Lexer(Tokenizer):
 
     def lex(self):
         return Tokenizer.tokenize(self)
-
-    def check_valid_token(self, preceding_token, current_token):
-        return

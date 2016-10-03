@@ -19,5 +19,13 @@ valid_token_associations = {
                                  const.OPERATOR],
     const.OPEN_CURLY_BRACKET: [const.ID, const.VALUE, const.CLOSE_CURLY_BRACKET],
     const.CLOSE_CURLY_BRACKET: [const.COMMA, const.COLON, const.CLOSE_CURLY_BRACKET],
-    const.AS: [const.ID]
+    const.COLON: [const.ID, const.VALUE, const.NOT, const.MINUS, const.PLUS, const.OPEN_PARENTHESIS,
+                  const.OPEN_SQUARE_BRACKET, const.OPEN_CURLY_BRACKET],
+    const.AS: [const.ID],
+    const.COMMA: [const.ID, const.VALUE, const.OPEN_PARENTHESIS, const.OPEN_SQUARE_BRACKET],
+    const.OPERATOR: [const.ID, const.VALUE, const.OPEN_PARENTHESIS],
+    const.PLUS: [const.ID, const.VALUE, const.OPEN_PARENTHESIS],
+    const.MINUS: [const.ID, const.VALUE, const.OPEN_PARENTHESIS],
+    const.EQUALS: [const.NOT, const.VALUE, const.INVALID],
+    const.FOR: []
 }

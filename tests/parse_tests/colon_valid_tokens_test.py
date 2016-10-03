@@ -3,11 +3,11 @@ from bslint import constants as const
 from bslint.parser.parser import Parser
 
 
-class TestOpenSquareBracketValidTokens(unittest.TestCase):
+class TestColonValidTokens(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.preceding_token_type = const.OPEN_SQUARE_BRACKET
+        cls.preceding_token_type = const.COLON
 
     def testID(self):
         current_token_type = const.ID
@@ -16,6 +16,21 @@ class TestOpenSquareBracketValidTokens(unittest.TestCase):
 
     def testValue(self):
         current_token_type = const.VALUE
+        result = Parser.is_valid_token(self.preceding_token_type, current_token_type)
+        self.assertTrue(result)
+
+    def testNot(self):
+        current_token_type = const.NOT
+        result = Parser.is_valid_token(self.preceding_token_type, current_token_type)
+        self.assertTrue(result)
+
+    def testMinus(self):
+        current_token_type = const.MINUS
+        result = Parser.is_valid_token(self.preceding_token_type, current_token_type)
+        self.assertTrue(result)
+
+    def testPlus(self):
+        current_token_type = const.PLUS
         result = Parser.is_valid_token(self.preceding_token_type, current_token_type)
         self.assertTrue(result)
 
@@ -29,8 +44,8 @@ class TestOpenSquareBracketValidTokens(unittest.TestCase):
         result = Parser.is_valid_token(self.preceding_token_type, current_token_type)
         self.assertTrue(result)
 
-    def testCloseSquareBracket(self):
-        current_token_type = const.CLOSE_SQUARE_BRACKET
+    def testOpenCurlyBracket(self):
+        current_token_type = const.OPEN_CURLY_BRACKET
         result = Parser.is_valid_token(self.preceding_token_type, current_token_type)
         self.assertTrue(result)
 
@@ -39,12 +54,12 @@ class TestOpenSquareBracketValidTokens(unittest.TestCase):
         result = Parser.is_valid_token(self.preceding_token_type, current_token_type)
         self.assertFalse(result)
 
-    def testOpenCurlyBracket(self):
-        current_token_type = const.OPEN_CURLY_BRACKET
+    def testFor(self):
+        current_token_type = const.FOR
         result = Parser.is_valid_token(self.preceding_token_type, current_token_type)
         self.assertFalse(result)
 
-    def testFor(self):
-        current_token_type = const.FOR
+    def testCloseSquareBracket(self):
+        current_token_type = const.CLOSE_SQUARE_BRACKET
         result = Parser.is_valid_token(self.preceding_token_type, current_token_type)
         self.assertFalse(result)
