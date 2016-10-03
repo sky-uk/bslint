@@ -1,13 +1,14 @@
-from bslint.tokenizer import Tokenizer as Tokenizer
+from bslint.tokenizer import Tokenizer
+import bslint.parser.parser as parser
 
 
-class Lexer(Tokenizer):
+class Parser(Tokenizer):
 
     def __init__(self, characters):
         Tokenizer.__init__(self, characters)
 
-    def lex(self):
+    def parse(self):
         return Tokenizer.tokenize(self)
 
     def check_valid_token(self, preceding_token, current_token):
-        return
+        parser.is_valid_token(preceding_token, current_token)

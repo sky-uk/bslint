@@ -4,8 +4,7 @@ import unittest
 import bslint
 import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
 import bslint.error_messages_builder.error_message_handler as error
-import bslint.utilities.commands as commands
-import bslint.lexer as lexer
+from bslint.lexer import Lexer as Lexer
 
 
 class TestCommentFormat(unittest.TestCase):
@@ -25,7 +24,7 @@ class TestCommentFormat(unittest.TestCase):
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = []
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -35,7 +34,7 @@ class TestCommentFormat(unittest.TestCase):
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = [error.get_message(err_const.NON_CONVENTIONAL_TODO, [17])]
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -47,7 +46,7 @@ class TestCommentFormat(unittest.TestCase):
         exp_res = [error.get_message(err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [11]),
                    error.get_message(err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [12]),
                    error.get_message(err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [17])]
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -58,7 +57,7 @@ class TestCommentFormat(unittest.TestCase):
         self.assertNotEqual(file, "")
         exp_res = [error.get_message(err_const.NO_TODOS, [1]),
                    error.get_message(err_const.NO_TODOS, [17])]
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -72,6 +71,6 @@ class TestCommentFormat(unittest.TestCase):
             error.get_message(err_const.COMMENTS_NOT_ALLOWED, [11]),
             error.get_message(err_const.COMMENTS_NOT_ALLOWED, [12]),
             error.get_message(err_const.COMMENTS_NOT_ALLOWED, [17])]
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)

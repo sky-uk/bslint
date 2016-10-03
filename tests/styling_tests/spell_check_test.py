@@ -6,7 +6,7 @@ import bslint.error_messages_builder.error_builder.error_messages_constants as e
 import bslint.error_messages_builder.error_message_handler as error
 import bslint.utilities.commands as commands
 import bslint.constants as const
-import bslint.lexer as lexer
+from bslint.lexer import Lexer as Lexer
 
 
 class TestSpellCheck(unittest.TestCase):
@@ -98,7 +98,7 @@ class TestSpellCheck(unittest.TestCase):
         file_name = self.filepath_prefix + "spell-check.brs"
         file = bslint.get_string_to_parse(file_name)
         exp_res = [error.get_message(err_const.TYPO_IN_CODE, [2])]
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -107,7 +107,7 @@ class TestSpellCheck(unittest.TestCase):
         file = bslint.get_string_to_parse(file_name)
         self.assertNotEqual(file, "")
         exp_res = [error.get_message(err_const.TYPO_IN_CODE, [1])]
-        result = lexer.lex(file)
+        result = Lexer(file).lex()
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
