@@ -7,7 +7,7 @@ class TestIfValidTokens(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.preceding_token_type = const.IF_STATEMENT
+        cls.preceding_token_type = const.IF_STATEMENT  #This also tests ELSE IF
 
     def testNot(self):
         current_token_type = const.NOT
