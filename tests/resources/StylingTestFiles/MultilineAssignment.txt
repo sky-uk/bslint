@@ -1,2 +1,2 @@
-string = "words"
+myString = "words"
 test_String = "this is words"
