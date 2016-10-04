@@ -35,7 +35,7 @@ valid_token_associations = {
     const.STEP: [const.NOT, const.VALUE, const.INVALID, const.OPEN_PARENTHESIS, const.NATIVE_FUNCTION,
                  const.COMPONENT, const.INTERFACE, const.EVENT, const.MINUS, const.PLUS, const.OPEN_CURLY_BRACKET,
                  const.OPEN_SQUARE_BRACKET, const.FUNCTION, const.SUB],
-    const.IF: [const.NOT, const.VALUE, const.INVALID, const.OPEN_PARENTHESIS, const.NATIVE_FUNCTION,
+    const.IF_STATEMENT: [const.NOT, const.VALUE, const.INVALID, const.OPEN_PARENTHESIS, const.NATIVE_FUNCTION,
                const.COMPONENT, const.INTERFACE, const.EVENT, const.MINUS, const.PLUS, const.OPEN_CURLY_BRACKET,
                const.OPEN_SQUARE_BRACKET, const.FUNCTION, const.SUB],
     const.FOR: [const.ID],

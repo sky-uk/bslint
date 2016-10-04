@@ -3,7 +3,7 @@ from bslint import constants as const
 from bslint.parser.parser import Parser
 
 
-class TestIfValidTokens(unittest.TestCase):
+class TestElseIfValidTokens(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
