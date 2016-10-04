@@ -8,7 +8,7 @@ import bslint.constants as const
 import bslint.regexs as regexs
 
 
-comment_regex = [regex.regex for regex in regexs.List if regex.type == const.COMMENT][0]
+comment_regex = [regex[0] for regex in regexs.List if regex[1] == const.COMMENT][0]
 dictionary = words_dict._get_new_dictionary()
 
 
