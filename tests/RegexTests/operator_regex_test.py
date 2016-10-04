@@ -54,18 +54,6 @@ class TestOperatorRegex(unittest.TestCase):
         self.assertEqual(result["match"].group(), identifier)
         self.assertEqual(result["token_type"], const.OPERATOR)
 
-    def testDivideInteger(self):
-        identifier = "\\"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_type"], const.OPERATOR)
-
-    def testBitwiseAnd(self):
-        identifier = "&"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_type"], const.OPERATOR)
-
     def testExponent(self):
         identifier = "^"
         result = regex_handler.find_match(identifier)

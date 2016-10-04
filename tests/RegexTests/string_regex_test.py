@@ -29,7 +29,7 @@ class TestStringRegex(unittest.TestCase):
             self.assertEqual(result["token_type"], const.STRING)
 
     def testVariableAssignmentString(self):
-        exp_result = [('myString', const.ID, 1), ('=', const.OPERATOR, 1), ("words", const.STRING, 1)]
+        exp_result = [('string', const.ID, 1), ('=', const.OPERATOR, 1), ("words", const.STRING, 1)]
         result = lexer.lex(self.string_file)
         self.assertEqual(result[self.TOKENS], exp_result)
 
@@ -41,7 +41,7 @@ class TestStringRegex(unittest.TestCase):
         self.assertEqual(result["token_type"], const.STRING)
 
     def testMultilineAssignment(self):
-        exp_result = [('myString', const.ID, 1), ('=', const.OPERATOR, 1), ("words", const.STRING, 1),
+        exp_result = [('string', const.ID, 1), ('=', const.OPERATOR, 1), ("words", const.STRING, 1),
                       ('test_String', const.ID, 2), ('=', const.OPERATOR, 2), ("this is words", const.STRING, 2)]
         result = lexer.lex(self.multi_line_file)
         self.assertEqual(result[self.TOKENS], exp_result)

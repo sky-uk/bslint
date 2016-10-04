@@ -3,10 +3,10 @@ import re
 
 
 def find_match(characters):
-    for token in regexs.List:
-        match = re.match(token.regex, characters, re.IGNORECASE)
+    for regex in regexs.List:
+        match = re.match(regex[0], characters, re.IGNORECASE)
         if match:
             break
     if not match:
         raise ValueError('NO MATCH FOUND')
-    return {"match": match, "token_type": token.type, "indentation_level": token.indentation}
+    return {"match": match, "token_type": regex[1], "indentation_level": regex[2]}
