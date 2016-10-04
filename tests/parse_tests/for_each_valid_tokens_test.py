@@ -3,11 +3,11 @@ from bslint import constants as const
 from bslint.parser.parser import Parser
 
 
-class TestForValidTokens(unittest.TestCase):
+class TestForEachValidTokens(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.preceding_token_type = const.FOR
+        cls.preceding_token_type = const.FOR_EACH
 
     def testID(self):
         current_token_type = const.ID

@@ -26,6 +26,9 @@ valid_token_associations = {
     const.OPERATOR: [const.ID, const.VALUE, const.OPEN_PARENTHESIS],
     const.PLUS: [const.ID, const.VALUE, const.OPEN_PARENTHESIS],
     const.MINUS: [const.ID, const.VALUE, const.OPEN_PARENTHESIS],
-    const.EQUALS: [const.NOT, const.VALUE, const.INVALID],
-    const.FOR: []
+    const.EQUALS: [const.NOT, const.VALUE, const.INVALID, const.OPEN_PARENTHESIS, const.NATIVE_FUNCTION,
+                   const.COMPONENT, const.INTERFACE, const.EVENT, const.MINUS, const.PLUS, const.OPEN_CURLY_BRACKET,
+                   const.OPEN_SQUARE_BRACKET, const.FUNCTION, const.SUB],
+    const.FOR: [const.ID],
+    const.FOR_EACH: [const.ID]
 }
