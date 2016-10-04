@@ -31,7 +31,7 @@ ERROR_TABLE = {
         TAB_AND_SPACES: ErrBuilder.Error(WARNING + ": Invalid indentation, you must indent with tabs. Line number: {}"),
         TYPO_IN_CODE: ErrBuilder.Error(WARNING + ": You have spelling mistakes in your code. Line number: {}"),
         TRACEABLE_CODE: ErrBuilder.Error(WARNING + ": Print statements not allowed. Line number: {}"),
-        NON_CONVENTIONAL_TODO_AND_NO_COMMENTS: ErrBuilder.Error(WARNING + ": Comments must be TODOs and must follow convention. Line number: {}"),
+        NON_CONVENTIONAL_TODO_AND_NO_COMMENTS: ErrBuilder.Error(WARNING + ": comments must be TODOs and must follow convention. Line number: {}"),
         COMMENTS_NOT_ALLOWED: ErrBuilder.Error(WARNING + ": No comments allowed. Line number: {}"),
         NO_RETURN_AND_PARAMETERS_TYPES: ErrBuilder.Error(WARNING + ": No return and parameter types declared. Line number: {}"),
         NOT_CAPITALISED_VARIABLE_NAMES: ErrBuilder.Error(WARNING + ": Variable types must be capitalised. Line number: {}"),
@@ -39,6 +39,6 @@ ERROR_TABLE = {
         NO_SPACE_BETWEEN_METHOD_AND_PARAMETERS: ErrBuilder.Error( WARNING + ": You must put a space between method name and parameter list. Line number: {}"),
         UNMATCHED_QUOTATION_MARK: ErrBuilder.Error(ERROR + ": You have unmatched quotation marks at {} on line number: {}"),
         NON_CONVENTIONAL_TODO: ErrBuilder.Error(WARNING + ": TODOs must follow convention. Line number: {}"),
-        NO_TODOS: ErrBuilder.Error(WARNING + ": Comments must not be TODOs. Line number: {}"),
+        NO_TODOS: ErrBuilder.Error(WARNING + ": comments must not be TODOs. Line number: {}"),
         METHOD_DECLARATION_SPACING: ErrBuilder.Error(WARNING + ": The spacing on the method declaration is incorrect: {}"),
     }

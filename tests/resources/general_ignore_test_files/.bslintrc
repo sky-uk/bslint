@@ -1,0 +1,7 @@
+{
+    "ignore": ["sub-directory1-test-files"],
+    "check_trace_free": {
+        "active": false,
+        "params": {}
+    }
+}
