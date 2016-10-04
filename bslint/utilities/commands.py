@@ -8,7 +8,7 @@ import bslint.constants as const
 import bslint.regexs as regexs
 
 
-comment_regex = [regex.regex for regex in regexs.List if regex.type == const.COMMENT][0]
+comment_regex = [regex.regex for regex in regexs.List if regex.lexer_type == const.COMMENT][0]
 dictionary = words_dict._get_new_dictionary()
 
 
@@ -116,11 +116,11 @@ def check_spaces_around_operators(characters, current_char_index):
                 "error_params": [allowed_num_spaces]}
 
 
-def check_spelling(token, token_type):
+def check_spelling(token, token_lexer_type):
     if _command_is_active("spell_check") is not True:
         return
 
-    if token_type == const.COMMENT:
+    if token_lexer_type == const.COMMENT:
         words = _parse_comment_words(token)
     else:
         words = _parse_words(token)

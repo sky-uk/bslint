@@ -9,4 +9,4 @@ def find_match(characters):
             break
     if not match:
         raise ValueError('NO MATCH FOUND')
-    return {"match": match, "token_type": token.type, "indentation_level": token.indentation}
+    return {"match": match, "token_lexer_type": token.lexer_type, "token_parser_type": token.parser_type, "indentation_level": token.indentation}

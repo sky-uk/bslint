@@ -32,7 +32,7 @@ def create_token_and_handle_styling(characters, handle_match, handle_style, toke
     handle_style.line_length += len(regex_match["match"].group())
     handle_style.current_char_index += len(regex_match["match"].group())
 
-    if regex_match["token_type"] is not None:
+    if regex_match["token_lexer_type"] is not None:
         applied_common_styling = handle_style.apply_styling(regex_match)
 
         if applied_common_styling:

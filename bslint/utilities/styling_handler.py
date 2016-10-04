@@ -11,7 +11,7 @@ class StylingHandler:
         self.line_length = 0
         self._current_indentation_level = 0
         self._indentation_level = 0
-        self._token_type = None
+        self._token_lexer_type = None
         self._match = None
         self._consecutive_empty_lines = 0
         self.characters = characters
@@ -32,16 +32,16 @@ class StylingHandler:
 
     def apply_styling(self, regex_match):
         self._match = regex_match["match"]
-        self._token_type = regex_match["token_type"]
+        self._token_lexer_type = regex_match["token_lexer_type"]
         if regex_match["indentation_level"] != const.NO_INDENTATION:
             self._indentation_level = regex_match["indentation_level"]
 
         applied_common_styling = False
-        if self._token_type == const.NEW_LINE:
+        if self._token_lexer_type == const.NEW_LINE:
             self.apply_new_line_styling()
             self.line_number += 1
             self.line_length = 0
-        elif self._token_type == const.BSLINT_COMMAND:
+        elif self._token_lexer_type == const.BSLINT_COMMAND:
             self.apply_bslint_command(self._match.group('command'))
         else:
             self.apply_common_styling()
@@ -59,17 +59,17 @@ class StylingHandler:
         if not self.style_checking_is_active():
             return
         self._is_empty_line = False
-        if self._token_type == const.COMMENT:
+        if self._token_lexer_type == const.COMMENT:
             self._check_comment_styling()
-        elif self._token_type == const.OPERATOR:
+        elif self._token_lexer_type == const.OPERATOR:
             self._check_operator_spacing()
-        elif self._token_type == const.ID:
+        elif self._token_lexer_type == const.ID:
             self._check_spelling()
-        elif self._token_type == const.PRINT_KEYWORD:
+        elif self._token_lexer_type == const.PRINT_KEYWORD:
             self.check_trace_free()
 
     def _check_spelling(self):
-        is_spelt_correctly = commands.check_spelling(self._match.group(), self._token_type)
+        is_spelt_correctly = commands.check_spelling(self._match.group(), self._token_lexer_type)
         self._warning_filter(is_spelt_correctly)
 
     def _check_operator_spacing(self):
