@@ -39,5 +39,8 @@ valid_token_associations = {
                const.COMPONENT, const.INTERFACE, const.EVENT, const.MINUS, const.PLUS, const.OPEN_CURLY_BRACKET,
                const.OPEN_SQUARE_BRACKET, const.FUNCTION, const.SUB],
     const.FOR: [const.ID],
-    const.FOR_EACH: [const.ID]
+    const.FOR_EACH: [const.ID],
+    const.THEN: [const.VALUE, const.INVALID, const.OPEN_PARENTHESIS, const.NATIVE_FUNCTION,
+                 const.COMPONENT, const.INTERFACE, const.EVENT, const.PRINT_KEYWORD, const.EXIT, const.GOTO,
+                 const.RETURN, const.STOP, const.COLON],
 }
