@@ -3,8 +3,8 @@ from bslint.tokenizer import Tokenizer as Tokenizer
 
 class Lexer(Tokenizer):
 
-    def __init__(self, characters):
-        Tokenizer.__init__(self, characters)
+    def __init__(self):
+        Tokenizer.__init__(self)
 
-    def lex(self):
-        return Tokenizer.tokenize(self)
+    def lex(self, characters):
+        return Tokenizer.tokenize(self, characters)

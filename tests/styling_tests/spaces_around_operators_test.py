@@ -27,31 +27,31 @@ class TestSpacesAroundOperators(unittest.TestCase):
 
     def testSpacesAfterOperator(self):
         exp_result = [error.get_message(err_const.NO_SPACE_AROUND_OPERATORS, [1, 1])]
-        result = Lexer('this =      "words"').lex()
+        result = Lexer().lex('this =      "words"')
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testSpacesBeforeOperator(self):
         exp_result = [error.get_message(err_const.NO_SPACE_AROUND_OPERATORS, [1, 1])]
-        result = Lexer('this       = "words"').lex()
+        result = Lexer().lex('this       = "words"')
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testCorrectSpacesAroundOperator(self):
         exp_result = []
-        result = Lexer('this = "words"').lex()
+        result = Lexer().lex('this = "words"')
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testManySpacesAroundOperator(self):
         exp_result = [error.get_message(err_const.NO_SPACE_AROUND_OPERATORS, [1, 1])]
-        result = Lexer('this    =        "words"').lex()
+        result = Lexer().lex('this    =        "words"')
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testManySpacesAroundOperatorWithConfig(self):
         bslint.load_config_file("spaces_around_operators/3-spaces-around-operators-config.json")
         exp_result = [error.get_message(err_const.NO_SPACE_AROUND_OPERATORS, [3, 1])]
-        result = Lexer('this   =        "words"').lex()
+        result = Lexer().lex('this   =        "words"')
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testNoSpacesAroundOperator(self):
         exp_result = [error.get_message(err_const.NO_SPACE_AROUND_OPERATORS, [1, 1])]
-        result = Lexer('this="words"').lex()
+        result = Lexer().lex('this="words"')
         self.assertEqual(exp_result, result[self.WARNINGS])

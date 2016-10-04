@@ -4,12 +4,14 @@ import bslint.parser.valid_token_associations as vta
 
 class Parser(Tokenizer):
 
-    def __init__(self, characters):
-        Tokenizer.__init__(self, characters)
+    def __init__(self):
+        Tokenizer.__init__(self)
 
-    def parse(self):
-        return Tokenizer.tokenize(self)
+    def parse(self, characters):
+        return Tokenizer.tokenize(self, characters)
 
-    @staticmethod
-    def is_valid_token(preceding_token, current_token):
-        return current_token in vta.valid_token_associations[preceding_token]
+    def check_valid_token(self, preceding_token, current_token):
+        is_valid_token = current_token in vta.valid_token_associations[preceding_token]
+        self.preceding_token = current_token
+        return is_valid_token
+

@@ -22,7 +22,7 @@ class TestMaxLineLength(unittest.TestCase):
         file_name = self.filepath_prefix + "short-line-length.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = []
-        result = Lexer(file).lex()
+        result = Lexer().lex(file)
         self.assertEqual(result[self.WARNINGS], exp_result)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -31,7 +31,7 @@ class TestMaxLineLength(unittest.TestCase):
         file_name = self.filepath_prefix + "short-line-length.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = [error.get_message(err_const.LINE_LENGTH, [11, 1])]
-        result = Lexer(file).lex()
+        result = Lexer().lex(file)
         self.assertEqual(result[self.WARNINGS], exp_result)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -40,7 +40,7 @@ class TestMaxLineLength(unittest.TestCase):
         file_name = self.filepath_prefix + "equal-max-line-length.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = []
-        result = Lexer(file).lex()
+        result = Lexer().lex(file)
         self.assertEqual(result[self.WARNINGS], exp_result)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
@@ -50,6 +50,6 @@ class TestMaxLineLength(unittest.TestCase):
         file = bslint.get_string_to_parse(file_name)
         exp_result = [error.get_message(err_const.LINE_LENGTH, [11, 1]),
                       error.get_message(err_const.LINE_LENGTH, [11, 2])]
-        result = Lexer(file).lex()
+        result = Lexer().lex(file)
         self.assertEqual(result[self.WARNINGS], exp_result)
         self.assertEqual(result[self.STATUS], self.SUCCESS)

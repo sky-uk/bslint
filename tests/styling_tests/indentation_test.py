@@ -41,7 +41,7 @@ class TestIndentation(unittest.TestCase):
         file_name = self.filepath_prefix + "basic-indentation.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = [error.get_message(err_const.TAB_INDENTATION_ERROR, [4, 2])]
-        result = Lexer(file).lex()
+        result = Lexer().lex(file)
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testAdvancedIndentationSuccess(self):
@@ -49,7 +49,7 @@ class TestIndentation(unittest.TestCase):
         file_name = self.filepath_prefix + "advanced-indentation.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = []
-        result = Lexer(file).lex()
+        result = Lexer().lex(file)
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testIndentWithOnlyTabsWithError(self):
@@ -57,7 +57,7 @@ class TestIndentation(unittest.TestCase):
         file_name = self.filepath_prefix + "indent-with-tabs-only.txt"
         file = bslint.get_string_to_parse(file_name)
         exp_result = [error.get_message(err_const.TAB_AND_SPACES, [10])]
-        result = Lexer(file).lex()
+        result = Lexer().lex(file)
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def testReallyAdvancedIndentation(self):
@@ -66,6 +66,6 @@ class TestIndentation(unittest.TestCase):
         file = bslint.get_string_to_parse(file_name)
         exp_result = []
         exp_status = "Success"
-        result = Lexer(file).lex()
+        result = Lexer().lex(file)
         self.assertEqual(exp_result, result[self.WARNINGS])
         self.assertEqual(exp_status, result[self.STATUS])

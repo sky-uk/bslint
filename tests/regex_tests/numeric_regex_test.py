@@ -24,18 +24,18 @@ class TestNumericRegex(unittest.TestCase):
     def testIntegerWithTrailingPoints(self):
         identifier = "123."
         exp_result = [('123', const.NUMERIC, const.VALUE, 1), ('.', const.SPECIAL_OPERATOR, const.DOT, 1)]
-        result = Lexer(identifier).lex()
+        result = Lexer().lex(identifier)
         self.assertEqual(result[self.TOKENS], exp_result)
 
     def testMultipleDecimalNumbers(self):
         identifier = "123.123.123"
         exp_result = [('123.123', const.NUMERIC, const.VALUE, 1), ('.', const.SPECIAL_OPERATOR, const.DOT, 1), ('123', const.NUMERIC, const.VALUE, 1)]
-        result = Lexer(identifier).lex()
+        result = Lexer().lex(identifier)
         self.assertEqual(result[self.TOKENS], exp_result)
 
     def testMultipleDecimalPoints(self):
         identifier = "123..123"
         exp_result = [('123', const.NUMERIC, const.VALUE, 1), ('.', const.SPECIAL_OPERATOR, const.DOT, 1), ('.', const.SPECIAL_OPERATOR, const.DOT, 1),
                       ('123', const.NUMERIC, const.VALUE, 1)]
-        result = Lexer(identifier).lex()
+        result = Lexer().lex(identifier)
         self.assertEqual(result[self.TOKENS], exp_result)

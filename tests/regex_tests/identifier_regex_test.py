@@ -47,13 +47,13 @@ class TestIdentifierRegex(unittest.TestCase):
     def testIdentifierInStatementWithSpace(self):
         identifier = "_testId ="
         exp_result = [('_testId', const.ID, const.ID, 1), ('=', const.OPERATOR, const.EQUALS, 1)]
-        result = Lexer(identifier).lex()
+        result = Lexer().lex(identifier)
         self.assertEqual(result["Tokens"], exp_result)
 
     def testIdentifierInStatementDollar(self):
         identifier = "_testId$="
         exp_result = [('_testId', const.ID, const.ID, '$', 1), ('=', const.OPERATOR, const.EQUALS, 1)]
-        result = Lexer(identifier).lex()
+        result = Lexer().lex(identifier)
         self.assertEqual(result["Tokens"], exp_result)
 
     def testIdentifierAsUnderscore(self):

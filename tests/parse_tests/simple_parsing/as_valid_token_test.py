@@ -11,17 +11,17 @@ class TestAsValidTokens(unittest.TestCase):
 
     def testIdentifier(self):
         current_token_type = const.ID
-        result = Parser.is_valid_token(self.preceding_token_type, current_token_type)
+        result = Parser().check_valid_token(self.preceding_token_type, current_token_type)
         self.assertTrue(result)
 
     def testAs(self):
         current_token_type = const.AS
-        result = Parser.is_valid_token(self.preceding_token_type, current_token_type)
+        result = Parser().check_valid_token(self.preceding_token_type, current_token_type)
         self.assertFalse(result)
 
     def testOpenParenthesis(self):
         current_token_type = const.OPEN_PARENTHESIS
-        result = Parser.is_valid_token(self.preceding_token_type, current_token_type)
+        result = Parser().check_valid_token(self.preceding_token_type, current_token_type)
         self.assertFalse(result)
 
 

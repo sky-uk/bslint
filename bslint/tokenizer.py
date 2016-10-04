@@ -9,15 +9,18 @@ from bslint import constants as const
 
 
 class Tokenizer:
-    def __init__(self, characters):
+    def __init__(self):
         self.tokens = []
         self.errors = []
         self.handle_match = match_handler.MatchHandler()
+        self.characters = ""
+        self.handle_style = None
+        self.preceding_token = None
+        self.is_valid_token = True
+
+    def tokenize(self, characters):
         self.characters = characters
         self.handle_style = styling_handler.StylingHandler(characters)
-        self.preceding_token = None
-
-    def tokenize(self):
         while self.handle_style.current_char_index < len(self.characters):
             try:
                 self.create_token_and_handle_styling()
@@ -25,7 +28,7 @@ class Tokenizer:
                 self.handle_unexpected_token()
                 self.handle_style.apply_new_line_styling()
         self.handle_style.apply_new_line_styling()
-        if len(self.errors) is not 0:
+        if len(self.errors) is not 0 or self.is_valid_token is False:
             return {"Status": "Error", "Tokens": self.errors, "Warnings": self.handle_style.warnings}
         else:
             return {"Status": "Success", "Tokens": self.tokens, "Warnings": self.handle_style.warnings}
@@ -41,8 +44,7 @@ class Tokenizer:
                 token_tuple = self.handle_match.match_handler(regex_match)
                 if token_tuple is not None:
                     self.tokens.append(token_tuple + (self.handle_style.line_number,))
-                    self.is_valid_token(self.preceding_token, self.tokens[-1])
-                    self.preceding_token = self.tokens[-1]
+                    self.is_valid_token = self.check_valid_token(self.preceding_token, self.tokens[-1][2])
 
     def handle_unexpected_token(self):
         end_of_line = re.match(r"(.*)\n", self.characters[self.handle_style.current_char_index:])
@@ -52,6 +54,5 @@ class Tokenizer:
         self.handle_style.line_number += 1
         self.handle_style.current_char_index += len(end_of_line.group())
 
-    @staticmethod
-    def is_valid_token(preceding_token, current_token):
+    def check_valid_token(self, preceding_token, current_token):
         return

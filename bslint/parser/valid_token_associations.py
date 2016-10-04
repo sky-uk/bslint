@@ -2,7 +2,8 @@ import bslint.constants as const
 
 valid_token_associations = {
     const.WHILE: [const.ID, const.VALUE, const.NOT],
-    const.ID: [const.DOT, const.OPERATOR, const.BRACKET, const.AND, const.AS, const.COLON, const.COMMA, const.OR],
+    const.ID: [const.DOT, const.OPERATOR, const.BRACKET, const.AND, const.AS, const.COLON, const.COMMA, const.OR,
+               const.EQUALS],
     const.VALUE: [const.COMMA, const.CLOSE_PARENTHESIS, const.AND, const.COLON, const.OPERATOR],
     const.NOT: [const.ID, const.VALUE],
     const.AND: [const.ID, const.VALUE, const.OPEN_PARENTHESIS, const.NOT, const.PLUS, const.MINUS],
@@ -36,11 +37,13 @@ valid_token_associations = {
                  const.COMPONENT, const.INTERFACE, const.EVENT, const.MINUS, const.PLUS, const.OPEN_CURLY_BRACKET,
                  const.OPEN_SQUARE_BRACKET, const.FUNCTION, const.SUB],
     const.IF_STATEMENT: [const.NOT, const.VALUE, const.INVALID, const.OPEN_PARENTHESIS, const.NATIVE_FUNCTION,
-               const.COMPONENT, const.INTERFACE, const.EVENT, const.MINUS, const.PLUS, const.OPEN_CURLY_BRACKET,
-               const.OPEN_SQUARE_BRACKET, const.FUNCTION, const.SUB],
+                         const.COMPONENT, const.INTERFACE, const.EVENT, const.MINUS, const.PLUS,
+                         const.OPEN_CURLY_BRACKET,
+                         const.OPEN_SQUARE_BRACKET, const.FUNCTION, const.SUB],
     const.FOR: [const.ID],
     const.FOR_EACH: [const.ID],
     const.THEN: [const.VALUE, const.INVALID, const.OPEN_PARENTHESIS, const.NATIVE_FUNCTION,
                  const.COMPONENT, const.INTERFACE, const.EVENT, const.PRINT_KEYWORD, const.EXIT, const.GOTO,
                  const.RETURN, const.STOP, const.COLON],
+    None: [const.ID]
 }

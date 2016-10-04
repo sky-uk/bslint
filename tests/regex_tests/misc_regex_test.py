@@ -11,13 +11,13 @@ class TestMiscRegex(unittest.TestCase):
     def testWhiteSpace(self):
         identifier = " "
         exp_result = []
-        result = Lexer(identifier).lex()
+        result = Lexer().lex(identifier)
         self.assertEqual(result[self.TOKENS], exp_result)
 
     def testSingleQuoteComment(self):
         identifier = "' do stuff \n"
         exp_result = []
-        result = Lexer(identifier).lex()
+        result = Lexer().lex(identifier)
         self.assertEqual(result[self.TOKENS], exp_result)
 
     def testOpenParenthesis(self):

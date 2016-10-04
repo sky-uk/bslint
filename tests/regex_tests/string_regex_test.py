@@ -34,7 +34,7 @@ class TestStringRegex(unittest.TestCase):
     def testVariableAssignmentString(self):
         exp_result = [('myString', const.ID, const.ID, 1), ('=', const.OPERATOR, const.EQUALS, 1),
                       ("words", const.STRING, const.VALUE, 1)]
-        result = Lexer(self.string_file).lex()
+        result = Lexer().lex(self.string_file)
         self.assertEqual(result[self.TOKENS], exp_result)
 
     def testDoubleQuoteString(self):
@@ -50,5 +50,5 @@ class TestStringRegex(unittest.TestCase):
                       ("words", const.STRING, const.VALUE, 1),
                       ('test_String', const.ID, const.ID, 2), ('=', const.OPERATOR, const.EQUALS, 2),
                       ("this is words", const.STRING, const.VALUE, 2)]
-        result = Lexer(self.multi_line_file).lex()
+        result = Lexer().lex(self.multi_line_file)
         self.assertEqual(result[self.TOKENS], exp_result)

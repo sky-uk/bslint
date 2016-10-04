@@ -14,12 +14,12 @@ class TestLexSkeletonMain(unittest.TestCase):
 
     def testLexWholeFile(self):
         file = bslint.get_string_to_parse(self.filepath_prefix + "skeleton-main.brs")
-        result = Lexer(file).lex()
+        result = Lexer().lex(file)
         self.assertEqual(result["Status"], 'Success')
 
     def testLexWholeFileWithMultipleErrors(self):
         file = bslint.get_string_to_parse(self.filepath_prefix + "skeleton-main-with-errors.brs")
-        result = Lexer(file).lex()
+        result = Lexer().lex(file)
         exp_result = [err.get_message(err_const.UNMATCHED_QUOTATION_MARK, ['"roSGScreen', 2]),
                       err.get_message(err_const.UNMATCHED_QUOTATION_MARK, ['"SampleScene', 6])]
         self.assertEqual(result["Tokens"], exp_result)

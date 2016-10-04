@@ -86,7 +86,7 @@ def lint_specific(filename):
         read_file = file_reader.read_file(filename)
         if read_file["invalid_encoding"]:
             print(read_file["invalid_encoding"])
-        lex_result = Lexer(read_file['str_to_lex']).lex()
+        lex_result = Lexer().lex(read_file['str_to_lex'])
         if lex_result["Status"] == "Error" or lex_result["Warnings"]:
             global is_lexed_correctly
             is_lexed_correctly = False
