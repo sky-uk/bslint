@@ -32,11 +32,9 @@ def get_default_config(default, filepath_prefix, tests_filepath_prefix):
 
 def get_user_config(tests_filepath_prefix, user_filepath):
     user_json = ""
-    print(user_filepath)
     if user_filepath is not None:
         if not os.path.isfile(user_filepath):
             user_filepath = tests_filepath_prefix + user_filepath
-        print(user_filepath)
         user_json = read_json(user_filepath)
     return user_json
 
