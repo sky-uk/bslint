@@ -21,9 +21,11 @@ class Tokenizer:
         while self.handle_style.current_char_index < len(self.characters):
             try:
                 self.create_token_and_handle_styling()
-            except ValueError:
-                self.handle_unexpected_token()
-                self.handle_style.apply_new_line_styling()
+            except ValueError as e:
+                if e == err_const.UNMATCHED_TOKEN:
+                    self.handle_unmatched_closing_token(e)
+                else:
+                    self.handle_unexpected_token()
         self.handle_style.apply_new_line_styling()
         if len(self.errors) is not 0:
             return {"Status": "Error", "Tokens": self.errors, "Warnings": self.handle_style.warnings}
@@ -51,6 +53,9 @@ class Tokenizer:
                                             self.handle_style.line_number]))
         self.handle_style.line_number += 1
         self.handle_style.current_char_index += len(end_of_line.group())
+
+    def handle_unmatched_closing_token(self, message):
+        self.error.append(err.get_message(err_const.UNMATCHED_TOKEN))
 
     @staticmethod
     def is_valid_token(preceding_token, current_token):
