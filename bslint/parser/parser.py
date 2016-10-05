@@ -17,13 +17,6 @@ class Parser(Tokenizer):
             'sub': 'endsub',
             'foreach': 'endfor'
         }
-        self.closing_statements_table = {#it's a dictionary but not a list for performance reasons, values never used
-            'endfunction': None,
-            'endwhile': None,
-            'endfor': None,
-            'endif': None,
-            'endsub': None,
-        }
 
     def parse(self):
         return Tokenizer.tokenize(self)
@@ -36,7 +29,7 @@ class Parser(Tokenizer):
         lowercase_token_value = current_token[0].lower().replace(" ", "")
         if lowercase_token_value in self.open_statements_table:
             self.statements_stack.append(lowercase_token_value)
-        elif lowercase_token_value in self.closing_statements_table:
+        elif lowercase_token_value in self.open_statements_table.values():
             if len(self.statements_stack) == 0 or not self._statement_matches(lowercase_token_value):
                 raise ValueError(err_const.UNMATCHED_TOKEN, {"expected": self.expected_statement, "actual": current_token[0]})
 
