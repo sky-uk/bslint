@@ -21,6 +21,8 @@ UNMATCHED_QUOTATION_MARK = "UNMATCHED_QUOTATION_MARK"
 NON_CONVENTIONAL_TODO_AND_NO_COMMENTS = "NON_CONVENTIONAL_TODO_AND_NO_COMMENTS"
 NO_TODOS = "NO_TODOS"
 METHOD_DECLARATION_SPACING = "METHOD_DECLARATION_SPACING"
+UNMATCHED_TOKEN = "UNMATCHED_TOKEN"
+NO_MATCH_FOUND = "NO_MATCH_FOUND"
 
 ERROR_TABLE = {
         LINE_LENGTH: ErrBuilder.Error(WARNING + ": Line length exceeds {} number of characters. Line number: {}"),
@@ -41,4 +43,5 @@ ERROR_TABLE = {
         NON_CONVENTIONAL_TODO: ErrBuilder.Error(WARNING + ": TODOs must follow convention. Line number: {}"),
         NO_TODOS: ErrBuilder.Error(WARNING + ": comments must not be TODOs. Line number: {}"),
         METHOD_DECLARATION_SPACING: ErrBuilder.Error(WARNING + ": The spacing on the method declaration is incorrect: {}"),
+        UNMATCHED_TOKEN: ErrBuilder.Error(ERROR + ": Unmatched tokens, expected {}, but got {}")
     }
