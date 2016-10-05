@@ -40,9 +40,10 @@ class Tokenizer:
             applied_common_styling = self.handle_style.apply_styling(regex_match)
 
             if applied_common_styling:
-                token_tuple = self.handle_match.match_handler(regex_match)
-                if token_tuple is not None:
-                    self.tokens.append(token_tuple + (self.handle_style.line_number,))
+                token = self.handle_match.match_handler(regex_match)
+                if token is not None:
+                    token.line_number = self.handle_style.line_number
+                    self.tokens.append(token)
                     self.is_valid_token(self.preceding_token, self.tokens[-1])
                     self.preceding_token = self.tokens[-1]
 
