@@ -2,6 +2,7 @@ import unittest
 import bslint.constants as const
 from bslint.lexer import Lexer as Lexer
 import bslint.utilities.regex_handler as regex_handler
+from bslint.utilities.token import Token as Token
 
 
 class TestIdentifierRegex(unittest.TestCase):
@@ -46,15 +47,15 @@ class TestIdentifierRegex(unittest.TestCase):
 
     def testIdentifierInStatementWithSpace(self):
         identifier = "_testId ="
-        exp_result = [('_testId', const.ID, const.ID, 1), ('=', const.OPERATOR, const.EQUALS, 1)]
+        exp_result = [Token('_testId', const.ID, const.ID, 1), Token('=', const.OPERATOR, const.EQUALS, 1)]
         result = Lexer().lex(identifier)
         self.assertEqual(result["Tokens"], exp_result)
 
     def testIdentifierInStatementDollar(self):
         identifier = "_testId$="
-        exp_result = [('_testId', const.ID, const.ID, '$', 1), ('=', const.OPERATOR, const.EQUALS, 1)]
+        exp_result = [Token('_testId', const.ID, const.ID, 1, '$'), Token('=', const.OPERATOR, const.EQUALS, 1, None)]
         result = Lexer().lex(identifier)
-        self.assertEqual(result["Tokens"], exp_result)
+        self.assertEqual(result['Tokens'], exp_result)
 
     def testIdentifierAsUnderscore(self):
         identifier = "_"

@@ -4,6 +4,7 @@ import bslint.constants as const
 import os
 import bslint.utilities.regex_handler as regex_handler
 from bslint.lexer import Lexer as Lexer
+from bslint.utilities.token import Token as Token
 
 
 class TestStringRegex(unittest.TestCase):
@@ -32,8 +33,8 @@ class TestStringRegex(unittest.TestCase):
             self.assertEqual(result["token_parser_type"], const.VALUE)
 
     def testVariableAssignmentString(self):
-        exp_result = [('myString', const.ID, const.ID, 1), ('=', const.OPERATOR, const.EQUALS, 1),
-                      ("words", const.STRING, const.VALUE, 1)]
+        exp_result = [Token('myString', const.ID, const.ID, 1), Token('=', const.OPERATOR, const.EQUALS, 1),
+                      Token('words', const.STRING, const.VALUE, 1)]
         result = Lexer().lex(self.string_file)
         self.assertEqual(result[self.TOKENS], exp_result)
 
@@ -46,9 +47,9 @@ class TestStringRegex(unittest.TestCase):
         self.assertEqual(result["token_parser_type"], const.VALUE)
 
     def testMultilineAssignment(self):
-        exp_result = [('myString', const.ID, const.ID, 1), ('=', const.OPERATOR, const.EQUALS, 1),
-                      ("words", const.STRING, const.VALUE, 1),
-                      ('test_String', const.ID, const.ID, 2), ('=', const.OPERATOR, const.EQUALS, 2),
-                      ("this is words", const.STRING, const.VALUE, 2)]
+        exp_result = [Token('myString', const.ID, const.ID, 1), Token('=', const.OPERATOR, const.EQUALS, 1),
+                      Token("words", const.STRING, const.VALUE, 1),
+                      Token('test_String', const.ID, const.ID, 2), Token('=', const.OPERATOR, const.EQUALS, 2),
+                      Token("this is words", const.STRING, const.VALUE, 2)]
         result = Lexer().lex(self.multi_line_file)
         self.assertEqual(result[self.TOKENS], exp_result)

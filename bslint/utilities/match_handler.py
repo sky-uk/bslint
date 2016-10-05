@@ -1,4 +1,5 @@
 from bslint.utilities.styling_handler import *
+from bslint.utilities.token import Token as Token
 
 
 class MatchHandler:
@@ -6,32 +7,26 @@ class MatchHandler:
         self._match = None
         self._token_lexer_type = None
         self._token_parser_type = None
+        self._type = None
 
     def match_handler(self, regex_match):
+        self._type = None
         self._match = regex_match["match"]
         self._token_lexer_type = regex_match["token_lexer_type"]
         self._token_parser_type = regex_match["token_parser_type"]
-        token_tuple = None
         if self._token_lexer_type != const.COMMENT:
-            token_tuple = self._build_token()
-        return token_tuple
+            return self._build_token()
 
     def _build_token(self):
-        if self._token_lexer_type == const.STRING:
-            tuple_token = self._build_string_tuple()
-        elif self._token_lexer_type == const.ID:
-            tuple_token = self._build_id_tuple()
+        if self._token_lexer_type == const.ID:
+            self._build_id_token()
+        elif self._token_lexer_type == const.STRING:
+            self._match = self._match.group("value")
         else:
-            tuple_token = (self._match.group(), self._token_lexer_type, self._token_parser_type)
-        return tuple_token
+            self._match = self._match.group()
+        return Token(self._match, self._token_lexer_type, self._token_parser_type, token_type=self._type)
 
-    def _build_string_tuple(self):
-        group = self._match.group()
-        return group[1:-1], self._token_lexer_type, self._token_parser_type
-
-    def _build_id_tuple(self):
-        group = self._match.group('value')
-        tuple_token = (group, self._token_lexer_type, self._token_parser_type)
+    def _build_id_token(self):
         if self._match.group('type') is not '':
-            tuple_token = (group, self._token_lexer_type, self._token_parser_type, self._match.group('type'))
-        return tuple_token
+            self._type = self._match.group('type')
+        self._match = self._match.group('value')

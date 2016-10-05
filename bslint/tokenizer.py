@@ -24,9 +24,11 @@ class Tokenizer:
         while self.handle_style.current_char_index < len(self.characters):
             try:
                 self.create_token_and_handle_styling()
-            except ValueError:
-                self.handle_unexpected_token()
-                self.handle_style.apply_new_line_styling()
+            except ValueError as e:
+                if e == err_const.UNMATCHED_TOKEN:
+                    self.handle_unmatched_closing_token(e)
+                else:
+                    self.handle_unexpected_token()
         self.handle_style.apply_new_line_styling()
         self.check_valid_statement()
         if len(self.errors) is not 0 or self.is_valid_token is False:
@@ -42,9 +44,10 @@ class Tokenizer:
             applied_common_styling = self.handle_style.apply_styling(regex_match)
 
             if applied_common_styling:
-                token_tuple = self.handle_match.match_handler(regex_match)
-                if token_tuple is not None:
-                    self.tokens.append(token_tuple + (self.handle_style.line_number,))
+                token = self.handle_match.match_handler(regex_match)
+                if token is not None:
+                    token.line_number = self.handle_style.line_number
+                    self.tokens.append(token)
                     #self.is_valid_token = self.check_valid_token(self.preceding_token, self.tokens[-1][2])
             if self.handle_style.end_of_statement is True:
                 self.check_valid_statement()
@@ -62,3 +65,7 @@ class Tokenizer:
 
     def check_valid_statement(self):
         return
+
+    def handle_unmatched_closing_token(self, message):
+        self.errors.append(err.get_message(err_const.UNMATCHED_TOKEN))
+
