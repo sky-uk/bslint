@@ -28,6 +28,7 @@ class Tokenizer:
                 self.handle_unexpected_token()
                 self.handle_style.apply_new_line_styling()
         self.handle_style.apply_new_line_styling()
+        self.check_valid_statement()
         if len(self.errors) is not 0 or self.is_valid_token is False:
             return {"Status": "Error", "Tokens": self.errors, "Warnings": self.handle_style.warnings}
         else:
@@ -44,7 +45,9 @@ class Tokenizer:
                 token_tuple = self.handle_match.match_handler(regex_match)
                 if token_tuple is not None:
                     self.tokens.append(token_tuple + (self.handle_style.line_number,))
-                    self.is_valid_token = self.check_valid_token(self.preceding_token, self.tokens[-1][2])
+                    #self.is_valid_token = self.check_valid_token(self.preceding_token, self.tokens[-1][2])
+            if self.handle_style.end_of_statement is True:
+                self.check_valid_statement()
 
     def handle_unexpected_token(self):
         end_of_line = re.match(r"(.*)\n", self.characters[self.handle_style.current_char_index:])
@@ -55,4 +58,7 @@ class Tokenizer:
         self.handle_style.current_char_index += len(end_of_line.group())
 
     def check_valid_token(self, preceding_token, current_token):
+        return
+
+    def check_valid_statement(self):
         return

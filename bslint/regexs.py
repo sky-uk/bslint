@@ -182,7 +182,7 @@ List = [
 
     Token._make([r"(?P<value>^[a-z_][a-z0-9_]*)(?P<type>\$|%|!|#|&?)", const.ID, const.ID, const.NO_INDENTATION]),
     Token._make(['\"(.*)\"', const.STRING, const.VALUE, const.NO_INDENTATION]),
-    Token._make([r"^\d*(\.?\d+){1}", const.NUMERIC, const.VALUE, const.NO_INDENTATION]),
+    Token._make([r"^\d*(\.?\d+){1}", const.NUMERIC, const.NUMERIC, const.NO_INDENTATION]),
 
 
 ]

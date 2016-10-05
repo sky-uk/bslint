@@ -18,6 +18,7 @@ class StylingHandler:
         self.current_char_index = 0
         self.warnings = []
         self._skip_styling_on_file = False
+        self.end_of_statement = False
         self._line_not_to_style_check = -1
 
     def _get_last_line(self):
@@ -38,11 +39,14 @@ class StylingHandler:
 
         applied_common_styling = False
         if self._token_lexer_type == const.NEW_LINE:
+            self.end_of_statement = True
             self.apply_new_line_styling()
             self.line_number += 1
             self.line_length = 0
         elif self._token_lexer_type == const.BSLINT_COMMAND:
             self.apply_bslint_command(self._match.group('command'))
+        elif self._token_lexer_type == const.COLON:
+            self.end_of_statement = True
         else:
             self.apply_common_styling()
             applied_common_styling = True
