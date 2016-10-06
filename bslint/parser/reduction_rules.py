@@ -1,7 +1,7 @@
-import BSLint.constants as const
-from bslint.utilities.reduction_rule_handler import ReductionRuleHandler
+import bslint.constants as const
+from bslint.parser.reduction_rule_handler import ReductionRuleHandler
 
-Rules = [
+rules = [
     ReductionRuleHandler([const.ID, const.OPERATOR, const.ID], const.VALUE),
     ReductionRuleHandler([const.VALUE, const.OPERATOR, const.VALUE], const.VALUE),
     ReductionRuleHandler([const.VALUE, const.OPERATOR, const.ID], const.VALUE),

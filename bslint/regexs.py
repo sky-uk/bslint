@@ -34,8 +34,8 @@ List = [
     Regex._make([r"\&", const.OPERATOR, const.OPERATOR, const.NO_INDENTATION]),
     Regex._make([r"\\", const.OPERATOR, const.OPERATOR, const.NO_INDENTATION]), # divide integer
     Regex._make(["=", const.OPERATOR, const.EQUALS, const.NO_INDENTATION]),
-    Regex._make(["-", const.OPERATOR, const.MINUS, const.NO_INDENTATION]),
-    Regex._make(["\+", const.OPERATOR, const.PLUS, const.NO_INDENTATION]),
+    Regex._make(["-", const.OPERATOR, const.OPERATOR, const.NO_INDENTATION]),
+    Regex._make(["\+", const.OPERATOR, const.OPERATOR, const.NO_INDENTATION]),
     Regex._make(["\*", const.OPERATOR, const.OPERATOR, const.NO_INDENTATION]),
     Regex._make([r"/", const.OPERATOR, const.OPERATOR, const.NO_INDENTATION]),
     Regex._make(["<", const.OPERATOR, const.OPERATOR, const.NO_INDENTATION]),

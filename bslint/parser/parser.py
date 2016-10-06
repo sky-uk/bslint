@@ -1,5 +1,5 @@
 from bslint.tokenizer import Tokenizer
-import bslint.parser.statements_grammar as grammar
+import bslint.parser.reduction_rules as grammar
 import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
 
 
@@ -30,7 +30,7 @@ class Parser(Tokenizer):
     def find_production_with_corresponding_last_token(current_token):
         corresponding_rules = []
         for rule in grammar.rules:
-            if rule['rule'][len(rule['rule']) - 1] == current_token:
+            if rule.rule[len(rule.rule) - 1] == current_token:
                 corresponding_rules.append(rule)
         return corresponding_rules
 
@@ -55,11 +55,12 @@ class Parser(Tokenizer):
         possible_production_rules = self.find_production_with_corresponding_last_token(self.statement[-1].parser_type)
         is_valid_statement = False
         for rule in possible_production_rules:
-            last_tokens = self.statement[:len(rule["rule"])]
+            last_tokens = self.statement[:len(rule.rule)]
             last_token_types = self.get_last_token_types(last_tokens)
-            if rule["rule"] == last_token_types:
-                del self.statement[:len(rule["rule"])]
-                self.statement.insert(len(self.statement), rule["result"])
+            if rule.rule == last_token_types:
+                del self.statement[:len(rule.rule)]
+                self.statement.insert(len(self.statement), rule.result)
                 is_valid_statement = True
+                break
         if is_valid_statement is False:
             raise ValueError(err_const.PARSING_FAILED)
