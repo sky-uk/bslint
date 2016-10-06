@@ -1,6 +1,6 @@
 import bslint.constants as const
 
 rules = [
-    [const.ID],
-    [const.ID, const.EQUALS, const.NUMERIC]
+    {"rule": [const.ID, const.EQUALS, const.VALUE], "result": const.VAR_ASSIGNMENT},
 ]
+

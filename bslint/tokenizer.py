@@ -17,6 +17,8 @@ class Tokenizer:
         self.handle_style = None
         self.preceding_token = None
         self.is_valid_token = True
+        self.parsing_failed = False
+        self.current_token_index = 0
 
     def tokenize(self, characters):
         self.characters = characters
@@ -27,11 +29,13 @@ class Tokenizer:
             except ValueError as e:
                 if e == err_const.UNMATCHED_TOKEN:
                     self.handle_unmatched_closing_token(e)
+                elif e == err_const.PARSING_FAILED:
+                    self.parsing_failed = True
                 else:
                     self.handle_unexpected_token()
         self.handle_style.apply_new_line_styling()
-        self.check_valid_statement()
-        if len(self.errors) is not 0 or self.is_valid_token is False:
+        self.check_statement_validity(self.tokens[self.current_token_index:])
+        if len(self.errors) is not 0 or self.parsing_failed:
             return {"Status": "Error", "Tokens": self.errors, "Warnings": self.handle_style.warnings}
         else:
             return {"Status": "Success", "Tokens": self.tokens, "Warnings": self.handle_style.warnings}
@@ -42,15 +46,15 @@ class Tokenizer:
         self.handle_style.current_char_index += len(regex_match["match"].group())
         if regex_match["token_lexer_type"] is not None:
             applied_common_styling = self.handle_style.apply_styling(regex_match)
-
             if applied_common_styling:
                 token = self.handle_match.match_handler(regex_match)
                 if token is not None:
                     token.line_number = self.handle_style.line_number
                     self.tokens.append(token)
-                    #self.is_valid_token = self.check_valid_token(self.preceding_token, self.tokens[-1][2])
             if self.handle_style.end_of_statement is True:
-                self.check_valid_statement()
+                self.check_statement_validity(self.tokens[self.current_token_index:])
+                self.handle_style.end_of_statement = False
+                self.current_token_index = len(self.tokens)
 
     def handle_unexpected_token(self):
         end_of_line = re.match(r"(.*)\n", self.characters[self.handle_style.current_char_index:])
@@ -63,7 +67,7 @@ class Tokenizer:
     def check_valid_token(self, preceding_token, current_token):
         return
 
-    def check_valid_statement(self):
+    def check_statement_validity(self, statement):
         return
 
     def handle_unmatched_closing_token(self, message):
