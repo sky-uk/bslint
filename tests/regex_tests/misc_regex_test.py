@@ -1,7 +1,8 @@
 import unittest
+
 import bslint.constants as const
-from bslint.lexer import Lexer as Lexer
-import bslint.utilities.regex_handler as regex_handler
+import bslint.lexer.regex_handler as regex_handler
+from bslint.lexer.lexer import Lexer as Lexer
 
 
 class TestMiscRegex(unittest.TestCase):

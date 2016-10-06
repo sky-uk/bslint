@@ -1,12 +1,11 @@
 import codecs
 import re
 
-import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
-import bslint.utilities.config_loader as config_loader
-import bslint.utilities.words_dictionary as words_dict
 import bslint.constants as const
+import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
+import bslint.lexer.words_dictionary as words_dict
 import bslint.regexs as regexs
-
+import bslint.utilities.config_loader as config_loader
 
 comment_regex = [regex.regex for regex in regexs.List if regex.lexer_type == const.COMMENT][0]
 dictionary = words_dict._get_new_dictionary()

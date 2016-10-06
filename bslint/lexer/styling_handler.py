@@ -1,7 +1,8 @@
-from bslint.error_messages_builder import error_message_handler as err
-from bslint.utilities import commands as commands
-from bslint import constants as const
 import re
+
+from bslint import constants as const
+from bslint.error_messages_builder import error_message_handler as err
+from bslint.lexer import commands as commands
 
 
 class StylingHandler:

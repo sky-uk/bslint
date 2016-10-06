@@ -3,10 +3,9 @@ __version__ = "0.5.0"
 
 import os
 import sys
-
 import bslint
 import bslint.constants as const
-from bslint.lexer import Lexer as Lexer
+from bslint.lexer.lexer import Lexer as Lexer
 
 is_lexed_correctly = True
 files = []

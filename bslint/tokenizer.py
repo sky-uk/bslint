@@ -1,10 +1,11 @@
 import re
 
+import bslint.lexer.match_handler as match_handler
+import bslint.lexer.styling_handler as styling_handler
+
 import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
 import bslint.error_messages_builder.error_message_handler as err
-import bslint.utilities.match_handler as match_handler
-import bslint.utilities.regex_handler as regex_handler
-import bslint.utilities.styling_handler as styling_handler
+import bslint.lexer.regex_handler as regex_handler
 from bslint import constants as const
 
 

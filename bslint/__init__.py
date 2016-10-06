@@ -8,11 +8,11 @@
 
 __version__ = '0.4.15'
 
-from .utilities.commands import *
+from bslint.lexer.regex_handler import *
+from .bslint import *
+from .main import get_string_to_parse
+from .lexer.commands import *
 from .utilities.config_loader import *
 from .utilities.file_reader import *
-from .utilities.regex_handler import *
-from .bslint import *
-from .lexer import Lexer
-from .main import get_string_to_parse
+
 

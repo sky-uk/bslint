@@ -2,7 +2,7 @@ import os
 import unittest
 
 import bslint
-import bslint.utilities.commands as commands
+import bslint.lexer.commands as commands
 
 
 class TestMethodSpacingDeclaration(unittest.TestCase):

@@ -1,4 +1,4 @@
-from bslint.utilities.styling_handler import *
+from bslint.lexer.styling_handler import *
 from bslint.utilities.token import Token
 
 

@@ -13,11 +13,13 @@ rules = [
     ReductionRuleHandler([const.FUNCTION_CALL, const.OPERATOR, const.FUNCTION_CALL], const.VALUE),
 
     ReductionRuleHandler([const.ID, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS], const.FUNCTION_CALL),
-    ReductionRuleHandler([const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS], const.FUNCTION_CALL),
+    ReductionRuleHandler([const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS],
+                         const.FUNCTION_CALL),
 
     ReductionRuleHandler([const.ARGUMENT, const.COMMA, const.ARGUMENT], const.ARGUMENT),
     ReductionRuleHandler([const.ID], const.ARGUMENT),
     ReductionRuleHandler([const.VALUE], const.ARGUMENT),
+    ReductionRuleHandler([const.FUNCTION_CALL], const.ARGUMENT),
 
     ReductionRuleHandler([const.ID, const.EQUALS, const.ID], const.VAR_AS),
     ReductionRuleHandler([const.ID, const.EQUALS, const.VALUE], const.VAR_AS),

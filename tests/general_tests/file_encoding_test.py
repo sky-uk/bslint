@@ -3,7 +3,7 @@ import unittest
 
 import bslint
 import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
-import bslint.utilities.commands as commands
+import bslint.lexer.commands as commands
 
 
 class TestEncodingCheck(unittest.TestCase):

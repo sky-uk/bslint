@@ -3,7 +3,7 @@ import unittest
 import bslint
 import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
 import bslint.error_messages_builder.error_message_handler as err
-from bslint.lexer import Lexer as Lexer
+from bslint.lexer.lexer import Lexer as Lexer
 
 
 class TestSkipFileCommand(unittest.TestCase):
