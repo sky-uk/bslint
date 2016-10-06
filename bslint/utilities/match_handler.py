@@ -1,5 +1,5 @@
 from bslint.utilities.styling_handler import *
-from bslint.utilities.token import Token as Token
+from bslint.utilities.token import Token
 
 
 class MatchHandler:
