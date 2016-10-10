@@ -5,3 +5,8 @@ machine:
 
   python:
     version: 3.5.1
+test:
+  post:
+    - pip install coverage
+    - coverage run -m bslint
+    - coverage report --omit=/home/ubuntu/virtualenvs/* > $CIRCLE_ARTIFACTS/coverage.txt

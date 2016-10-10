@@ -1,0 +1,26 @@
+Name                                                                      Stmts   Miss  Cover
+---------------------------------------------------------------------------------------------
+bslint/__init__.py                                                            7      0   100%
+bslint/__main__.py                                                            3      0   100%
+bslint/bslint.py                                                            106     34    68%
+bslint/constants.py                                                          74      0   100%
+bslint/error_messages_builder/__init__.py                                     0      0   100%
+bslint/error_messages_builder/error_builder/__init__.py                       0      0   100%
+bslint/error_messages_builder/error_builder/error_message_builder.py          5      0   100%
+bslint/error_messages_builder/error_builder/error_messages_constants.py      25      0   100%
+bslint/error_messages_builder/error_message_handler.py                        5      1    80%
+bslint/lexer/__init__.py                                                      0      0   100%
+bslint/lexer/commands.py                                                    148    103    30%
+bslint/lexer/lexer.py                                                         6      0   100%
+bslint/lexer/match_handler.py                                                26      1    96%
+bslint/lexer/regex_handler.py                                                11      0   100%
+bslint/lexer/styling_handler.py                                             101     14    86%
+bslint/lexer/words_dictionary.py                                              9      0   100%
+bslint/regexs.py                                                              4      0   100%
+bslint/tokenizer.py                                                          61      4    93%
+bslint/utilities/__init__.py                                                  0      0   100%
+bslint/utilities/config_loader.py                                            43     31    28%
+bslint/utilities/file_reader.py                                               6      0   100%
+bslint/utilities/token.py                                                     9      1    89%
+---------------------------------------------------------------------------------------------
+TOTAL                                                                       649    189    71%
