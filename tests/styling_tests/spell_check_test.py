@@ -3,8 +3,8 @@ import unittest
 
 import bslint
 import bslint.constants as const
-import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
 import bslint.error_messages_builder.error_message_handler as error
+import bslint.error_messages_builder.error_messages_constants as err_const
 import bslint.lexer.commands as commands
 from bslint.lexer.lexer import Lexer as Lexer
 

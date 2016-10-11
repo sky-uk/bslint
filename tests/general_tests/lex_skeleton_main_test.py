@@ -1,8 +1,9 @@
+import os
 import unittest
+
 import bslint
 import bslint.error_messages_builder.error_message_handler as err
-import bslint.error_messages_builder.error_builder.error_messages_constants as err_const
-import os
+import bslint.error_messages_builder.error_messages_constants as err_const
 from bslint.lexer.lexer import Lexer as Lexer
 
 

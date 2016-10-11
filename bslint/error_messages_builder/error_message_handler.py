@@ -1,4 +1,4 @@
-import bslint.error_messages_builder.error_builder.error_messages_constants as err
+import bslint.error_messages_builder.error_messages_constants as err
 
 
 def get_message(key, params=[]):

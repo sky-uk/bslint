@@ -44,7 +44,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.END_IF_TOKEN)
 
     def testFOR(self):
         identifier = "FOR "
@@ -68,7 +68,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.END_TOKEN)
 
     def testSTEP(self):
         identifier = "STEP "
@@ -108,7 +108,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.END_FOR_TOKEN)
 
     def testWHILE(self):
         identifier = "WHILE "
@@ -124,7 +124,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.END_WHILE_TOKEN)
 
     def testEXIT_WHILE(self):
         identifier = "EXIT WHILE "
@@ -148,7 +148,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.END_FUNCTION_TOKEN)
 
     def testAS(self):
         identifier = "AS "
@@ -236,7 +236,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.END_IF_TOKEN)
 
     def testENDSUB(self):
         identifier = "ENDSUB "
@@ -244,7 +244,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.END_SUB_TOKEN)
 
     def testENDWHILE(self):
         identifier = "ENDWHILE "
@@ -252,7 +252,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.END_WHILE_TOKEN)
 
     def testEVAL(self):
         identifier = "EVAL "
@@ -443,7 +443,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.END_SUB_TOKEN)
 
     def testEndFunction(self):
         identifier = "endfunction "
@@ -451,7 +451,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.END_FUNCTION_TOKEN)
 
     def testTan(self):
         identifier = "Tan "
@@ -883,7 +883,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.TYPE)
 
     def testDouble(self):
         identifier = "Double"
@@ -891,7 +891,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.TYPE)
 
     def testLongInteger(self):
         identifier = "LongInteger"
@@ -899,7 +899,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.TYPE)
 
     def testInteger(self):
         identifier = "Integer"
@@ -907,7 +907,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.TYPE)
 
     def testString(self):
         identifier = "String"
@@ -915,7 +915,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.TYPE)
 
     def testBoolean(self):
         identifier = "Boolean"
@@ -923,7 +923,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.TYPE)
 
     def testObject(self):
         identifier = "Object"
@@ -931,7 +931,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(1), exp_result)
         self.assertEqual(result["token_lexer_type"], const.KEYWORD)
-        self.assertEqual(result["token_parser_type"], const.KEYWORD)
+        self.assertEqual(result["token_parser_type"], const.TYPE)
 
     def testUntil(self):
         identifier = "Until"
