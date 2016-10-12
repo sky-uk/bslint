@@ -6,11 +6,69 @@ import bslint.error_messages_builder.error_messages_constants as err_const
 
 class TestVariableAssignment(unittest.TestCase):
 
-    def testIdentifier(self):
+    def testValue(self):
         parser = Parser()
         result = parser.parse("jack = 3")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VAR_AS], parser.all_statements[0])
+
+    def testIdentifier(self):
+        parser = Parser()
+        result = parser.parse("x = y")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.VAR_AS], parser.all_statements[0])
+
+    def testFunctionCall(self):
+        parser = Parser()
+        result = parser.parse("x = y()")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.ID, const.EQUALS, const.FUNCTION_CALL], parser.all_statements[0])
+        self.assertEqual([const.VAR_AS], parser.all_statements[1])
+
+    def testVariableAssignmentWithPlusValue(self):
+        parser = Parser()
+        result = parser.parse("x = +3")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.VAR_AS], parser.all_statements[0])
+
+    def testVariableAssignmentWithMinusValue(self):
+        parser = Parser()
+        result = parser.parse("x = -3")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.VAR_AS], parser.all_statements[0])
+
+    def testVariableAssignmentWithPlusID(self):
+        parser = Parser()
+        result = parser.parse("x = +y")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.VAR_AS], parser.all_statements[0])
+
+    def testVariableAssignmentWithMinusID(self):
+        parser = Parser()
+        result = parser.parse("x = -y")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.VAR_AS], parser.all_statements[0])
+
+    def testVariableAssignmentWithPlusFunctionCall(self):
+        parser = Parser()
+        result = parser.parse("x = +y()")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.ID, const.EQUALS, const.PLUS, const.FUNCTION_CALL], parser.all_statements[0])
+        self.assertEqual([const.VAR_AS], parser.all_statements[1])
+
+    def testVariableAssignmentWithMinusFunctionCall(self):
+        parser = Parser()
+        result = parser.parse("x = -y()")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.ID, const.EQUALS, const.MINUS, const.FUNCTION_CALL], parser.all_statements[0])
+        self.assertEqual([const.VAR_AS], parser.all_statements[1])
+
+    def testOpenParenthesisVariableAssignmentCloseParenthesis(self):
+        parser = Parser()
+        result = parser.parse("(x = 1)")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.OPEN_PARENTHESIS, const.VAR_AS, const.CLOSE_PARENTHESIS], parser.all_statements[0])
+        self.assertEqual([const.VAR_AS], parser.all_statements[1])
 
     def test2VariableDeclarations(self):
         parser = Parser()
@@ -31,7 +89,7 @@ class TestVariableAssignment(unittest.TestCase):
         parser = Parser()
         result = parser.parse('jack = 3 + 2 - 5')
         self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.ID, const.EQUALS, const.VALUE, const.OPERATOR, const.VALUE], parser.all_statements[0])
+        self.assertEqual([const.ID, const.EQUALS, const.VALUE, const.PLUS, const.VALUE], parser.all_statements[0])
         self.assertEqual([const.ID, const.EQUALS, const.VALUE], parser.all_statements[1])
         self.assertEqual([const.VAR_AS], parser.all_statements[2])
 

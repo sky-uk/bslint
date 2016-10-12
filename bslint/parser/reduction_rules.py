@@ -4,6 +4,8 @@ from bslint.parser.reduction_rule_handler import ReductionRuleHandler
 rules = [
 
     # region Value
+
+    # region Values with Operator
     ReductionRuleHandler([const.ID, const.OPERATOR, const.ID], [const.VALUE]),
     ReductionRuleHandler([const.VALUE, const.OPERATOR, const.VALUE], [const.VALUE]),
     ReductionRuleHandler([const.VALUE, const.OPERATOR, const.ID], [const.VALUE]),
@@ -13,6 +15,68 @@ rules = [
     ReductionRuleHandler([const.VALUE, const.OPERATOR, const.FUNCTION_CALL], [const.VALUE]),
     ReductionRuleHandler([const.FUNCTION_CALL, const.OPERATOR, const.VALUE], [const.VALUE]),
     ReductionRuleHandler([const.FUNCTION_CALL, const.OPERATOR, const.FUNCTION_CALL], [const.VALUE]),
+    # endregion
+
+    # region Values with Plus
+    ReductionRuleHandler([const.ID, const.PLUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.PLUS, const.PLUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.PLUS, const.MINUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.PLUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.PLUS, const.PLUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.PLUS, const.MINUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.PLUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.PLUS, const.PLUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.PLUS, const.MINUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.PLUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.PLUS, const.PLUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.PLUS, const.MINUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.PLUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.PLUS, const.PLUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.PLUS, const.MINUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.PLUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.PLUS, const.PLUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.PLUS, const.MINUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.PLUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.PLUS, const.PLUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.PLUS, const.MINUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.PLUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.PLUS, const.PLUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.PLUS, const.MINUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.PLUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.PLUS, const.PLUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.PLUS, const.MINUS, const.FUNCTION_CALL], [const.VALUE]),
+    # endregion
+
+    # region Values with Minus
+    ReductionRuleHandler([const.ID, const.MINUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.MINUS, const.MINUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.MINUS, const.PLUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.MINUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.MINUS, const.MINUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.MINUS, const.PLUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.MINUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.MINUS, const.MINUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.MINUS, const.PLUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.MINUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.MINUS, const.MINUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.MINUS, const.PLUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.MINUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.MINUS, const.MINUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.ID, const.MINUS, const.PLUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.MINUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.MINUS, const.MINUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.MINUS, const.PLUS, const.ID], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.MINUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.MINUS, const.MINUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.VALUE, const.MINUS, const.PLUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.MINUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.MINUS, const.MINUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.MINUS, const.PLUS, const.VALUE], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.MINUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.MINUS, const.MINUS, const.FUNCTION_CALL], [const.VALUE]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.MINUS, const.PLUS, const.FUNCTION_CALL], [const.VALUE]),
+    # endregion
+
     # endregion
 
     # region Argument, Close Parenthesis
@@ -38,17 +102,17 @@ rules = [
     ReductionRuleHandler([const.FUNCTION, const.ID, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS],
                          [const.FUNCTION_DECLARATION]),
     ReductionRuleHandler([const.FUNCTION, const.ID, const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS],
-                             [const.FUNCTION_DECLARATION]),
+                         [const.FUNCTION_DECLARATION]),
     ReductionRuleHandler([const.FUNCTION, const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS],
-                             [const.FUNCTION_DECLARATION]),
+                         [const.FUNCTION_DECLARATION]),
     ReductionRuleHandler([const.SUB, const.ID, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS],
                          [const.FUNCTION_DECLARATION]),
     ReductionRuleHandler([const.SUB, const.ID, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS],
                          [const.FUNCTION_DECLARATION]),
     ReductionRuleHandler([const.SUB, const.ID, const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS],
-                             [const.FUNCTION_DECLARATION]),
+                         [const.FUNCTION_DECLARATION]),
     ReductionRuleHandler([const.SUB, const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS],
-                             [const.FUNCTION_DECLARATION]),
+                         [const.FUNCTION_DECLARATION]),
     # endregion
 
     # region Function Call
@@ -74,6 +138,13 @@ rules = [
     ReductionRuleHandler([const.ID, const.EQUALS, const.ID], [const.VAR_AS]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.VALUE], [const.VAR_AS]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL], [const.VAR_AS]),
+
+    ReductionRuleHandler([const.ID, const.EQUALS, const.MINUS, const.VALUE], [const.VAR_AS]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.PLUS, const.VALUE], [const.VAR_AS]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.MINUS, const.ID], [const.VAR_AS]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.PLUS, const.ID], [const.VAR_AS]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.MINUS, const.FUNCTION_CALL], [const.VAR_AS]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.PLUS, const.FUNCTION_CALL], [const.VAR_AS]),
     # endregion
 
     # region Parameter
@@ -112,12 +183,22 @@ rules = [
                          [const.FOR_STATEMENT]),
     ReductionRuleHandler([const.FOR, const.VAR_AS, const.TO, const.FUNCTION_CALL, const.STEP, const.FUNCTION_CALL],
                          [const.FOR_STATEMENT]),
+    # endregion
+    # endregion
+
+    # region While Statements
     ReductionRuleHandler([const.WHILE, const.VAR_AS], [const.WHILE_STATEMENT]),
     ReductionRuleHandler([const.WHILE, const.ID], [const.WHILE_STATEMENT]),
     ReductionRuleHandler([const.WHILE, const.VALUE], [const.WHILE_STATEMENT]),
     ReductionRuleHandler([const.WHILE, const.FUNCTION_CALL], [const.WHILE_STATEMENT]),
-    # endregion
 
+    ReductionRuleHandler([const.WHILE, const.PLUS, const.ID], [const.WHILE_STATEMENT]),
+    ReductionRuleHandler([const.WHILE, const.PLUS, const.VALUE], [const.WHILE_STATEMENT]),
+    ReductionRuleHandler([const.WHILE, const.PLUS, const.FUNCTION_CALL], [const.WHILE_STATEMENT]),
+
+    ReductionRuleHandler([const.WHILE, const.MINUS, const.ID], [const.WHILE_STATEMENT]),
+    ReductionRuleHandler([const.WHILE, const.MINUS, const.VALUE], [const.WHILE_STATEMENT]),
+    ReductionRuleHandler([const.WHILE, const.MINUS, const.FUNCTION_CALL], [const.WHILE_STATEMENT]),
     # endregion
 
     # region Closing Statements
@@ -200,7 +281,8 @@ rules = [
     # region Variable Assignment Print Arguments
     ReductionRuleHandler([const.ID, const.EQUALS, const.VALUE, const.SEMI_COLON, const.PRINT_ARGUMENT],
                          [const.PRINT_ARGUMENT]),
-    ReductionRuleHandler([const.ID, const.EQUALS, const.ID, const.SEMI_COLON, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ID, const.SEMI_COLON, const.PRINT_ARGUMENT],
+                         [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL, const.SEMI_COLON, const.PRINT_ARGUMENT],
                          [const.PRINT_ARGUMENT]),
 

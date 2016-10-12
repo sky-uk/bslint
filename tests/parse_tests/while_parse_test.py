@@ -13,9 +13,33 @@ class TestWhileParse(unittest.TestCase):
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[0])
 
+    def testWhilePlusValue(self):
+        parser = Parser()
+        result = parser.parse("while + 3")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[0])
+
+    def testWhileMinusValue(self):
+        parser = Parser()
+        result = parser.parse("while - 3")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[0])
+
     def testWhileID(self):
         parser = Parser()
         result = parser.parse("while x")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[0])
+
+    def testWhilePlusID(self):
+        parser = Parser()
+        result = parser.parse("while +x")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[0])
+
+    def testWhileMinusID(self):
+        parser = Parser()
+        result = parser.parse("while -x")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[0])
 
@@ -31,6 +55,20 @@ class TestWhileParse(unittest.TestCase):
         result = parser.parse("while x()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.WHILE, const.FUNCTION_CALL], parser.all_statements[0])
+        self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[1])
+
+    def testWhilePlusFunctionCall(self):
+        parser = Parser()
+        result = parser.parse("while +x()")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.WHILE, const.PLUS, const.FUNCTION_CALL], parser.all_statements[0])
+        self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[1])
+
+    def testWhileMinusFunctionCall(self):
+        parser = Parser()
+        result = parser.parse("while -x()")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.WHILE, const.MINUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[1])
 
     def while_exception_runner(self, str_to_parse):
