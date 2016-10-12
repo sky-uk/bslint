@@ -3,28 +3,46 @@ from bslint.parser.parser import Parser
 import bslint.constants as const
 import bslint.error_messages_builder.error_messages_constants as err_const
 
+
 class TestVariableAssignment(unittest.TestCase):
 
-    def variableAssignmentRunner(self, str_to_parse):
-        parser = Parser()
-        result = parser.parse(str_to_parse)
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.VAR_AS], parser.statement)
-
     def testIdentifier(self):
-        self.variableAssignmentRunner("jack = 3")
+        parser = Parser()
+        result = parser.parse("jack = 3")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.VAR_AS], parser.all_statements[0])
 
     def test2VariableDeclarations(self):
-        self.variableAssignmentRunner('jack = 3\n zac = "no good at table tennis"')
+        parser = Parser()
+        result = parser.parse('jack = 3\n zac = "no good at table tennis"')
+        self.assertEqual("Success", result["Status"])
+        print(parser.all_statements)
+        self.assertEqual([const.VAR_AS], parser.all_statements[0])
+        self.assertEqual([const.VAR_AS], parser.all_statements[1])
 
     def testVariableDeclarationWithReduction(self):
-        self.variableAssignmentRunner('jack = 3 + 2')
+        parser = Parser()
+        result = parser.parse('jack = 3 + 2')
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.ID, const.EQUALS, const.VALUE], parser.all_statements[0])
+        self.assertEqual([const.VAR_AS], parser.all_statements[1])
 
     def testVariableDeclarationWithMultipleReduction(self):
-        self.variableAssignmentRunner('jack = 3 + 2 - 5')
+        parser = Parser()
+        result = parser.parse('jack = 3 + 2 - 5')
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.ID, const.EQUALS, const.VALUE, const.OPERATOR, const.VALUE], parser.all_statements[0])
+        self.assertEqual([const.ID, const.EQUALS, const.VALUE], parser.all_statements[1])
+        self.assertEqual([const.VAR_AS], parser.all_statements[2])
 
-    def testVariableDeclarationWithReduction(self):
-        self.variableAssignmentRunner('jack = (3 + 2)')
+    def testVariableDeclarationWithReductionAndParenthesis(self):
+        parser = Parser()
+        result = parser.parse('jack = (3 + 2)')
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.ID, const.EQUALS, const.OPEN_PARENTHESIS, const.VALUE, const.CLOSE_PARENTHESIS],
+                         parser.all_statements[0])
+        self.assertEqual([const.ID, const.EQUALS, const.VALUE], parser.all_statements[1])
+        self.assertEqual([const.VAR_AS], parser.all_statements[2])
 
     def variable_assignment_exception_runner(self, str_to_parse):
         parser = Parser()

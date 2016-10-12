@@ -7,23 +7,31 @@ from bslint.parser.parser import Parser
 
 class TestWhileParse(unittest.TestCase):
 
-    def while_runner(self, str_to_parse):
-        parser = Parser()
-        result = parser.parse(str_to_parse)
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.WHILE_STATEMENT], parser.statement)
-
     def testWhileValue(self):
-        self.while_runner("while true")
+        parser = Parser()
+        result = parser.parse("while true")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[0])
 
     def testWhileID(self):
-        self.while_runner("while x")
+        parser = Parser()
+        result = parser.parse("while x")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[0])
 
     def testWhileVarAs(self):
-        self.while_runner("while x = 3")
+        parser = Parser()
+        result = parser.parse("while x = 3")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.WHILE, const.VAR_AS], parser.all_statements[0])
+        self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[1])
 
     def testWhileFunctionCall(self):
-        self.while_runner("while x()")
+        parser = Parser()
+        result = parser.parse("while x()")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.WHILE, const.FUNCTION_CALL], parser.all_statements[0])
+        self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[1])
 
     def while_exception_runner(self, str_to_parse):
         parser = Parser()

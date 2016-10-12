@@ -56,8 +56,8 @@ rules = [
                          [const.FUNCTION_CALL]),
 
     ReductionRuleHandler([const.OPEN_PARENTHESIS, const.VALUE, const.CLOSE_PARENTHESIS], [const.VALUE]),
-    ReductionRuleHandler([const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS], [const.VALUE]),
-    ReductionRuleHandler([const.OPEN_PARENTHESIS, const.VAR_AS, const.CLOSE_PARENTHESIS], [const.VALUE]),
+    ReductionRuleHandler([const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS], [const.ID]),
+    ReductionRuleHandler([const.OPEN_PARENTHESIS, const.VAR_AS, const.CLOSE_PARENTHESIS], [const.VAR_AS]),
 
     ReductionRuleHandler([const.ID, const.EQUALS, const.ID], [const.VAR_AS]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.VALUE], [const.VAR_AS]),

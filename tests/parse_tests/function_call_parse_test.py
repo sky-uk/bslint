@@ -4,29 +4,46 @@ import bslint.constants as const
 import bslint.error_messages_builder.error_messages_constants as err_const
 
 
-
 class TestFunctionCallParse(unittest.TestCase):
 
-    def function_call_runner(self, str_to_parse):
-        parser = Parser()
-        result = parser.parse(str_to_parse)
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.FUNCTION_CALL], parser.statement)
-
     def testIDOpenParenthesisCloseParenthesis(self):
-        self.function_call_runner("x()")
+        parser = Parser()
+        result = parser.parse("x()")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.FUNCTION_CALL], parser.all_statements[0])
 
     def testIDOpenParenthesisArgumnetCloseParenthesis(self):
-        self.function_call_runner("x(y, z)")
+        'self.function_call_runner("x(y, z)")'
+        parser = Parser()
+        result = parser.parse("x(y, z)")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS], parser.all_statements[0])
+        self.assertEqual([const.FUNCTION_CALL], parser.all_statements[1])
 
     def testIDOpenParenthesisValueCloseParenthesis(self):
-        self.function_call_runner("x(1)")
+        'self.function_call_runner("x(1)")'
+        parser = Parser()
+        result = parser.parse("x(1)")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.FUNCTION_CALL], parser.all_statements[0])
 
     def testIDOpenParenthesisIDCloseParenthesis(self):
-        self.function_call_runner("x(y)")
+        'self.function_call_runner("x(y)")'
+        parser = Parser()
+        result = parser.parse("x(y)")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.FUNCTION_CALL], parser.all_statements[0])
 
-    def testIDOpenParenthesisIDCloseParenthesis(self):
-        self.function_call_runner("x(y = 1)")
+    def testIDOpenParenthesisIDEqualsValueCloseParenthesis(self):
+        'self.function_call_runner("x(y = 1)")'
+        parser = Parser()
+        result = parser.parse("x(y = 1)")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual(
+            [const.ID, const.OPEN_PARENTHESIS, const.VAR_AS, const.CLOSE_PARENTHESIS],
+            parser.all_statements[0])
+
+        self.assertEqual([const.FUNCTION_CALL], parser.all_statements[1])
 
     def function_call_exception_runner(self, str_to_parse):
         parser = Parser()

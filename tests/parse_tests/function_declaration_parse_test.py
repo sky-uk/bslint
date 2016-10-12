@@ -6,35 +6,60 @@ import bslint.error_messages_builder.error_messages_constants as err_const
 
 class TestFunctionDeclarationParse(unittest.TestCase):
 
-    def function_declaration_runner(self, str_to_parse):
-        parser = Parser()
-        result = parser.parse(str_to_parse)
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.FUNCTION_DECLARATION], parser.statement)
-
     def testFunctionIDOpenParenthesisCloseParenthesis(self):
-        self.function_declaration_runner("function x()")
+        parser = Parser()
+        result = parser.parse("function x()")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[0])
 
     def testFunctionIDOpenParenthesisParameterCloseParenthesis(self):
-        self.function_declaration_runner("function x(y as Object)")
+        parser = Parser()
+        result = parser.parse("function x(y as Object)")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.FUNCTION, const.ID, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS], parser.all_statements[0])
+        self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[1])
 
     def testFunctionIDOpenParenthesisIDCloseParenthesis(self):
-        self.function_declaration_runner("function x(y)")
+        parser = Parser()
+        result = parser.parse("function x(y)")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[0])
 
     def testFunctionIDOpenParenthesisArgumentCloseParenthesis(self):
-        self.function_declaration_runner("function x(y, z)")
+        parser = Parser()
+        result = parser.parse("function x(y, z)")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.FUNCTION, const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS],
+                         parser.all_statements[0])
+        self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[1])
 
     def testSubIDOpenParenthesisValueCloseParenthesis(self):
-        self.function_declaration_runner("sub x()")
+        parser = Parser()
+        result = parser.parse("sub x()")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[0])
 
     def testSubIDOpenParenthesisParameterCloseParenthesis(self):
-        self.function_declaration_runner("sub x(y as String)")
+        parser = Parser()
+        result = parser.parse("sub x(y as String)")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.SUB, const.ID, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS],
+                         parser.all_statements[0])
+        self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[1])
 
     def testSubIDOpenParenthesisIDCloseParenthesis(self):
-        self.function_declaration_runner("sub x(y)")
+        parser = Parser()
+        result = parser.parse("sub x(y)")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[0])
 
     def testSubIDOpenParenthesisArgumentCloseParenthesis(self):
-        self.function_declaration_runner("sub x(y, z)")
+        parser = Parser()
+        result = parser.parse("sub x(y, z)")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.SUB, const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS],
+                         parser.all_statements[0])
+        self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[1])
 
     def function_declaration_exception_runner(self, str_to_parse):
         parser = Parser()
