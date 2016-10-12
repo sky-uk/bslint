@@ -254,4 +254,11 @@ rules = [
 
     # endregion
 
+    # For Each n In aa
+    # region For Each
+    ReductionRuleHandler([const.FOR_EACH, const.ID, const.IN, const.ID], [const.FOR_EACH_STATEMENT]),
+    ReductionRuleHandler([const.FOR_EACH, const.ID, const.IN, const.VALUE], [const.FOR_EACH_STATEMENT]),
+    ReductionRuleHandler([const.FOR_EACH, const.ID, const.IN, const.FUNCTION_CALL], [const.FOR_EACH_STATEMENT]),
+    # endregion
+
 ]

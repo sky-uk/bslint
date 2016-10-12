@@ -151,7 +151,7 @@ List = [
     Regex._make([r"(TO)\b", const.KEYWORD, const.TO, const.NO_INDENTATION]),
     Regex._make([r"(STEP)\b", const.KEYWORD, const.STEP, const.NO_INDENTATION]),
     Regex._make([r"(INVALID)\b", const.KEYWORD, const.INVALID, const.NO_INDENTATION]),
-    Regex._make([r"(IN)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION]),
+    Regex._make([r"(IN)\b", const.KEYWORD, const.IN, const.NO_INDENTATION]),
     Regex._make([r"(WHILE)\b", const.KEYWORD, const.WHILE, const.INCREMENT_INDENTATION]),
     Regex._make([r"(FUNCTION)\b", const.KEYWORD, const.FUNCTION, const.INCREMENT_INDENTATION]),
     Regex._make([r"(AS)\b", const.KEYWORD, const.AS, const.NO_INDENTATION]),
