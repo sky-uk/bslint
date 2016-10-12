@@ -29,11 +29,12 @@ class TestConfigFileLoading(unittest.TestCase):
         out = StringIO()
         bslint.load_config_file(out=out)
         result = out.getvalue().strip()
+        out.close()
         self.assertEqual(result, exp_res)
 
     def testDefaultConfigOverwritten(self):
         bslint.load_config_file(default_filepath='test-config.json')
-        bslint.bslint.runner(self.tests_filepath_prefix  + "general_ignore_test_files")
+        bslint.bslint.runner(self.tests_filepath_prefix + "general_ignore_test_files")
         self.assertEqual(False, bslint.config_loader.CONFIG["check_trace_free"]["active"])
         self.assertEqual(["sub-directory1-test-files"], bslint.config_loader.CONFIG["ignore"])
 

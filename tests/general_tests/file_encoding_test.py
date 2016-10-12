@@ -4,6 +4,7 @@ import unittest
 import bslint
 import bslint.error_messages_builder.error_messages_constants as err_const
 import bslint.lexer.commands as commands
+from bslint.interface_handler import InterfaceHandler as InterfaceHandler
 
 
 class TestEncodingCheck(unittest.TestCase):
@@ -45,6 +46,6 @@ class TestEncodingCheck(unittest.TestCase):
         file_path = self.tests_filepath_prefix + "ASCII-chars.brs"
         fo = open(file_path, "r+")
         str_to_lex = fo.read()
-        result = bslint.FileReader.read_file(file_path)
+        result = InterfaceHandler.file_reader(file_path)
         exp_result = {"invalid_encoding": None, "str_to_lex": str_to_lex}
         self.assertEqual(result, exp_result)

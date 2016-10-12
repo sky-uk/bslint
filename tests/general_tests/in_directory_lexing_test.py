@@ -14,12 +14,12 @@ class TestInDirectoryLexing(unittest.TestCase):
 
     def testBRSFileWithoutPathLexed(self):
         bslint.load_config_file(default_filepath='test-config.json')
-        result = bslint.bslint.runner("print.brs")
+        result = bslint.bslint.runner("print.brs").files
         exp_result = ["print.brs"]
         self.assertEqual(exp_result, result)
 
     def testDirectoryWithoutPathLexed(self):
         bslint.load_config_file(default_filepath='test-config.json')
-        result = bslint.bslint.runner()
+        result = bslint.bslint.runner().files
         exp_result = ["print.brs"]
         self.assertEqual(exp_result, result)

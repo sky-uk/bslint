@@ -58,6 +58,8 @@ class Tokenizer:
 
     def handle_unexpected_token(self):
         end_of_line = re.match(r"(.*)\n", self.characters[self.handle_style.current_char_index:])
+        if end_of_line is None:
+            end_of_line = re.match(r"(.*)$", self.characters[self.handle_style.current_char_index:])
         self.errors.append(err.get_message(err_const.UNMATCHED_QUOTATION_MARK,
                                            [(end_of_line.group()[:const.PENULTIMATE_CHARACTER]),
                                             self.handle_style.line_number]))

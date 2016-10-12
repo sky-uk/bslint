@@ -5,7 +5,6 @@ import bslint.error_messages_builder.error_messages_constants as err_const
 
 
 class TestArgumentParse(unittest.TestCase):
-
     def testArgumentCommaArgument(self):
         parser = Parser()
         result = parser.parse("a(x, 1, y, 2)")

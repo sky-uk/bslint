@@ -53,6 +53,7 @@ List = [
     Regex._make([r"(GETLASTRUNRUNTIMEERROR)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION]),
     Regex._make([r"(GETGLOBALAA)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION]),
     Regex._make([r"(ELSE IF)\b", const.KEYWORD, const.IF_STATEMENT, const.SPECIAL_INDENTATION]),
+
     Regex._make([r"(END IF)\b", const.KEYWORD, const.END_IF_TOKEN, const.DECREMENT_INDENTATION]),
     Regex._make([r"(EXIT FOR)\b", const.KEYWORD, const.KEYWORD, const.DECREMENT_INDENTATION]),
     Regex._make([r"(FOR EACH)\b", const.KEYWORD, const.FOR_EACH, const.INCREMENT_INDENTATION]),

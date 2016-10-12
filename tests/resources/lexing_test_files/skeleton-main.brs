@@ -4,7 +4,7 @@ sub main()
     screen.setMessagePort(port)
 
     scene = screen.CreateScene("SampleScene")
-    screen.show()
+   screen.show()
 
     while true
         ' do stuff
