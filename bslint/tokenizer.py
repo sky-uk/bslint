@@ -27,9 +27,7 @@ class Tokenizer:
             try:
                 self.create_token_and_handle_styling()
             except ValueError as e:
-                if e == err_const.UNMATCHED_TOKEN:
-                    self.handle_unmatched_closing_token(e)
-                elif e == err_const.PARSING_FAILED:
+                if e == err_const.PARSING_FAILED:
                     self.parsing_failed = True
                 else:
                     self.handle_unexpected_token()
@@ -66,12 +64,6 @@ class Tokenizer:
         self.handle_style.line_number += 1
         self.handle_style.current_char_index += len(end_of_line.group())
 
-    def check_valid_token(self, preceding_token, current_token):
-        return
-
     def check_statement_validity(self, statement):
         return
-
-    def handle_unmatched_closing_token(self, message):
-        self.errors.append(err.get_message(err_const.UNMATCHED_TOKEN))
 

@@ -20,7 +20,7 @@ class TestTraceFree(unittest.TestCase):
     def testPRINT(self):
         bslint.load_config_file(user_filepath="trace_free/trace-free-config.json", default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "print.brs"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         exp_res = [error.get_message(err_const.TRACEABLE_CODE, [3])]
         result = Lexer().lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
@@ -29,7 +29,7 @@ class TestTraceFree(unittest.TestCase):
     def testQuestionMark(self):
         bslint.load_config_file(user_filepath="trace_free/trace-free-config.json", default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "question-mark.brs"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         exp_res = [error.get_message(err_const.TRACEABLE_CODE, [3])]
         result = Lexer().lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
@@ -38,7 +38,7 @@ class TestTraceFree(unittest.TestCase):
     def testPrintAndQuestionMark(self):
         bslint.load_config_file(user_filepath="trace_free/trace-free-config.json", default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "print-and-question-mark.brs"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         exp_res = [error.get_message(err_const.TRACEABLE_CODE, [3]),
                    error.get_message(err_const.TRACEABLE_CODE, [4])]
         result = Lexer().lex(file)
@@ -48,7 +48,7 @@ class TestTraceFree(unittest.TestCase):
     def testNoPrintNoQuestionMark(self):
         bslint.load_config_file(user_filepath="trace_free/trace-free-config.json", default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "no-print-no-question-mark.brs"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         exp_res = []
         result = Lexer().lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
@@ -57,7 +57,7 @@ class TestTraceFree(unittest.TestCase):
     def testInactivePrintAndQuestionMark(self):
         bslint.load_config_file(default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "print-and-question-mark.brs"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         exp_res = []
         result = Lexer().lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)

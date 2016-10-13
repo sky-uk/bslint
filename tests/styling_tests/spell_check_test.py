@@ -96,7 +96,7 @@ class TestSpellCheck(unittest.TestCase):
 
     def testRealFile(self):
         file_name = self.filepath_prefix + "spell-check.brs"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         exp_res = [error.get_message(err_const.TYPO_IN_CODE, [2])]
         result = Lexer().lex(file)
         self.assertEqual(result[self.WARNINGS], exp_res)
@@ -104,7 +104,7 @@ class TestSpellCheck(unittest.TestCase):
 
     def testMisspelledCommentFromFile(self):
         file_name = self.filepath_prefix + "incorrect-comment-spelling.brs"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         self.assertNotEqual(file, "")
         exp_res = [error.get_message(err_const.TYPO_IN_CODE, [1])]
         result = Lexer().lex(file)

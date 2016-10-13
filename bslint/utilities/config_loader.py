@@ -54,7 +54,3 @@ def read_json(filepath):
                 config_string += line
     config_json = json.loads(config_string)
     return config_json
-
-
-if __name__ == "__main__":
-    load_config_file()

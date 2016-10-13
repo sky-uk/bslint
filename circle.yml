@@ -6,7 +6,9 @@ machine:
   python:
     version: 3.5.1
 test:
-  post:
+  pre:
     - pip install coverage
-    - coverage run -m bslint
-    - coverage report --omit=/home/ubuntu/virtualenvs/* > $CIRCLE_ARTIFACTS/coverage.txt
+  override:
+    - nosetests --with-coverage --cover-inclusive --cover-package=bslint
+  post:
+    - coverage report --omit="bslint/__main__.py" -m > $CIRCLE_ARTIFACTS/coverage.txt

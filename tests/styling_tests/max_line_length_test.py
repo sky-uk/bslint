@@ -20,7 +20,7 @@ class TestMaxLineLength(unittest.TestCase):
     def testValidLineLength(self):
         bslint.load_config_file(default_filepath='test-config.json')
         file_name = self.filepath_prefix + "short-line-length.txt"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         exp_result = []
         result = Lexer().lex(file)
         self.assertEqual(result[self.WARNINGS], exp_result)
@@ -29,7 +29,7 @@ class TestMaxLineLength(unittest.TestCase):
     def testExceedMaxLineLength(self):
         bslint.load_config_file(user_filepath="line_length/small-max-line-length-config.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "short-line-length.txt"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         exp_result = [error.get_message(err_const.LINE_LENGTH, [11, 1])]
         result = Lexer().lex(file)
         self.assertEqual(result[self.WARNINGS], exp_result)
@@ -38,7 +38,7 @@ class TestMaxLineLength(unittest.TestCase):
     def testEqualMaxLineLength(self):
         bslint.load_config_file(user_filepath="line_length/small-max-line-length-config.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "equal-max-line-length.txt"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         exp_result = []
         result = Lexer().lex(file)
         self.assertEqual(result[self.WARNINGS], exp_result)
@@ -47,7 +47,7 @@ class TestMaxLineLength(unittest.TestCase):
     def testMultiLineErrors(self):
         bslint.load_config_file(user_filepath="line_length/small-max-line-length-config.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "multiline-assignment.txt"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         exp_result = [error.get_message(err_const.LINE_LENGTH, [11, 1]),
                       error.get_message(err_const.LINE_LENGTH, [11, 2])]
         result = Lexer().lex(file)

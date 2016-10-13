@@ -39,7 +39,7 @@ class TestIndentation(unittest.TestCase):
     def testIndentationError(self):
         bslint.load_config_file(user_filepath='indentation/indentation-config.json', default_filepath='test-config.json')
         file_name = self.filepath_prefix + "basic-indentation.txt"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         exp_result = [error.get_message(err_const.TAB_INDENTATION_ERROR, [4, 2])]
         result = Lexer().lex(file)
         self.assertEqual(exp_result, result[self.WARNINGS])
@@ -47,7 +47,7 @@ class TestIndentation(unittest.TestCase):
     def testAdvancedIndentationSuccess(self):
         bslint.load_config_file(user_filepath='indentation/indentation-config.json', default_filepath='test-config.json')
         file_name = self.filepath_prefix + "advanced-indentation.txt"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         exp_result = []
         result = Lexer().lex(file)
         self.assertEqual(exp_result, result[self.WARNINGS])
@@ -55,7 +55,7 @@ class TestIndentation(unittest.TestCase):
     def testIndentWithOnlyTabsWithError(self):
         bslint.load_config_file(user_filepath="indentation/tab-only-indentation.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "indent-with-tabs-only.txt"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         exp_result = [error.get_message(err_const.TAB_AND_SPACES, [10])]
         result = Lexer().lex(file)
         self.assertEqual(exp_result, result[self.WARNINGS])
@@ -63,7 +63,7 @@ class TestIndentation(unittest.TestCase):
     def testReallyAdvancedIndentation(self):
         bslint.load_config_file(user_filepath="indentation/indentation-config.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "sample-advanced-indentation.txt"
-        file = bslint.get_string_to_parse(file_name)
+        file = open(file_name, "r+").read()
         exp_result = []
         exp_status = "Success"
         result = Lexer().lex(file)

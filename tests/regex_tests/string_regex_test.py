@@ -14,9 +14,9 @@ class TestStringRegex(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         this_dir, this_filename = os.path.split(__file__)
-        cls.string_file = bslint.get_string_to_parse(os.path.join(this_dir, "../resources/lexing_test_files/basic-string-assignment.txt"))
-        cls.multi_line_file = bslint.get_string_to_parse(
-            os.path.join(this_dir, "../resources/styling_test_files/multiline-assignment.txt"))
+
+        cls.string_file = open(os.path.join(this_dir, "../resources/lexing_test_files/basic-string-assignment.txt"), "r+").read()
+        cls.multi_line_file = open(os.path.join(this_dir, "../resources/styling_test_files/multiline-assignment.txt"),"r+").read()
 
     def testString(self):
         test_string = '"test123ID"'

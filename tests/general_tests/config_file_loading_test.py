@@ -43,3 +43,8 @@ class TestConfigFileLoading(unittest.TestCase):
         config = bslint.load_config_file()
         result = config["spell_check"]["active"]
         self.assertEqual(result, exp_res)
+
+    def testReadJson(self):
+        json = bslint.config_loader.read_json(self.tests_filepath_prefix + "/config/indentation/indentation-config.json")
+        exp_result = {'check_indentation': {'active': True,'params': {'tab_size': 4,'only_tab_indents': False}}}
+        self.assertEqual(json, exp_result)

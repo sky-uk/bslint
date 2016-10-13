@@ -13,7 +13,6 @@ class TestFunctionCallParse(unittest.TestCase):
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[0])
 
     def testIDOpenParenthesisArgumnetCloseParenthesis(self):
-        'self.function_call_runner("x(y, z)")'
         parser = Parser()
         result = parser.parse("x(y, z)")
         self.assertEqual("Success", result["Status"])
@@ -21,21 +20,18 @@ class TestFunctionCallParse(unittest.TestCase):
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[1])
 
     def testIDOpenParenthesisValueCloseParenthesis(self):
-        'self.function_call_runner("x(1)")'
         parser = Parser()
         result = parser.parse("x(1)")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[0])
 
     def testIDOpenParenthesisIDCloseParenthesis(self):
-        'self.function_call_runner("x(y)")'
         parser = Parser()
         result = parser.parse("x(y)")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[0])
 
     def testIDOpenParenthesisIDEqualsValueCloseParenthesis(self):
-        'self.function_call_runner("x(y = 1)")'
         parser = Parser()
         result = parser.parse("x(y = 1)")
         self.assertEqual("Success", result["Status"])

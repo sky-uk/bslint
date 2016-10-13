@@ -78,7 +78,7 @@ class InterfaceHandler:
             self.files.append(filename)
             read_file = self.file_reader(filename)
             if read_file["invalid_encoding"]:
-                print(read_file["invalid_encoding"] + "\n")
+                print(read_file["invalid_encoding"])
             lex_result = Lexer().lex(read_file['str_to_lex'])
             if lex_result["Status"] == "Error":
                 self.handle_lexing_error(filepath, lex_result)
