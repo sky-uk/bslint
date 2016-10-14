@@ -1,54 +1,72 @@
 ## BrightScript Linter
 [![CircleCI](https://circleci.com/gh/sky-uk/bslint/tree/master.svg?style=shield&circle-token=a9218a324d2d7bebd187a00fdc170b6a11a17462)](https://circleci.com/gh/sky-uk/bslint/tree/master)
 
-#Installing via pip3
+#Description
 
+This is a tool for linting BrightScript.
 
-The package is published on pip3, so to install just follow the following instructions:
-1. Ensure you've got Python3 on your machine (https://www.python.org/downloads/ , running python3 -V in your terminal will tell you if you've got Python 3 installed)
+This tool has been made because there aren't any tools currently available to help developers keep their coding standards consistent. 
+The linter validates against the official [BrightScript Language Reference](https://sdkdocs.roku.com/display/sdkdoc/BrightScript+Language+Reference).
+Currently the linter only lexes the file and validates styling. We are actively developing a parser which will be integrated into this project. 
 
-2. Type `pip3 install bslint`. Optionally you can type `pip3 install bslint --upgrade` if you already have bslint and just want to upgrade it to the latest version.
+#Installing bslint via pip3
 
-3. From the terminal, go to the directory that you wish to lint and type `bslint`
+The package is published on pip3, to install follow the steps below:
+
+1. Ensure that you've got Python3 installed on your machine (https://www.python.org/downloads/).
+   To check if python3 is already installed, run `python3 -V` in your terminal.
+
+2. Install `bslint` by running the following command in terminal `pip3 install bslint`. 
+
+#Upgrading bslint via pip3
+
+To upgrade `bslint` run the following command in terminal `pip3 install bslint --upgrade`.
+
+#Running bslint from terminal
+
+To run `bslint` from the terminal, `cd` to the directory that you wish to lint and run the command `bslint`.
 
 ##Basic Options
 
 You can run `bslint` in multiple ways:
 * `bslint` -> Executes on the current directory and all subdirectories
-* `bslint <directory_path>` -> Executes on the specified directory (if not in the ignore list)
-* `bslint <file_path>` -> Executes only on the specific file (even if parent directory is in the ignore list)
+* `bslint <directory_path>` -> Executes on the specified directory (if directory is not in the ignore list)
+* `bslint <file_path>` -> Executes only on the specified file (even if the parent directory is in the ignore list)
 
 ##Advanced Options
 
-You can create a .bslintrc file, that MUST be in the same directory as your manifest file. In this file you can specify specific directories you want to ignore each time and override the default styling rules checks.
+You can create a .bslintrc file, this MUST be in the same directory as your manifest file. 
+The .bslintrc file must be valid JSON.
+In this file you can specify specific directories you want to ignore each time and override the default styling rules checks. 
 
-**Every key in the .bslintrc file is optional (you can leave the file empty)**
+**Every key in the .bslintrc file is optional (except for ignore, which can be left as an empty array )**
 
-```javascript
+```json
 {
-    "ignore": ["components", "src/subdirectory_name"]
-
-    // Variables correctly spelt - checked with PyEnchant.
+    "ignore": ["components", "src/subdirectory_name"],
     "spell_check": {
-        "active": true, // Set to false if you wish to disable rule
+        "active": true,
         "params": {
-            "dictionary": "en_GB" // Change if you wish to use a different dictionary (en_GB, en_US, de_DE and fr_FR included as standard)
+            "dictionary": "en_GB"
         }
     }
 }
 ```
 
-For a full list of styling rules, see the default config file in bslint/config in the Github source code
+For a full list of styling rules, view the default config file in bslint/config in the Github source code
 
 ## Roku SDK Documentation
 [BrightScript Language Reference](https://sdkdocs.roku.com/display/sdkdoc/BrightScript+Language+Reference)
 
+## Support Channel
+If you have any questions try contacting us on [Gitter](https://gitter.im/bslint/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
+
 
 ## Team Members
 
-Name | Email | Github
------------- | ------------- | -------------
-Shane Bloomer | shane.bloomer@sky.uk | [@sbsky](http://github.com/sbsky)
-Jack Ingleton | jack.ingleton@sky.uk | [@JackIngleton](http://github.com/JackIngleton)
-Zac Robinson | zachary.robinson@sky.uk | [@zac-robinson](https://github.com/zac-robinson)
-Daniele Sassoli | daniele.sassoli@sky.uk | [@DanieleSassoli](https://github.com/DanieleSassoli)
+Name |  Github
+------------ | -------------
+Shane Bloomer |  [@sbsky](http://github.com/sbsky)
+Jack Ingleton | [@JackIngleton](http://github.com/JackIngleton)
+Zac Robinson | [@zac-robinson](https://github.com/zac-robinson)
+Daniele Sassoli | [@DanieleSassoli](https://github.com/DanieleSassoli)
