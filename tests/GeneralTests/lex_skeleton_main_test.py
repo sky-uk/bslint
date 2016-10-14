@@ -5,6 +5,7 @@ import bslint.error_messages_builder.error_builder.error_messages_constants as e
 import os
 import bslint.lexer as lexer
 
+
 class TestLexSkeletonMain(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

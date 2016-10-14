@@ -7,6 +7,7 @@ import bslint.error_messages_builder.error_message_handler as error
 import bslint.utilities.commands as commands
 import bslint.lexer as lexer
 
+
 class TestConsecutiveEmptyLines(unittest.TestCase):
     WARNINGS = 'Warnings'
     STATUS = 'Status'

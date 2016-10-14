@@ -5,6 +5,7 @@ import os
 import bslint.utilities.regex_handler as regex_handler
 import bslint.lexer as lexer
 
+
 class TestStringRegex(unittest.TestCase):
     TOKENS = 'Tokens'
 
