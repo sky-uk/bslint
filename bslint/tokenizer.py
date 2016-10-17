@@ -19,6 +19,7 @@ class Tokenizer:
         self.is_valid_token = True
         self.parsing_failed = False
         self.current_token_index = 0
+        self.statements_counter = 0
 
     def tokenize(self, characters):
         self.characters = characters
@@ -44,6 +45,7 @@ class Tokenizer:
         self.handle_style.current_char_index += len(regex_match["match"].group())
         if regex_match["token_lexer_type"] is not None:
             applied_common_styling = self.handle_style.apply_styling(regex_match)
+            self.handle_style.check_end_of_statement()
             if applied_common_styling:
                 token = self.handle_match.match_handler(regex_match)
                 if token is not None:

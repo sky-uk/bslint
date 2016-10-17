@@ -11,3 +11,6 @@ build
 .cache/
 .idea/
 venv/
+.coverage
+.coveragerc
+coverage.txt

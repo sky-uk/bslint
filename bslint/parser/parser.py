@@ -17,6 +17,7 @@ class Parser(Tokenizer):
         return Tokenizer.tokenize(self, characters)
 
     def check_statement_validity(self, statement):
+        self.statements_counter += 1
         self.statement = self._get_token_types(statement)
         self._reduce_statement_and_handle_error()
 

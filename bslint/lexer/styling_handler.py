@@ -20,6 +20,7 @@ class StylingHandler:
         self.warnings = []
         self._skip_styling_on_file = False
         self.end_of_statement = False
+        self.open_curly_braces = 0
         self._line_not_to_style_check = -1
 
     def _get_last_line(self):
@@ -46,11 +47,10 @@ class StylingHandler:
             self.line_length = 0
         elif self._token_lexer_type == const.BSLINT_COMMAND:
             self.apply_bslint_command(self._match.group('command'))
-        elif self._token_lexer_type == const.COLON:
-            self.end_of_statement = True
         else:
             self.apply_common_styling()
             applied_common_styling = True
+
         return applied_common_styling
 
     def style_checking_is_active(self):
@@ -115,6 +115,17 @@ class StylingHandler:
         else:
             self._is_empty_line = True
             self._consecutive_empty_lines = 0
+
+    def check_end_of_statement(self):
+        if self._token_lexer_type == const.COLON:
+            self.end_of_statement = True
+        elif self._token_lexer_type == const.OPEN_CURLY_BRACKET:
+            self.open_curly_braces += 1
+        elif self._token_lexer_type == const.CLOSE_CURLY_BRACKET:
+            self.open_curly_braces -= 1
+
+        if self.open_curly_braces is not 0:
+            self.end_of_statement = False
 
     def _warning_filter(self, result):
         if result is not None:

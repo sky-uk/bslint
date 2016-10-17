@@ -53,14 +53,14 @@ class TestMiscRegex(unittest.TestCase):
         identifier = "{"
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.CURLY_BRACKET)
+        self.assertEqual(result["token_lexer_type"], const.OPEN_CURLY_BRACKET)
         self.assertEqual(result["token_parser_type"], const.OPEN_CURLY_BRACKET)
 
     def testCloseCurlyBracket(self):
         identifier = "}"
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.CURLY_BRACKET)
+        self.assertEqual(result["token_lexer_type"], const.CLOSE_CURLY_BRACKET)
         self.assertEqual(result["token_parser_type"], const.CLOSE_CURLY_BRACKET)
 
     def testSemiColon(self):
@@ -83,3 +83,10 @@ class TestMiscRegex(unittest.TestCase):
         self.assertEqual(result["match"].group(), identifier)
         self.assertEqual(result["token_lexer_type"], const.HASH_SYMBOL)
         self.assertEqual(result["token_parser_type"], const.HASH_SYMBOL)
+
+    def testColon(self):
+        identifier = ":"
+        result = regex_handler.find_match(identifier)
+        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["token_lexer_type"], const.COLON)
+        self.assertEqual(result["token_parser_type"], const.COLON)

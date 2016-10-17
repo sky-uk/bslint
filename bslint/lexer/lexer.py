@@ -8,3 +8,6 @@ class Lexer(Tokenizer):
 
     def lex(self, characters):
         return Tokenizer.tokenize(self, characters)
+
+    def check_statement_validity(self, statement):
+        self.statements_counter += 1
