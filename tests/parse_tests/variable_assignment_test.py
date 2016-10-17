@@ -74,7 +74,6 @@ class TestVariableAssignment(unittest.TestCase):
         parser = Parser()
         result = parser.parse('jack = 3\n zac = "no good at table tennis"')
         self.assertEqual("Success", result["Status"])
-        print(parser.all_statements)
         self.assertEqual([const.VAR_AS], parser.all_statements[0])
         self.assertEqual([const.VAR_AS], parser.all_statements[1])
 

@@ -69,7 +69,7 @@ def check_trace_free():
 
 
 def check_max_line_length(line_length):
-    if _command_is_active("max_line_length") is not True:
+    if _command_is_active("max_line_length") is False:
         return
 
     max_len = config_loader.CONFIG['max_line_length']['params']['max_line_length']
@@ -78,7 +78,7 @@ def check_max_line_length(line_length):
 
 
 def check_consecutive_empty_lines(empty_lines):
-    if _command_is_active("consecutive_empty_lines") is not True:
+    if _command_is_active("consecutive_empty_lines") is False:
         return
 
     params = config_loader.CONFIG["consecutive_empty_lines"]["params"]
@@ -88,14 +88,13 @@ def check_consecutive_empty_lines(empty_lines):
 
 
 def check_skip_file():
-    if _command_is_active("skip_file") is not True:
+    if _command_is_active("skip_file") is False:
         return
-
     return True
 
 
 def check_skip_line(line_number):
-    if _command_is_active("skip_line") is not True:
+    if _command_is_active("skip_line") is False:
         return
 
     return line_number + 1

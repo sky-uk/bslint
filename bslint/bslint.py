@@ -8,7 +8,6 @@ import os
 def main():
     interface_handler = InterfaceHandler()
     interface_handler.main()
-    return interface_handler
 
 
 def runner(to_lex=None):
@@ -17,4 +16,6 @@ def runner(to_lex=None):
         sys.argv.append(os.path.join(os.getcwd(), to_lex))
     else:
         sys.argv.append(os.getcwd())
-    return main()
+    interface_handler = InterfaceHandler()
+    interface_handler.main()
+    return interface_handler

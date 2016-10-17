@@ -20,9 +20,13 @@ class TestConfigFileLoading(unittest.TestCase):
         self.assertEqual(result, exp_res)
 
     def testReadJsonBadFileName(self):
+        out = StringIO()
         config_file = self.filepath_prefix + "fig.json"
-        with self.assertRaises(FileNotFoundError):
-            bslint.read_json(config_file)
+        bslint.load_config_file(config_file, out=out)
+        result = out.getvalue().strip()
+        out.close()
+        exp_res = "Cannot find file: fig.json"
+        self.assertEqual(result, exp_res)
 
     def testLoadConfigFileCheckRead(self):
         exp_res = ""

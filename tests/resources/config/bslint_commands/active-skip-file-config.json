@@ -1,6 +1,6 @@
 {
   "skip_file": {
-    "active": false,
+    "active": true,
     "params": {}
   },
   "spaces_around_operators": {

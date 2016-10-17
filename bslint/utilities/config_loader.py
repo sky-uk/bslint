@@ -15,7 +15,7 @@ def load_config_file(user_filepath=None, default_filepath=None, out=sys.stdout):
         user_json = get_user_config(tests_filepath_prefix, user_filepath)
         overwrite_default_config(default_json, user_json)
     except FileNotFoundError as e:
-        out.write("Cannot find file: " + e.filename)
+        out.write("Cannot find file: " + os.path.basename(e.filename))
     else:
         global CONFIG
         CONFIG = default_json
