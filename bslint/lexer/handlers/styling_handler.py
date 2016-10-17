@@ -1,7 +1,7 @@
 import re
 
 from bslint import constants as const
-from bslint.error_messages_builder import error_message_handler as err
+from bslint.error_messages import handler as err
 from bslint.lexer import commands as commands
 
 

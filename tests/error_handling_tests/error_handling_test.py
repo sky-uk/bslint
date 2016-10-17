@@ -3,8 +3,8 @@ import os
 import re
 from bslint.interface_handler import InterfaceHandler as InterfaceHandler
 from io import StringIO
-import bslint.error_messages_builder.error_message_handler as err
-import bslint.error_messages_builder.error_messages_constants as err_const
+import bslint.error_messages.handler as err
+import bslint.error_messages.constants as err_const
 from bslint.lexer.lexer import Lexer as Lexer
 
 

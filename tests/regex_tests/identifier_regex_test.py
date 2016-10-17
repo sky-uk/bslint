@@ -1,9 +1,9 @@
 import unittest
 
 import bslint.constants as const
-import bslint.lexer.regex_handler as regex_handler
+import bslint.lexer.handlers.regex_handler as regex_handler
 from bslint.lexer.lexer import Lexer as Lexer
-from bslint.utilities.token import Token as Token
+from bslint.lexer.token import Token as Token
 
 
 class TestIdentifierRegex(unittest.TestCase):

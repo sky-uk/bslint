@@ -1,6 +1,7 @@
 import unittest
+
 import bslint.constants as const
-import bslint.error_messages_builder.error_messages_constants as err_const
+import bslint.error_messages.constants as err_const
 from bslint.parser.parser import Parser
 
 

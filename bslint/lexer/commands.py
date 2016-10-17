@@ -2,9 +2,9 @@ import codecs
 import re
 
 import bslint.constants as const
-import bslint.error_messages_builder.error_messages_constants as err_const
+import bslint.error_messages.constants as err_const
+import bslint.lexer.regexs as regexs
 import bslint.lexer.words_dictionary as words_dict
-import bslint.regexs as regexs
 import bslint.utilities.config_loader as config_loader
 
 comment_regex = [regex.regex for regex in regexs.List if regex.lexer_type == const.COMMENT][0]

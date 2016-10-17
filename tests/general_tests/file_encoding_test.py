@@ -2,7 +2,7 @@ import os
 import unittest
 
 import bslint
-import bslint.error_messages_builder.error_messages_constants as err_const
+import bslint.error_messages.constants as err_const
 import bslint.lexer.commands as commands
 from bslint.interface_handler import InterfaceHandler as InterfaceHandler
 

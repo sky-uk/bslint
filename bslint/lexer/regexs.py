@@ -1,6 +1,7 @@
 # this characters need escaping . ^ $ * + ? { } [ ] \ | ( )
-import bslint.constants as const
 import collections
+
+import bslint.constants as const
 
 Regex = collections.namedtuple('Token', ['regex', 'lexer_type', 'parser_type', 'indentation'])
 

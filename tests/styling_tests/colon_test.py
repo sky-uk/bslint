@@ -1,6 +1,6 @@
 import unittest
-import bslint.lexer.regex_handler as regex_handler
-from bslint.lexer.styling_handler import StylingHandler as StylingHandler
+import bslint.lexer.handlers.regex_handler as regex_handler
+from bslint.lexer.handlers.styling_handler import StylingHandler as StylingHandler
 from bslint.lexer.lexer import Lexer as Lexer
 
 

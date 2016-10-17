@@ -1,7 +1,7 @@
 import unittest
 
 import bslint.constants as const
-import bslint.lexer.regex_handler as regex_handler
+import bslint.lexer.handlers.regex_handler as regex_handler
 
 
 class TestSkipLineRegex(unittest.TestCase):

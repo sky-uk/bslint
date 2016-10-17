@@ -1,4 +1,5 @@
 import unittest
+
 from bslint import constants as const
 from bslint.parser.parser import Parser
 

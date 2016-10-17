@@ -1,20 +1,20 @@
-import bslint.error_messages_builder.error_messages_constants as err_const
+import bslint.error_messages.constants as err_const
 import bslint.parser.reduction_rules as grammar
-from bslint.tokenizer import Tokenizer
+from bslint.lexer.lexer import Lexer
 
 MAX_FINAL_STATEMENT_LENGTH = 1
 
 
-class Parser(Tokenizer):
+class Parser(Lexer):
 
     def __init__(self):
-        Tokenizer.__init__(self)
+        Lexer.__init__(self)
         self.expected_statement = None
         self.all_statements = []
         self.statement = None
 
     def parse(self, characters):
-        return Tokenizer.tokenize(self, characters)
+        return Lexer.lex(self, characters)
 
     def check_statement_validity(self, statement):
         self.statements_counter += 1

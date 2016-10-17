@@ -1,11 +1,11 @@
 import os
-import sys
 import re
-import bslint
 import sys
+
+import bslint
 import bslint.constants as const
-from bslint.lexer.lexer import Lexer as Lexer
 import bslint.lexer.commands as commands
+from bslint.lexer.lexer import Lexer as Lexer
 
 
 class InterfaceHandler:

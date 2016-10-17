@@ -1,7 +1,7 @@
 import re
 
-import bslint.error_messages_builder.error_messages_constants as err_const
-import bslint.regexs as regexs
+import bslint.error_messages.constants as err_const
+import bslint.lexer.regexs as regexs
 
 
 def find_match(characters):
