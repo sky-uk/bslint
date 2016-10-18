@@ -79,6 +79,20 @@ rules = [
 
     # endregion
 
+    # region Enumerable Objects
+    ReductionRuleHandler([const.OPEN_CURLY_BRACKET, const.CLOSE_CURLY_BRACKET], [const.ENUMERABLE_OBJECT]),
+    ReductionRuleHandler([const.OPEN_CURLY_BRACKET, const.ASSOCIATIVE_ARRAY_ARGUMENT, const.CLOSE_CURLY_BRACKET],
+                         [const.ENUMERABLE_OBJECT]),
+    ReductionRuleHandler([const.OPEN_SQUARE_BRACKET, const.CLOSE_SQUARE_BRACKET], [const.ENUMERABLE_OBJECT]),
+    ReductionRuleHandler([const.OPEN_SQUARE_BRACKET, const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET],
+                         [const.ENUMERABLE_OBJECT]),
+    ReductionRuleHandler([const.OPEN_SQUARE_BRACKET, const.VALUE, const.CLOSE_SQUARE_BRACKET],
+                         [const.ENUMERABLE_OBJECT]),
+    ReductionRuleHandler([const.OPEN_SQUARE_BRACKET, const.ID, const.CLOSE_SQUARE_BRACKET],
+                         [const.ENUMERABLE_OBJECT]),
+
+    # endregion
+
     # region Argument, Close Parenthesis
     ReductionRuleHandler([const.ARGUMENT, const.COMMA, const.ARGUMENT, const.CLOSE_PARENTHESIS],
                          [const.ARGUMENT, const.CLOSE_PARENTHESIS]),
@@ -94,6 +108,30 @@ rules = [
                          [const.ARGUMENT, const.CLOSE_PARENTHESIS]),
     ReductionRuleHandler([const.VALUE, const.COMMA, const.VALUE, const.CLOSE_PARENTHESIS],
                          [const.ARGUMENT, const.CLOSE_PARENTHESIS]),
+    # endregion
+
+    # region Associative Array Argument, Close Curly Bracket
+    ReductionRuleHandler([const.ID, const.COLON, const.VALUE], [const.ASSOCIATIVE_ARRAY_ARGUMENT]),
+    ReductionRuleHandler(
+        [const.ASSOCIATIVE_ARRAY_ARGUMENT, const.COMMA, const.ASSOCIATIVE_ARRAY_ARGUMENT, const.CLOSE_CURLY_BRACKET],
+        [const.ASSOCIATIVE_ARRAY_ARGUMENT, const.CLOSE_CURLY_BRACKET]),
+    # endregion
+
+    # region Array Argument, Close Square Bracket
+    ReductionRuleHandler([const.ARRAY_ARGUMENT, const.COMMA, const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET],
+                         [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
+    ReductionRuleHandler([const.ID, const.COMMA, const.ID, const.CLOSE_SQUARE_BRACKET],
+                         [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
+    ReductionRuleHandler([const.ID, const.COMMA, const.VALUE, const.CLOSE_SQUARE_BRACKET],
+                         [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
+    ReductionRuleHandler([const.ID, const.COMMA, const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET],
+                         [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
+    ReductionRuleHandler([const.VALUE, const.COMMA, const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET],
+                         [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
+    ReductionRuleHandler([const.VALUE, const.COMMA, const.ID, const.CLOSE_SQUARE_BRACKET],
+                         [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
+    ReductionRuleHandler([const.VALUE, const.COMMA, const.VALUE, const.CLOSE_SQUARE_BRACKET],
+                         [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
     # endregion
 
     # region Function Declaration
@@ -138,6 +176,7 @@ rules = [
     ReductionRuleHandler([const.ID, const.EQUALS, const.ID], [const.VAR_AS]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.VALUE], [const.VAR_AS]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL], [const.VAR_AS]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT], [const.VAR_AS]),
 
     ReductionRuleHandler([const.ID, const.EQUALS, const.MINUS, const.VALUE], [const.VAR_AS]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.PLUS, const.VALUE], [const.VAR_AS]),
@@ -218,6 +257,7 @@ rules = [
     ReductionRuleHandler([const.PRINT_KEYWORD, const.FUNCTION_CALL], [const.PRINT_STATEMENT]),
     ReductionRuleHandler([const.PRINT_KEYWORD, const.VAR_AS], [const.PRINT_STATEMENT]),
     ReductionRuleHandler([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], [const.PRINT_STATEMENT]),
+    ReductionRuleHandler([const.PRINT_KEYWORD, const.ENUMERABLE_OBJECT], [const.PRINT_STATEMENT]),
     # endregion
 
     # region Comma Print Arguments
@@ -228,15 +268,20 @@ rules = [
     ReductionRuleHandler([const.ID, const.EQUALS, const.ID, const.COMMA, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL, const.COMMA, const.PRINT_ARGUMENT],
                          [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.COMMA, const.PRINT_ARGUMENT],
+                         [const.PRINT_ARGUMENT]),
 
     ReductionRuleHandler([const.ID, const.EQUALS, const.ID, const.COMMA, const.VALUE], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.VALUE, const.COMMA, const.VALUE], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL, const.COMMA, const.VALUE],
                          [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.COMMA, const.VALUE],
+                         [const.PRINT_ARGUMENT]),
 
     ReductionRuleHandler([const.ID, const.EQUALS, const.ID, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.VALUE, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
 
     ReductionRuleHandler([const.ID, const.EQUALS, const.ID, const.COMMA, const.FUNCTION_CALL],
                          [const.PRINT_ARGUMENT]),
@@ -244,10 +289,21 @@ rules = [
                          [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL, const.COMMA, const.FUNCTION_CALL],
                          [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.COMMA, const.FUNCTION_CALL],
+                         [const.PRINT_ARGUMENT]),
 
     ReductionRuleHandler([const.ID, const.EQUALS, const.ID, const.COMMA, const.VAR_AS], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.VALUE, const.COMMA, const.VAR_AS], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL, const.COMMA, const.VAR_AS],
+                         [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.COMMA, const.VAR_AS],
+                         [const.PRINT_ARGUMENT]),
+
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ID, const.COMMA, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.VALUE, const.COMMA, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL, const.COMMA, const.ENUMERABLE_OBJECT],
+                         [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.COMMA, const.ENUMERABLE_OBJECT],
                          [const.PRINT_ARGUMENT]),
     # endregion
 
@@ -256,22 +312,34 @@ rules = [
     ReductionRuleHandler([const.ID, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.COMMA, const.FUNCTION_CALL], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.COMMA, const.VAR_AS], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.COMMA, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
 
     ReductionRuleHandler([const.VALUE, const.COMMA, const.VALUE], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.VALUE, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.VALUE, const.COMMA, const.FUNCTION_CALL], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.VALUE, const.COMMA, const.VAR_AS], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.VALUE, const.COMMA, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
 
     ReductionRuleHandler([const.FUNCTION_CALL, const.COMMA, const.VALUE], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.FUNCTION_CALL, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.FUNCTION_CALL, const.COMMA, const.FUNCTION_CALL], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.FUNCTION_CALL, const.COMMA, const.VAR_AS], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.COMMA, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
+
+    ReductionRuleHandler([const.ENUMERABLE_OBJECT, const.COMMA, const.VALUE], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ENUMERABLE_OBJECT, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ENUMERABLE_OBJECT, const.COMMA, const.FUNCTION_CALL], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ENUMERABLE_OBJECT, const.COMMA, const.VAR_AS], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ENUMERABLE_OBJECT, const.COMMA, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
+
     # endregion
 
     # region Compound Print Arguments
     ReductionRuleHandler([const.ID, const.COMMA, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.VALUE, const.COMMA, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.FUNCTION_CALL, const.COMMA, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ENUMERABLE_OBJECT, const.COMMA, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
+
     # endregion
 
     # endregion
@@ -285,15 +353,21 @@ rules = [
                          [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL, const.SEMI_COLON, const.PRINT_ARGUMENT],
                          [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.PRINT_ARGUMENT],
+                         [const.PRINT_ARGUMENT]),
 
     ReductionRuleHandler([const.ID, const.EQUALS, const.ID, const.SEMI_COLON, const.VALUE], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.VALUE, const.SEMI_COLON, const.VALUE], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL, const.SEMI_COLON, const.VALUE],
                          [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.VALUE],
+                         [const.PRINT_ARGUMENT]),
 
     ReductionRuleHandler([const.ID, const.EQUALS, const.ID, const.SEMI_COLON, const.ID], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.VALUE, const.SEMI_COLON, const.ID], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL, const.SEMI_COLON, const.ID],
+                         [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.ID],
                          [const.PRINT_ARGUMENT]),
 
     ReductionRuleHandler([const.ID, const.EQUALS, const.ID, const.SEMI_COLON, const.FUNCTION_CALL],
@@ -302,10 +376,21 @@ rules = [
                          [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL, const.SEMI_COLON, const.FUNCTION_CALL],
                          [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.FUNCTION_CALL],
+                         [const.PRINT_ARGUMENT]),
 
     ReductionRuleHandler([const.ID, const.EQUALS, const.ID, const.SEMI_COLON, const.VAR_AS], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.VALUE, const.SEMI_COLON, const.VAR_AS], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL, const.SEMI_COLON, const.VAR_AS],
+                         [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.VAR_AS],
+                         [const.PRINT_ARGUMENT]),
+
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ID, const.SEMI_COLON, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.VALUE, const.SEMI_COLON, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.FUNCTION_CALL, const.SEMI_COLON, const.ENUMERABLE_OBJECT],
+                         [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.ENUMERABLE_OBJECT],
                          [const.PRINT_ARGUMENT]),
     # endregion
 
@@ -314,29 +399,34 @@ rules = [
     ReductionRuleHandler([const.ID, const.SEMI_COLON, const.ID], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.SEMI_COLON, const.FUNCTION_CALL], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.ID, const.SEMI_COLON, const.VAR_AS], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.ID, const.SEMI_COLON, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
 
     ReductionRuleHandler([const.VALUE, const.SEMI_COLON, const.VALUE], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.VALUE, const.SEMI_COLON, const.ID], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.VALUE, const.SEMI_COLON, const.FUNCTION_CALL], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.VALUE, const.SEMI_COLON, const.VAR_AS], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.VALUE, const.SEMI_COLON, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
 
     ReductionRuleHandler([const.FUNCTION_CALL, const.SEMI_COLON, const.VALUE], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.FUNCTION_CALL, const.SEMI_COLON, const.ID], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.FUNCTION_CALL, const.SEMI_COLON, const.FUNCTION_CALL], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.FUNCTION_CALL, const.SEMI_COLON, const.VAR_AS], [const.PRINT_ARGUMENT]),
+    ReductionRuleHandler([const.FUNCTION_CALL, const.SEMI_COLON, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
+
     # endregion
 
     # region Compound Print Arguments
     ReductionRuleHandler([const.ID, const.SEMI_COLON, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.VALUE, const.SEMI_COLON, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
     ReductionRuleHandler([const.FUNCTION_CALL, const.SEMI_COLON, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
-    # endregion
+    ReductionRuleHandler([const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
 
     # endregion
 
     # endregion
 
-    # For Each n In aa
+    # endregion
+
     # region For Each
     ReductionRuleHandler([const.FOR_EACH, const.ID, const.IN, const.ID], [const.FOR_EACH_STATEMENT]),
     ReductionRuleHandler([const.FOR_EACH, const.ID, const.IN, const.VALUE], [const.FOR_EACH_STATEMENT]),

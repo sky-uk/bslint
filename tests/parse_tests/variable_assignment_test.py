@@ -6,7 +6,6 @@ from bslint.parser.parser import Parser
 
 
 class TestVariableAssignment(unittest.TestCase):
-
     def testValue(self):
         parser = Parser()
         result = parser.parse("jack = 3")
@@ -25,6 +24,22 @@ class TestVariableAssignment(unittest.TestCase):
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.ID, const.EQUALS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VAR_AS], parser.all_statements[1])
+
+    def testEmptyEnumerableObject(self):
+        parser = Parser()
+        result = parser.parse("x = []")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT], parser.all_statements[0])
+        self.assertEqual([const.VAR_AS], parser.all_statements[1])
+
+    def testEnumerableObject(self):
+        parser = Parser()
+        result = parser.parse("x = {x:3}")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.ID, const.EQUALS, const.OPEN_CURLY_BRACKET, const.ASSOCIATIVE_ARRAY_ARGUMENT,
+                          const.CLOSE_CURLY_BRACKET], parser.all_statements[0])
+        self.assertEqual([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT], parser.all_statements[1])
+        self.assertEqual([const.VAR_AS], parser.all_statements[2])
 
     def testVariableAssignmentWithPlusValue(self):
         parser = Parser()

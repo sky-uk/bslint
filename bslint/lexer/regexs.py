@@ -7,7 +7,7 @@ Regex = collections.namedtuple('Token', ['regex', 'lexer_type', 'parser_type', '
 
 List = [
     Regex._make([r"\n", const.NEW_LINE, const.NEW_LINE, const.NO_INDENTATION]),
-    Regex._make([r"\s+", None, None, const.NO_INDENTATION]),
+    Regex._make([r"\s", None, None, const.NO_INDENTATION]),
 
     Regex._make(["\+=", const.OPERATOR, const.OPERATOR, const.NO_INDENTATION]),
     Regex._make(["-=", const.OPERATOR, const.OPERATOR, const.NO_INDENTATION]),

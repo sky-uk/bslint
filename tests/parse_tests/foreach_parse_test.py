@@ -29,9 +29,6 @@ class TestForEachParse(unittest.TestCase):
     def testForEachIDInValue(self):
         self.matches("For Each char In \"abc\"", [[const.FOR_EACH_STATEMENT]])
 
-    def testForEachIDInValue(self):
-        self.matches("For Each char In \"abc\"", [[const.FOR_EACH_STATEMENT]])
-
     def foreach_exception_runner(self, str_to_parse):
         parser = Parser()
         exp_exception_msg = err_const.PARSING_FAILED

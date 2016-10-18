@@ -34,6 +34,7 @@ class Lexer:
                     self.handle_unexpected_token()
         self.handle_style.apply_new_line_styling()
         self.check_statement_validity(self.tokens[self.current_token_index:])
+        self.check_program_validity()
         if len(self.errors) is not 0 or self.parsing_failed:
             return {"Status": "Error", "Tokens": self.errors, "Warnings": self.handle_style.warnings}
         else:
@@ -68,3 +69,6 @@ class Lexer:
 
     def check_statement_validity(self, statement):
         self.statements_counter += 1
+
+    def check_program_validity(self):
+        return
