@@ -7,26 +7,26 @@ from bslint.parser.parser import Parser
 
 class TestFunctionDeclarationParse(unittest.TestCase):
 
-    def testFunctionIDOpenParenthesisCloseParenthesis(self):
+    def test_function_idopen_parenthesis_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("function x()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[0])
 
-    def testFunctionIDOpenParenthesisParameterCloseParenthesis(self):
+    def test_function_idopen_parenthesis_parameter_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("function x(y as Object)")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION, const.ID, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS], parser.all_statements[0])
         self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[1])
 
-    def testFunctionIDOpenParenthesisIDCloseParenthesis(self):
+    def test_function_idopen_parenthesis_idclose_parenthesis(self):
         parser = Parser()
         result = parser.parse("function x(y)")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[0])
 
-    def testFunctionIDOpenParenthesisArgumentCloseParenthesis(self):
+    def test_function_idopen_parenthesis_argument_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("function x(y, z)")
         self.assertEqual("Success", result["Status"])
@@ -34,13 +34,13 @@ class TestFunctionDeclarationParse(unittest.TestCase):
                          parser.all_statements[0])
         self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[1])
 
-    def testSubIDOpenParenthesisValueCloseParenthesis(self):
+    def test_sub_idopen_parenthesis_value_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("sub x()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[0])
 
-    def testSubIDOpenParenthesisParameterCloseParenthesis(self):
+    def test_sub_idopen_parenthesis_parameter_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("sub x(y as String)")
         self.assertEqual("Success", result["Status"])
@@ -48,13 +48,13 @@ class TestFunctionDeclarationParse(unittest.TestCase):
                          parser.all_statements[0])
         self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[1])
 
-    def testSubIDOpenParenthesisIDCloseParenthesis(self):
+    def test_sub_idopen_parenthesis_idclose_parenthesis(self):
         parser = Parser()
         result = parser.parse("sub x(y)")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[0])
 
-    def testSubIDOpenParenthesisArgumentCloseParenthesis(self):
+    def test_sub_idopen_parenthesis_argument_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("sub x(y, z)")
         self.assertEqual("Success", result["Status"])
@@ -69,11 +69,11 @@ class TestFunctionDeclarationParse(unittest.TestCase):
             parser.parse(str_to_parse)
             self.assertEqual(ve.exception.args[0], exp_exception_msg)
 
-    def testInvalidFunctionDeclaraionValue(self):
+    def test_invalid_function_declaraion_value(self):
         self.function_declaration_exception_runner("function 1()")
 
-    def testInvalidFunctionDeclaraionMissingParenthesis(self):
+    def test_invalid_function_declaraion_missing_parenthesis(self):
         self.function_declaration_exception_runner("function x(")
 
-    def testInvalidFunctionDeclaraionExtraParenthesis(self):
+    def test_invalid_function_declaraion_extra_parenthesis(self):
         self.function_declaration_exception_runner("function x(())")

@@ -12,12 +12,12 @@ class TestLexSkeletonMain(unittest.TestCase):
         this_dir, this_filename = os.path.split(__file__)
         cls.filepath_prefix = os.path.join(this_dir, "../resources/lexing_test_files/")
 
-    def testLexWholeFile(self):
+    def test_lex_whole_file(self):
         chars = open(self.filepath_prefix + "skeleton-main.brs", "r+").read()
         result = Lexer().lex(chars)
         self.assertEqual(result["Status"], 'Success')
 
-    def testLexWholeFileWithMultipleErrors(self):
+    def test_lex_whole_file_with_multiple_errors(self):
         chars = open(self.filepath_prefix + "skeleton-main-with-errors.brs", "r+").read()
         result = Lexer().lex(chars)
         exp_result = [err.get_message(err_const.UNMATCHED_QUOTATION_MARK, ['"roSGScreen', 2]),

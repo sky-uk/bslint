@@ -6,7 +6,7 @@ from bslint.parser.parser import Parser
 
 
 class TestParamParse(unittest.TestCase):
-    def testIDAsType(self):
+    def test_id_as_type(self):
         parser = Parser()
         result = parser.parse("function x(y as Object)")
         self.assertEqual("Success", result["Status"])
@@ -15,7 +15,7 @@ class TestParamParse(unittest.TestCase):
             parser.all_statements[0])
         self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[1])
 
-    def testVar_AsAsType(self):
+    def test_var_as_as_type(self):
         parser = Parser()
         result = parser.parse('sub x(y = "test" as String)')
         self.assertEqual("Success", result["Status"])
@@ -28,7 +28,7 @@ class TestParamParse(unittest.TestCase):
             parser.all_statements[1])
         self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[2])
 
-    def testParamCommaParam(self):
+    def test_param_comma_param(self):
         parser = Parser()
         result = parser.parse("function x(y as Object, z as Double)")
         self.assertEqual("Success", result["Status"])
@@ -50,11 +50,11 @@ class TestParamParse(unittest.TestCase):
             parser.parse(str_to_parse)
             self.assertEqual(ve.exception.args[0], exp_exception_msg)
 
-    def testInvalidParamValue(self):
+    def test_invalid_param_value(self):
         self.param_exception_runner("function x(1 as Integer)")
 
-    def testInvalidParamWhile(self):
+    def test_invalid_param_while(self):
         self.param_exception_runner("function x(while)")
 
-    def testInvalidParamPlus(self):
+    def test_invalid_param_plus(self):
         self.param_exception_runner("function x(+)")

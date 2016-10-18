@@ -6,54 +6,54 @@ from bslint.parser.parser import Parser
 
 
 class TestQuestionMarkParse(unittest.TestCase):
-    def testQuestionMarkValue(self):
+    def test_question_mark_value(self):
         parser = Parser()
         result = parser.parse("? 4")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[0])
 
-    def testQuestionMarkID(self):
+    def test_question_mark_id(self):
         parser = Parser()
         result = parser.parse("? x")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[0])
 
-    def testQuestionMarkVarAs(self):
+    def test_question_mark_var_as(self):
         parser = Parser()
         result = parser.parse("? x = 3")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.VAR_AS], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkFunctionCall(self):
+    def test_question_mark_function_call(self):
         parser = Parser()
         result = parser.parse("? x()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkIDOperatorValue(self):
+    def test_question_mark_idoperator_value(self):
         parser = Parser()
         result = parser.parse("? x^5")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.VALUE], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkValueCommaValue(self):
+    def test_question_mark_value_comma_value(self):
         parser = Parser()
         result = parser.parse("? 3,4")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkValueCommaID(self):
+    def test_question_mark_value_comma_id(self):
         parser = Parser()
         result = parser.parse("? 3,d")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkValueCommaFunctionCall(self):
+    def test_question_mark_value_comma_function_call(self):
         parser = Parser()
         result = parser.parse("? 3,x()")
         self.assertEqual("Success", result["Status"])
@@ -61,7 +61,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkValueCommaVariableAssignment(self):
+    def test_question_mark_value_comma_variable_assignment(self):
         parser = Parser()
         result = parser.parse("? 3,x=4")
         self.assertEqual("Success", result["Status"])
@@ -69,7 +69,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkValueCommaArgument(self):
+    def test_question_mark_value_comma_argument(self):
         parser = Parser()
         result = parser.parse("? 3,3,4")
         self.assertEqual("Success", result["Status"])
@@ -78,21 +78,21 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkIDCommaValue(self):
+    def test_question_mark_idcomma_value(self):
         parser = Parser()
         result = parser.parse("? X,4")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkIDCommaID(self):
+    def test_question_mark_idcomma_id(self):
         parser = Parser()
         result = parser.parse("? X,d")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkIDCommaFunctionCall(self):
+    def test_question_mark_idcomma_function_call(self):
         parser = Parser()
         result = parser.parse("? Y,x()")
         self.assertEqual("Success", result["Status"])
@@ -100,7 +100,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkIDCommaVariableAssignment(self):
+    def test_question_mark_idcomma_variable_assignment(self):
         parser = Parser()
         result = parser.parse("? Y,x=4")
         self.assertEqual("Success", result["Status"])
@@ -108,7 +108,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkIDCommaArgument(self):
+    def test_question_mark_idcomma_argument(self):
         parser = Parser()
         result = parser.parse("? x,3,4")
         self.assertEqual("Success", result["Status"])
@@ -116,7 +116,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkFunctionCallCommaValue(self):
+    def test_question_mark_function_call_comma_value(self):
         parser = Parser()
         result = parser.parse("? X(),4")
         self.assertEqual("Success", result["Status"])
@@ -124,7 +124,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkFunctionCallCommaID(self):
+    def test_question_mark_function_call_comma_id(self):
         parser = Parser()
         result = parser.parse("? X(),d")
         self.assertEqual("Success", result["Status"])
@@ -132,7 +132,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkFunctionCallCommaFunctionCall(self):
+    def test_question_mark_function_call_comma_function_call(self):
         parser = Parser()
         result = parser.parse("? Y(),x()")
         self.assertEqual("Success", result["Status"])
@@ -143,7 +143,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[2])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[3])
 
-    def testQuestionMarkFunctionCallCommaVariableAssignment(self):
+    def test_question_mark_function_call_comma_variable_assignment(self):
         parser = Parser()
         result = parser.parse("? Y(),x=4")
         self.assertEqual("Success", result["Status"])
@@ -155,7 +155,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[2])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[3])
 
-    def testQuestionMarkFunctionCallCommaArgument(self):
+    def test_question_mark_function_call_comma_argument(self):
         parser = Parser()
         result = parser.parse("? x(),3,4")
         self.assertEqual("Success", result["Status"])
@@ -166,21 +166,21 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[2])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[3])
 
-    def testQuestionMarkVariableAssignmentCommaValue(self):
+    def test_question_mark_variable_assignment_comma_value(self):
         parser = Parser()
         result = parser.parse("? X=3,4")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkVariableAssignmentCommaID(self):
+    def test_question_mark_variable_assignment_comma_id(self):
         parser = Parser()
         result = parser.parse("? X=4,d")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkVariableAssignmentCommaFunctionCall(self):
+    def test_question_mark_variable_assignment_comma_function_call(self):
         parser = Parser()
         result = parser.parse("? Y=4,x()")
         self.assertEqual("Success", result["Status"])
@@ -189,7 +189,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkVariableAssignmentCommaVariableAssignment(self):
+    def test_question_mark_variable_assignment_comma_variable_assignment(self):
         parser = Parser()
         result = parser.parse("? Y=4,x=4")
         self.assertEqual("Success", result["Status"])
@@ -198,7 +198,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkVariableAssignmentCommaArgument(self):
+    def test_question_mark_variable_assignment_comma_argument(self):
         parser = Parser()
         result = parser.parse("? x=1,4,4")
         self.assertEqual("Success", result["Status"])
@@ -207,21 +207,21 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkValueSemiColonValue(self):
+    def test_question_mark_value_semi_colon_value(self):
         parser = Parser()
         result = parser.parse("? 3;4")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkValueSemiColonID(self):
+    def test_question_mark_value_semi_colon_id(self):
         parser = Parser()
         result = parser.parse("? 3;d")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkValueSemiColonFunctionCall(self):
+    def test_question_mark_value_semi_colon_function_call(self):
         parser = Parser()
         result = parser.parse("? 3;x()")
         self.assertEqual("Success", result["Status"])
@@ -230,7 +230,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkValueSemiColonVariableAssignment(self):
+    def test_question_mark_value_semi_colon_variable_assignment(self):
         parser = Parser()
         result = parser.parse("? 3;x=4")
         self.assertEqual("Success", result["Status"])
@@ -238,7 +238,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkValueSemiColonArgument(self):
+    def test_question_mark_value_semi_colon_argument(self):
         parser = Parser()
         result = parser.parse("? 4;4,4")
         self.assertEqual("Success", result["Status"])
@@ -247,21 +247,21 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkIDSemiColonValue(self):
+    def test_question_mark_idsemi_colon_value(self):
         parser = Parser()
         result = parser.parse("? X;4")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkIDSemiColonID(self):
+    def test_question_mark_idsemi_colon_id(self):
         parser = Parser()
         result = parser.parse("? X;d")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkIDSemiColonFunctionCall(self):
+    def test_question_mark_idsemi_colon_function_call(self):
         parser = Parser()
         result = parser.parse("? Y;x()")
         self.assertEqual("Success", result["Status"])
@@ -270,7 +270,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkIDSemiColonVariableAssignment(self):
+    def test_question_mark_idsemi_colon_variable_assignment(self):
         parser = Parser()
         result = parser.parse("? Y;x=4")
         self.assertEqual("Success", result["Status"])
@@ -278,7 +278,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkIDSemiColonArgument(self):
+    def test_question_mark_idsemi_colon_argument(self):
         parser = Parser()
         result = parser.parse("? x;4;4")
         self.assertEqual("Success", result["Status"])
@@ -287,7 +287,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkFunctionCallSemiColonValue(self):
+    def test_question_mark_function_call_semi_colon_value(self):
         parser = Parser()
         result = parser.parse("? X();4")
         self.assertEqual("Success", result["Status"])
@@ -296,7 +296,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkFunctionCallSemiColonID(self):
+    def test_question_mark_function_call_semi_colon_id(self):
         parser = Parser()
         result = parser.parse("? X();d")
         self.assertEqual("Success", result["Status"])
@@ -305,7 +305,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkFunctionCallSemiColonFunctionCall(self):
+    def test_question_mark_function_call_semi_colon_function_call(self):
         parser = Parser()
         result = parser.parse("? Y();x()")
         self.assertEqual("Success", result["Status"])
@@ -317,7 +317,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[2])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[3])
 
-    def testQuestionMarkFunctionCallSemiColonVariableAssignment(self):
+    def test_question_mark_function_call_semi_colon_variable_assignment(self):
         parser = Parser()
         result = parser.parse("? Y();x=4")
         self.assertEqual("Success", result["Status"])
@@ -329,7 +329,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[2])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[3])
 
-    def testQuestionMarkFunctionCallSemiColonArgument(self):
+    def test_question_mark_function_call_semi_colon_argument(self):
         parser = Parser()
         result = parser.parse("? x();4,4")
         self.assertEqual("Success", result["Status"])
@@ -342,21 +342,21 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[2])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[3])
 
-    def testQuestionMarkVariableAssignmentSemiColonValue(self):
+    def test_question_mark_variable_assignment_semi_colon_value(self):
         parser = Parser()
         result = parser.parse("? X=3;4")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkVariableAssignmentSemiColonID(self):
+    def test_question_mark_variable_assignment_semi_colon_id(self):
         parser = Parser()
         result = parser.parse("? X=4;d")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
 
-    def testQuestionMarkVariableAssignmentSemiColonFunctionCall(self):
+    def test_question_mark_variable_assignment_semi_colon_function_call(self):
         parser = Parser()
         result = parser.parse("? Y=4;x()")
         self.assertEqual("Success", result["Status"])
@@ -366,7 +366,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkVariableAssignmentSemiColonVariableAssignment(self):
+    def test_question_mark_variable_assignment_semi_colon_variable_assignment(self):
         parser = Parser()
         result = parser.parse("? Y=4;x=4")
         self.assertEqual("Success", result["Status"])
@@ -375,7 +375,7 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
         self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
 
-    def testQuestionMarkVariableAssignmentSemiColonArgument(self):
+    def test_question_mark_variable_assignment_semi_colon_argument(self):
         parser = Parser()
         result = parser.parse("? x=1;4;4")
         self.assertEqual("Success", result["Status"])
@@ -391,11 +391,11 @@ class TestQuestionMarkParse(unittest.TestCase):
             parser.parse(str_to_parse)
         self.assertEqual(ve.exception.args[0], err_const.PARSING_FAILED)
 
-    def testInvalidWhileParenthesis(self):
+    def test_invalid_while_parenthesis(self):
         self.question_mark_exception_runner("? )")
 
-    def testInvalidWhileFor(self):
+    def test_invalid_while_for(self):
         self.question_mark_exception_runner("? (for)")
 
-    def testInvalidWhileEndWhile(self):
+    def test_invalid_while_end_while(self):
         self.question_mark_exception_runner("? endwhile")

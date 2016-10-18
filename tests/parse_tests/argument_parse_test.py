@@ -6,7 +6,7 @@ from bslint.parser.parser import Parser
 
 
 class TestArgumentParse(unittest.TestCase):
-    def testArgumentCommaArgument(self):
+    def test_argument_comma_argument(self):
         parser = Parser()
         result = parser.parse("a(x, 1, y, 2)")
         self.assertEqual("Success", result["Status"])
@@ -20,7 +20,7 @@ class TestArgumentParse(unittest.TestCase):
             [const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS], parser.all_statements[2])
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[3])
 
-    def testValueCommaValue(self):
+    def test_value_comma_value(self):
         parser = Parser()
         result = parser.parse("a(1, 2)")
         self.assertEqual("Success", result["Status"])
@@ -28,7 +28,7 @@ class TestArgumentParse(unittest.TestCase):
             [const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS], parser.all_statements[0])
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[1])
 
-    def testIDCommaID(self):
+    def test_id_comma_id(self):
         parser = Parser()
         result = parser.parse("a(x, y)")
         self.assertEqual("Success", result["Status"])
@@ -36,7 +36,7 @@ class TestArgumentParse(unittest.TestCase):
             [const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS], parser.all_statements[0])
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[1])
 
-    def testValueCommaArgument(self):
+    def test_value_comma_argument(self):
         parser = Parser()
         result = parser.parse("a(2, 1, y)")
         self.assertEqual("Success", result["Status"])
@@ -47,7 +47,7 @@ class TestArgumentParse(unittest.TestCase):
             [const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS], parser.all_statements[1])
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[2])
 
-    def testIDCommaArgument(self):
+    def test_id_comma_argument(self):
         parser = Parser()
         result = parser.parse("a(x, y, 2)")
         self.assertEqual("Success", result["Status"])
@@ -58,7 +58,7 @@ class TestArgumentParse(unittest.TestCase):
             [const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS], parser.all_statements[1])
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[2])
 
-    def testIIDCommaValue(self):
+    def test_id_comma_value(self):
         parser = Parser()
         result = parser.parse("a(x, 1)")
         self.assertEqual("Success", result["Status"])
@@ -66,7 +66,7 @@ class TestArgumentParse(unittest.TestCase):
             [const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS], parser.all_statements[0])
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[1])
 
-    def testValueCommaID(self):
+    def test_value_comma_id(self):
         parser = Parser()
         result = parser.parse("a(2, y)")
         self.assertEqual("Success", result["Status"])
@@ -74,7 +74,7 @@ class TestArgumentParse(unittest.TestCase):
             [const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS], parser.all_statements[0])
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[1])
 
-    def testFunctionCall(self):
+    def test_function_call(self):
         parser = Parser()
         result = parser.parse("a(b())")
         self.assertEqual("Success", result["Status"])
@@ -89,11 +89,11 @@ class TestArgumentParse(unittest.TestCase):
             parser.parse(str_to_parse)
             self.assertEqual(ve.exception.args[0], exp_exception_msg)
 
-    def testInvalidArgumentWhile(self):
+    def test_invalid_argument_while(self):
         self.argument_exception_runner("x(while, 1)")
 
-    def testInvalidArgumentMinus(self):
+    def test_invalid_argument_minus(self):
         self.argument_exception_runner("x(-)")
 
-    def testInvalidArgumentComment(self):
+    def test_invalid_argument_comment(self):
         self.argument_exception_runner("x(')")

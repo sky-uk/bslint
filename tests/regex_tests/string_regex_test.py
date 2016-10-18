@@ -17,14 +17,14 @@ class TestStringRegex(unittest.TestCase):
         cls.string_file = open(os.path.join(this_dir, "../resources/lexing_test_files/basic-string-assignment.txt"), "r+").read()
         cls.multi_line_file = open(os.path.join(this_dir, "../resources/styling_test_files/multiline-assignment.txt"),"r+").read()
 
-    def testString(self):
+    def test_string(self):
         test_string = '"test123ID"'
         result = regex_handler.find_match(test_string)
         self.assertEqual(result["match"].group(), test_string)
         self.assertEqual(result["token_lexer_type"], const.STRING)
         self.assertEqual(result["token_parser_type"], const.VALUE)
 
-    def testUnclosedQuotes(self):
+    def test_unclosed_quotes(self):
         test_string = '"test123ID\n'
         with self.assertRaises(ValueError):
             result = regex_handler.find_match(test_string)
@@ -32,13 +32,13 @@ class TestStringRegex(unittest.TestCase):
             self.assertEqual(result["token_lexer_type"], const.STRING)
             self.assertEqual(result["token_parser_type"], const.VALUE)
 
-    def testVariableAssignmentString(self):
+    def test_variable_assignment_string(self):
         exp_result = [Token('myString', const.ID, const.ID, 1), Token('=', const.OPERATOR, const.EQUALS, 1),
                       Token('words', const.STRING, const.VALUE, 1)]
         result = Lexer().lex(self.string_file)
         self.assertEqual(result[self.TOKENS], exp_result)
 
-    def testDoubleQuoteString(self):
+    def test_double_quote_string(self):
         test_string = '""""'
         exp_result = '""'
         result = regex_handler.find_match(test_string)
@@ -46,7 +46,7 @@ class TestStringRegex(unittest.TestCase):
         self.assertEqual(result["token_lexer_type"], const.STRING)
         self.assertEqual(result["token_parser_type"], const.VALUE)
 
-    def testMultilineAssignment(self):
+    def test_multiline_assignment(self):
         exp_result = [Token('myString', const.ID, const.ID, 1), Token('=', const.OPERATOR, const.EQUALS, 1),
                       Token("words", const.STRING, const.VALUE, 1),
                       Token('test_String', const.ID, const.ID, 2), Token('=', const.OPERATOR, const.EQUALS, 2),

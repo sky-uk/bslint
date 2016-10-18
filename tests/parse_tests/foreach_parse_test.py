@@ -16,17 +16,17 @@ class TestForEachParse(unittest.TestCase):
             self.assertEqual(expect, parser.all_statements[index])
             index += 1
 
-    def testForEachIDInID(self):
+    def test_for_each_id_in_id(self):
         self.matches("For Each n In aa", [[const.FOR_EACH_STATEMENT]])
 
-    def testForEachIDInFuncCall(self):
+    def test_for_each_id_in_func_call(self):
         expected = [
             [const.FOR_EACH, const.ID, const.IN, const.FUNCTION_CALL],
             [const.FOR_EACH_STATEMENT]
         ]
         self.matches("For Each n In aa()", expected)
 
-    def testForEachIDInValue(self):
+    def test_for_each_id_in_value(self):
         self.matches("For Each char In \"abc\"", [[const.FOR_EACH_STATEMENT]])
 
     def foreach_exception_runner(self, str_to_parse):
@@ -36,9 +36,9 @@ class TestForEachParse(unittest.TestCase):
             parser.parse(str_to_parse)
             self.assertEqual(ve.exception.args[0], exp_exception_msg)
 
-    def testForEachValueInID(self):
+    def test_for_each_value_in_id(self):
         self.foreach_exception_runner("For Each 1 in num")
 
-    def testForEachFunctionCallInID(self):
+    def test_for_each_function_call_in_id(self):
         self.foreach_exception_runner("For Each x() in num")
 

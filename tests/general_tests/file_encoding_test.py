@@ -21,27 +21,27 @@ class TestEncodingCheck(unittest.TestCase):
         cls.filepath_prefix = os.path.join(this_dir, "../../resources/")
         cls.tests_filepath_prefix = os.path.join(this_dir, "../resources/encoding_test_files/")
 
-    def testASCIIChars(self):
+    def test_ascii_chars(self):
         bslint.load_config_file(user_filepath="file_encoding/ASCII-encoding-config.json")
         file_path = self.tests_filepath_prefix + "ASCII-chars.brs"
         result = commands.check_file_encoding(file_path)
         exp_result = None
         self.assertEqual(result, exp_result)
 
-    def testNonASCIIChars(self):
+    def test_non_ascii_chars(self):
         bslint.load_config_file(user_filepath="file_encoding/ASCII-encoding-config.json")
         file_path = self.tests_filepath_prefix + "NON-ASCII-chars.brs"
         result = commands.check_file_encoding(file_path)
         self.assertEqual(result['error_key'], err_const.FILE_ENCODING)
 
-    def testUTF8Chars(self):
+    def test_utf_8_chars(self):
         bslint.load_config_file(user_filepath="file_encoding/UTF8-encoding-config.json")
         file_path = self.tests_filepath_prefix + "NON-ASCII-chars.brs"
         result = commands.check_file_encoding(file_path)
         exp_result = None
         self.assertEqual(result, exp_result)
 
-    def testFileReader(self):
+    def test_file_reader(self):
         bslint.load_config_file(user_filepath="file_encoding/ASCII-encoding-config.json")
         file_path = self.tests_filepath_prefix + "ASCII-chars.brs"
         fo = open(file_path, "r+")

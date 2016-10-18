@@ -7,32 +7,32 @@ from bslint.parser.parser import Parser
 
 class TestFunctionCallParse(unittest.TestCase):
 
-    def testIDOpenParenthesisCloseParenthesis(self):
+    def test_id_open_parenthesis_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("x()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[0])
 
-    def testIDOpenParenthesisArgumnetCloseParenthesis(self):
+    def test_id_open_parenthesis_argument_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("x(y, z)")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS], parser.all_statements[0])
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[1])
 
-    def testIDOpenParenthesisValueCloseParenthesis(self):
+    def test_id_open_parenthesis_value_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("x(1)")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[0])
 
-    def testIDOpenParenthesisIDCloseParenthesis(self):
+    def test_id_open_parenthesis_id_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("x(y)")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[0])
 
-    def testIDOpenParenthesisIDEqualsValueCloseParenthesis(self):
+    def test_id_open_parenthesis_id_equals_value_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("x(y = 1)")
         self.assertEqual("Success", result["Status"])
@@ -49,11 +49,11 @@ class TestFunctionCallParse(unittest.TestCase):
             parser.parse(str_to_parse)
             self.assertEqual(ve.exception.args[0], exp_exception_msg)
 
-    def testInvalidFunctionCallMissingParenthesis(self):
+    def test_invalid_function_call_missing_parenthesis(self):
         self.function_call_exception_runner("x(")
 
-    def testInvalidFunctionCallExtraParenthesis(self):
+    def test_invalid_function_call_extra_parenthesis(self):
         self.function_call_exception_runner("x(())")
 
-    def testInvalidFunctionCallComment(self):
+    def test_invalid_function_call_comment(self):
         self.function_call_exception_runner("'x()")

@@ -22,79 +22,79 @@ class TestSpellCheck(unittest.TestCase):
     def setUp(self):
         bslint.load_config_file(user_filepath='spell_check/spellcheck-config.json', default_filepath='test-config.json')
 
-    def testM(self):
+    def test_m(self):
         test_string = "m"
         exp_result = None
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
-    def testSingleLCase(self):
+    def test_single_lcase(self):
         test_string = "bad"
         exp_result = None
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
-    def testCamelCase(self):
+    def test_camel_case(self):
         test_string = "badGood"
         exp_result = None
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
-    def testSingleUpperCase(self):
+    def test_single_upper_case(self):
         test_string = "GOOD"
         exp_result = None
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
-    def testSingleUnderscoreCamelCase(self):
+    def test_single_underscore_camel_case(self):
         test_string = "bad_Good"
         exp_result = None
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
-    def testSingleUnderscoreLowerCase(self):
+    def test_single_underscore_lower_case(self):
         test_string = "bad_good"
         exp_result = None
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
-    def testIncorrect(self):
+    def test_incorrect(self):
         test_string = "bad_Good"
         exp_result = None
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
-    def testNonLetter(self):
+    def test_non_letter(self):
         test_string = "bad_Good$"
         exp_result = None
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
-    def testStartLCaseCorrect(self):
+    def test_start_lcase_correct(self):
         test_string = "Brother"
         exp_result = None
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
-    def testStartUCaseIncorrect(self):
+    def test_start_ucase_incorrect(self):
         test_string = "Badsfddsf"
         exp_result = {"error_key": err_const.TYPO_IN_CODE, "error_params": []}
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
-    def testIncorrectSpelling(self):
+    def test_incorrect_spelling(self):
         test_string = "sfgsdrgser"
         exp_result = {"error_key": err_const.TYPO_IN_CODE, "error_params": []}
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
-    def testIncorrectCamelCase(self):
+    def test_incorrect_camel_case(self):
         test_string = "badGrgdrfdfg"
         exp_result = {"error_key": err_const.TYPO_IN_CODE, "error_params": []}
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
-    def testRealFile(self):
+    def test_real_file(self):
         file_name = self.filepath_prefix + "spell-check.brs"
         file = open(file_name, "r+").read()
         exp_res = [error.get_message(err_const.TYPO_IN_CODE, [2])]
@@ -102,7 +102,7 @@ class TestSpellCheck(unittest.TestCase):
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
-    def testMisspelledCommentFromFile(self):
+    def test_misspelled_comment_from_file(self):
         file_name = self.filepath_prefix + "incorrect-comment-spelling.brs"
         file = open(file_name, "r+").read()
         self.assertNotEqual(file, "")
@@ -111,7 +111,7 @@ class TestSpellCheck(unittest.TestCase):
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
-    def testUSDictionaryFailing(self):
+    def test_us_dictionary_failing(self):
         bslint.load_config_file(user_filepath='spell_check/us-spellcheck-config.json', default_filepath='test-config.json')
         commands._change_dict_lang(bslint.config_loader.CONFIG["spell_check"]["params"]["dictionary"])
         test_string = "specialised"
@@ -119,7 +119,7 @@ class TestSpellCheck(unittest.TestCase):
         result = commands.check_spelling(test_string, const.ID)
         self.assertEqual(result, exp_result)
 
-    def testUSDictionaryPassing(self):
+    def test_us_dictionary_passing(self):
         bslint.load_config_file(user_filepath='spell_check/us-spellcheck-config.json', default_filepath='test-config.json')
         commands._change_dict_lang(bslint.config_loader.CONFIG["spell_check"]["params"]["dictionary"])
         test_string = "specialized"

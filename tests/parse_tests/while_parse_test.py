@@ -7,64 +7,64 @@ from bslint.parser.parser import Parser
 
 class TestWhileParse(unittest.TestCase):
 
-    def testWhileValue(self):
+    def test_while_value(self):
         parser = Parser()
         result = parser.parse("while true")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[0])
 
-    def testWhilePlusValue(self):
+    def test_while_plus_value(self):
         parser = Parser()
         result = parser.parse("while + 3")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[0])
 
-    def testWhileMinusValue(self):
+    def test_while_minus_value(self):
         parser = Parser()
         result = parser.parse("while - 3")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[0])
 
-    def testWhileID(self):
+    def test_while_id(self):
         parser = Parser()
         result = parser.parse("while x")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[0])
 
-    def testWhilePlusID(self):
+    def test_while_plus_id(self):
         parser = Parser()
         result = parser.parse("while +x")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[0])
 
-    def testWhileMinusID(self):
+    def test_while_minus_id(self):
         parser = Parser()
         result = parser.parse("while -x")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[0])
 
-    def testWhileVarAs(self):
+    def test_while_var_as(self):
         parser = Parser()
         result = parser.parse("while x = 3")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.WHILE, const.VAR_AS], parser.all_statements[0])
         self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[1])
 
-    def testWhileFunctionCall(self):
+    def test_while_function_call(self):
         parser = Parser()
         result = parser.parse("while x()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.WHILE, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[1])
 
-    def testWhilePlusFunctionCall(self):
+    def test_while_plus_function_call(self):
         parser = Parser()
         result = parser.parse("while +x()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.WHILE, const.PLUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.WHILE_STATEMENT], parser.all_statements[1])
 
-    def testWhileMinusFunctionCall(self):
+    def test_while_minus_function_call(self):
         parser = Parser()
         result = parser.parse("while -x()")
         self.assertEqual("Success", result["Status"])
@@ -77,11 +77,11 @@ class TestWhileParse(unittest.TestCase):
             parser.parse(str_to_parse)
         self.assertEqual(ve.exception.args[0], err_const.PARSING_FAILED)
 
-    def testInvalidWhileParenthesis(self):
+    def test_invalid_while_parenthesis(self):
         self.while_exception_runner("while )")
 
-    def testInvalidWhileFor(self):
+    def test_invalid_while_for(self):
         self.while_exception_runner("while (for)")
 
-    def testInvalidWhileEndWhile(self):
+    def test_invalid_while_end_while(self):
         self.while_exception_runner("while endwhile")

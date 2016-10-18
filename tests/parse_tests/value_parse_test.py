@@ -7,59 +7,59 @@ from bslint.parser.parser import Parser
 
 class TestValueParse(unittest.TestCase):
 
-    def testIDOperatorID(self):
+    def test_id_operator_id(self):
         parser = Parser()
         result = parser.parse("x / y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testValueOperatorValue(self):
+    def test_value_operator_value(self):
         parser = Parser()
         result = parser.parse("1 / 1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testValueOperatorID(self):
+    def test_value_operator_id(self):
         parser = Parser()
         result = parser.parse("1 / y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testIDOperatorValue(self):
+    def test_id_operator_value(self):
         parser = Parser()
         result = parser.parse("x / 1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testIDOperatorFunctionCall(self):
+    def test_id_operator_function_call(self):
         parser = Parser()
         result = parser.parse("x / y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.ID, const.OPERATOR, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallOperatorID(self):
+    def test_function_call_operator_id(self):
         parser = Parser()
         result = parser.parse("x() / y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL, const.OPERATOR, const.ID], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testValueOperatorFunctionCall(self):
+    def test_value_operator_function_call(self):
         parser = Parser()
         result = parser.parse("1 / y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE, const.OPERATOR, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallOperatorValue(self):
+    def test_function_call_operator_value(self):
         parser = Parser()
         result = parser.parse("x() / 1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL, const.OPERATOR, const.VALUE], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallOperatorFunctionCall(self):
+    def test_function_call_operator_function_call(self):
         parser = Parser()
         result = parser.parse("x() / y()")
         self.assertEqual("Success", result["Status"])
@@ -67,163 +67,163 @@ class TestValueParse(unittest.TestCase):
         self.assertEqual([const.FUNCTION_CALL, const.OPERATOR, const.FUNCTION_CALL], parser.all_statements[1])
         self.assertEqual([const.VALUE], parser.all_statements[2])
 
-    def testIDPlusID(self):
+    def test_id_plus_id(self):
         parser = Parser()
         result = parser.parse("x + y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testIDPlusPlusID(self):
+    def test_id_plus_plus_id(self):
         parser = Parser()
         result = parser.parse("x + +y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testIDPlusMinusID(self):
+    def test_id_plus_minus_id(self):
         parser = Parser()
         result = parser.parse("x + -y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testValuePlusValue(self):
+    def test_value_plus_value(self):
         parser = Parser()
         result = parser.parse("1 + 1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testValuePlusPlusValue(self):
+    def test_value_plus_plus_value(self):
         parser = Parser()
         result = parser.parse("1 + +1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testValueMinusPlusValue(self):
+    def test_value_minus_plus_value(self):
         parser = Parser()
         result = parser.parse("1 - +1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testValuePlusID(self):
+    def test_value_plus_id(self):
         parser = Parser()
         result = parser.parse("1 + y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testValuePlusPlusID(self):
+    def test_value_plus_plus_id(self):
         parser = Parser()
         result = parser.parse("1 + +y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testValuePlusMinusID(self):
+    def test_value_plus_minus_id(self):
         parser = Parser()
         result = parser.parse("1 + -y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testIDPlusValue(self):
+    def test_id_plus_value(self):
         parser = Parser()
         result = parser.parse("x + 1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testIDPlusPlusValue(self):
+    def test_id_plus_plus_value(self):
         parser = Parser()
         result = parser.parse("x + +1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testIDPlusMinusValue(self):
+    def test_id_plus_minus_value(self):
         parser = Parser()
         result = parser.parse("x + -1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testIDPlusFunctionCall(self):
+    def test_id_plus_function_call(self):
         parser = Parser()
         result = parser.parse("x + y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.ID, const.PLUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testIDPlusPlusFunctionCall(self):
+    def test_id_plus_plus_function_call(self):
         parser = Parser()
         result = parser.parse("x + +y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.ID, const.PLUS, const.PLUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testIDPlusMinusFunctionCall(self):
+    def test_id_plus_minus_function_call(self):
         parser = Parser()
         result = parser.parse("x + -y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.ID, const.PLUS, const.MINUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallPlusID(self):
+    def test_function_call_plus_id(self):
         parser = Parser()
         result = parser.parse("x() + y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL, const.PLUS, const.ID], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallPlusPlusID(self):
+    def test_function_call_plus_plus_id(self):
         parser = Parser()
         result = parser.parse("x() + +y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL, const.PLUS, const.PLUS, const.ID], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallPlusMinusID(self):
+    def test_function_call_plus_minus_id(self):
         parser = Parser()
         result = parser.parse("x() + -y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL, const.PLUS, const.MINUS, const.ID], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testValuePlusFunctionCall(self):
+    def test_value_plus_function_call(self):
         parser = Parser()
         result = parser.parse("1 + y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE, const.PLUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testValuePlusPlusFunctionCall(self):
+    def test_value_plus_plus_function_call(self):
         parser = Parser()
         result = parser.parse("1 + +y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE, const.PLUS, const.PLUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testValuePlusMinusFunctionCall(self):
+    def test_value_plus_minus_function_call(self):
         parser = Parser()
         result = parser.parse("1 + -y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE, const.PLUS, const.MINUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallPlusValue(self):
+    def test_function_call_plus_value(self):
         parser = Parser()
         result = parser.parse("x() + 1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL, const.PLUS, const.VALUE], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallPlusPlusValue(self):
+    def test_function_call_plus_plus_value(self):
         parser = Parser()
         result = parser.parse("x() + +1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL, const.PLUS, const.PLUS, const.VALUE], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallPlusMinusValue(self):
+    def test_function_call_plus_minus_value(self):
         parser = Parser()
         result = parser.parse("x() + -1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL, const.PLUS, const.MINUS, const.VALUE], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallPlusFunctionCall(self):
+    def test_function_call_plus_function_call(self):
         parser = Parser()
         result = parser.parse("x() + y()")
         self.assertEqual("Success", result["Status"])
@@ -231,7 +231,7 @@ class TestValueParse(unittest.TestCase):
         self.assertEqual([const.FUNCTION_CALL, const.PLUS, const.FUNCTION_CALL], parser.all_statements[1])
         self.assertEqual([const.VALUE], parser.all_statements[2])
 
-    def testFunctionCallPlusPlusFunctionCall(self):
+    def test_function_call_plus_plus_function_call(self):
         parser = Parser()
         result = parser.parse("x() + +y()")
         self.assertEqual("Success", result["Status"])
@@ -239,7 +239,7 @@ class TestValueParse(unittest.TestCase):
         self.assertEqual([const.FUNCTION_CALL, const.PLUS, const.PLUS, const.FUNCTION_CALL], parser.all_statements[1])
         self.assertEqual([const.VALUE], parser.all_statements[2])
 
-    def testFunctionCallPlusMinusFunctionCall(self):
+    def test_function_call_plus_minus_function_call(self):
         parser = Parser()
         result = parser.parse("x() + -y()")
         self.assertEqual("Success", result["Status"])
@@ -247,163 +247,163 @@ class TestValueParse(unittest.TestCase):
         self.assertEqual([const.FUNCTION_CALL, const.PLUS, const.MINUS, const.FUNCTION_CALL], parser.all_statements[1])
         self.assertEqual([const.VALUE], parser.all_statements[2])
 
-    def testIDMinusID(self):
+    def test_id_minus_id(self):
         parser = Parser()
         result = parser.parse("x - y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testIDMinusPlusID(self):
+    def test_id_minus_plus_id(self):
         parser = Parser()
         result = parser.parse("x - +y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testIDMinusMinusID(self):
+    def test_id_minus_minus_id(self):
         parser = Parser()
         result = parser.parse("x - -y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testValueMinusValue(self):
+    def test_value_minus_value(self):
         parser = Parser()
         result = parser.parse("1 - 1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testValuePlusMinusValue(self):
+    def test_value_plus_minus_value(self):
         parser = Parser()
         result = parser.parse("1 + -1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testValueMinusMinusValue(self):
+    def test_value_minus_minus_value(self):
         parser = Parser()
         result = parser.parse("1 - -1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testValueMinusID(self):
+    def test_value_minus_id(self):
         parser = Parser()
         result = parser.parse("1 - y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testValueMinusPlusID(self):
+    def test_value_minus_plus_id(self):
         parser = Parser()
         result = parser.parse("1 - +y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testValueMinusMinusID(self):
+    def test_value_minus_minus_id(self):
         parser = Parser()
         result = parser.parse("1 - -y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testIDMinusValue(self):
+    def test_id_minus_value(self):
         parser = Parser()
         result = parser.parse("x - 1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testIDMinusPlusValue(self):
+    def test_id_minus_plus_value(self):
         parser = Parser()
         result = parser.parse("x - +1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testIDMinusMinusValue(self):
+    def test_id_minus_minus_value(self):
         parser = Parser()
         result = parser.parse("x - -1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
-    def testIDMinusFunctionCall(self):
+    def test_id_minus_function_call(self):
         parser = Parser()
         result = parser.parse("x - y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.ID, const.MINUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testIDMinusPlusFunctionCall(self):
+    def test_id_minus_plus_function_call(self):
         parser = Parser()
         result = parser.parse("x - +y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.ID, const.MINUS, const.PLUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testIDMinusMinusFunctionCall(self):
+    def test_id_minus_minus_function_call(self):
         parser = Parser()
         result = parser.parse("x - -y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.ID, const.MINUS, const.MINUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallMinusID(self):
+    def test_function_call_minus_id(self):
         parser = Parser()
         result = parser.parse("x() - y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL, const.MINUS, const.ID], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallMinusPlusID(self):
+    def test_function_call_minus_plus_id(self):
         parser = Parser()
         result = parser.parse("x() - +y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL, const.MINUS, const.PLUS, const.ID], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallMinusMinusID(self):
+    def test_function_call_minus_minus_id(self):
         parser = Parser()
         result = parser.parse("x() - -y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL, const.MINUS, const.MINUS, const.ID], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testValueMinusFunctionCall(self):
+    def test_value_minus_function_call(self):
         parser = Parser()
         result = parser.parse("1 - y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE, const.MINUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testValueMinusPlusFunctionCall(self):
+    def test_value_minus_plus_function_call(self):
         parser = Parser()
         result = parser.parse("1 - +y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE, const.MINUS, const.PLUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testValueMinusMinusFunctionCall(self):
+    def test_value_minus_minus_function_call(self):
         parser = Parser()
         result = parser.parse("1 - -y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE, const.MINUS, const.MINUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallMinusValue(self):
+    def test_function_call_minus_value(self):
         parser = Parser()
         result = parser.parse("x() - 1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL, const.MINUS, const.VALUE], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallMinusPlusValue(self):
+    def test_function_call_minus_plus_value(self):
         parser = Parser()
         result = parser.parse("x() - +1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL, const.MINUS, const.PLUS, const.VALUE], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallMinusMinusValue(self):
+    def test_function_call_minus_minus_value(self):
         parser = Parser()
         result = parser.parse("x() - -1")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL, const.MINUS, const.MINUS, const.VALUE], parser.all_statements[0])
         self.assertEqual([const.VALUE], parser.all_statements[1])
 
-    def testFunctionCallMinusFunctionCall(self):
+    def test_function_call_minus_function_call(self):
         parser = Parser()
         result = parser.parse("x() - y()")
         self.assertEqual("Success", result["Status"])
@@ -411,7 +411,7 @@ class TestValueParse(unittest.TestCase):
         self.assertEqual([const.FUNCTION_CALL, const.MINUS, const.FUNCTION_CALL], parser.all_statements[1])
         self.assertEqual([const.VALUE], parser.all_statements[2])
 
-    def testFunctionCallMinusPlusFunctionCall(self):
+    def test_function_call_minus_plus_function_call(self):
         parser = Parser()
         result = parser.parse("x() - +y()")
         self.assertEqual("Success", result["Status"])
@@ -419,7 +419,7 @@ class TestValueParse(unittest.TestCase):
         self.assertEqual([const.FUNCTION_CALL, const.MINUS, const.PLUS, const.FUNCTION_CALL], parser.all_statements[1])
         self.assertEqual([const.VALUE], parser.all_statements[2])
 
-    def testFunctionCallMinusMinusFunctionCall(self):
+    def test_function_call_minus_minus_function_call(self):
         parser = Parser()
         result = parser.parse("x() - -y()")
         self.assertEqual("Success", result["Status"])
@@ -427,14 +427,14 @@ class TestValueParse(unittest.TestCase):
         self.assertEqual([const.FUNCTION_CALL, const.MINUS, const.MINUS, const.FUNCTION_CALL], parser.all_statements[1])
         self.assertEqual([const.VALUE], parser.all_statements[2])
 
-    def testOpenParenthesisValueCloseParenthesis(self):
+    def test_open_parenthesis_value_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("(1)")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
     # Only ID Test
-    def testOpenParenthesisIDCloseParenthesis(self):
+    def test_open_parenthesis_id_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("(x)")
         self.assertEqual("Success", result["Status"])
@@ -447,11 +447,11 @@ class TestValueParse(unittest.TestCase):
             parser.parse(str_to_parse)
             self.assertEqual(ve.exception.args[0], exp_exception_msg)
 
-    def testInvalidValueMultiplePlus(self):
+    def test_invalid_value_multiple_plus(self):
         self.value_exception_runner("+ + + + + + + + + +")
 
-    def testInvalidValueMinus(self):
+    def test_invalid_value_minus(self):
         self.value_exception_runner("3-")
 
-    def testInvalidValueIDPlusWhile(self):
+    def test_invalid_value_idplus_while(self):
         self.value_exception_runner("a + while")

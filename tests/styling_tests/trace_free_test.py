@@ -17,7 +17,7 @@ class TestTraceFree(unittest.TestCase):
         this_dir, this_filename = os.path.split(__file__)
         cls.tests_filepath_prefix = os.path.join(this_dir, "../resources/trace_test_files/")
 
-    def testPRINT(self):
+    def test_print(self):
         bslint.load_config_file(user_filepath="trace_free/trace-free-config.json", default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "print.brs"
         file = open(file_name, "r+").read()
@@ -26,7 +26,7 @@ class TestTraceFree(unittest.TestCase):
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
-    def testQuestionMark(self):
+    def test_question_mark(self):
         bslint.load_config_file(user_filepath="trace_free/trace-free-config.json", default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "question-mark.brs"
         file = open(file_name, "r+").read()
@@ -35,7 +35,7 @@ class TestTraceFree(unittest.TestCase):
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
-    def testPrintAndQuestionMark(self):
+    def test_print_and_question_mark(self):
         bslint.load_config_file(user_filepath="trace_free/trace-free-config.json", default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "print-and-question-mark.brs"
         file = open(file_name, "r+").read()
@@ -45,7 +45,7 @@ class TestTraceFree(unittest.TestCase):
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
-    def testNoPrintNoQuestionMark(self):
+    def test_no_print_no_question_mark(self):
         bslint.load_config_file(user_filepath="trace_free/trace-free-config.json", default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "no-print-no-question-mark.brs"
         file = open(file_name, "r+").read()
@@ -54,7 +54,7 @@ class TestTraceFree(unittest.TestCase):
         self.assertEqual(result[self.WARNINGS], exp_res)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
-    def testInactivePrintAndQuestionMark(self):
+    def test_inactive_print_and_question_mark(self):
         bslint.load_config_file(default_filepath="test-config.json")
         file_name = self.tests_filepath_prefix + "print-and-question-mark.brs"
         file = open(file_name, "r+").read()

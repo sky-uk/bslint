@@ -18,25 +18,25 @@ class TestConfigFileLoading(unittest.TestCase):
     def setUp(self):
         self.InterfaceHandler = InterfaceHandler()
 
-    def testNoWarningsInFileWithErrors(self):
+    def test_no_warnings_in_file_with_errors(self):
         self.InterfaceHandler.lint_specific(
             self.tests_filepath_prefix + "lexing_test_files/skeleton-main-with-errors.brs")
         self.assertEqual(len(self.InterfaceHandler.messages["Errors"]), 1)
         self.assertEqual(len(self.InterfaceHandler.messages["Warnings"]), 0)
 
-    def testOnlyWarningsInFileWithoutErrors(self):
+    def test_only_warnings_in_file_without_errors(self):
         file_name = self.tests_filepath_prefix + "lexing_test_files/skeleton-main.brs"
         self.InterfaceHandler.lint_specific(file_name)
         self.assertEqual(len(self.InterfaceHandler.messages["Warnings"]), 1)
         self.assertEqual(len(self.InterfaceHandler.messages["Errors"]), 0)
 
-    def testParsingDirectory(self):
+    def test_parsing_directory(self):
         directory = self.tests_filepath_prefix + "lexing_test_files"
         self.InterfaceHandler.lint_all(directory)
         self.assertEqual(len(self.InterfaceHandler.messages["Warnings"]), 1)
         self.assertEqual(len(self.InterfaceHandler.messages["Errors"]), 1)
 
-    def testPrintedMessage(self):
+    def test_printed_message(self):
         out = StringIO()
         self.InterfaceHandler = InterfaceHandler(out)
         directory = self.tests_filepath_prefix + "error_handling_files"
@@ -46,7 +46,7 @@ class TestConfigFileLoading(unittest.TestCase):
         second_line = re.match(r".*\n(?P<second_line>.*)\n", result).group("second_line")
         self.assertEqual(second_line, '\x1b[93mWARNING: Invalid indentation, you must indent with tabs. Line number: 1[0m')
 
-    def testErrorHandledOnLastLineWithoutReturn(self):
+    def test_error_handled_on_last_line_without_return(self):
         file_name = self.tests_filepath_prefix + "error_handling_files/error_file.brs"
         chars = open(file_name, "r+").read()
         result = Lexer().lex(chars)

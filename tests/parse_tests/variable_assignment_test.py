@@ -6,33 +6,34 @@ from bslint.parser.parser import Parser
 
 
 class TestVariableAssignment(unittest.TestCase):
-    def testValue(self):
+
+    def test_value(self):
         parser = Parser()
         result = parser.parse("jack = 3")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VAR_AS], parser.all_statements[0])
 
-    def testIdentifier(self):
+    def test_identifier(self):
         parser = Parser()
         result = parser.parse("x = y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VAR_AS], parser.all_statements[0])
 
-    def testFunctionCall(self):
+    def test_function_call(self):
         parser = Parser()
         result = parser.parse("x = y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.ID, const.EQUALS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VAR_AS], parser.all_statements[1])
 
-    def testEmptyEnumerableObject(self):
+    def test_empty_enumerable_object(self):
         parser = Parser()
         result = parser.parse("x = []")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT], parser.all_statements[0])
         self.assertEqual([const.VAR_AS], parser.all_statements[1])
 
-    def testEnumerableObject(self):
+    def test_enumerable_object(self):
         parser = Parser()
         result = parser.parse("x = {x:3}")
         self.assertEqual("Success", result["Status"])
@@ -41,66 +42,66 @@ class TestVariableAssignment(unittest.TestCase):
         self.assertEqual([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT], parser.all_statements[1])
         self.assertEqual([const.VAR_AS], parser.all_statements[2])
 
-    def testVariableAssignmentWithPlusValue(self):
+    def test_variable_assignment_with_plus_value(self):
         parser = Parser()
         result = parser.parse("x = +3")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VAR_AS], parser.all_statements[0])
 
-    def testVariableAssignmentWithMinusValue(self):
+    def test_variable_assignment_with_minus_value(self):
         parser = Parser()
         result = parser.parse("x = -3")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VAR_AS], parser.all_statements[0])
 
-    def testVariableAssignmentWithPlusID(self):
+    def test_variable_assignment_with_plus_id(self):
         parser = Parser()
         result = parser.parse("x = +y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VAR_AS], parser.all_statements[0])
 
-    def testVariableAssignmentWithMinusID(self):
+    def test_variable_assignment_with_minus_id(self):
         parser = Parser()
         result = parser.parse("x = -y")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VAR_AS], parser.all_statements[0])
 
-    def testVariableAssignmentWithPlusFunctionCall(self):
+    def test_variable_assignment_with_plus_function_call(self):
         parser = Parser()
         result = parser.parse("x = +y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.ID, const.EQUALS, const.PLUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VAR_AS], parser.all_statements[1])
 
-    def testVariableAssignmentWithMinusFunctionCall(self):
+    def test_variable_assignment_with_minus_function_call(self):
         parser = Parser()
         result = parser.parse("x = -y()")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.ID, const.EQUALS, const.MINUS, const.FUNCTION_CALL], parser.all_statements[0])
         self.assertEqual([const.VAR_AS], parser.all_statements[1])
 
-    def testOpenParenthesisVariableAssignmentCloseParenthesis(self):
+    def test_open_parenthesis_variable_assignment_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("(x = 1)")
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.OPEN_PARENTHESIS, const.VAR_AS, const.CLOSE_PARENTHESIS], parser.all_statements[0])
         self.assertEqual([const.VAR_AS], parser.all_statements[1])
 
-    def test2VariableDeclarations(self):
+    def test_2variable_declarations(self):
         parser = Parser()
         result = parser.parse('jack = 3\n zac = "no good at table tennis"')
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VAR_AS], parser.all_statements[0])
         self.assertEqual([const.VAR_AS], parser.all_statements[1])
 
-    def testVariableDeclarationWithReduction(self):
+    def test_variable_declaration_with_reduction(self):
         parser = Parser()
         result = parser.parse('jack = 3 + 2')
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.ID, const.EQUALS, const.VALUE], parser.all_statements[0])
         self.assertEqual([const.VAR_AS], parser.all_statements[1])
 
-    def testVariableDeclarationWithMultipleReduction(self):
+    def test_variable_declaration_with_multiple_reduction(self):
         parser = Parser()
         result = parser.parse('jack = 3 + 2 - 5')
         self.assertEqual("Success", result["Status"])
@@ -108,7 +109,7 @@ class TestVariableAssignment(unittest.TestCase):
         self.assertEqual([const.ID, const.EQUALS, const.VALUE], parser.all_statements[1])
         self.assertEqual([const.VAR_AS], parser.all_statements[2])
 
-    def testVariableDeclarationWithReductionAndParenthesis(self):
+    def test_variable_declaration_with_reduction_and_parenthesis(self):
         parser = Parser()
         result = parser.parse('jack = (3 + 2)')
         self.assertEqual("Success", result["Status"])
@@ -124,11 +125,11 @@ class TestVariableAssignment(unittest.TestCase):
             parser.parse(str_to_parse)
             self.assertEqual(ve.exception.args[0], exp_exception_msg)
 
-    def testInvalidVariableAssignmentWhile(self):
+    def test_invalid_variable_assignment_while(self):
         self.variable_assignment_exception_runner("jack = while")
 
-    def testInvalidVariableAssignmentExtraEquals(self):
+    def test_invalid_variable_assignment_extra_equals(self):
         self.variable_assignment_exception_runner("jack == 3")
 
-    def testInvalidVariableAssignmentIncorrectOrder(self):
+    def test_invalid_variable_assignment_incorrect_order(self):
         self.variable_assignment_exception_runner("3 = jack")

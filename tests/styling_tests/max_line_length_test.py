@@ -17,7 +17,7 @@ class TestMaxLineLength(unittest.TestCase):
         this_dir, this_filename = os.path.split(__file__)
         cls.filepath_prefix = os.path.join(this_dir, "../resources/styling_test_files/")
 
-    def testValidLineLength(self):
+    def test_valid_line_length(self):
         bslint.load_config_file(default_filepath='test-config.json')
         file_name = self.filepath_prefix + "short-line-length.txt"
         file = open(file_name, "r+").read()
@@ -26,7 +26,7 @@ class TestMaxLineLength(unittest.TestCase):
         self.assertEqual(result[self.WARNINGS], exp_result)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
-    def testExceedMaxLineLength(self):
+    def test_exceed_max_line_length(self):
         bslint.load_config_file(user_filepath="line_length/small-max-line-length-config.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "short-line-length.txt"
         file = open(file_name, "r+").read()
@@ -35,7 +35,7 @@ class TestMaxLineLength(unittest.TestCase):
         self.assertEqual(result[self.WARNINGS], exp_result)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
-    def testEqualMaxLineLength(self):
+    def test_equal_max_line_length(self):
         bslint.load_config_file(user_filepath="line_length/small-max-line-length-config.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "equal-max-line-length.txt"
         file = open(file_name, "r+").read()
@@ -44,7 +44,7 @@ class TestMaxLineLength(unittest.TestCase):
         self.assertEqual(result[self.WARNINGS], exp_result)
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
-    def testMultiLineErrors(self):
+    def test_multi_line_errors(self):
         bslint.load_config_file(user_filepath="line_length/small-max-line-length-config.json", default_filepath='test-config.json')
         file_name = self.filepath_prefix + "multiline-assignment.txt"
         file = open(file_name, "r+").read()

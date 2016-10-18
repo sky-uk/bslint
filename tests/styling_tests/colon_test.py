@@ -6,7 +6,7 @@ from bslint.lexer.lexer import Lexer as Lexer
 
 class TestColon(unittest.TestCase):
 
-    def testStatementEndsWithColon(self):
+    def test_statement_ends_with_colon(self):
         identifier = ":"
         regex_match = regex_handler.find_match(identifier)
         styling_handler = StylingHandler(identifier)
@@ -14,7 +14,7 @@ class TestColon(unittest.TestCase):
         styling_handler.check_end_of_statement()
         self.assertTrue(styling_handler.end_of_statement)
 
-    def testStatementEndsWithColonNoChangeLine(self):
+    def test_statement_ends_with_colon_no_change_line(self):
         identifier = "myVar = value: otherVar = otherValue"
         result = Lexer().lex(identifier)
         self.assertEqual(result["Tokens"].pop().line_number, 1)
