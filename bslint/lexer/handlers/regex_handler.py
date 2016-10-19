@@ -5,7 +5,7 @@ import bslint.lexer.regexs as regexs
 
 
 def find_match(characters):
-    for token in regexs.List:
+    for token in regexs.regexs:
         match = re.match(token.regex, characters, re.IGNORECASE)
         if match:
             break

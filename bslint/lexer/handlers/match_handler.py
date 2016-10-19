@@ -1,4 +1,4 @@
-from bslint.lexer.handlers.styling_handler import *
+from bslint import constants as const
 from bslint.lexer.token import Token
 
 

@@ -6,8 +6,7 @@ import bslint.error_messages.constants as err_const
 import bslint.lexer.regexs as regexs
 import bslint.lexer.words_dictionary as words_dict
 import bslint.utilities.config_loader as config_loader
-
-comment_regex = [regex.regex for regex in regexs.List if regex.lexer_type == const.COMMENT][0]
+comment_regex = [regex.regex for regex in regexs.regexs if regex.lexer_type == const.COMMENT][0]
 dictionary = words_dict._get_new_dictionary()
 
 
