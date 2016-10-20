@@ -6,68 +6,41 @@ from bslint.parser.parser import Parser
 
 class TestCheckClosingTest(unittest.TestCase):
 
-    def test_end_if(self):
+    def _match(self, identifier):
         parser = Parser()
-        result = parser.parse("endif")
+        result = parser.parse(identifier)
         self.assertEqual("Success", result['Status'])
         self.assertEqual([const.END_IF], parser.all_statements[0])
+
+    def test_end_if(self):
+        self._match("endif")
 
     def test_end_if_space(self):
-        parser = Parser()
-        result = parser.parse("end if")
-        self.assertEqual("Success", result['Status'])
-        self.assertEqual([const.END_IF], parser.all_statements[0])
+        self._match("end if")
 
     def test_end_while(self):
-        parser = Parser()
-        result = parser.parse("endwhile")
-        self.assertEqual("Success", result['Status'])
-        self.assertEqual([const.END_WHILE], parser.all_statements[0])
+        self._match("endwhile")
 
     def test_end_while_space(self):
-        parser = Parser()
-        result = parser.parse("end while")
-        self.assertEqual("Success", result['Status'])
-        self.assertEqual([const.END_WHILE], parser.all_statements[0])
+        self._match("end while")
 
     def test_end_for(self):
-        parser = Parser()
-        result = parser.parse("endfor")
-        self.assertEqual("Success", result['Status'])
-        self.assertEqual([const.END_FOR], parser.all_statements[0])
+        self._match("endfor")
 
     def test_end_for_space(self):
-        parser = Parser()
-        result = parser.parse("end for")
-        self.assertEqual("Success", result['Status'])
-        self.assertEqual([const.END_FOR], parser.all_statements[0])
+        self._match("end for")
 
     def test_end_sub(self):
-        parser = Parser()
-        result = parser.parse("endsub")
-        self.assertEqual("Success", result['Status'])
-        self.assertEqual([const.END_SUB], parser.all_statements[0])
+        self._match("endsub")
 
     def test_end_sub_space(self):
-        parser = Parser()
-        result = parser.parse("end sub")
-        self.assertEqual("Success", result['Status'])
-        self.assertEqual([const.END_SUB], parser.all_statements[0])
+        self._match("end sub")
 
     def test_end_function(self):
-        parser = Parser()
-        result = parser.parse("endfunction")
-        self.assertEqual("Success", result['Status'])
-        self.assertEqual([const.END_FUNCTION], parser.all_statements[0])
+        self._match("endfunction")
 
     def test_end_function_space(self):
-        parser = Parser()
-        result = parser.parse("end function")
-        self.assertEqual("Success", result['Status'])
-        self.assertEqual([const.END_FUNCTION], parser.all_statements[0])
+        self._match("end function")
 
     def test_end(self):
-        parser = Parser()
-        result = parser.parse("end")
-        self.assertEqual("Success", result['Status'])
-        self.assertEqual([const.END], parser.all_statements[0])
+        self._match("end")

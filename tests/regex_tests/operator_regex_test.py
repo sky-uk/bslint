@@ -6,114 +6,56 @@ import bslint.lexer.handlers.regex_handler as regex_handler
 
 class TestOperatorRegex(unittest.TestCase):
 
-    def testAddEqual(self):
-        identifier = "+="
+    def _match(self, identifier, lexer_type, parser_type):
         result = regex_handler.find_match(identifier)
         self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.OPERATOR)
+        self.assertEqual(result["token_lexer_type"], lexer_type)
+        self.assertEqual(result["token_parser_type"], parser_type)
 
-    def testSubtractEqual(self):
-        identifier = "-="
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.OPERATOR)
+    def test_add_equal(self):
+        self._match("+=", const.OPERATOR, const.OPERATOR)
 
-    def testMultiplyEqual(self):
-        identifier = "*="
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.OPERATOR)
+    def test_subtract_equal(self):
+        self._match("-=", const.OPERATOR, const.OPERATOR)
 
-    def testDivideEqual(self):
-        identifier = "/="
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.OPERATOR)
+    def test_multiply_equal(self):
+        self._match("*=", const.OPERATOR, const.OPERATOR)
 
-    def testAdd(self):
-        identifier = "+"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.PLUS)
+    def test_divide_equal(self):
+        self._match("/=", const.OPERATOR, const.OPERATOR)
 
-    def testSubtract(self):
-        identifier = "-"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.MINUS)
+    def test_add(self):
+        self._match("+", const.OPERATOR, const.PLUS)
 
-    def testMultiply(self):
-        identifier = "*"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.OPERATOR)
+    def test_subtract(self):
+        self._match("-", const.OPERATOR, const.MINUS)
 
-    def testDivide(self):
-        identifier = "/"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.OPERATOR)
+    def test_multiply(self):
+        self._match("*", const.OPERATOR, const.OPERATOR)
 
-    def testDivideInteger(self):
-        identifier = "\\"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.OPERATOR)
+    def test_divide(self):
+        self._match("/", const.OPERATOR, const.OPERATOR)
 
-    def testBitwiseAnd(self):
-        identifier = "&"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.OPERATOR)
+    def test_divide_integer(self):
+        self._match("\\", const.OPERATOR, const.OPERATOR)
 
-    def testExponent(self):
-        identifier = "^"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.OPERATOR)
+    def test_bitwise_and(self):
+        self._match("&", const.OPERATOR, const.OPERATOR)
 
-    def testLeftShiftAssign(self):
-        identifier = "<<="
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.OPERATOR)
+    def test_exponent(self):
+        self._match("^", const.OPERATOR, const.OPERATOR)
 
-    def testRightShiftAssign(self):
-        identifier = ">>="
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.OPERATOR)
+    def test_left_shift_assign(self):
+        self._match("<<=", const.OPERATOR, const.OPERATOR)
 
-    def testLeftShift(self):
-        identifier = "<<"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.OPERATOR)
+    def test_right_shift_assign(self):
+        self._match(">>=", const.OPERATOR, const.OPERATOR)
 
-    def testRightShift(self):
-        identifier = ">>"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.OPERATOR)
+    def test_left_shift(self):
+        self._match("<<", const.OPERATOR, const.OPERATOR)
 
-    def testDivideInteger(self):
-        identifier = "\="
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.OPERATOR)
-        self.assertEqual(result["token_parser_type"], const.OPERATOR)
+    def test_right_shift(self):
+        self._match(">>", const.OPERATOR, const.OPERATOR)
+
+    def test_divide_integer_assign(self):
+        self._match("\=", const.OPERATOR, const.OPERATOR)

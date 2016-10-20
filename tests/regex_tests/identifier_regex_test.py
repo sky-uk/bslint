@@ -11,40 +11,29 @@ class TestIdentifierRegex(unittest.TestCase):
     TYPE_GROUP = 'type'
     VALUE_GROUP = 'value'
 
-    def test_basic_identifier(self):
-        identifier = "testId"
+    def _match(self, identifier, match_group):
         result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
+        self.assertEqual(result["match"].group(match_group), identifier)
         self.assertEqual(result["token_lexer_type"], const.ID)
         self.assertEqual(result["token_parser_type"], const.ID)
+
+    def test_basic_identifier(self):
+        self._match("testId", 0)
 
     def test_identifier_with_underscore(self):
-        identifier = "test_Id"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(self.VALUE_GROUP), identifier)
-        self.assertEqual(result["token_lexer_type"], const.ID)
-        self.assertEqual(result["token_parser_type"], const.ID)
+        self._match("test_Id", self.VALUE_GROUP)
 
     def test_identifier_starting_with_underscore(self):
-        identifier = "_testId"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(self.VALUE_GROUP), identifier)
-        self.assertEqual(result["token_lexer_type"], const.ID)
-        self.assertEqual(result["token_parser_type"], const.ID)
+        self._match("_testId", self.VALUE_GROUP)
 
     def test_identifier_with_numbers_not_start(self):
-        identifier = "test123ID"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(self.VALUE_GROUP), identifier)
-        self.assertEqual(result["token_lexer_type"], const.ID)
-        self.assertEqual(result["token_parser_type"], const.ID)
+        self._match("test123ID", self.VALUE_GROUP)
 
     def test_one_letter_identifier(self):
-        identifier = "t"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(self.VALUE_GROUP), identifier)
-        self.assertEqual(result["token_lexer_type"], const.ID)
-        self.assertEqual(result["token_parser_type"], const.ID)
+        self._match("t", self.VALUE_GROUP)
+
+    def test_identifier_as_underscore(self):
+        self._match("_", 0)
 
     def test_identifier_in_statement_with_space(self):
         identifier = "_testId ="
@@ -57,13 +46,6 @@ class TestIdentifierRegex(unittest.TestCase):
         exp_result = [Token('_testId', const.ID, const.ID, 1, '$'), Token('=', const.OPERATOR, const.EQUALS, 1, None)]
         result = Lexer().lex(identifier)
         self.assertEqual(result['Tokens'], exp_result)
-
-    def test_identifier_as_underscore(self):
-        identifier = "_"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.ID)
-        self.assertEqual(result["token_parser_type"], const.ID)
 
     def test_identifier_in_statement_percentage(self):
         identifier = "_testId%"

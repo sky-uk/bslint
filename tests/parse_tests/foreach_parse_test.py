@@ -7,7 +7,7 @@ from bslint.parser.parser import Parser
 
 class TestForEachParse(unittest.TestCase):
 
-    def matches(self, str, expected):
+    def _match(self, str, expected):
         parser = Parser()
         result = parser.parse(str)
         self.assertEqual("Success", result["Status"])
@@ -17,17 +17,17 @@ class TestForEachParse(unittest.TestCase):
             index += 1
 
     def test_for_each_id_in_id(self):
-        self.matches("For Each n In aa", [[const.FOR_EACH_STATEMENT]])
+        self._match("For Each n In aa", [[const.FOR_EACH_STATEMENT]])
 
     def test_for_each_id_in_func_call(self):
         expected = [
             [const.FOR_EACH, const.ID, const.IN, const.FUNCTION_CALL],
             [const.FOR_EACH_STATEMENT]
         ]
-        self.matches("For Each n In aa()", expected)
+        self._match("For Each n In aa()", expected)
 
     def test_for_each_id_in_value(self):
-        self.matches("For Each char In \"abc\"", [[const.FOR_EACH_STATEMENT]])
+        self._match("For Each char In \"abc\"", [[const.FOR_EACH_STATEMENT]])
 
     def foreach_exception_runner(self, str_to_parse):
         parser = Parser()
