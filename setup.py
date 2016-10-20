@@ -16,7 +16,7 @@ version = re.search(
 
 setup(
     name="bslint",
-    packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
+    packages=find_packages("filepaths.py", exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     package_data={'bslint': ['config/*.json', 'config/personal-words-list.txt']},
     entry_points={"console_scripts": ['bslint = bslint.bslint:main']},
     version=version,

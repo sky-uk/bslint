@@ -13,7 +13,7 @@ def main():
 def runner(to_lex=None):
     sys.argv = [sys.argv[0]]
     if to_lex is not None:
-        sys.argv.append(os.path.join(os.getcwd(), to_lex))
+        sys.argv.append(os.path.abspath(to_lex))
     else:
         sys.argv.append(os.getcwd())
     interface_handler = InterfaceHandler()

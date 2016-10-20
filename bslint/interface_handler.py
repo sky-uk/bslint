@@ -133,7 +133,7 @@ class InterfaceHandler:
             self.bslintrc = {"ignore": ""}
 
     def get_relative_path(self, dir_name):
-        directory = os.path.realpath(os.path.join(os.getcwd(), self.manifest_path))
+        directory = os.path.abspath(self.manifest_path)
         return dir_name.replace(directory, '')
 
     @staticmethod
@@ -152,10 +152,10 @@ class InterfaceHandler:
 
     @staticmethod
     def get_version():
-        this_dir = os.path.split(__file__)
+        this_dir = os.path.dirname(__file__)
         return re.search(
             '^__version__\s*=\s*"(.*)"',
-            open(os.path.join(this_dir[0], 'bslint.py')).read(),
+            open(os.path.join(this_dir, 'bslint.py')).read(),
             re.M
         ).group(1)
 

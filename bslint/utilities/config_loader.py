@@ -1,18 +1,17 @@
 import json
-import sys
 import os
+import sys
+
+from filepaths import DEFAULT_CONFIG_FILE_PATH
 
 CONFIG = ""
 
 
-def load_config_file(user_filepath=None, default_filepath=None, out=sys.stdout):
-    this_dir, this_filename = os.path.split(__file__)
-    tests_filepath_prefix = os.path.join(this_dir, "../../tests/resources/config/")
-    filepath_prefix = os.path.join(this_dir, "../../bslint/config/")
+def load_config_file(user_filepath=None, default_filepath=DEFAULT_CONFIG_FILE_PATH, out=sys.stdout):
 
     try:
-        default_json = get_default_config(default_filepath, filepath_prefix, tests_filepath_prefix)
-        user_json = get_user_config(tests_filepath_prefix, user_filepath)
+        default_json = get_default_config(default_filepath)
+        user_json = get_user_config(user_filepath)
         overwrite_default_config(default_json, user_json)
     except FileNotFoundError as e:
         out.write("Cannot find file: " + os.path.basename(e.filename))
@@ -22,19 +21,13 @@ def load_config_file(user_filepath=None, default_filepath=None, out=sys.stdout):
         return default_json
 
 
-def get_default_config(default, filepath_prefix, tests_filepath_prefix):
-    if default:
-        default_filepath = tests_filepath_prefix + default
-    else:
-        default_filepath = filepath_prefix + "default-config.json"
+def get_default_config(default_filepath):
     return read_json(default_filepath)
 
 
-def get_user_config(tests_filepath_prefix, user_filepath):
+def get_user_config(user_filepath):
     user_json = ""
     if user_filepath is not None:
-        if not os.path.isfile(user_filepath):
-            user_filepath = tests_filepath_prefix + user_filepath
         user_json = read_json(user_filepath)
     return user_json
 

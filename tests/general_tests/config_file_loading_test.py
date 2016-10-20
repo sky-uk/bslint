@@ -1,19 +1,18 @@
 import unittest
-import bslint
 import os
+import bslint
 from io import StringIO
+from filepaths import TEST_CONFIG_FILE_PATH
+from filepaths import DEFAULT_CONFIG_FILE_PATH
+from filepaths import CONFIG_PATH
+from filepaths import TESTS_RESOURCES_PATH
+from filepaths import TESTS_CONFIG_PATH
 
 
 class TestConfigFileLoading(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        this_dir, this_filename = os.path.split(__file__)
-        cls.filepath_prefix = os.path.join(this_dir, "../../bslint/config/")
-        cls.tests_filepath_prefix = os.path.join(this_dir, "../resources/")
-
     def test_read_json_correctly(self):
-        config_file = self.filepath_prefix + "default-config.json"
+        config_file = DEFAULT_CONFIG_FILE_PATH
         exp_res = 16
         config_json = bslint.read_json(config_file)
         result = len(config_json)
@@ -21,7 +20,7 @@ class TestConfigFileLoading(unittest.TestCase):
 
     def test_read_json_bad_file_name(self):
         out = StringIO()
-        config_file = self.filepath_prefix + "fig.json"
+        config_file = os.path.join(CONFIG_PATH, 'fig.json')
         bslint.load_config_file(config_file, out=out)
         result = out.getvalue().strip()
         out.close()
@@ -37,10 +36,11 @@ class TestConfigFileLoading(unittest.TestCase):
         self.assertEqual(result, exp_res)
 
     def test_default_config_overwritten(self):
-        bslint.load_config_file(default_filepath='test-config.json')
-        bslint.bslint.runner(self.tests_filepath_prefix + "general_ignore_test_files")
+        bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH)
+        general_ignore_test_files_path = os.path.join(TESTS_RESOURCES_PATH, 'general_ignore_test_files')
+        bslint.bslint.runner(general_ignore_test_files_path)
         self.assertEqual(False, bslint.config_loader.CONFIG["check_trace_free"]["active"])
-        self.assertEqual(["sub-directory1-test-files"], bslint.config_loader.CONFIG["ignore"])
+        self.assertEqual(["sub_directory1_test_files"], bslint.config_loader.CONFIG["ignore"])
 
     def test_default_config_persists(self):
         exp_res = True
@@ -49,6 +49,7 @@ class TestConfigFileLoading(unittest.TestCase):
         self.assertEqual(result, exp_res)
 
     def test_read_json(self):
-        json = bslint.config_loader.read_json(self.tests_filepath_prefix + "/config/indentation/indentation-config.json")
+        indentation_config_path = os.path.join(TESTS_CONFIG_PATH, 'indentation/indentation-config.json')
+        json = bslint.config_loader.read_json(indentation_config_path)
         exp_result = {'check_indentation': {'active': True,'params': {'tab_size': 4,'only_tab_indents': False}}}
         self.assertEqual(json, exp_result)

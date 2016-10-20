@@ -1,9 +1,11 @@
 import unittest
+import os
 
 import bslint
 import bslint.error_messages.handler as err
 import bslint.error_messages.constants as err_const
 from bslint.lexer.lexer import Lexer as Lexer
+from filepaths import BSLINT_COMMAND_CONFIG_PATH
 
 
 class TestSkipLineCommand(unittest.TestCase):
@@ -28,7 +30,8 @@ class TestSkipLineCommand(unittest.TestCase):
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def test_skip_line_command_inactive(self):
-        bslint.load_config_file("bslint_commands/inactive-skip-line-config.json")
+        inactive_skip_line_config_path = os.path.join(BSLINT_COMMAND_CONFIG_PATH, 'inactive-skip-line-config.json')
+        bslint.load_config_file(user_filepath=inactive_skip_line_config_path)
         exp_result = [err.get_message(err_const.TYPO_IN_CODE, [2])]
         result = Lexer().lex("'BSLint_skip_line \nxgygu = 22\ny = 4")
         self.assertEqual(exp_result, result[self.WARNINGS])

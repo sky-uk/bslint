@@ -5,22 +5,24 @@ import bslint
 import bslint.error_messages.handler as error
 import bslint.error_messages.constants as err_const
 from bslint.lexer.lexer import Lexer as Lexer
+from filepaths import TEST_CONFIG_FILE_PATH
+from filepaths import STYLING_TEST_FILES_PATH
+from filepaths import COMMENTS_CONFIG_PATH
 
 
 class TestCommentFormat(unittest.TestCase):
-
     WARNINGS = 'Warnings'
     STATUS = 'Status'
     SUCCESS = 'Success'
 
     @classmethod
     def setUpClass(cls):
-        this_dir, this_filename = os.path.split(__file__)
-        cls.filepath_prefix = os.path.join(this_dir, "../resources/styling_test_files/")
+        cls.valid_comment_single_quote_no_todo_file_path = os.path.join(STYLING_TEST_FILES_PATH,
+                                                                    'valid-comment-single-quote-no-TODO.txt')
 
     def test_no_comment_check(self):
-        bslint.load_config_file(default_filepath='test-config.json')
-        file_name = self.filepath_prefix + "valid-comment-single-quote-no-TODO.txt"
+        bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH)
+        file_name = self.valid_comment_single_quote_no_todo_file_path
         chars = open(file_name, "r+").read()
         self.assertNotEqual(chars, "")
         exp_res = []
@@ -29,8 +31,9 @@ class TestCommentFormat(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def test_todo_comment(self):
-        bslint.load_config_file(user_filepath="comments/TODO-comment-config.json", default_filepath='test-config.json')
-        file_name = self.filepath_prefix + "valid-comment-single-quote-no-TODO.txt"
+        todo_comment_config_path = os.path.join(COMMENTS_CONFIG_PATH, 'TODO-comment-config.json')
+        bslint.load_config_file(user_filepath=todo_comment_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
+        file_name = self.valid_comment_single_quote_no_todo_file_path
         chars = open(file_name, "r+").read()
         self.assertNotEqual(chars, "")
         exp_res = [error.get_message(err_const.NON_CONVENTIONAL_TODO, [17])]
@@ -39,8 +42,11 @@ class TestCommentFormat(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def test_todo_no_comment(self):
-        bslint.load_config_file(user_filepath="comments/valid-comment-single-quote-no-TODO.json", default_filepath='test-config.json')
-        file_name = self.filepath_prefix + "valid-comment-single-quote-no-TODO.txt"
+        valid_comment_single_quote_no_todo_config_path = os.path.join(COMMENTS_CONFIG_PATH,
+                                                                      'valid-comment-single-quote-no-TODO.json')
+        bslint.load_config_file(user_filepath=valid_comment_single_quote_no_todo_config_path,
+                                default_filepath=TEST_CONFIG_FILE_PATH)
+        file_name = self.valid_comment_single_quote_no_todo_file_path
         chars = open(file_name, "r+").read()
         self.assertNotEqual(chars, "")
         exp_res = [error.get_message(err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [11]),
@@ -51,8 +57,9 @@ class TestCommentFormat(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def test_no_todo_comment(self):
-        bslint.load_config_file(user_filepath="comments/no-TODO-comment-config.json", default_filepath='test-config.json')
-        file_name = self.filepath_prefix + "valid-comment-single-quote-no-TODO.txt"
+        no_todo_comment_config_path = os.path.join(COMMENTS_CONFIG_PATH, 'no-TODO-comment-config.json')
+        bslint.load_config_file(user_filepath=no_todo_comment_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
+        file_name = self.valid_comment_single_quote_no_todo_file_path
         chars = open(file_name, "r+").read()
         self.assertNotEqual(chars, "")
         exp_res = [error.get_message(err_const.NO_TODOS, [1]),
@@ -62,8 +69,9 @@ class TestCommentFormat(unittest.TestCase):
         self.assertEqual(result[self.STATUS], self.SUCCESS)
 
     def test_no_todo_no_comment(self):
-        bslint.load_config_file(user_filepath="comments/no-TODO-no-comment-config.json", default_filepath='test-config.json')
-        file_name = self.filepath_prefix + "valid-comment-single-quote-no-TODO.txt"
+        no_todo_no_comment_config_path = os.path.join(COMMENTS_CONFIG_PATH, 'no-TODO-no-comment-config.json')
+        bslint.load_config_file(user_filepath=no_todo_no_comment_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
+        file_name = self.valid_comment_single_quote_no_todo_file_path
         chars = open(file_name, "r+").read()
         self.assertNotEqual(chars, "")
         exp_res = [

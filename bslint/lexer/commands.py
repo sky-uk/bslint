@@ -7,7 +7,7 @@ import bslint.lexer.regexs as regexs
 import bslint.lexer.words_dictionary as words_dict
 import bslint.utilities.config_loader as config_loader
 comment_regex = [regex.regex for regex in regexs.regexs if regex.lexer_type == const.COMMENT][0]
-dictionary = words_dict._get_new_dictionary()
+dictionary = words_dict.get_new_dictionary()
 
 
 def check_comment(token):
@@ -159,7 +159,7 @@ def _command_is_active(command_name):
 
 def _change_dict_lang(dict_lang):
     global dictionary
-    dictionary = words_dict._get_new_dictionary(dict_lang)
+    dictionary = words_dict.get_new_dictionary(dict_lang)
 
 
 def _handle_warnings(current_indentation_level, characters):

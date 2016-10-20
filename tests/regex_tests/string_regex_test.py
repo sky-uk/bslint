@@ -5,17 +5,12 @@ import bslint.constants as const
 import bslint.lexer.handlers.regex_handler as regex_handler
 from bslint.lexer.lexer import Lexer as Lexer
 from bslint.lexer.token import Token as Token
+from filepaths import LEXING_TEST_FILES_PATH
+from filepaths import STYLING_TEST_FILES_PATH
 
 
 class TestStringRegex(unittest.TestCase):
     TOKENS = 'Tokens'
-
-    @classmethod
-    def setUpClass(cls):
-        this_dir, this_filename = os.path.split(__file__)
-
-        cls.string_file = open(os.path.join(this_dir, "../resources/lexing_test_files/basic-string-assignment.txt"), "r+").read()
-        cls.multi_line_file = open(os.path.join(this_dir, "../resources/styling_test_files/multiline-assignment.txt"),"r+").read()
 
     def test_string(self):
         test_string = '"test123ID"'
@@ -35,7 +30,9 @@ class TestStringRegex(unittest.TestCase):
     def test_variable_assignment_string(self):
         exp_result = [Token('myString', const.ID, const.ID, 1), Token('=', const.OPERATOR, const.EQUALS, 1),
                       Token('words', const.STRING, const.VALUE, 1)]
-        result = Lexer().lex(self.string_file)
+        string_file_path = os.path.join(LEXING_TEST_FILES_PATH, 'basic-string-assignment.txt')
+        string_file = open(string_file_path, "r+").read()
+        result = Lexer().lex(string_file)
         self.assertEqual(result[self.TOKENS], exp_result)
 
     def test_double_quote_string(self):
@@ -51,5 +48,7 @@ class TestStringRegex(unittest.TestCase):
                       Token("words", const.STRING, const.VALUE, 1),
                       Token('test_String', const.ID, const.ID, 2), Token('=', const.OPERATOR, const.EQUALS, 2),
                       Token("this is words", const.STRING, const.VALUE, 2)]
-        result = Lexer().lex(self.multi_line_file)
+        multi_line_file_path = os.path.join(STYLING_TEST_FILES_PATH, 'multiline-assignment.txt')
+        multi_line_file = open(multi_line_file_path, "r+").read()
+        result = Lexer().lex(multi_line_file)
         self.assertEqual(result[self.TOKENS], exp_result)
