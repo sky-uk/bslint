@@ -5,9 +5,9 @@
 
 This is a tool for linting BrightScript.
 
-This tool has been made because there aren't any tools currently available to help developers keep their coding standards consistent. 
+This tool has been made because there aren't any tools currently available to help developers keep their coding standards consistent.
 The linter validates against the official [BrightScript Language Reference](https://sdkdocs.roku.com/display/sdkdoc/BrightScript+Language+Reference).
-Currently the linter only lexes the file and validates styling. We are actively developing a parser which will be integrated into this project. 
+Currently the linter only lexes the file and validates styling. We are actively developing a parser which will be integrated into this project.
 
 #Installing bslint via pip3
 
@@ -16,7 +16,7 @@ The package is published on pip3, to install follow the steps below:
 1. Ensure that you've got Python3 installed on your machine (https://www.python.org/downloads/).
    To check if python3 is already installed, run `python3 -V` in your terminal.
 
-2. Install `bslint` by running the following command in terminal `pip3 install bslint`. 
+2. Install `bslint` by running the following command in terminal `pip3 install bslint`.
 
 #Upgrading bslint via pip3
 

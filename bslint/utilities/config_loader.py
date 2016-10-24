@@ -3,7 +3,6 @@ import os
 import sys
 
 from filepaths import DEFAULT_CONFIG_FILE_PATH
-
 CONFIG = ""
 
 

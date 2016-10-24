@@ -11,5 +11,3 @@ from bslint.lexer.handlers.regex_handler import find_match
 from .bslint import *
 from .utilities.config_loader import *
 
-
-
