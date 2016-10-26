@@ -1,5 +1,5 @@
 """bslint.bslint: provides entry point main()."""
-__version__ = "0.5.0"
+__version__ = "0.6.0"
 from bslint.interface_handler import InterfaceHandler as InterfaceHandler
 import sys
 import os

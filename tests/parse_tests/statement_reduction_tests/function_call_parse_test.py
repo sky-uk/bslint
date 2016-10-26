@@ -32,6 +32,22 @@ class TestFunctionCallParse(unittest.TestCase):
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.FUNCTION_CALL], parser.all_statements[0])
 
+    def test_id_dot_function_call(self):
+        parser = Parser()
+        result = parser.parse("z.x(y)")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.ID, const.DOT, const.FUNCTION_CALL], parser.all_statements[0])
+        self.assertEqual([const.FUNCTION_CALL], parser.all_statements[1])
+
+    def test_function_call_dot_function_call(self):
+        parser = Parser()
+        result = parser.parse("z(i).x(y)")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.ID, const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS, const.DOT, const.FUNCTION_CALL],
+                         parser.all_statements[0])
+        self.assertEqual([const.FUNCTION_CALL, const.DOT, const.FUNCTION_CALL], parser.all_statements[1])
+        self.assertEqual([const.FUNCTION_CALL], parser.all_statements[2])
+
     def test_id_open_parenthesis_id_equals_value_close_parenthesis(self):
         parser = Parser()
         result = parser.parse("x(y = 1)")

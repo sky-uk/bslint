@@ -45,6 +45,7 @@ rules_list = [
     ([const.FUNCTION_CALL, const.PLUS, const.FUNCTION_CALL], [const.VALUE]),
     ([const.FUNCTION_CALL, const.PLUS, const.PLUS, const.FUNCTION_CALL], [const.VALUE]),
     ([const.FUNCTION_CALL, const.PLUS, const.MINUS, const.FUNCTION_CALL], [const.VALUE]),
+    ([const.FUNCTION_CALL, const.DOT, const.ID], [const.VALUE]),
     # endregion
 
     # region Values with Minus
@@ -151,6 +152,22 @@ rules_list = [
                          [const.FUNCTION_DECLARATION]),
     ([const.SUB, const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS],
                          [const.FUNCTION_DECLARATION]),
+    ([const.FUNCTION, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS],
+                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.FUNCTION, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS],
+                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.FUNCTION, const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS],
+                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.FUNCTION, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS],
+                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.SUB, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS],
+                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.SUB, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS],
+                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.SUB, const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS],
+                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.SUB, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS],
+                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
     # endregion
 
     # region Function Call
@@ -164,6 +181,9 @@ rules_list = [
                          [const.FUNCTION_CALL]),
     ([const.ID, const.OPEN_PARENTHESIS, const.FUNCTION_CALL, const.CLOSE_PARENTHESIS],
                          [const.FUNCTION_CALL]),
+
+    ([const.ID, const.DOT, const.FUNCTION_CALL], [const.FUNCTION_CALL]),
+    ([const.FUNCTION_CALL, const.DOT, const.FUNCTION_CALL], [const.FUNCTION_CALL]),
     # endregion
 
     # region Value/ID/Variable Assignment in Brackets
@@ -432,6 +452,57 @@ rules_list = [
     ([const.FOR_EACH, const.ID, const.IN, const.VALUE], [const.FOR_EACH_STATEMENT]),
     ([const.FOR_EACH, const.ID, const.IN, const.FUNCTION_CALL], [const.FOR_EACH_STATEMENT]),
     # endregion
+
+    # region If
+    ([const.IF, const.VAR_AS], [const.IF_STATEMENT]),
+    ([const.IF, const.VAR_AS], [const.IF_STATEMENT]),
+    ([const.IF, const.VALUE], [const.IF_STATEMENT]),
+    ([const.IF, const.ID], [const.IF_STATEMENT]),
+    ([const.IF, const.FUNCTION_CALL], [const.IF_STATEMENT]),
+    ([const.IF, const.ANONYMOUS_FUNCTION_DECLARATION], [const.IF_STATEMENT]),
+    ([const.IF, const.FUNCTION_CALL, const.EQUALS, const.VALUE], [const.IF_STATEMENT]),
+    ([const.IF, const.VALUE, const.EQUALS, const.VALUE], [const.IF_STATEMENT]),
+    ([const.IF, const.VALUE, const.EQUALS, const.ID], [const.IF_STATEMENT]),
+    # end region
+
+    # region If with then
+    ([const.IF, const.VAR_AS, const.THEN], [const.IF_STATEMENT]),
+    ([const.IF, const.VAR_AS, const.THEN], [const.IF_STATEMENT]),
+    ([const.IF, const.VALUE, const.THEN], [const.IF_STATEMENT]),
+    ([const.IF, const.ID, const.THEN], [const.IF_STATEMENT]),
+    ([const.IF, const.FUNCTION_CALL, const.THEN], [const.IF_STATEMENT]),
+    ([const.IF, const.ANONYMOUS_FUNCTION_DECLARATION, const.THEN], [const.IF_STATEMENT]),
+    ([const.IF, const.FUNCTION_CALL, const.EQUALS, const.VALUE, const.THEN], [const.IF_STATEMENT]),
+    ([const.IF, const.VALUE, const.EQUALS, const.VALUE, const.THEN], [const.IF_STATEMENT]),
+    ([const.IF, const.VALUE, const.EQUALS, const.ID, const.THEN], [const.IF_STATEMENT]),
+    # end region If with then
+
+    # region else if
+    # region else If
+    ([const.ELSE_IF, const.VAR_AS], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.VAR_AS], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.VALUE], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.ID], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.FUNCTION_CALL], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.ANONYMOUS_FUNCTION_DECLARATION], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.FUNCTION_CALL, const.EQUALS, const.VALUE], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.VALUE, const.EQUALS, const.VALUE], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.VALUE, const.EQUALS, const.ID], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE], [const.ELSE_STATEMENT]),
+    # end region
+    # end region
+
+    # region else If then
+    ([const.ELSE_IF, const.VAR_AS, const.THEN], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.VAR_AS, const.THEN], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.VALUE, const.THEN], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.ID, const.THEN], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.FUNCTION_CALL, const.THEN], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.ANONYMOUS_FUNCTION_DECLARATION, const.THEN], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.FUNCTION_CALL, const.EQUALS, const.VALUE, const.THEN], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.VALUE, const.EQUALS, const.VALUE, const.THEN], [const.ELSE_IF_STATEMENT]),
+    ([const.ELSE_IF, const.VALUE, const.EQUALS, const.ID, const.THEN], [const.ELSE_IF_STATEMENT])
+    # end region
 
 ]
 

@@ -13,16 +13,16 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.assertEqual(result["token_parser_type"], parser_type)
 
     def test_if(self):
-        self._match("IF", const.KEYWORD, const.IF_STATEMENT)
+        self._match("IF", const.KEYWORD, const.IF)
 
     def test_then(self):
         self._match("THEN", const.KEYWORD, const.THEN)
 
     def test_else_if(self):
-        self._match("ELSE IF", const.KEYWORD, const.IF_STATEMENT)
+        self._match("ELSE IF", const.KEYWORD, const.ELSE_IF)
 
     def test_else(self):
-        self._match("else", const.KEYWORD, const.KEYWORD)
+        self._match("else", const.KEYWORD, const.ELSE)
 
     def test_end_if(self):
         self._match("END IF", const.KEYWORD, const.END_IF_TOKEN)

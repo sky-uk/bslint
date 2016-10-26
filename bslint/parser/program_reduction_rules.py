@@ -5,21 +5,12 @@ rules_list = [
 
     # region Block Statement reduction rules
 
-    # region Print block statement
-
-    ([const.PRINT_STATEMENT, const.PRINT_STATEMENT], [const.BLOCK_STATEMENT]),
-    ([const.PRINT_STATEMENT, const.VAR_AS], [const.BLOCK_STATEMENT]),
-    ([const.PRINT_STATEMENT, const.FUNCTION_CALL], [const.BLOCK_STATEMENT]),
-    ([const.PRINT_STATEMENT, const.BLOCK_STATEMENT], [const.BLOCK_STATEMENT]),
-
-    # endregion
-
     # region Variable assignment block statement
 
-    ([const.VAR_AS, const.PRINT_STATEMENT], [const.BLOCK_STATEMENT]),
-    ([const.VAR_AS, const.VAR_AS], [const.BLOCK_STATEMENT]),
-    ([const.VAR_AS, const.FUNCTION_CALL], [const.BLOCK_STATEMENT]),
-    ([const.VAR_AS, const.BLOCK_STATEMENT], [const.BLOCK_STATEMENT]),
+    ([const.PRINT_STATEMENT], [const.BLOCK_STATEMENT]),
+    ([const.FUNCTION_CALL], [const.BLOCK_STATEMENT]),
+    ([const.VAR_AS], [const.BLOCK_STATEMENT]),
+    ([const.BLOCK_STATEMENT, const.BLOCK_STATEMENT], [const.BLOCK_STATEMENT]),
 
     # endregion
 
@@ -40,7 +31,21 @@ rules_list = [
     ([const.BLOCK_STATEMENT, const.BLOCK_STATEMENT], [const.BLOCK_STATEMENT]),
 
     # endregion
+
+    ([const.WHILE_STATEMENT, const.BLOCK_STATEMENT, const.END_WHILE], [const.BLOCK_STATEMENT]),
+    ([const.FOR_STATEMENT, const.BLOCK_STATEMENT, const.END_FOR], [const.BLOCK_STATEMENT]),
+    ([const.FOR_EACH_STATEMENT, const.BLOCK_STATEMENT, const.END_FOR], [const.BLOCK_STATEMENT]),
+    ([const.FUNCTION_DECLARATION, const.BLOCK_STATEMENT, const.END_FUNCTION], [const.BLOCK_STATEMENT]),
+
+    # region IF statement
+    ([const.IF_STATEMENT, const.BLOCK_STATEMENT, const.END_IF], [const.BLOCK_STATEMENT]),
+    ([const.IF_STATEMENT, const.BLOCK_STATEMENT], [const.IF_BLOCK]),
+    ([const.ELSE_IF_STATEMENT, const.BLOCK_STATEMENT], [const.ELSE_IF_BLOCK]),
+    ([const.ELSE_STATEMENT, const.BLOCK_STATEMENT, const.END_IF], [const.END_IF]),
+    ([const.ELSE_IF_BLOCK, const.ELSE_IF_BLOCK], [const.ELSE_IF_BLOCK]),
+    ([const.IF_BLOCK, const.ELSE_IF_BLOCK, const.END_IF], [const.BLOCK_STATEMENT])
     # endregion
+
 ]
 
 rules = []

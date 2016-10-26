@@ -433,6 +433,13 @@ class TestValueParse(unittest.TestCase):
         self.assertEqual("Success", result["Status"])
         self.assertEqual([const.VALUE], parser.all_statements[0])
 
+    def test_function_call_dot_id(self):
+        parser = Parser()
+        result = parser.parse("func_name().id")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.FUNCTION_CALL, const.DOT, const.ID], parser.all_statements[0])
+        self.assertEqual([const.VALUE], parser.all_statements[1])
+
     # Only ID Test
     def test_open_parenthesis_id_close_parenthesis(self):
         parser = Parser()

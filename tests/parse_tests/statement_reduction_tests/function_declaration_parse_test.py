@@ -62,6 +62,20 @@ class TestFunctionDeclarationParse(unittest.TestCase):
                          parser.all_statements[0])
         self.assertEqual([const.FUNCTION_DECLARATION], parser.all_statements[1])
 
+    def test_anonymous_sub_idopen_parenthesis_value_close_parenthesis(self):
+        parser = Parser()
+        result = parser.parse("sub ()")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.ANONYMOUS_FUNCTION_DECLARATION], parser.all_statements[0])
+
+    def test_anonymous_idopen_parenthesis_argument_close_parenthesis(self):
+        parser = Parser()
+        result = parser.parse("function (y, z)")
+        self.assertEqual("Success", result["Status"])
+        self.assertEqual([const.FUNCTION, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS],
+                         parser.all_statements[0])
+        self.assertEqual([const.ANONYMOUS_FUNCTION_DECLARATION], parser.all_statements[1])
+
     def function_declaration_exception_runner(self, str_to_parse):
         parser = Parser()
         exp_exception_msg = err_const.PARSING_FAILED
