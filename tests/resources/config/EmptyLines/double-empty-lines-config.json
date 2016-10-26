@@ -1,5 +1,4 @@
 {
-  // Consecutive blank lines allowed.
   "consecutive_empty_lines": {
     "active": true,
     "params": {

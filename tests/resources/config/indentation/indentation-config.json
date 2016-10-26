@@ -1,5 +1,4 @@
 {
-  // Must use spaces or tabs not both.
   "check_indentation": {
     "active": true,
     "params": {

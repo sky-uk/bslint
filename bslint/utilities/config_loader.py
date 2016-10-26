@@ -38,11 +38,5 @@ def overwrite_default_config(default_json, user_json):
 
 
 def read_json(filepath):
-    config_string = ''
-    with open(filepath) as f:
-        for line in f:
-            line = line.lstrip()
-            if not line.startswith("//"):
-                config_string += line
-    config_json = json.loads(config_string)
-    return config_json
+    with open(filepath, 'r') as f:
+        return json.loads(f.read())
