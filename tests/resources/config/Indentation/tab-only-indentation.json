@@ -1,9 +1,0 @@
-{
-    "check_indentation": {
-    "active": true,
-    "params": {
-      "tab_size": 4,
-      "only_tab_indents": true
-    }
-  }
-}
