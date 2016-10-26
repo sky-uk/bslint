@@ -3,9 +3,13 @@ import unittest
 import bslint.constants as const
 import bslint.error_messages.constants as err_const
 from bslint.parser.parser import Parser
+from bslint.utilities import config_loader
 
 
 class TestFunctionDeclarationParse(unittest.TestCase):
+
+    def setUp(self):
+        config_loader.load_config_file()
 
     def test_function_idopen_parenthesis_close_parenthesis(self):
         parser = Parser()

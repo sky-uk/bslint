@@ -2,6 +2,7 @@ import unittest
 import os
 import bslint
 from io import StringIO
+import bslint.constants as const
 from filepaths import TEST_CONFIG_FILE_PATH
 from filepaths import DEFAULT_CONFIG_FILE_PATH
 from filepaths import CONFIG_PATH
@@ -13,7 +14,7 @@ class TestConfigFileLoading(unittest.TestCase):
 
     def test_read_json_correctly(self):
         config_file = DEFAULT_CONFIG_FILE_PATH
-        exp_res = 16
+        exp_res = 17
         config_json = bslint.read_json(config_file)
         result = len(config_json)
         self.assertEqual(result, exp_res)
@@ -24,7 +25,7 @@ class TestConfigFileLoading(unittest.TestCase):
         bslint.load_config_file(config_file, out=out)
         result = out.getvalue().strip()
         out.close()
-        exp_res = "Cannot find file: fig.json"
+        exp_res = const.ERROR_COLOUR + "Cannot find bslintrc, using default config." + const.END_COLOUR
         self.assertEqual(result, exp_res)
 
     def test_load_config_file_check_read(self):

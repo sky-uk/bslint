@@ -1,20 +1,24 @@
 import json
-import os
 import sys
+import bslint.constants as const
+
 
 from filepaths import DEFAULT_CONFIG_FILE_PATH
 CONFIG = ""
 
 
 def load_config_file(user_filepath=None, default_filepath=DEFAULT_CONFIG_FILE_PATH, out=sys.stdout):
-
+    default_json = get_default_config(default_filepath)
     try:
-        default_json = get_default_config(default_filepath)
         user_json = get_user_config(user_filepath)
-        overwrite_default_config(default_json, user_json)
+        default_json = overwrite_default_config(default_json, user_json)
+
     except FileNotFoundError as e:
-        out.write("Cannot find file: " + os.path.basename(e.filename))
-    else:
+        out.write(const.ERROR_COLOUR + "Cannot find bslintrc, using default config." + const.END_COLOUR)
+    except ValueError:
+        out.write(const.ERROR_COLOUR + "Unable to parse JSON in .bslintrc file" + const.END_COLOUR)
+        default_json = None
+    finally:
         global CONFIG
         CONFIG = default_json
         return default_json

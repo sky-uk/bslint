@@ -124,16 +124,9 @@ class InterfaceHandler:
 
 
     def _parse_bslintrc(self, manifest_path):
-        try:
-            bslintrc_path = os.path.join(manifest_path, ".bslintrc")
-            bslint.config_loader.load_config_file(bslintrc_path)
-            return bslint.config_loader.read_json(bslintrc_path)
-        except ValueError:
-            self.out.write(const.ERROR_COLOUR + "Unable to parse JSON in .bslintrc file" + const.END_COLOUR)
-            return None
-        except FileNotFoundError:
-            print(const.ERROR_COLOUR + "No .bslintrc file found" + const.END_COLOUR)
-            return {"ignore": ""}
+        bslintrc_path = os.path.join(manifest_path, ".bslintrc")
+        return bslint.config_loader.load_config_file(bslintrc_path)
+
 
     def get_relative_path(self, dir_name):
         directory = os.path.abspath(self._get_manifest_path())
