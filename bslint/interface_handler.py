@@ -63,7 +63,7 @@ class InterfaceHandler:
     def lint_all(self, directory):
         for dir_name, subdirList, files in os.walk(directory):
             relative_path = self.get_relative_path(dir_name)
-            if not self.ignore_dir(relative_path, self.bslintrc["ignore"]):
+            if "ignore" in self.bslintrc and not self.ignore_dir(relative_path, self.bslintrc["ignore"]):
                 self.lint_directory(dir_name, files)
         self.print_errors()
 

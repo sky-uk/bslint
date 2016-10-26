@@ -44,3 +44,7 @@ class TestDirectoryLexing(unittest.TestCase):
         exp_result = ["resources/general_ignore_test_files/incorrect-comment-spelling.bs",
                       "resources/general_ignore_test_files/sub_directory2_test_files/question-mark.brs"]
         self.assertEqual(exp_result, result)
+
+    def test_no_exption_if_ignore_key_missing(self):
+        bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH)
+        result = bslint.bslint.runner("resources/no_ignore_key_test_dir")
