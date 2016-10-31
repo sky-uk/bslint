@@ -1,7 +1,10 @@
-import bslint.constants as const
-from bslint.parser.reduction_rule_handler import ReductionRuleHandler
+import collections
 
-rules_list = [
+import bslint.constants as const
+
+RULE = collections.namedtuple('Rule', ['rule', 'result'])
+
+RULES_LIST = [
 
     # region Value
 
@@ -25,6 +28,8 @@ rules_list = [
     ([const.VALUE, const.PLUS, const.PLUS, const.VALUE], [const.VALUE]),
     ([const.VALUE, const.PLUS, const.MINUS, const.VALUE], [const.VALUE]),
     ([const.VALUE, const.PLUS, const.ID], [const.VALUE]),
+    ([const.VALUE, const.PLUS, const.FUNCTION_CALL], [const.VALUE]),
+    ([const.FUNCTION_CALL, const.PLUS, const.VALUE], [const.VALUE]),
     ([const.VALUE, const.PLUS, const.PLUS, const.ID], [const.VALUE]),
     ([const.VALUE, const.PLUS, const.MINUS, const.ID], [const.VALUE]),
     ([const.ID, const.PLUS, const.VALUE], [const.VALUE]),
@@ -83,104 +88,90 @@ rules_list = [
     # region Enumerable Objects
     ([const.OPEN_CURLY_BRACKET, const.CLOSE_CURLY_BRACKET], [const.ENUMERABLE_OBJECT]),
     ([const.OPEN_CURLY_BRACKET, const.ASSOCIATIVE_ARRAY_ARGUMENT, const.CLOSE_CURLY_BRACKET],
-                         [const.ENUMERABLE_OBJECT]),
+     [const.ENUMERABLE_OBJECT]),
     ([const.OPEN_SQUARE_BRACKET, const.CLOSE_SQUARE_BRACKET], [const.ENUMERABLE_OBJECT]),
     ([const.OPEN_SQUARE_BRACKET, const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET],
-                         [const.ENUMERABLE_OBJECT]),
+     [const.ENUMERABLE_OBJECT]),
     ([const.OPEN_SQUARE_BRACKET, const.VALUE, const.CLOSE_SQUARE_BRACKET],
-                         [const.ENUMERABLE_OBJECT]),
+     [const.ENUMERABLE_OBJECT]),
     ([const.OPEN_SQUARE_BRACKET, const.ID, const.CLOSE_SQUARE_BRACKET],
-                         [const.ENUMERABLE_OBJECT]),
+     [const.ENUMERABLE_OBJECT]),
 
-    # endregion
-
-    # region Argument, Close Parenthesis
-    ([const.ARGUMENT, const.COMMA, const.ARGUMENT, const.CLOSE_PARENTHESIS],
-                         [const.ARGUMENT, const.CLOSE_PARENTHESIS]),
-    ([const.ID, const.COMMA, const.ID, const.CLOSE_PARENTHESIS],
-                         [const.ARGUMENT, const.CLOSE_PARENTHESIS]),
-    ([const.ID, const.COMMA, const.VALUE, const.CLOSE_PARENTHESIS],
-                         [const.ARGUMENT, const.CLOSE_PARENTHESIS]),
-    ([const.ID, const.COMMA, const.ARGUMENT, const.CLOSE_PARENTHESIS],
-                         [const.ARGUMENT, const.CLOSE_PARENTHESIS]),
-    ([const.VALUE, const.COMMA, const.ARGUMENT, const.CLOSE_PARENTHESIS],
-                         [const.ARGUMENT, const.CLOSE_PARENTHESIS]),
-    ([const.VALUE, const.COMMA, const.ID, const.CLOSE_PARENTHESIS],
-                         [const.ARGUMENT, const.CLOSE_PARENTHESIS]),
-    ([const.VALUE, const.COMMA, const.VALUE, const.CLOSE_PARENTHESIS],
-                         [const.ARGUMENT, const.CLOSE_PARENTHESIS]),
     # endregion
 
     # region Associative Array Argument, Close Curly Bracket
     ([const.ID, const.COLON, const.VALUE], [const.ASSOCIATIVE_ARRAY_ARGUMENT]),
     (
-        [const.ASSOCIATIVE_ARRAY_ARGUMENT, const.COMMA, const.ASSOCIATIVE_ARRAY_ARGUMENT, const.CLOSE_CURLY_BRACKET],
+        [const.ASSOCIATIVE_ARRAY_ARGUMENT, const.COMMA, const.ASSOCIATIVE_ARRAY_ARGUMENT,
+         const.CLOSE_CURLY_BRACKET],
         [const.ASSOCIATIVE_ARRAY_ARGUMENT, const.CLOSE_CURLY_BRACKET]),
     # endregion
 
     # region Array Argument, Close Square Bracket
     ([const.ARRAY_ARGUMENT, const.COMMA, const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET],
-                         [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
+     [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
     ([const.ID, const.COMMA, const.ID, const.CLOSE_SQUARE_BRACKET],
-                         [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
+     [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
     ([const.ID, const.COMMA, const.VALUE, const.CLOSE_SQUARE_BRACKET],
-                         [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
+     [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
     ([const.ID, const.COMMA, const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET],
-                         [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
+     [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
     ([const.VALUE, const.COMMA, const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET],
-                         [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
+     [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
     ([const.VALUE, const.COMMA, const.ID, const.CLOSE_SQUARE_BRACKET],
-                         [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
+     [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
     ([const.VALUE, const.COMMA, const.VALUE, const.CLOSE_SQUARE_BRACKET],
-                         [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
+     [const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET]),
     # endregion
 
     # region Function Declaration
-    ([const.FUNCTION, const.ID, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS],
-                         [const.FUNCTION_DECLARATION]),
-    ([const.FUNCTION, const.ID, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS],
-                         [const.FUNCTION_DECLARATION]),
-    ([const.FUNCTION, const.ID, const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS],
-                         [const.FUNCTION_DECLARATION]),
-    ([const.FUNCTION, const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS],
-                         [const.FUNCTION_DECLARATION]),
-    ([const.SUB, const.ID, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS],
-                         [const.FUNCTION_DECLARATION]),
-    ([const.SUB, const.ID, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS],
-                         [const.FUNCTION_DECLARATION]),
-    ([const.SUB, const.ID, const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS],
-                         [const.FUNCTION_DECLARATION]),
-    ([const.SUB, const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS],
-                         [const.FUNCTION_DECLARATION]),
-    ([const.FUNCTION, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS],
-                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
-    ([const.FUNCTION, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS],
-                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
-    ([const.FUNCTION, const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS],
-                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
-    ([const.FUNCTION, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS],
-                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
-    ([const.SUB, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS],
-                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
-    ([const.SUB, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS],
-                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
-    ([const.SUB, const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS],
-                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
-    ([const.SUB, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS],
-                         [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.FUNCTION, const.FUNCTION_CALL], [const.FUNCTION_DECLARATION]),
+    ([const.FUNCTION, const.ID, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS], [const.FUNCTION_DECLARATION]),
+    ([const.SUB, const.FUNCTION_CALL], [const.FUNCTION_DECLARATION]),
+    ([const.SUB, const.ID, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS], [const.FUNCTION_DECLARATION]),
+
+    ([const.FUNCTION, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS], [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.FUNCTION, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS], [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.FUNCTION, const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS], [const.ANONYMOUS_FUNCTION_DECLARATION]),
+
+    ([const.FUNCTION, const.OPEN_PARENTHESIS, const.PARAM, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.FUNCTION, const.OPEN_PARENTHESIS, const.ID, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.FUNCTION, const.OPEN_PARENTHESIS, const.VALUE, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.ANONYMOUS_FUNCTION_DECLARATION]),
+
+    ([const.SUB, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS], [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.SUB, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS], [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.SUB, const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS], [const.ANONYMOUS_FUNCTION_DECLARATION]),
+
+    ([const.SUB, const.OPEN_PARENTHESIS, const.PARAM, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.SUB, const.OPEN_PARENTHESIS, const.ID, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.ANONYMOUS_FUNCTION_DECLARATION]),
+    ([const.SUB, const.OPEN_PARENTHESIS, const.VALUE, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.ANONYMOUS_FUNCTION_DECLARATION]),
     # endregion
 
     # region Function Call
     ([const.ID, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
-    ([const.ID, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS],
-                         [const.FUNCTION_CALL]),
-    ([const.ID, const.OPEN_PARENTHESIS, const.VALUE, const.CLOSE_PARENTHESIS],
-                         [const.FUNCTION_CALL]),
+    ([const.ID, const.OPEN_PARENTHESIS, const.VALUE, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
     ([const.ID, const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
-    ([const.ID, const.OPEN_PARENTHESIS, const.VAR_AS, const.CLOSE_PARENTHESIS],
-                         [const.FUNCTION_CALL]),
-    ([const.ID, const.OPEN_PARENTHESIS, const.FUNCTION_CALL, const.CLOSE_PARENTHESIS],
-                         [const.FUNCTION_CALL]),
+    ([const.ID, const.OPEN_PARENTHESIS, const.VAR_AS, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+    ([const.ID, const.OPEN_PARENTHESIS, const.FUNCTION_CALL, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+    ([const.ID, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+
+    ([const.ID, const.OPEN_PARENTHESIS, const.VALUE, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+    ([const.ID, const.OPEN_PARENTHESIS, const.ID, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+    ([const.ID, const.OPEN_PARENTHESIS, const.VAR_AS, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+    ([const.ID, const.OPEN_PARENTHESIS, const.FUNCTION_CALL, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+    ([const.ID, const.OPEN_PARENTHESIS, const.PARAM, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+
+    ([const.BUILT_IN_FUNCTION, const.OPEN_PARENTHESIS, const.PARAM, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+    ([const.BUILT_IN_FUNCTION, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+    ([const.BUILT_IN_FUNCTION, const.OPEN_PARENTHESIS, const.VALUE, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+    ([const.BUILT_IN_FUNCTION, const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+    ([const.BUILT_IN_FUNCTION, const.OPEN_PARENTHESIS, const.FUNCTION_CALL, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+
+    ([const.BUILT_IN_FUNCTION, const.OPEN_PARENTHESIS, const.PARAM, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+    ([const.BUILT_IN_FUNCTION, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+    ([const.BUILT_IN_FUNCTION, const.OPEN_PARENTHESIS, const.VALUE, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+    ([const.BUILT_IN_FUNCTION, const.OPEN_PARENTHESIS, const.ID, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
+    ([const.BUILT_IN_FUNCTION, const.OPEN_PARENTHESIS, const.FUNCTION_CALL, const.ARGUMENT, const.CLOSE_PARENTHESIS], [const.FUNCTION_CALL]),
 
     ([const.ID, const.DOT, const.FUNCTION_CALL], [const.FUNCTION_CALL]),
     ([const.FUNCTION_CALL, const.DOT, const.FUNCTION_CALL], [const.FUNCTION_CALL]),
@@ -204,6 +195,7 @@ rules_list = [
     ([const.ID, const.EQUALS, const.PLUS, const.ID], [const.VAR_AS]),
     ([const.ID, const.EQUALS, const.MINUS, const.FUNCTION_CALL], [const.VAR_AS]),
     ([const.ID, const.EQUALS, const.PLUS, const.FUNCTION_CALL], [const.VAR_AS]),
+    ([const.ID, const.DOT, const.VAR_AS], [const.VAR_AS]),
     # endregion
 
     # region Parameter
@@ -217,31 +209,31 @@ rules_list = [
     # region For Statement to Value
     ([const.FOR, const.VAR_AS, const.TO, const.VALUE], [const.FOR_STATEMENT]),
     ([const.FOR, const.VAR_AS, const.TO, const.VALUE, const.STEP, const.VALUE],
-                         [const.FOR_STATEMENT]),
+     [const.FOR_STATEMENT]),
     ([const.FOR, const.VAR_AS, const.TO, const.VALUE, const.STEP, const.ID],
-                         [const.FOR_STATEMENT]),
+     [const.FOR_STATEMENT]),
     ([const.FOR, const.VAR_AS, const.TO, const.VALUE, const.STEP, const.FUNCTION_CALL],
-                         [const.FOR_STATEMENT]),
+     [const.FOR_STATEMENT]),
     # endregion
 
     # region For Statement to ID
     ([const.FOR, const.VAR_AS, const.TO, const.ID], [const.FOR_STATEMENT]),
     ([const.FOR, const.VAR_AS, const.TO, const.ID, const.STEP, const.VALUE],
-                         [const.FOR_STATEMENT]),
+     [const.FOR_STATEMENT]),
     ([const.FOR, const.VAR_AS, const.TO, const.ID, const.STEP, const.ID],
-                         [const.FOR_STATEMENT]),
+     [const.FOR_STATEMENT]),
     ([const.FOR, const.VAR_AS, const.TO, const.ID, const.STEP, const.FUNCTION_CALL],
-                         [const.FOR_STATEMENT]),
+     [const.FOR_STATEMENT]),
     # endregion
 
     # region For Statement to Function Call
     ([const.FOR, const.VAR_AS, const.TO, const.FUNCTION_CALL], [const.FOR_STATEMENT]),
     ([const.FOR, const.VAR_AS, const.TO, const.FUNCTION_CALL, const.STEP, const.VALUE],
-                         [const.FOR_STATEMENT]),
+     [const.FOR_STATEMENT]),
     ([const.FOR, const.VAR_AS, const.TO, const.FUNCTION_CALL, const.STEP, const.ID],
-                         [const.FOR_STATEMENT]),
+     [const.FOR_STATEMENT]),
     ([const.FOR, const.VAR_AS, const.TO, const.FUNCTION_CALL, const.STEP, const.FUNCTION_CALL],
-                         [const.FOR_STATEMENT]),
+     [const.FOR_STATEMENT]),
     # endregion
     # endregion
 
@@ -264,7 +256,7 @@ rules_list = [
     ([const.END_FOR_TOKEN], [const.END_FOR]),
     ([const.END_IF_TOKEN], [const.END_IF]),
     ([const.END_WHILE_TOKEN], [const.END_WHILE]),
-    ([const.END_SUB_TOKEN], [const.END_SUB]),
+    ([const.END_SUB_TOKEN], [const.END_FUNCTION]),
     ([const.END_FUNCTION_TOKEN], [const.END_FUNCTION]),
     ([const.END_TOKEN], [const.END]),
     # endregion
@@ -276,173 +268,37 @@ rules_list = [
     ([const.PRINT_KEYWORD, const.ID], [const.PRINT_STATEMENT]),
     ([const.PRINT_KEYWORD, const.FUNCTION_CALL], [const.PRINT_STATEMENT]),
     ([const.PRINT_KEYWORD, const.VAR_AS], [const.PRINT_STATEMENT]),
-    ([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], [const.PRINT_STATEMENT]),
+    ([const.PRINT_KEYWORD, const.ARGUMENT], [const.PRINT_STATEMENT]),
     ([const.PRINT_KEYWORD, const.ENUMERABLE_OBJECT], [const.PRINT_STATEMENT]),
     # endregion
 
+
+    ([const.PRINT_KEYWORD, const.VALUE, const.ARGUMENT], [const.PRINT_STATEMENT]),
+    ([const.PRINT_KEYWORD, const.ID, const.ARGUMENT], [const.PRINT_STATEMENT]),
+    ([const.PRINT_KEYWORD, const.FUNCTION_CALL, const.ARGUMENT], [const.PRINT_STATEMENT]),
+    ([const.PRINT_KEYWORD, const.VAR_AS, const.ARGUMENT], [const.PRINT_STATEMENT]),
+    ([const.PRINT_KEYWORD, const.ARGUMENT, const.ARGUMENT], [const.PRINT_STATEMENT]),
+    ([const.PRINT_KEYWORD, const.ENUMERABLE_OBJECT, const.ARGUMENT], [const.PRINT_STATEMENT]),
+    # endregion
+
     # region Comma Print Arguments
-
-    # region Variable Assignment Print Arguments
-    ([const.ID, const.EQUALS, const.VALUE, const.COMMA, const.PRINT_ARGUMENT],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.ID, const.COMMA, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.FUNCTION_CALL, const.COMMA, const.PRINT_ARGUMENT],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.COMMA, const.PRINT_ARGUMENT],
-                         [const.PRINT_ARGUMENT]),
-
-    ([const.ID, const.EQUALS, const.ID, const.COMMA, const.VALUE], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.VALUE, const.COMMA, const.VALUE], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.FUNCTION_CALL, const.COMMA, const.VALUE],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.COMMA, const.VALUE],
-                         [const.PRINT_ARGUMENT]),
-
-    ([const.ID, const.EQUALS, const.ID, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.VALUE, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.FUNCTION_CALL, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
-
-    ([const.ID, const.EQUALS, const.ID, const.COMMA, const.FUNCTION_CALL],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.VALUE, const.COMMA, const.FUNCTION_CALL],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.FUNCTION_CALL, const.COMMA, const.FUNCTION_CALL],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.COMMA, const.FUNCTION_CALL],
-                         [const.PRINT_ARGUMENT]),
-
-    ([const.ID, const.EQUALS, const.ID, const.COMMA, const.VAR_AS], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.VALUE, const.COMMA, const.VAR_AS], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.FUNCTION_CALL, const.COMMA, const.VAR_AS],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.COMMA, const.VAR_AS],
-                         [const.PRINT_ARGUMENT]),
-
-    ([const.ID, const.EQUALS, const.ID, const.COMMA, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.VALUE, const.COMMA, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.FUNCTION_CALL, const.COMMA, const.ENUMERABLE_OBJECT],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.COMMA, const.ENUMERABLE_OBJECT],
-                         [const.PRINT_ARGUMENT]),
-    # endregion
-
-    # region Simple Print Arguments
-    ([const.ID, const.COMMA, const.VALUE], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.COMMA, const.FUNCTION_CALL], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.COMMA, const.VAR_AS], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.COMMA, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
-
-    ([const.VALUE, const.COMMA, const.VALUE], [const.PRINT_ARGUMENT]),
-    ([const.VALUE, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
-    ([const.VALUE, const.COMMA, const.FUNCTION_CALL], [const.PRINT_ARGUMENT]),
-    ([const.VALUE, const.COMMA, const.VAR_AS], [const.PRINT_ARGUMENT]),
-    ([const.VALUE, const.COMMA, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
-
-    ([const.FUNCTION_CALL, const.COMMA, const.VALUE], [const.PRINT_ARGUMENT]),
-    ([const.FUNCTION_CALL, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
-    ([const.FUNCTION_CALL, const.COMMA, const.FUNCTION_CALL], [const.PRINT_ARGUMENT]),
-    ([const.FUNCTION_CALL, const.COMMA, const.VAR_AS], [const.PRINT_ARGUMENT]),
-    ([const.FUNCTION_CALL, const.COMMA, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
-
-    ([const.ENUMERABLE_OBJECT, const.COMMA, const.VALUE], [const.PRINT_ARGUMENT]),
-    ([const.ENUMERABLE_OBJECT, const.COMMA, const.ID], [const.PRINT_ARGUMENT]),
-    ([const.ENUMERABLE_OBJECT, const.COMMA, const.FUNCTION_CALL], [const.PRINT_ARGUMENT]),
-    ([const.ENUMERABLE_OBJECT, const.COMMA, const.VAR_AS], [const.PRINT_ARGUMENT]),
-    ([const.ENUMERABLE_OBJECT, const.COMMA, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
-
-    # endregion
-
-    # region Compound Print Arguments
-    ([const.ID, const.COMMA, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
-    ([const.VALUE, const.COMMA, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
-    ([const.FUNCTION_CALL, const.COMMA, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
-    ([const.ENUMERABLE_OBJECT, const.COMMA, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
-
-    # endregion
-
+    ([const.COMMA, const.ARGUMENT], [const.ARGUMENT]),
+    ([const.COMMA, const.VALUE], [const.ARGUMENT]),
+    ([const.COMMA, const.ID], [const.ARGUMENT]),
+    ([const.COMMA, const.FUNCTION_CALL], [const.ARGUMENT]),
+    ([const.COMMA, const.VAR_AS], [const.ARGUMENT]),
+    ([const.COMMA, const.ENUMERABLE_OBJECT], [const.ARGUMENT]),
+    ([const.COMMA, const.PARAM], [const.ARGUMENT]),
     # endregion
 
     # region Semi-Colon Print Arguments
-
-    # region Variable Assignment Print Arguments
-    ([const.ID, const.EQUALS, const.VALUE, const.SEMI_COLON, const.PRINT_ARGUMENT],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.ID, const.SEMI_COLON, const.PRINT_ARGUMENT],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.FUNCTION_CALL, const.SEMI_COLON, const.PRINT_ARGUMENT],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.PRINT_ARGUMENT],
-                         [const.PRINT_ARGUMENT]),
-
-    ([const.ID, const.EQUALS, const.ID, const.SEMI_COLON, const.VALUE], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.VALUE, const.SEMI_COLON, const.VALUE], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.FUNCTION_CALL, const.SEMI_COLON, const.VALUE],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.VALUE],
-                         [const.PRINT_ARGUMENT]),
-
-    ([const.ID, const.EQUALS, const.ID, const.SEMI_COLON, const.ID], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.VALUE, const.SEMI_COLON, const.ID], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.FUNCTION_CALL, const.SEMI_COLON, const.ID],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.ID],
-                         [const.PRINT_ARGUMENT]),
-
-    ([const.ID, const.EQUALS, const.ID, const.SEMI_COLON, const.FUNCTION_CALL],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.VALUE, const.SEMI_COLON, const.FUNCTION_CALL],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.FUNCTION_CALL, const.SEMI_COLON, const.FUNCTION_CALL],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.FUNCTION_CALL],
-                         [const.PRINT_ARGUMENT]),
-
-    ([const.ID, const.EQUALS, const.ID, const.SEMI_COLON, const.VAR_AS], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.VALUE, const.SEMI_COLON, const.VAR_AS], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.FUNCTION_CALL, const.SEMI_COLON, const.VAR_AS],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.VAR_AS],
-                         [const.PRINT_ARGUMENT]),
-
-    ([const.ID, const.EQUALS, const.ID, const.SEMI_COLON, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.VALUE, const.SEMI_COLON, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.FUNCTION_CALL, const.SEMI_COLON, const.ENUMERABLE_OBJECT],
-                         [const.PRINT_ARGUMENT]),
-    ([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.ENUMERABLE_OBJECT],
-                         [const.PRINT_ARGUMENT]),
-    # endregion
-
-    # region Simple Print Arguments
-    ([const.ID, const.SEMI_COLON, const.VALUE], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.SEMI_COLON, const.ID], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.SEMI_COLON, const.FUNCTION_CALL], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.SEMI_COLON, const.VAR_AS], [const.PRINT_ARGUMENT]),
-    ([const.ID, const.SEMI_COLON, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
-
-    ([const.VALUE, const.SEMI_COLON, const.VALUE], [const.PRINT_ARGUMENT]),
-    ([const.VALUE, const.SEMI_COLON, const.ID], [const.PRINT_ARGUMENT]),
-    ([const.VALUE, const.SEMI_COLON, const.FUNCTION_CALL], [const.PRINT_ARGUMENT]),
-    ([const.VALUE, const.SEMI_COLON, const.VAR_AS], [const.PRINT_ARGUMENT]),
-    ([const.VALUE, const.SEMI_COLON, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
-
-    ([const.FUNCTION_CALL, const.SEMI_COLON, const.VALUE], [const.PRINT_ARGUMENT]),
-    ([const.FUNCTION_CALL, const.SEMI_COLON, const.ID], [const.PRINT_ARGUMENT]),
-    ([const.FUNCTION_CALL, const.SEMI_COLON, const.FUNCTION_CALL], [const.PRINT_ARGUMENT]),
-    ([const.FUNCTION_CALL, const.SEMI_COLON, const.VAR_AS], [const.PRINT_ARGUMENT]),
-    ([const.FUNCTION_CALL, const.SEMI_COLON, const.ENUMERABLE_OBJECT], [const.PRINT_ARGUMENT]),
-
-    # endregion
-
-    # region Compound Print Arguments
-    ([const.ID, const.SEMI_COLON, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
-    ([const.VALUE, const.SEMI_COLON, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
-    ([const.FUNCTION_CALL, const.SEMI_COLON, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
-    ([const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.PRINT_ARGUMENT], [const.PRINT_ARGUMENT]),
-
-    # endregion
-
+    ([const.SEMI_COLON, const.VALUE], [const.ARGUMENT]),
+    ([const.SEMI_COLON, const.ID], [const.ARGUMENT]),
+    ([const.SEMI_COLON, const.FUNCTION_CALL], [const.ARGUMENT]),
+    ([const.SEMI_COLON, const.VAR_AS], [const.ARGUMENT]),
+    ([const.SEMI_COLON, const.ENUMERABLE_OBJECT], [const.ARGUMENT]),
+    ([const.SEMI_COLON, const.PARAM], [const.ARGUMENT]),
+    ([const.ARGUMENT, const.ARGUMENT], [const.ARGUMENT]),
     # endregion
 
     # endregion
@@ -451,7 +307,7 @@ rules_list = [
     ([const.FOR_EACH, const.ID, const.IN, const.ID], [const.FOR_EACH_STATEMENT]),
     ([const.FOR_EACH, const.ID, const.IN, const.VALUE], [const.FOR_EACH_STATEMENT]),
     ([const.FOR_EACH, const.ID, const.IN, const.FUNCTION_CALL], [const.FOR_EACH_STATEMENT]),
-    # endregion
+    # end region
 
     # region If
     ([const.IF, const.VAR_AS], [const.IF_STATEMENT]),
@@ -461,24 +317,58 @@ rules_list = [
     ([const.IF, const.FUNCTION_CALL], [const.IF_STATEMENT]),
     ([const.IF, const.ANONYMOUS_FUNCTION_DECLARATION], [const.IF_STATEMENT]),
     ([const.IF, const.FUNCTION_CALL, const.EQUALS, const.VALUE], [const.IF_STATEMENT]),
+
+    # region if equals
     ([const.IF, const.VALUE, const.EQUALS, const.VALUE], [const.IF_STATEMENT]),
     ([const.IF, const.VALUE, const.EQUALS, const.ID], [const.IF_STATEMENT]),
+    ([const.IF, const.VALUE, const.EQUALS, const.FUNCTION_CALL], [const.IF_STATEMENT]),
+    ([const.IF, const.VALUE, const.EQUALS, const.ANONYMOUS_FUNCTION_DECLARATION], [const.IF_STATEMENT]),
+
+    ([const.IF, const.ID, const.EQUALS, const.VALUE], [const.IF_STATEMENT]),
+    ([const.IF, const.ID, const.EQUALS, const.ID], [const.IF_STATEMENT]),
+    ([const.IF, const.ID, const.EQUALS, const.FUNCTION_CALL], [const.IF_STATEMENT]),
+    ([const.IF, const.ID, const.EQUALS, const.ANONYMOUS_FUNCTION_DECLARATION], [const.IF_STATEMENT]),
+
+    ([const.IF, const.FUNCTION_CALL, const.EQUALS, const.VALUE], [const.IF_STATEMENT]),
+    ([const.IF, const.FUNCTION_CALL, const.EQUALS, const.ID], [const.IF_STATEMENT]),
+    ([const.IF, const.FUNCTION_CALL, const.EQUALS, const.FUNCTION_CALL], [const.IF_STATEMENT]),
+    ([const.IF, const.FUNCTION_CALL, const.EQUALS, const.ANONYMOUS_FUNCTION_DECLARATION], [const.IF_STATEMENT]),
+
+    ([const.IF, const.ANONYMOUS_FUNCTION_DECLARATION, const.EQUALS, const.VALUE], [const.IF_STATEMENT]),
+    ([const.IF, const.ANONYMOUS_FUNCTION_DECLARATION, const.EQUALS, const.ID], [const.IF_STATEMENT]),
+    ([const.IF, const.ANONYMOUS_FUNCTION_DECLARATION, const.EQUALS, const.FUNCTION_CALL], [const.IF_STATEMENT]),
+    ([const.IF, const.ANONYMOUS_FUNCTION_DECLARATION, const.EQUALS, const.ANONYMOUS_FUNCTION_DECLARATION], [const.IF_STATEMENT]),
+    # end region
+
+    # region if comparison operator
+    ([const.IF, const.VALUE, const.COMPARISON_OPERATOR, const.VALUE], [const.IF_STATEMENT]),
+    ([const.IF, const.VALUE, const.COMPARISON_OPERATOR, const.ID], [const.IF_STATEMENT]),
+    ([const.IF, const.VALUE, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], [const.IF_STATEMENT]),
+    ([const.IF, const.VALUE, const.COMPARISON_OPERATOR, const.ANONYMOUS_FUNCTION_DECLARATION], [const.IF_STATEMENT]),
+
+    ([const.IF, const.ID, const.COMPARISON_OPERATOR, const.VALUE], [const.IF_STATEMENT]),
+    ([const.IF, const.ID, const.COMPARISON_OPERATOR, const.ID], [const.IF_STATEMENT]),
+    ([const.IF, const.ID, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], [const.IF_STATEMENT]),
+    ([const.IF, const.ID, const.COMPARISON_OPERATOR, const.ANONYMOUS_FUNCTION_DECLARATION], [const.IF_STATEMENT]),
+
+    ([const.IF, const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.VALUE], [const.IF_STATEMENT]),
+    ([const.IF, const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.ID], [const.IF_STATEMENT]),
+    ([const.IF, const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], [const.IF_STATEMENT]),
+    ([const.IF, const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.ANONYMOUS_FUNCTION_DECLARATION], [const.IF_STATEMENT]),
+
+    ([const.IF, const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.VALUE], [const.IF_STATEMENT]),
+    ([const.IF, const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.ID], [const.IF_STATEMENT]),
+    ([const.IF, const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], [const.IF_STATEMENT]),
+    ([const.IF, const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.ANONYMOUS_FUNCTION_DECLARATION], [const.IF_STATEMENT]),
+    # end region
+
     # end region
 
     # region If with then
-    ([const.IF, const.VAR_AS, const.THEN], [const.IF_STATEMENT]),
-    ([const.IF, const.VAR_AS, const.THEN], [const.IF_STATEMENT]),
-    ([const.IF, const.VALUE, const.THEN], [const.IF_STATEMENT]),
-    ([const.IF, const.ID, const.THEN], [const.IF_STATEMENT]),
-    ([const.IF, const.FUNCTION_CALL, const.THEN], [const.IF_STATEMENT]),
-    ([const.IF, const.ANONYMOUS_FUNCTION_DECLARATION, const.THEN], [const.IF_STATEMENT]),
-    ([const.IF, const.FUNCTION_CALL, const.EQUALS, const.VALUE, const.THEN], [const.IF_STATEMENT]),
-    ([const.IF, const.VALUE, const.EQUALS, const.VALUE, const.THEN], [const.IF_STATEMENT]),
-    ([const.IF, const.VALUE, const.EQUALS, const.ID, const.THEN], [const.IF_STATEMENT]),
+    ([const.IF_STATEMENT, const.THEN], [const.IF_STATEMENT]),
     # end region If with then
 
     # region else if
-    # region else If
     ([const.ELSE_IF, const.VAR_AS], [const.ELSE_IF_STATEMENT]),
     ([const.ELSE_IF, const.VAR_AS], [const.ELSE_IF_STATEMENT]),
     ([const.ELSE_IF, const.VALUE], [const.ELSE_IF_STATEMENT]),
@@ -490,22 +380,14 @@ rules_list = [
     ([const.ELSE_IF, const.VALUE, const.EQUALS, const.ID], [const.ELSE_IF_STATEMENT]),
     ([const.ELSE], [const.ELSE_STATEMENT]),
     # end region
-    # end region
 
     # region else If then
-    ([const.ELSE_IF, const.VAR_AS, const.THEN], [const.ELSE_IF_STATEMENT]),
-    ([const.ELSE_IF, const.VAR_AS, const.THEN], [const.ELSE_IF_STATEMENT]),
-    ([const.ELSE_IF, const.VALUE, const.THEN], [const.ELSE_IF_STATEMENT]),
-    ([const.ELSE_IF, const.ID, const.THEN], [const.ELSE_IF_STATEMENT]),
-    ([const.ELSE_IF, const.FUNCTION_CALL, const.THEN], [const.ELSE_IF_STATEMENT]),
-    ([const.ELSE_IF, const.ANONYMOUS_FUNCTION_DECLARATION, const.THEN], [const.ELSE_IF_STATEMENT]),
-    ([const.ELSE_IF, const.FUNCTION_CALL, const.EQUALS, const.VALUE, const.THEN], [const.ELSE_IF_STATEMENT]),
-    ([const.ELSE_IF, const.VALUE, const.EQUALS, const.VALUE, const.THEN], [const.ELSE_IF_STATEMENT]),
-    ([const.ELSE_IF, const.VALUE, const.EQUALS, const.ID, const.THEN], [const.ELSE_IF_STATEMENT])
+    ([const.ELSE_IF_STATEMENT, const.THEN], [const.ELSE_IF_STATEMENT]),
     # end region
 
+    ([const.ID, const.DOT, const.ID], [const.ID]),
 ]
 
-rules = []
-for rule in rules_list:
-    rules.append(ReductionRuleHandler(rule[0], rule[1]))
+RULES = []
+for rule in RULES_LIST:
+    RULES.append(RULE(rule[0], rule[1]))

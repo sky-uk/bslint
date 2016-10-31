@@ -36,8 +36,8 @@ def get_user_config(user_filepath):
 
 
 def overwrite_default_config(default_json, user_json):
-    for property in user_json:
-        default_json[property] = user_json[property]
+    for setting in user_json:
+        default_json[setting] = user_json[setting]
     return default_json
 
 

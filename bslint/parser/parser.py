@@ -7,7 +7,6 @@ MAX_FINAL_STATEMENT_LENGTH = 1
 
 
 class Parser(Lexer):
-
     def __init__(self):
         Lexer.__init__(self)
         self.expected_statement = None
@@ -23,8 +22,9 @@ class Parser(Lexer):
 
     def check_statement_validity(self, statement):
         self.current_tokens = self._get_token_types(statement)
-        self._reduce_and_handle_error()
-        self.program.append(self.current_tokens[0])
+        if len(self.current_tokens) > 0:
+            self._reduce_and_handle_error()
+            self.program.append(self.current_tokens[0])
 
     @staticmethod
     def _get_token_types(tokens):
@@ -32,14 +32,17 @@ class Parser(Lexer):
 
     def _reduce_and_handle_error(self):
         is_valid_statement = False
-        for index, token in enumerate(self.current_tokens):
-            possible_production_rules = self._get_possible_production_rules(self.current_tokens[-(index + 1)])
+        index = 0
+        while index < len(self.current_tokens):
+            possible_production_rules = self._get_possible_production_rules(
+                self.current_tokens[-(index + 1)])
             matching_production = self._find_matching_production(index, possible_production_rules)
             if matching_production is not None:
                 self._replace_current_tokens(index, matching_production)
                 if len(self.current_tokens) > MAX_FINAL_STATEMENT_LENGTH:
                     self._reduce_and_handle_error()
                 is_valid_statement = True
+            index += 1
         if is_valid_statement is False:
             raise ValueError(err_const.PARSING_FAILED)
 
@@ -59,7 +62,8 @@ class Parser(Lexer):
             del self.current_tokens[-tokens_from_end:]
         else:
             del self.current_tokens[-tokens_from_end: -index]
-        self.current_tokens[len(self.current_tokens) - index:len(self.current_tokens) - index] = rule.result
+        self.current_tokens[
+            len(self.current_tokens) - index:len(self.current_tokens) - index] = rule.result
         self.current_output_list.append(self.current_tokens[:])
 
     def _get_current_tokens(self, index, tokens_from_end):
@@ -75,8 +79,8 @@ class Parser(Lexer):
 
     def _get_possible_production_rules(self, current_token):
         corresponding_rules = []
-        for rule in self.current_grammar.rules:
-            if rule.rule[len(rule.rule) - 1] == current_token:
+        for rule in self.current_grammar.RULES:
+            if rule.rule[-1] == current_token:
                 corresponding_rules.append(rule)
         return corresponding_rules
 
@@ -86,4 +90,3 @@ class Parser(Lexer):
         self.current_output_list = self.line_reductions
         if len(self.current_tokens) > 1:
             self._reduce_and_handle_error()
-

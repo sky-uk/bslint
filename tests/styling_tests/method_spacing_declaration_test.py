@@ -8,9 +8,6 @@ from filepaths import TESTS_CONFIG_PATH
 
 
 class TestMethodSpacingDeclaration(unittest.TestCase):
-    WARNINGS = 'Warnings'
-    STATUS = 'Status'
-    SUCCESS = 'Success'
 
     @classmethod
     def setUpClass(cls):
@@ -20,49 +17,49 @@ class TestMethodSpacingDeclaration(unittest.TestCase):
     def test_valid_declaration(self):
         bslint.load_config_file(user_filepath=self.active_method_spacing_declaration_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
-        result = commands.check_method_declaration_spacing("function declaration()")
+        result = commands.check_method_dec_spacing("function declaration()")
         exp_result = None
         self.assertEqual(exp_result, result)
 
     def test_valid_sub_declaration(self):
         bslint.load_config_file(user_filepath=self.active_method_spacing_declaration_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
-        result = commands.check_method_declaration_spacing("sub declaration()")
+        result = commands.check_method_dec_spacing("sub declaration()")
         exp_result = None
         self.assertEqual(exp_result, result)
 
     def test_valid_declaration_with_param(self):
         bslint.load_config_file(user_filepath=self.active_method_spacing_declaration_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
-        result = commands.check_method_declaration_spacing("function declaration(a)")
+        result = commands.check_method_dec_spacing("function declaration(a)")
         exp_result = None
         self.assertEqual(exp_result, result)
 
     def test_valid_declaration_with_params(self):
         bslint.load_config_file(user_filepath=self.active_method_spacing_declaration_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
-        result = commands.check_method_declaration_spacing("function declaration(a, b, c, d)")
+        result = commands.check_method_dec_spacing("function declaration(a, b, c, d)")
         exp_result = None
         self.assertEqual(exp_result, result)
 
     def test_invalid_declaration_with_no_space_between_params(self):
         bslint.load_config_file(user_filepath=self.active_method_spacing_declaration_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
-        result = commands.check_method_declaration_spacing("function declaration(a,b,c, d)")
+        result = commands.check_method_dec_spacing("function declaration(a,b,c, d)")
         exp_result = {'error_key': 'METHOD_DECLARATION_SPACING', 'error_params': []}
         self.assertEqual(exp_result, result)
 
     def test_invalid_declaration_with_params(self):
         bslint.load_config_file(user_filepath=self.active_method_spacing_declaration_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
-        result = commands.check_method_declaration_spacing("function declaration(a, b, c,)")
+        result = commands.check_method_dec_spacing("function declaration(a, b, c,)")
         exp_result = {'error_key': 'METHOD_DECLARATION_SPACING', 'error_params': []}
         self.assertEqual(exp_result, result)
 
     def test_invalid_declaration_with_extra_spaces_in_params(self):
         bslint.load_config_file(user_filepath=self.active_method_spacing_declaration_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
-        result = commands.check_method_declaration_spacing("function declaration(a,   b, c,  d)")
+        result = commands.check_method_dec_spacing("function declaration(a,   b, c,  d)")
         exp_result = {'error_key': 'METHOD_DECLARATION_SPACING', 'error_params': []}
         self.assertEqual(exp_result, result)
 
@@ -71,20 +68,20 @@ class TestMethodSpacingDeclaration(unittest.TestCase):
             TESTS_CONFIG_PATH, 'check_method_declaration/active_method_extra_spacing_declaration.json')
         bslint.load_config_file(user_filepath=active_method_extra_spacing_declaration_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
-        result = commands.check_method_declaration_spacing("function  declaration(a,  b)")
+        result = commands.check_method_dec_spacing("function  declaration(a,  b)")
         exp_result = None
         self.assertEqual(exp_result, result)
 
     def test_no_action_if_no_function_declared_on_line(self):
         bslint.load_config_file(user_filepath=self.active_method_spacing_declaration_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
-        result = commands.check_method_declaration_spacing("declaration(a  )")
+        result = commands.check_method_dec_spacing("declaration(a  )")
         exp_result = None
         self.assertEqual(exp_result, result)
 
     def test_end_function_is_not_checked(self):
         bslint.load_config_file(user_filepath=self.active_method_spacing_declaration_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
-        result = commands.check_method_declaration_spacing("function  declaration(a,  b)\n\nend function")
+        result = commands.check_method_dec_spacing("function  declaration(a,  b)\n\nend function")
         exp_result = None
         self.assertEqual(exp_result, result)

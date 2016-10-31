@@ -10,102 +10,68 @@ from bslint.lexer.lexer import Lexer as Lexer
 from filepaths import TEST_CONFIG_FILE_PATH
 from filepaths import TESTS_CONFIG_PATH
 from filepaths import STYLING_TEST_FILES_PATH
+from tests.resources.common.test_methods import CommonMethods as Common
 
 
 class TestSpellCheck(unittest.TestCase):
-    WARNINGS = 'Warnings'
-    STATUS = 'Status'
-    SUCCESS = 'Success'
 
     @classmethod
     def setUpClass(cls):
         this_dir, this_filename = os.path.split(__file__)
         cls.filepath_prefix = os.path.join(this_dir, "../resources/styling_test_files/")
+        cls.common = Common()
 
     def setUp(self):
         spellcheck_config_path = os.path.join(TESTS_CONFIG_PATH,
                                                     'spell_check/spellcheck-config.json')
         bslint.load_config_file(user_filepath=spellcheck_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
 
-    def test_m(self):
-        test_string = "m"
-        exp_result = None
-        result = commands.check_spelling(test_string, const.ID)
+    def check_spell_check(self, input, exp_result):
+        result = commands.check_spelling(input, const.ID)
         self.assertEqual(result, exp_result)
+
+    def test_m(self):
+        self.check_spell_check("m", None)
 
     def test_single_lcase(self):
-        test_string = "bad"
-        exp_result = None
-        result = commands.check_spelling(test_string, const.ID)
-        self.assertEqual(result, exp_result)
+        self.check_spell_check("bad", None)
 
     def test_camel_case(self):
-        test_string = "badGood"
-        exp_result = None
-        result = commands.check_spelling(test_string, const.ID)
-        self.assertEqual(result, exp_result)
+        self.check_spell_check("badGood", None)
 
     def test_single_upper_case(self):
-        test_string = "GOOD"
-        exp_result = None
-        result = commands.check_spelling(test_string, const.ID)
-        self.assertEqual(result, exp_result)
+        self.check_spell_check("GOOD", None)
 
     def test_single_underscore_camel_case(self):
-        test_string = "bad_Good"
-        exp_result = None
-        result = commands.check_spelling(test_string, const.ID)
-        self.assertEqual(result, exp_result)
+        self.check_spell_check("bad_Good", None)
 
     def test_single_underscore_lower_case(self):
-        test_string = "bad_good"
-        exp_result = None
-        result = commands.check_spelling(test_string, const.ID)
-        self.assertEqual(result, exp_result)
-
-    def test_incorrect(self):
-        test_string = "bad_Good"
-        exp_result = None
-        result = commands.check_spelling(test_string, const.ID)
-        self.assertEqual(result, exp_result)
+        self.check_spell_check("bad_good", None)
 
     def test_non_letter(self):
-        test_string = "bad_Good$"
-        exp_result = None
-        result = commands.check_spelling(test_string, const.ID)
-        self.assertEqual(result, exp_result)
+        self.check_spell_check("bad_Good$", None)
 
-    def test_start_lcase_correct(self):
-        test_string = "Brother"
-        exp_result = None
-        result = commands.check_spelling(test_string, const.ID)
-        self.assertEqual(result, exp_result)
+    def test_start_ucase_correct(self):
+        self.check_spell_check("Brother", None)
 
     def test_start_ucase_incorrect(self):
-        test_string = "Badsfddsf"
-        exp_result = {"error_key": err_const.TYPO_IN_CODE, "error_params": []}
-        result = commands.check_spelling(test_string, const.ID)
-        self.assertEqual(result, exp_result)
+        self.check_spell_check("Badsfddsf", {"error_key": err_const.TYPO_IN_CODE, "error_params": []})
 
     def test_incorrect_spelling(self):
-        test_string = "sfgsdrgser"
-        exp_result = {"error_key": err_const.TYPO_IN_CODE, "error_params": []}
-        result = commands.check_spelling(test_string, const.ID)
-        self.assertEqual(result, exp_result)
+        self.check_spell_check("sfgsdrgser",
+                               {"error_key": err_const.TYPO_IN_CODE, "error_params": []})
 
     def test_incorrect_camel_case(self):
-        test_string = "badGrgdrfdfg"
-        exp_result = {"error_key": err_const.TYPO_IN_CODE, "error_params": []}
-        result = commands.check_spelling(test_string, const.ID)
-        self.assertEqual(result, exp_result)
+        self.check_spell_check("badGrgdrfdfg",
+                               {"error_key": err_const.TYPO_IN_CODE, "error_params": []})
 
     def test_real_file(self):
         spell_check_file_path = os.path.join(STYLING_TEST_FILES_PATH, 'spell-check.brs')
         file = open(spell_check_file_path, "r+").read()
         exp_res = [error.get_message(err_const.TYPO_IN_CODE, [2])]
         result = Lexer().lex(file)
-        self.assertEqual(result[self.WARNINGS], exp_res)
-        self.assertEqual(result[self.STATUS], self.SUCCESS)
+        self.assertEqual(result[self.common.WARNINGS], exp_res)
+        self.assertEqual(result[self.common.STATUS], self.common.SUCCESS)
 
     def test_misspelled_comment_from_file(self):
         incorrect_comment_spelling_file_path = os.path.join(STYLING_TEST_FILES_PATH, 'incorrect-comment-spelling.brs')
@@ -113,8 +79,8 @@ class TestSpellCheck(unittest.TestCase):
         self.assertNotEqual(file, "")
         exp_res = [error.get_message(err_const.TYPO_IN_CODE, [1])]
         result = Lexer().lex(file)
-        self.assertEqual(result[self.WARNINGS], exp_res)
-        self.assertEqual(result[self.STATUS], self.SUCCESS)
+        self.assertEqual(result[self.common.WARNINGS], exp_res)
+        self.assertEqual(result[self.common.STATUS], self.common.SUCCESS)
 
     def test_us_dictionary_failing(self):
         us_spellcheck_config_path = os.path.join(TESTS_CONFIG_PATH, 'spell_check/us-spellcheck-config.json')

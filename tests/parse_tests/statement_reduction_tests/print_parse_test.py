@@ -1,517 +1,190 @@
 import unittest
 
 import bslint.constants as const
-import bslint.error_messages.constants as err_const
-from bslint.parser.parser import Parser
+from tests.resources.common.test_methods import CommonMethods as Common
 
 
 class TestPrintParse(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.common = Common()
+
     def testPrintValue(self):
-        parser = Parser()
-        result = parser.parse("print 4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[0])
+        self.common.match_statement("print 4", const.PRINT_STATEMENT)
 
     def testPrintID(self):
-        parser = Parser()
-        result = parser.parse("print x")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[0])
+        self.common.match_statement("print x", const.PRINT_STATEMENT)
 
     def testPrintVarAs(self):
-        parser = Parser()
-        result = parser.parse("print x = 3")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.VAR_AS], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print x = 3", const.PRINT_STATEMENT)
 
     def testPrintFunctionCall(self):
-        parser = Parser()
-        result = parser.parse("print x()")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.FUNCTION_CALL], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print x()", const.PRINT_STATEMENT)
 
     def testPrintEmptyAssociativeArray(self):
-        parser = Parser()
-        result = parser.parse("print {}")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ENUMERABLE_OBJECT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print {}", const.PRINT_STATEMENT)
 
     def testPrintAssociativeArray(self):
-        parser = Parser()
-        result = parser.parse("print {a:1}")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.OPEN_CURLY_BRACKET, const.ASSOCIATIVE_ARRAY_ARGUMENT,
-                          const.CLOSE_CURLY_BRACKET], parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.ENUMERABLE_OBJECT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print {a:1}", const.PRINT_STATEMENT)
 
     def testPrintEmptyArray(self):
-        parser = Parser()
-        result = parser.parse("print []")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ENUMERABLE_OBJECT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print []", const.PRINT_STATEMENT)
 
     def testPrintArray(self):
-        parser = Parser()
-        result = parser.parse("print [5]")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ENUMERABLE_OBJECT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print [5]", const.PRINT_STATEMENT)
 
     def testPrintIDOperatorValue(self):
-        parser = Parser()
-        result = parser.parse("print x^5")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.VALUE], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print x^5", const.PRINT_STATEMENT)
 
     def testPrintValueCommaValue(self):
-        parser = Parser()
-        result = parser.parse("print 3,4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print 3,4", const.PRINT_STATEMENT)
 
     def testPrintValueCommaID(self):
-        parser = Parser()
-        result = parser.parse("print 3,d")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print 3,d", const.PRINT_STATEMENT)
 
     def testPrintValueCommaFunctionCall(self):
-        parser = Parser()
-        result = parser.parse("print 3,x()")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.VALUE, const.COMMA, const.FUNCTION_CALL], parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print 3,x()", const.PRINT_STATEMENT)
 
     def testPrintValueCommaVariableAssignment(self):
-        parser = Parser()
-        result = parser.parse("print 3,x=4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.VALUE, const.COMMA, const.VAR_AS], parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print 3,x=4", const.PRINT_STATEMENT)
 
     def testPrintValueCommaArgument(self):
-        parser = Parser()
-        result = parser.parse("print 3,3,4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.VALUE, const.COMMA, const.PRINT_ARGUMENT],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print 3,3,4", const.PRINT_STATEMENT)
 
     def testPrintValueCommaEnumerableObject(self):
-        parser = Parser()
-        result = parser.parse("print 3, {}")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.VALUE, const.COMMA, const.ENUMERABLE_OBJECT],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print 3, {}", const.PRINT_STATEMENT)
 
     def testPrintIDCommaValue(self):
-        parser = Parser()
-        result = parser.parse("print X,4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print X,4", const.PRINT_STATEMENT)
 
     def testPrintIDCommaID(self):
-        parser = Parser()
-        result = parser.parse("print X,d")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print X,d", const.PRINT_STATEMENT)
 
     def testPrintIDCommaFunctionCall(self):
-        parser = Parser()
-        result = parser.parse("print Y,x()")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.COMMA, const.FUNCTION_CALL], parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print Y,x()", const.PRINT_STATEMENT)
 
     def testPrintIDCommaVariableAssignment(self):
-        parser = Parser()
-        result = parser.parse("print Y,x=4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.COMMA, const.VAR_AS], parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print Y,x=4", const.PRINT_STATEMENT)
 
     def testPrintIDCommaArgument(self):
-        parser = Parser()
-        result = parser.parse("print x,3,4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.COMMA, const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print x,3,4", const.PRINT_STATEMENT)
 
     def testPrintIDCommaEnumerableObject(self):
-        parser = Parser()
-        result = parser.parse("print a, []")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.COMMA, const.ENUMERABLE_OBJECT],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print a, []", const.PRINT_STATEMENT)
 
     def testPrintFunctionCallCommaValue(self):
-        parser = Parser()
-        result = parser.parse("print X(),4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.FUNCTION_CALL, const.COMMA, const.VALUE], parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print X(),4", const.PRINT_STATEMENT)
 
     def testPrintFunctionCallCommaID(self):
-        parser = Parser()
-        result = parser.parse("print X(),d")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.FUNCTION_CALL, const.COMMA, const.ID], parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print X(),d", const.PRINT_STATEMENT)
 
     def testPrintFunctionCallCommaFunctionCall(self):
-        parser = Parser()
-        result = parser.parse("print Y(),x()")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS, const.COMMA,
-                          const.FUNCTION_CALL], parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.FUNCTION_CALL, const.COMMA, const.FUNCTION_CALL],
-                         parser.all_statements[1])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[2])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[3])
+        self.common.match_statement("print Y(),x()", const.PRINT_STATEMENT)
 
     def testPrintFunctionCallCommaVariableAssignment(self):
-        parser = Parser()
-        result = parser.parse("print Y(),x=4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual(
-            [const.PRINT_KEYWORD, const.ID, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS, const.COMMA, const.VAR_AS],
-            parser.all_statements[0])
-        self.assertEqual(
-            [const.PRINT_KEYWORD, const.FUNCTION_CALL, const.COMMA, const.VAR_AS], parser.all_statements[1])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[2])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[3])
+        self.common.match_statement("print Y(),x=4", const.PRINT_STATEMENT)
 
     def testPrintFunctionCallCommaArgument(self):
-        parser = Parser()
-        result = parser.parse("print x(),3,4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS, const.COMMA,
-                          const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.FUNCTION_CALL, const.COMMA, const.PRINT_ARGUMENT],
-                         parser.all_statements[1])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[2])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[3])
+        self.common.match_statement("print x(),3,4", const.PRINT_STATEMENT)
 
     def testPrintFunctionCallCommaEnumerableObject(self):
-        parser = Parser()
-        result = parser.parse("print y(), {a:2}")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS, const.COMMA,
-                          const.OPEN_CURLY_BRACKET, const.ASSOCIATIVE_ARRAY_ARGUMENT, const.CLOSE_CURLY_BRACKET],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS, const.COMMA,
-                          const.ENUMERABLE_OBJECT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_KEYWORD, const.FUNCTION_CALL, const.COMMA, const.ENUMERABLE_OBJECT],
-                         parser.all_statements[2])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[3])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[4])
+        self.common.match_statement("print y(), {a:2}", const.PRINT_STATEMENT)
 
     def testPrintVariableAssignmentCommaValue(self):
-        parser = Parser()
-        result = parser.parse("print X=3,4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print X=3,4", const.PRINT_STATEMENT)
 
     def testPrintVariableAssignmentCommaID(self):
-        parser = Parser()
-        result = parser.parse("print X=4,d")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print X=4,d", const.PRINT_STATEMENT)
 
     def testPrintVariableAssignmentCommaFunctionCall(self):
-        parser = Parser()
-        result = parser.parse("print Y=4,x()")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.EQUALS, const.VALUE, const.COMMA, const.FUNCTION_CALL],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print Y=4,x()", const.PRINT_STATEMENT)
 
     def testPrintVariableAssignmentCommaVariableAssignment(self):
-        parser = Parser()
-        result = parser.parse("print Y=4,x=4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.EQUALS, const.VALUE, const.COMMA, const.VAR_AS],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print Y=4,x=4", const.PRINT_STATEMENT)
 
     def testPrintVariableAssignmentCommaArgument(self):
-        parser = Parser()
-        result = parser.parse("print x=1,4,4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.EQUALS, const.VALUE, const.COMMA, const.PRINT_ARGUMENT],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print x=1,4,4", const.PRINT_STATEMENT)
 
     def testPrintVariableAssignmentCommaEnumerableObject(self):
-        parser = Parser()
-        result = parser.parse("print a = 3, {d:6}")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual(
-            [const.PRINT_KEYWORD, const.ID, const.EQUALS, const.VALUE, const.COMMA, const.OPEN_CURLY_BRACKET,
-             const.ASSOCIATIVE_ARRAY_ARGUMENT, const.CLOSE_CURLY_BRACKET], parser.all_statements[0])
-        self.assertEqual(
-            [const.PRINT_KEYWORD, const.ID, const.EQUALS, const.VALUE, const.COMMA, const.ENUMERABLE_OBJECT],
-            parser.all_statements[1])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[2])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[3])
+        self.common.match_statement("print a = 3, {d:6}", const.PRINT_STATEMENT)
 
     def testPrintValueSemiColonValue(self):
-        parser = Parser()
-        result = parser.parse("print 3;4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print 3;4", const.PRINT_STATEMENT)
 
     def testPrintValueSemiColonID(self):
-        parser = Parser()
-        result = parser.parse("print 3;d")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print d.c();x", const.PRINT_STATEMENT)
 
     def testPrintValueSemiColonFunctionCall(self):
-        parser = Parser()
-        result = parser.parse("print 3;x()")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.VALUE, const.SEMI_COLON, const.FUNCTION_CALL],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print 3;x()", const.PRINT_STATEMENT)
 
     def testPrintValueSemiColonVariableAssignment(self):
-        parser = Parser()
-        result = parser.parse("print 3;x=4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.VALUE, const.SEMI_COLON, const.VAR_AS], parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print 3;x=4", const.PRINT_STATEMENT)
 
     def testPrintValueSemiColonArgument(self):
-        parser = Parser()
-        result = parser.parse("print 4;4,4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.VALUE, const.SEMI_COLON, const.PRINT_ARGUMENT],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print 4;4,4", const.PRINT_STATEMENT)
 
     def testPrintValueSemiColonEnumerableObject(self):
-        parser = Parser()
-        result = parser.parse("print 3; [a]")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.VALUE, const.SEMI_COLON, const.ENUMERABLE_OBJECT],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT],
-                         parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print 3; [a]", const.PRINT_STATEMENT)
 
     def testPrintIDSemiColonValue(self):
-        parser = Parser()
-        result = parser.parse("print X;4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print X;4", const.PRINT_STATEMENT)
 
     def testPrintIDSemiColonID(self):
-        parser = Parser()
-        result = parser.parse("print X;d")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print X;d", const.PRINT_STATEMENT)
 
     def testPrintIDSemiColonFunctionCall(self):
-        parser = Parser()
-        result = parser.parse("print Y;x()")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.SEMI_COLON, const.FUNCTION_CALL],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print Y;x()", const.PRINT_STATEMENT)
 
     def testPrintIDSemiColonVariableAssignment(self):
-        parser = Parser()
-        result = parser.parse("print Y;x=4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.SEMI_COLON, const.VAR_AS], parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print Y;x=4", const.PRINT_STATEMENT)
 
     def testPrintIDSemiColonArgument(self):
-        parser = Parser()
-        result = parser.parse("print x;4;4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.SEMI_COLON, const.PRINT_ARGUMENT],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print x;4;4", const.PRINT_STATEMENT)
 
     def testPrintIDSemiColonEnumerableObject(self):
-        parser = Parser()
-        result = parser.parse("print f; {}")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.SEMI_COLON, const.ENUMERABLE_OBJECT],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print f; {}", const.PRINT_STATEMENT)
 
     def testPrintFunctionCallSemiColonValue(self):
-        parser = Parser()
-        result = parser.parse("print X();4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.FUNCTION_CALL, const.SEMI_COLON, const.VALUE],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print X();4", const.PRINT_STATEMENT)
 
     def testPrintFunctionCallSemiColonID(self):
-        parser = Parser()
-        result = parser.parse("print X();d")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.FUNCTION_CALL, const.SEMI_COLON, const.ID],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print X();d", const.PRINT_STATEMENT)
 
     def testPrintFunctionCallSemiColonFunctionCall(self):
-        parser = Parser()
-        result = parser.parse("print Y();x()")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual(
-            [const.PRINT_KEYWORD, const.ID, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS, const.SEMI_COLON,
-             const.FUNCTION_CALL], parser.all_statements[0])
-        self.assertEqual(
-            [const.PRINT_KEYWORD, const.FUNCTION_CALL, const.SEMI_COLON, const.FUNCTION_CALL], parser.all_statements[1])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[2])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[3])
+        self.common.match_statement("print Y();x()", const.PRINT_STATEMENT)
 
     def testPrintFunctionCallSemiColonVariableAssignment(self):
-        parser = Parser()
-        result = parser.parse("print Y();x=4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual(
-            [const.PRINT_KEYWORD, const.ID, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS, const.SEMI_COLON,
-             const.VAR_AS], parser.all_statements[0])
-        self.assertEqual(
-            [const.PRINT_KEYWORD, const.FUNCTION_CALL, const.SEMI_COLON, const.VAR_AS], parser.all_statements[1])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[2])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[3])
+        self.common.match_statement("print Y();x=4", const.PRINT_STATEMENT)
 
     def testPrintFunctionCallSemiColonArgument(self):
-        parser = Parser()
-        result = parser.parse("print x();4,4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual(
-            [const.PRINT_KEYWORD, const.ID, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS, const.SEMI_COLON,
-             const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual(
-            [const.PRINT_KEYWORD, const.FUNCTION_CALL, const.SEMI_COLON, const.PRINT_ARGUMENT],
-            parser.all_statements[1])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[2])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[3])
+        self.common.match_statement("print x();4,4", const.PRINT_STATEMENT)
 
     def testPrintFunctionCallSemiColonEnumerableObject(self):
-        parser = Parser()
-        result = parser.parse("print p(); []")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual(
-            [const.PRINT_KEYWORD, const.ID, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS, const.SEMI_COLON,
-             const.ENUMERABLE_OBJECT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.FUNCTION_CALL, const.SEMI_COLON, const.ENUMERABLE_OBJECT],
-                         parser.all_statements[1])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[2])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[3])
+        self.common.match_statement("print p(); []", const.PRINT_STATEMENT)
 
     def testPrintVariableAssignmentSemiColonValue(self):
-        parser = Parser()
-        result = parser.parse("print X=3;4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print X=3;4", const.PRINT_STATEMENT)
 
     def testPrintVariableAssignmentSemiColonID(self):
-        parser = Parser()
-        result = parser.parse("print X=4;d")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[0])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[1])
+        self.common.match_statement("print X=4;d", const.PRINT_STATEMENT)
 
     def testPrintVariableAssignmentSemiColonFunctionCall(self):
-        parser = Parser()
-        result = parser.parse("print Y=4;x()")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual(
-            [const.PRINT_KEYWORD, const.ID, const.EQUALS, const.VALUE, const.SEMI_COLON, const.FUNCTION_CALL],
-            parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print Y=4;x()", const.PRINT_STATEMENT)
 
     def testPrintVariableAssignmentSemiColonVariableAssignment(self):
-        parser = Parser()
-        result = parser.parse("print Y=4;x=4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual([const.PRINT_KEYWORD, const.ID, const.EQUALS, const.VALUE, const.SEMI_COLON, const.VAR_AS],
-                         parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print Y=4;x=4", const.PRINT_STATEMENT)
 
     def testPrintVariableAssignmentSemiColonArgument(self):
-        parser = Parser()
-        result = parser.parse("print x=1;4;4")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual(
-            [const.PRINT_KEYWORD, const.ID, const.EQUALS, const.VALUE, const.SEMI_COLON, const.PRINT_ARGUMENT],
-            parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
+        self.common.match_statement("print x=1;4;4", const.PRINT_STATEMENT)
 
     def testPrintVariableAssignmentSemiColonEnumerableObject(self):
-        parser = Parser()
-        result = parser.parse("print x=b; {}")
-        self.assertEqual("Success", result["Status"])
-        self.assertEqual(
-            [const.PRINT_KEYWORD, const.ID, const.EQUALS, const.ID, const.SEMI_COLON, const.ENUMERABLE_OBJECT],
-            parser.all_statements[0])
-        self.assertEqual([const.PRINT_KEYWORD, const.PRINT_ARGUMENT], parser.all_statements[1])
-        self.assertEqual([const.PRINT_STATEMENT], parser.all_statements[2])
-
-    def print_exception_runner(self, str_to_parse):
-        parser = Parser()
-        with self.assertRaises(ValueError) as ve:
-            parser.parse(str_to_parse)
-        self.assertEqual(ve.exception.args[0], err_const.PARSING_FAILED)
+        self.common.match_statement("print x=b; {}", const.PRINT_STATEMENT)
 
     def testInvalidWhileParenthesis(self):
-        self.print_exception_runner("print )")
+        self.common.exception_runner("print )")
 
     def testInvalidWhileFor(self):
-        self.print_exception_runner("print (for)")
+        self.common.exception_runner("print (for)")
 
     def testInvalidWhileEndWhile(self):
-        self.print_exception_runner("print endwhile")
+        self.common.exception_runner("print endwhile")

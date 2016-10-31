@@ -6,8 +6,9 @@ import bslint.error_messages.constants as err_const
 import bslint.lexer.regexs as regexs
 import bslint.lexer.words_dictionary as words_dict
 import bslint.utilities.config_loader as config_loader
-comment_regex = [regex.regex for regex in regexs.regexs if regex.lexer_type == const.COMMENT][0]
-dictionary = words_dict.get_new_dictionary()
+
+COMMENT_REGEX = [regex.regex for regex in regexs.REGEXS if regex.lexer_type == const.COMMENT][0]
+DICTIONARY = words_dict.get_new_dictionary()
 
 
 def check_comment(token):
@@ -20,16 +21,17 @@ def check_comment(token):
     todos_format = check_comment_config["TODOs"]["format"]
 
     if allow_todos and allow_generic_comments:
-        if re.match(comment_regex + "TODO", token):
+        if re.match(COMMENT_REGEX + "TODO", token):
             if not re.match(todos_format, token):
                 return {"error_key": err_const.NON_CONVENTIONAL_TODO, "error_params": []}
 
     elif allow_todos and not allow_generic_comments:
         if not re.match(todos_format, token):
-            return {"error_key": err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, "error_params": []}
+            return {"error_key": err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS,
+                    "error_params": []}
 
     elif not allow_todos and allow_generic_comments:
-        if re.match(comment_regex + "TODO", token, re.IGNORECASE):
+        if re.match(COMMENT_REGEX + "TODO", token, re.IGNORECASE):
             return {"error_key": err_const.NO_TODOS, "error_params": []}
 
     else:
@@ -44,7 +46,7 @@ def check_file_encoding(file_path):
     file_encoding = config_loader.CONFIG['check_file_encoding']['params']
     try:
         codecs.open(file_path, encoding=file_encoding["source_file_encoding"]).read()
-    except:
+    except ValueError:
         return {"error_key": err_const.FILE_ENCODING, "error_params": []}
 
 
@@ -83,7 +85,8 @@ def check_consecutive_empty_lines(empty_lines):
     params = config_loader.CONFIG["consecutive_empty_lines"]["params"]
     empty_lines_allowed = params["consecutive_empty_lines"]
     if empty_lines > empty_lines_allowed:
-        return {"error_key": err_const.CONSECUTIVE_EMPTY_LINES, "error_params": [empty_lines_allowed]}
+        return {"error_key": err_const.CONSECUTIVE_EMPTY_LINES,
+                "error_params": [empty_lines_allowed]}
 
 
 def check_skip_file():
@@ -103,12 +106,13 @@ def check_spaces_around_operators(characters, current_char_index):
     if _command_is_active("spaces_around_operators") is not True:
         return
 
-    allowed_num_spaces = config_loader.CONFIG["spaces_around_operators"]["params"]["spaces_around_operators"]
+    allowed_num_spaces = config_loader.CONFIG["spaces_around_operators"]["params"][
+        "spaces_around_operators"]
     before_index = current_char_index - allowed_num_spaces - 2
     after_index = current_char_index + allowed_num_spaces + 1
     chars_around_operator = characters[before_index:after_index]
-    if not re.match("(\S{0,1})\s{" + str(allowed_num_spaces) + "}\S\s{" + str(
-            allowed_num_spaces) + "}\S{0,1}$", chars_around_operator):
+    if not re.match(r"(\S{0,1})\s{" + str(allowed_num_spaces) + r"}\S\s{" + str(
+            allowed_num_spaces) + r"}\S{0,1}$", chars_around_operator):
         return {"error_key": err_const.NO_SPACE_AROUND_OPERATORS,
                 "error_params": [allowed_num_spaces]}
 
@@ -123,27 +127,32 @@ def check_spelling(token, token_lexer_type):
         words = _parse_words(token)
 
     for word in words:
-        spelt_correct = dictionary.check(word)
+        spelt_correct = DICTIONARY.check(word)
         if not spelt_correct:
             return {"error_key": err_const.TYPO_IN_CODE, "error_params": []}
 
 
-def check_method_declaration_spacing(read_line):
+def check_method_dec_spacing(read_line):
     read_line = read_line.lstrip()
 
-    if _command_is_active("check_method_declaration_spacing") is not True or re.match(comment_regex, read_line, re.IGNORECASE):
+    if _command_is_active("check_method_declaration_spacing") is not True or \
+            re.match(COMMENT_REGEX, read_line, re.IGNORECASE):
         return
 
-    method_spaces = config_loader.CONFIG["check_method_declaration_spacing"]["params"]["method_spaces"]
+    method_spaces = config_loader.CONFIG["check_method_declaration_spacing"]["params"][
+        "method_spaces"]
 
-    if re.search(r"\b(function|sub)\b", read_line, re.IGNORECASE) and not re.search(r"\b(end function|end sub)\b",
-                                                                     read_line) and not re.search(
-        r"\b(endfunction|endsub)\b",
-        read_line, re.IGNORECASE):
-        if not re.search(r"(function|sub)\s{" + str(method_spaces) + "}[a-z0-9_A-Z]*\(([a-z0-9_A-Z]*" + \
-                                 "(?:(\s{" + str(method_spaces) + "}as\s{" + str(
-            method_spaces) + "}([a-z0-9_A-Z]+))?)(?:,\s{" + \
-                                 str(method_spaces) + "}[a-z0-9_A-Z]*)?)*\)", read_line, re.IGNORECASE):
+    if re.search(r"\b(function|sub)\b", read_line, re.IGNORECASE) and not re.search(
+            r"\b(end function|end sub)\b",
+            read_line) and not re.search(
+                r"\b(endfunction|endsub)\b",
+                read_line, re.IGNORECASE):
+        if not re.search(r"(function|sub)\s{" + str(
+                method_spaces) + r"}[a-z0-9_A-Z]*\(([a-z0-9_A-Z]*" + \
+                                 r"(?:(\s{" + str(method_spaces) + r"}as\s{" + str(
+                                     method_spaces) + r"}([a-z0-9_A-Z]+))?)(?:,\s{" + \
+                                 str(method_spaces) + r"}[a-z0-9_A-Z]*)?)*\)", read_line,
+                         re.IGNORECASE):
             return {"error_key": err_const.METHOD_DECLARATION_SPACING, "error_params": []}
 
 
@@ -158,8 +167,8 @@ def _command_is_active(command_name):
 
 
 def _change_dict_lang(dict_lang):
-    global dictionary
-    dictionary = words_dict.get_new_dictionary(dict_lang)
+    global DICTIONARY
+    DICTIONARY = words_dict.get_new_dictionary(dict_lang)
 
 
 def _handle_warnings(current_indentation_level, characters):
@@ -168,13 +177,11 @@ def _handle_warnings(current_indentation_level, characters):
     tab_size = indent_config["tab_size"]
     if re.search(r"\S", characters):
         if only_tab_indents:
-            if not re.match("\t{" + str(current_indentation_level) + "}\S", characters):
+            if not re.match(r"\t{" + str(current_indentation_level) + r"}\S", characters):
                 return {"error_key": err_const.TAB_AND_SPACES, "error_params": []}
         else:
-            if not re.match("\s{" + str(
-                            tab_size *
-                            current_indentation_level) + "}\S",
-                            characters):
+            if not re.match(r"\s{" + str(
+                    tab_size * current_indentation_level) + r"}\S", characters):
                 return {"error_key": err_const.TAB_INDENTATION_ERROR,
                         "error_params": [tab_size]}
 
@@ -186,7 +193,7 @@ def _parse_words(identifier_str):
     for i in range(0, len(identifier_str)):
         char = identifier_str[i]
         if not char.isalpha():
-            if not word == '':
+            if word != '':
                 words.append(word)
             word = ''
             continue

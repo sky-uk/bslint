@@ -1,3 +1,4 @@
+# pylint: disable=too-few-public-methods
 from bslint import constants as const
 from bslint.lexer.token import Token
 
@@ -24,7 +25,8 @@ class MatchHandler:
             self._match = self._match.group("value")
         else:
             self._match = self._match.group()
-        return Token(self._match, self._token_lexer_type, self._token_parser_type, token_type=self._type)
+        return Token(self._match, self._token_lexer_type, self._token_parser_type,
+                     token_type=self._type)
 
     def _build_id_token(self):
         if self._match.group('type') is not '':

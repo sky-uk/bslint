@@ -6,6 +6,7 @@ from bslint.lexer import commands as commands
 
 
 class StylingHandler:
+    # pylint: disable=too-many-instance-attributes
     def __init__(self, characters):
         self._is_empty_line = True
         self.line_number = 1
@@ -24,7 +25,8 @@ class StylingHandler:
         self._line_not_to_style_check = -1
 
     def _get_last_line(self):
-        last_line = re.findall("(?:(?<=^)|(?<=\n))(.*)", self.characters[:self.current_char_index - 1], re.MULTILINE)
+        last_line = re.findall("(?:(?<=^)|(?<=\n))(.*)",
+                               self.characters[:self.current_char_index - 1], re.MULTILINE)
         return last_line[-1]
 
     def apply_bslint_command(self, command_type):
@@ -78,7 +80,8 @@ class StylingHandler:
         self._warning_filter(is_spelt_correctly)
 
     def _check_operator_spacing(self):
-        correct_spacing = commands.check_spaces_around_operators(self.characters, self.current_char_index)
+        correct_spacing = commands.check_spaces_around_operators(self.characters,
+                                                                 self.current_char_index)
         self._warning_filter(correct_spacing)
 
     def _check_comment_styling(self):
@@ -93,16 +96,19 @@ class StylingHandler:
         is_correct_line_length = commands.check_max_line_length(self.line_length)
         self._warning_filter(is_correct_line_length)
 
-        is_consecutive_empty_lines = commands.check_consecutive_empty_lines(self._consecutive_empty_lines)
+        is_consecutive_empty_lines = commands.check_consecutive_empty_lines(
+            self._consecutive_empty_lines)
         self._warning_filter(is_consecutive_empty_lines)
 
         last_read_line = self._get_last_line()
         self._apply_indentation_styling(last_read_line)
-        is_correct_method_declaration_spacing = commands.check_method_declaration_spacing(last_read_line)
-        self._warning_filter(is_correct_method_declaration_spacing)
+        is_correct_method_dec_spacing = commands.check_method_dec_spacing(
+            last_read_line)
+        self._warning_filter(is_correct_method_dec_spacing)
 
     def _apply_indentation_styling(self, last_read_line):
-        is_correct_indentation = commands.check_indentation(self._current_indentation_level, last_read_line,
+        is_correct_indentation = commands.check_indentation(self._current_indentation_level,
+                                                            last_read_line,
                                                             self._indentation_level)
         if is_correct_indentation:
             self._warning_filter(is_correct_indentation[0])

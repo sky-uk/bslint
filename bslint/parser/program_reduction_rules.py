@@ -1,9 +1,10 @@
+import collections
 import bslint.constants as const
-from bslint.parser.reduction_rule_handler import ReductionRuleHandler
 
-rules_list = [
+RULE = collections.namedtuple('Rule', ['rule', 'result'])
+RULES_LIST = [
 
-    # region Block Statement reduction rules
+    # region Block Statement reduction RULES
 
     # region Variable assignment block statement
 
@@ -33,9 +34,13 @@ rules_list = [
     # endregion
 
     ([const.WHILE_STATEMENT, const.BLOCK_STATEMENT, const.END_WHILE], [const.BLOCK_STATEMENT]),
+    ([const.WHILE_STATEMENT, const.END_WHILE], [const.BLOCK_STATEMENT]),
     ([const.FOR_STATEMENT, const.BLOCK_STATEMENT, const.END_FOR], [const.BLOCK_STATEMENT]),
+    ([const.FOR_STATEMENT, const.END_FOR], [const.BLOCK_STATEMENT]),
     ([const.FOR_EACH_STATEMENT, const.BLOCK_STATEMENT, const.END_FOR], [const.BLOCK_STATEMENT]),
+    ([const.FOR_EACH_STATEMENT, const.END_FOR], [const.BLOCK_STATEMENT]),
     ([const.FUNCTION_DECLARATION, const.BLOCK_STATEMENT, const.END_FUNCTION], [const.BLOCK_STATEMENT]),
+    ([const.FUNCTION_DECLARATION, const.END_FUNCTION], [const.BLOCK_STATEMENT]),
 
     # region IF statement
     ([const.IF_STATEMENT, const.BLOCK_STATEMENT, const.END_IF], [const.BLOCK_STATEMENT]),
@@ -48,6 +53,6 @@ rules_list = [
 
 ]
 
-rules = []
-for rule in rules_list:
-    rules.append(ReductionRuleHandler(rule[0], rule[1]))
+RULES = []
+for rule in RULES_LIST:
+    RULES.append(RULE(rule[0], rule[1]))

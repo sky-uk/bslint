@@ -8,6 +8,7 @@ machine:
 test:
   pre:
     - pip install coverage
+    - pip install pylint
   override:
     - nosetests --with-coverage --cover-inclusive --cover-package=bslint
   post:

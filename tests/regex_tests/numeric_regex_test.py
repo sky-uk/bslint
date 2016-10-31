@@ -1,27 +1,23 @@
 import unittest
 
 import bslint.constants as const
-import bslint.lexer.handlers.regex_handler as regex_handler
 from bslint.lexer.lexer import Lexer as Lexer
 from bslint.lexer.token import Token as Token
+from tests.resources.common.test_methods import CommonMethods as Common
 
 
 class TestNumericRegex(unittest.TestCase):
     TOKENS = 'Tokens'
 
+    @classmethod
+    def setUpClass(cls):
+        cls.common = Common()
+
     def test_integer(self):
-        identifier = "1234"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.NUMERIC)
-        self.assertEqual(result["token_parser_type"], const.VALUE)
+        self.common.match_regex("1234", None, const.NUMERIC, const.VALUE)
 
     def test_decimal(self):
-        identifier = "123.456"
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), identifier)
-        self.assertEqual(result["token_lexer_type"], const.NUMERIC)
-        self.assertEqual(result["token_parser_type"], const.VALUE)
+        self.common.match_regex("123.456", None, const.NUMERIC, const.VALUE)
 
     def test_integer_with_trailing_points(self):
         identifier = "123."

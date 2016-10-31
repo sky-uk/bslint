@@ -1,3 +1,4 @@
+# pylint: disable=too-few-public-methods
 class Error:
 
     def __init__(self, message):

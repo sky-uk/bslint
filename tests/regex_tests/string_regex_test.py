@@ -7,25 +7,22 @@ from bslint.lexer.lexer import Lexer as Lexer
 from bslint.lexer.token import Token as Token
 from filepaths import LEXING_TEST_FILES_PATH
 from filepaths import STYLING_TEST_FILES_PATH
+from tests.resources.common.test_methods import CommonMethods as Common
 
 
 class TestStringRegex(unittest.TestCase):
     TOKENS = 'Tokens'
 
+    @classmethod
+    def setUpClass(cls):
+        cls.common = Common()
+
     def test_string(self):
-        test_string = '"test123ID"'
-        result = regex_handler.find_match(test_string)
-        self.assertEqual(result["match"].group(), test_string)
-        self.assertEqual(result["token_lexer_type"], const.STRING)
-        self.assertEqual(result["token_parser_type"], const.VALUE)
+        self.common.match_regex('"test123ID"', None, const.STRING, const.VALUE)
 
     def test_unclosed_quotes(self):
-        test_string = '"test123ID\n'
         with self.assertRaises(ValueError):
-            result = regex_handler.find_match(test_string)
-            self.assertEqual(result["match"].group(), test_string)
-            self.assertEqual(result["token_lexer_type"], const.STRING)
-            self.assertEqual(result["token_parser_type"], const.VALUE)
+            self.common.match_regex('"test123ID\n', None, const.STRING, const.VALUE)
 
     def test_variable_assignment_string(self):
         exp_result = [Token('myString', const.ID, const.ID, 1), Token('=', const.OPERATOR, const.EQUALS, 1),

@@ -61,7 +61,7 @@ class InterfaceHandler:
             return ""
 
     def lint_all(self, directory):
-        for dir_name, subdirList, files in os.walk(directory):
+        for dir_name, subdirList, files in os.walk(directory): # pylint: disable=C0103, W0612
             relative_path = self.get_relative_path(dir_name)
             if "ignore" in self.bslintrc and not self.ignore_dir(relative_path, self.bslintrc["ignore"]):
                 self.lint_directory(dir_name, files)
@@ -91,13 +91,15 @@ class InterfaceHandler:
         self.is_lexed_correctly = False
         self.messages["Warnings"][filepath] = []
         for warning in lex_result["Warnings"]:
-            self.messages["Warnings"][filepath].append(const.WARNING_COLOUR + str(warning) + const.END_COLOUR)
+            self.messages["Warnings"][filepath].append(
+                const.WARNING_COLOUR + str(warning) + const.END_COLOUR)
 
     def handle_lexing_error(self, filepath, lex_result):
         self.is_lexed_correctly = False
         self.messages["Errors"][filepath] = []
         for error in lex_result["Tokens"]:
-            self.messages["Errors"][filepath].append(const.ERROR_COLOUR + str(error) + const.END_COLOUR)
+            self.messages["Errors"][filepath].append(
+                const.ERROR_COLOUR + str(error) + const.END_COLOUR)
 
     def print_warnings(self, file_name):
         if file_name in self.messages["Warnings"]:
@@ -142,15 +144,16 @@ class InterfaceHandler:
 
     @staticmethod
     def file_reader(file_to_lex):
-        fo = open(file_to_lex, "r+")
-        str_to_lex = fo.read()
-        return {"invalid_encoding": commands.check_file_encoding(file_to_lex), "str_to_lex": str_to_lex}
+        file = open(file_to_lex, "r+")
+        str_to_lex = file.read()
+        return {"invalid_encoding": commands.check_file_encoding(file_to_lex),
+                "str_to_lex": str_to_lex}
 
     @staticmethod
     def get_version():
         this_dir = os.path.dirname(__file__)
         return re.search(
-            '^__version__\s*=\s*"(.*)"',
+            r'^__version__\s*=\s*"(.*)"',
             open(os.path.join(this_dir, 'bslint.py')).read(),
             re.M
         ).group(1)
@@ -163,9 +166,3 @@ class InterfaceHandler:
     def no_manifest_in_folder(upper_dir):
         return not os.path.exists(os.path.join(upper_dir, "MANIFEST")) and not os.path.exists(
             os.path.join(upper_dir, "manifest"))
-
-
-
-
-
-

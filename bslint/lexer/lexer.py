@@ -1,3 +1,4 @@
+# pylint: disable=too-many-instance-attributes
 import re
 
 import bslint.error_messages.constants as err_const
@@ -27,21 +28,25 @@ class Lexer:
         while self.handle_style.current_char_index < len(self.characters):
             try:
                 self.create_token_and_handle_styling()
-            except ValueError as e:
-                if e == err_const.PARSING_FAILED:
+            except ValueError as exception:
+                if exception == err_const.PARSING_FAILED:
                     self.parsing_failed = True
                 else:
                     self.handle_unexpected_token()
         self.handle_style.apply_new_line_styling()
-        self.check_statement_validity(self.tokens[self.current_token_index:])
-        self.check_program_validity()
+        if not self.parsing_failed:
+            self.check_statement_validity(self.tokens[self.current_token_index:])
+            self.check_program_validity()
         if len(self.errors) is not 0 or self.parsing_failed:
-            return {"Status": "Error", "Tokens": self.errors, "Warnings": self.handle_style.warnings}
+            return {"Status": "Error", "Tokens": self.errors,
+                    "Warnings": self.handle_style.warnings}
         else:
-            return {"Status": "Success", "Tokens": self.tokens, "Warnings": self.handle_style.warnings}
+            return {"Status": "Success", "Tokens": self.tokens,
+                    "Warnings": self.handle_style.warnings}
 
     def create_token_and_handle_styling(self):
-        regex_match = regex_handler.find_match(self.characters[self.handle_style.current_char_index:])
+        regex_match = regex_handler.find_match(
+            self.characters[self.handle_style.current_char_index:])
         self.handle_style.line_length += len(regex_match["match"].group())
         self.handle_style.current_char_index += len(regex_match["match"].group())
         if regex_match["token_lexer_type"] is not None:
@@ -67,8 +72,10 @@ class Lexer:
         self.handle_style.line_number += 1
         self.handle_style.current_char_index += len(end_of_line.group())
 
+    # pylint: disable=unused-argument
     def check_statement_validity(self, statement):
         self.statements_counter += 1
 
+    # pylint: disable=no-self-use
     def check_program_validity(self):
         return

@@ -11,6 +11,9 @@ from filepaths import TESTS_RESOURCES_PATH
 
 
 class TestErrorHandling(unittest.TestCase):
+    
+    ERRORS = "Errors"
+    WARNINGS = "Warnings"
 
     def setUp(self):
         self.InterfaceHandler = InterfaceHandler()
@@ -19,19 +22,19 @@ class TestErrorHandling(unittest.TestCase):
         skeleton_main_with_errors_path = os.path.join(LEXING_TEST_FILES_PATH, 'skeleton-main-with-errors.brs')
         self.InterfaceHandler.lint_specific(skeleton_main_with_errors_path)
 
-        self.assertEqual(len(self.InterfaceHandler.messages["Errors"]), 1)
-        self.assertEqual(len(self.InterfaceHandler.messages["Warnings"]), 0)
+        self.assertEqual(len(self.InterfaceHandler.messages[self.ERRORS]), 1)
+        self.assertEqual(len(self.InterfaceHandler.messages[self.WARNINGS]), 0)
 
     def test_only_warnings_in_file_without_errors(self):
         skeleton_main_path = os.path.join(LEXING_TEST_FILES_PATH, 'skeleton-main.brs')
         self.InterfaceHandler.lint_specific(skeleton_main_path)
-        self.assertEqual(len(self.InterfaceHandler.messages["Warnings"]), 1)
-        self.assertEqual(len(self.InterfaceHandler.messages["Errors"]), 0)
+        self.assertEqual(len(self.InterfaceHandler.messages[self.WARNINGS]), 1)
+        self.assertEqual(len(self.InterfaceHandler.messages[self.ERRORS]), 0)
 
     def test_parsing_directory(self):
         self.InterfaceHandler.lint_all(LEXING_TEST_FILES_PATH)
-        self.assertEqual(len(self.InterfaceHandler.messages["Warnings"]), 1)
-        self.assertEqual(len(self.InterfaceHandler.messages["Errors"]), 1)
+        self.assertEqual(len(self.InterfaceHandler.messages[self.WARNINGS]), 1)
+        self.assertEqual(len(self.InterfaceHandler.messages[self.ERRORS]), 1)
 
     def test_printed_message(self):
         out = StringIO()

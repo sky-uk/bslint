@@ -1,46 +1,43 @@
 import unittest
 
 from bslint import constants as const
-from bslint.parser.parser import Parser
+from tests.resources.common.test_methods import CommonMethods as Common
 
 
 class TestCheckClosingTest(unittest.TestCase):
-
-    def _match(self, identifier):
-        parser = Parser()
-        result = parser.parse(identifier)
-        self.assertEqual("Success", result['Status'])
-        self.assertEqual([const.END_IF], parser.all_statements[0])
+    @classmethod
+    def setUpClass(cls):
+        cls.common = Common()
 
     def test_end_if(self):
-        self._match("endif")
+        self.common.match_statement("endif", const.END_IF)
 
     def test_end_if_space(self):
-        self._match("end if")
+        self.common.match_statement("end if", const.END_IF)
 
     def test_end_while(self):
-        self._match("endwhile")
+        self.common.match_statement("endwhile", const.END_WHILE)
 
     def test_end_while_space(self):
-        self._match("end while")
+        self.common.match_statement("end while", const.END_WHILE)
 
     def test_end_for(self):
-        self._match("endfor")
+        self.common.match_statement("endfor", const.END_FOR)
 
     def test_end_for_space(self):
-        self._match("end for")
+        self.common.match_statement("end for", const.END_FOR)
 
     def test_end_sub(self):
-        self._match("endsub")
+        self.common.match_statement("endsub", const.END_FUNCTION)
 
     def test_end_sub_space(self):
-        self._match("end sub")
+        self.common.match_statement("end sub", const.END_FUNCTION)
 
     def test_end_function(self):
-        self._match("endfunction")
+        self.common.match_statement("endfunction", const.END_FUNCTION)
 
     def test_end_function_space(self):
-        self._match("end function")
+        self.common.match_statement("end function", const.END_FUNCTION)
 
     def test_end(self):
-        self._match("end")
+        self.common.match_statement("end", const.END)
