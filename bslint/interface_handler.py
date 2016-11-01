@@ -1,3 +1,4 @@
+# pylint: disable=too-many-instance-attributes
 import os
 import re
 import sys
@@ -15,31 +16,46 @@ class InterfaceHandler:
         self.messages = {"Errors": {}, "Warnings": {}}
         self.bslintrc = {"ignore": []}
         self.out = out
+        self.manifest_path = ""
+        self.warnings_total = 0
+        self.errors_total = 0
 
     def main(self):
         print(const.TITLE_COLOUR + "BSLint: A linter for BrightScript. %s. \n" %
               InterfaceHandler.get_version() + const.END_COLOUR)
-        manifest_path = self._get_manifest_path()
-        self.bslintrc = self._parse_bslintrc(manifest_path)
-
-        if self.bslintrc is None:
-            return
 
         if self.is_specific_path():
             filename = sys.argv[1]
             if not os.path.exists(filename):
                 self.is_lexed_correctly = False
+                self.out.write(
+                    const.ERROR_COLOUR + "The path you have provided does not exist." + const.END_COLOUR + "\n")
+                return
+
+        self.manifest_path = self._get_manifest_path()
+        self.bslintrc = self._parse_bslintrc(self.manifest_path)
+
+        if self.bslintrc is None:
+            return
+
+        self.out.write("\n")
+
+        if self.is_specific_path():
+            if os.path.isfile(filename):
+                self.lint_file(filename)
             else:
-                if os.path.isfile(filename):
-                    self.lint_specific(filename)
-                else:
-                    self.lint_all(filename)
+                self.lint_all(filename)
         else:
             pathname = os.getcwd()
             self.lint_all(pathname)
+        self.out.write(
+            const.FILE_COLOUR + "LINTING COMPLETE" + const.END_COLOUR + "\n")
         if self.is_lexed_correctly:
-            print(const.PASS_COLOUR + 'All lexed correctly' + const.END_COLOUR)
+            print(const.PASS_COLOUR + 'All linted correctly' + const.END_COLOUR)
             print("\n")
+        else:
+            self.out.write(const.TOTAL_COLOUR + "TOTAL WARNINGS: " + str(self.warnings_total) + const.END_COLOUR + "\n")
+            self.out.write(const.TOTAL_COLOUR + "TOTAL ERRORS: " + str(self.errors_total) + const.END_COLOUR + "\n")
 
     def _get_manifest_path(self):
         try:
@@ -72,10 +88,10 @@ class InterfaceHandler:
         for file in files:
             if file.endswith(".brs") or file.endswith(".bs"):
                 filepath = os.path.join(dir_name, file)
-                self.lint_specific(filepath)
+                self.lint_file(filepath)
                 self.print_warnings(filepath)
 
-    def lint_specific(self, filepath):
+    def lint_file(self, filepath):
         filename = filepath.replace(os.getcwd() + '/', '')
         if filename.endswith(".brs") or filename.endswith(".bs"):
             self.files.append(filename)
@@ -107,6 +123,9 @@ class InterfaceHandler:
             self.out.write(const.FILE_COLOUR + file_name + const.END_COLOUR + "\n")
             for message in self.messages["Warnings"][file_name]:
                 self.out.write(message + "\n")
+            number_warnings = len(self.messages["Warnings"][file_name])
+            self.warnings_total += number_warnings
+            self.out.write(const.TOTAL_COLOUR + "WARNINGS IN FILE: " + str(number_warnings) + const.END_COLOUR + "\n")
             self.out.write("\n")
 
     def print_errors(self):
@@ -114,7 +133,10 @@ class InterfaceHandler:
             self.out.write(const.FILE_COLOUR + file_name + const.END_COLOUR + "\n")
             for message in self.messages["Errors"][file_name]:
                 self.out.write(message + "\n")
-        self.out.write("\n")
+            number_errors = len(self.messages["Errors"][file_name])
+            self.errors_total += number_errors
+            self.out.write(const.TOTAL_COLOUR + "ERRORS IN FILE: " + str(number_errors) + const.END_COLOUR + "\n")
+            self.out.write("\n")
 
     def ignore_dir(self, relative_directory_path, directories_to_ignore):
         for directory in directories_to_ignore:
@@ -131,7 +153,7 @@ class InterfaceHandler:
         return bslint.config_loader.load_config_file(bslintrc_path)
 
     def get_relative_path(self, dir_name):
-        directory = os.path.abspath(self._get_manifest_path())
+        directory = os.path.abspath(self.manifest_path)
         return dir_name.replace(directory, '')
 
     @staticmethod

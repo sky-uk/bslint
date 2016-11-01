@@ -20,13 +20,13 @@ class TestErrorHandling(unittest.TestCase):
 
     def test_no_warnings_in_file_with_errors(self):
         skeleton_main_with_errors_path = os.path.join(LEXING_TEST_FILES_PATH, 'skeleton-main-with-errors.brs')
-        self.InterfaceHandler.lint_specific(skeleton_main_with_errors_path)
+        self.InterfaceHandler.lint_file(skeleton_main_with_errors_path)
         self.assertEqual(len(self.InterfaceHandler.messages[self.ERRORS]), 1)
         self.assertEqual(len(self.InterfaceHandler.messages[self.WARNINGS]), 0)
 
     def test_only_warnings_in_file_without_errors(self):
         skeleton_main_path = os.path.join(LEXING_TEST_FILES_PATH, 'skeleton-main.brs')
-        self.InterfaceHandler.lint_specific(skeleton_main_path)
+        self.InterfaceHandler.lint_file(skeleton_main_path)
         self.assertEqual(len(self.InterfaceHandler.messages[self.WARNINGS]), 1)
         self.assertEqual(len(self.InterfaceHandler.messages[self.ERRORS]), 0)
 
