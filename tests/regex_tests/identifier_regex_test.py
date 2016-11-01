@@ -4,6 +4,7 @@ import bslint.constants as const
 import bslint.lexer.handlers.regex_handler as regex_handler
 from bslint.lexer.lexer import Lexer as Lexer
 from bslint.lexer.token import Token as Token
+from tests.resources.common.test_methods import CommonMethods as Common
 
 
 class TestIdentifierRegex(unittest.TestCase):
@@ -11,29 +12,27 @@ class TestIdentifierRegex(unittest.TestCase):
     TYPE_GROUP = 'type'
     VALUE_GROUP = 'value'
 
-    def _match(self, identifier, match_group):
-        result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(match_group), identifier)
-        self.assertEqual(result["token_lexer_type"], const.ID)
-        self.assertEqual(result["token_parser_type"], const.ID)
+    @classmethod
+    def setUpClass(cls):
+        cls.common = Common()
 
     def test_basic_identifier(self):
-        self._match("testId", 0)
+        self.common.match_regex("testId", 0, const.ID, const.ID)
 
     def test_identifier_with_underscore(self):
-        self._match("test_Id", self.VALUE_GROUP)
+        self.common.match_regex("test_Id", self.VALUE_GROUP, const.ID, const.ID)
 
     def test_identifier_starting_with_underscore(self):
-        self._match("_testId", self.VALUE_GROUP)
+        self.common.match_regex("_testId", self.VALUE_GROUP, const.ID, const.ID)
 
     def test_identifier_with_numbers_not_start(self):
-        self._match("test123ID", self.VALUE_GROUP)
+        self.common.match_regex("test123ID", self.VALUE_GROUP, const.ID, const.ID)
 
     def test_one_letter_identifier(self):
-        self._match("t", self.VALUE_GROUP)
+        self.common.match_regex("t", self.VALUE_GROUP, const.ID, const.ID)
 
     def test_identifier_as_underscore(self):
-        self._match("_", 0)
+        self.common.match_regex("_", 0, const.ID, const.ID)
 
     def test_identifier_in_statement_with_space(self):
         identifier = "_testId ="

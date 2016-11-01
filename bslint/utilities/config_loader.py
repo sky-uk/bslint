@@ -13,7 +13,7 @@ def load_config_file(user_filepath=None, default_filepath=DEFAULT_CONFIG_FILE_PA
         user_json = get_user_config(user_filepath)
         default_json = overwrite_default_config(default_json, user_json)
 
-    except FileNotFoundError as e:
+    except FileNotFoundError:
         out.write(const.ERROR_COLOUR + "Cannot find bslintrc, using default config." + const.END_COLOUR)
     except ValueError:
         out.write(const.ERROR_COLOUR + "Unable to parse JSON in .bslintrc file" + const.END_COLOUR)
@@ -42,5 +42,5 @@ def overwrite_default_config(default_json, user_json):
 
 
 def read_json(filepath):
-    with open(filepath, 'r') as f:
-        return json.loads(f.read())
+    with open(filepath, 'r') as file:
+        return json.loads(file.read())

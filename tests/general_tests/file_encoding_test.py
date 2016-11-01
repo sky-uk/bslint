@@ -22,6 +22,7 @@ class TestEncodingCheck(unittest.TestCase):
         cls.ascii_encoding_config_path = os.path.join(TESTS_CONFIG_PATH, 'file_encoding/ASCII-encoding-config.json')
         cls.ascii_chars_file_path = os.path.join(TESTS_RESOURCES_PATH, 'encoding_test_files/ASCII-chars.brs')
         cls.non_ascii_chars_file_path = os.path.join(TESTS_RESOURCES_PATH, 'encoding_test_files/NON-ASCII-chars.brs')
+        cls.utf8_encoding_config_path = os.path.join(TESTS_CONFIG_PATH, 'file_encoding/UTF8-encoding-config.json')
 
     def test_ascii_chars(self):
         bslint.load_config_file(user_filepath=self.ascii_encoding_config_path)
@@ -37,8 +38,7 @@ class TestEncodingCheck(unittest.TestCase):
         self.assertEqual(result['error_key'], err_const.FILE_ENCODING)
 
     def test_utf_8_chars(self):
-        utf8_encoding_config_path = os.path.join(TESTS_CONFIG_PATH, 'file_encoding/UTF8-encoding-config.json')
-        bslint.load_config_file(user_filepath=utf8_encoding_config_path)
+        bslint.load_config_file(user_filepath=self.utf8_encoding_config_path)
         file_path = self.non_ascii_chars_file_path
         result = commands.check_file_encoding(file_path)
         exp_result = None

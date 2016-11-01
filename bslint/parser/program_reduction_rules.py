@@ -4,8 +4,6 @@ import bslint.constants as const
 RULE = collections.namedtuple('Rule', ['rule', 'result'])
 RULES_LIST = [
 
-    # region Block Statement reduction RULES
-
     # region Variable assignment block statement
 
     ([const.PRINT_STATEMENT], [const.BLOCK_STATEMENT]),

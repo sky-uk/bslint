@@ -41,7 +41,7 @@ class TestMiscRegex(unittest.TestCase):
     def test_hash_symbol(self):
         self.common.match_regex("#", None, const.HASH_SYMBOL, const.HASH_SYMBOL)
 
-    def testColon(self):
+    def test_colon(self):
         self.common.match_regex(":", None, const.COLON, const.COLON)
 
     def test_space_new_line(self):

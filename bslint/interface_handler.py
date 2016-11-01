@@ -17,7 +17,8 @@ class InterfaceHandler:
         self.out = out
 
     def main(self):
-        print(const.TITLE_COLOUR + "BSLint: A linter for BrightScript. %s. \n" % InterfaceHandler.get_version() + const.END_COLOUR)
+        print(const.TITLE_COLOUR + "BSLint: A linter for BrightScript. %s. \n" %
+              InterfaceHandler.get_version() + const.END_COLOUR)
         manifest_path = self._get_manifest_path()
         self.bslintrc = self._parse_bslintrc(manifest_path)
 
@@ -61,7 +62,7 @@ class InterfaceHandler:
             return ""
 
     def lint_all(self, directory):
-        for dir_name, subdirList, files in os.walk(directory): # pylint: disable=C0103, W0612
+        for dir_name, subdirList, files in os.walk(directory):  # pylint: disable=C0103, W0612
             relative_path = self.get_relative_path(dir_name)
             if "ignore" in self.bslintrc and not self.ignore_dir(relative_path, self.bslintrc["ignore"]):
                 self.lint_directory(dir_name, files)
@@ -124,11 +125,10 @@ class InterfaceHandler:
                 return True
         return False
 
-
-    def _parse_bslintrc(self, manifest_path):
+    @staticmethod
+    def _parse_bslintrc(manifest_path):
         bslintrc_path = os.path.join(manifest_path, ".bslintrc")
         return bslint.config_loader.load_config_file(bslintrc_path)
-
 
     def get_relative_path(self, dir_name):
         directory = os.path.abspath(self._get_manifest_path())
