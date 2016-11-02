@@ -210,10 +210,10 @@ class TestValueParse(unittest.TestCase):
         self.common.match_statement("(x)", const.ID)
 
     def test_invalid_value_multiple_plus(self):
-        self.common.exception_runner("+ + + + + + + + + +")
+        self.common.status_error("+ + + + + + + + + +")
 
     def test_invalid_value_minus(self):
-        self.common.exception_runner("3-")
+        self.common.status_error("3-")
 
     def test_invalid_value_idplus_while(self):
-        self.common.exception_runner("a + while")
+        self.common.status_error("a + while")

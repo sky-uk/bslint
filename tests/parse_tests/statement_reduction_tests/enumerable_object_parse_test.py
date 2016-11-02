@@ -27,10 +27,10 @@ class TestArgumentParse(unittest.TestCase):
         self.common.match_statement("[5, x]", const.ENUMERABLE_OBJECT)
 
     def test_invalid_associative_array_var_as(self):
-        self.common.exception_runner("{x = 3}")
+        self.common.status_error("{x = 3}")
 
     def test_invalid_array_var_as(self):
-        self.common.exception_runner("[y = 2]")
+        self.common.status_error("[y = 2]")
 
     def test_invalid_mismatched_array_braces(self):
-        self.common.exception_runner("[}")
+        self.common.status_error("[}")

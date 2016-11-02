@@ -2,6 +2,7 @@ import bslint.parser.statement_reduction_rules as statement_grammar
 import bslint.parser.program_reduction_rules as program_grammar
 import bslint.error_messages.constants as err_const
 from bslint.lexer.lexer import Lexer
+import bslint.error_messages.handler as err
 
 MAX_FINAL_STATEMENT_LENGTH = 1
 
@@ -44,7 +45,7 @@ class Parser(Lexer):
                 is_valid_statement = True
             index += 1
         if is_valid_statement is False:
-            raise ValueError(err_const.PARSING_FAILED)
+            raise ValueError(err_const.STMT_PARSING_FAILED)
 
     def _find_matching_production(self, index, possible_production_rules):
         matching_production = None
@@ -89,4 +90,10 @@ class Parser(Lexer):
         self.current_tokens = self.program
         self.current_output_list = self.line_reductions
         if len(self.current_tokens) > 1:
-            self._reduce_and_handle_error()
+            try:
+                self._reduce_and_handle_error()
+            except ValueError:
+                raise ValueError(err_const.PROGRAM_PARSING_FAILED)
+
+    def handle_parsing_error(self, err_code):
+        self.errors.append(err.get_message(err_code, [self.handle_style.line_number]))

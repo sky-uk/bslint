@@ -58,10 +58,10 @@ class TestVariableAssignment(unittest.TestCase):
         self.common.match_statement('jack = (3 + 2)', const.VAR_AS)
 
     def test_invalid_variable_assignment_while(self):
-        self.common.exception_runner("jack = while")
+        self.common.status_error("jack = while")
 
     def test_invalid_variable_assignment_extra_equals(self):
-        self.common.exception_runner("jack == 3")
+        self.common.status_error("jack == 3")
 
     def test_invalid_variable_assignment_incorrect_order(self):
-        self.common.exception_runner("3 = jack")
+        self.common.status_error("3 = jack")

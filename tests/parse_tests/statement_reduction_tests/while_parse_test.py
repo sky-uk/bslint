@@ -40,10 +40,10 @@ class TestWhileParse(unittest.TestCase):
         self.common.match_statement("while -x()", const.WHILE_STATEMENT)
 
     def test_invalid_while_parenthesis(self):
-        self.common.exception_runner("while )")
+        self.common.status_error("while )")
 
     def test_invalid_while_for(self):
-        self.common.exception_runner("while (for)")
+        self.common.status_error("while (for)")
 
     def test_invalid_while_end_while(self):
-        self.common.exception_runner("while endwhile")
+        self.common.status_error("while endwhile")

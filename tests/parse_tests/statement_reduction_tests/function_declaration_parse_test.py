@@ -40,10 +40,10 @@ class TestFunctionDeclarationParse(unittest.TestCase):
         self.common.match_statement("function (y, z)", const.ANONYMOUS_FUNCTION_DECLARATION)
 
     def test_invalid_function_declaraion_value(self):
-        self.common.exception_runner("function 1()")
+        self.common.status_error("function 1()")
 
     def test_invalid_function_declaraion_missing_parenthesis(self):
-        self.common.exception_runner("function x(")
+        self.common.status_error("function x(")
 
     def test_invalid_function_declaraion_extra_parenthesis(self):
-        self.common.exception_runner("function x(())")
+        self.common.status_error("function x(())")

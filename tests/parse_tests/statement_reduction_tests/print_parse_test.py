@@ -181,10 +181,10 @@ class TestPrintParse(unittest.TestCase):
         self.common.match_statement("print x=b; {}", const.PRINT_STATEMENT)
 
     def testInvalidWhileParenthesis(self):
-        self.common.exception_runner("print )")
+        self.common.status_error("print )")
 
     def testInvalidWhileFor(self):
-        self.common.exception_runner("print (for)")
+        self.common.status_error("print (for)")
 
     def testInvalidWhileEndWhile(self):
-        self.common.exception_runner("print endwhile")
+        self.common.status_error("print endwhile")

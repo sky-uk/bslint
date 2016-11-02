@@ -84,10 +84,10 @@ class TestQuestionMarkParse(unittest.TestCase):
         self.common.match_statement("? x=1;4;4", const.PRINT_STATEMENT)
 
     def test_invalid_while_parenthesis(self):
-        self.common.exception_runner("? )")
+        self.common.status_error("? )")
 
     def test_invalid_while_for(self):
-        self.common.exception_runner("? (for)")
+        self.common.status_error("? (for)")
 
     def test_invalid_while_end_while(self):
-        self.common.exception_runner("? endwhile")
+        self.common.status_error("? endwhile")

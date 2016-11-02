@@ -47,10 +47,10 @@ class TestForParse(unittest.TestCase):
         self.common.match_statement("for x=10 To y() Step zz()", const.FOR_STATEMENT)
 
     def test_invalid_for_statement_at_var_as(self):
-        self.common.exception_runner("for ) To 3")
+        self.common.status_error("for ) To 3")
 
     def test_invalid_for_statement_at_to(self):
-        self.common.exception_runner("for x=10 To ) Step 4")
+        self.common.status_error("for x=10 To ) Step 4")
 
     def test_invalid_for_statement_at_step(self):
-        self.common.exception_runner("for x=1 To 3 Step )")
+        self.common.status_error("for x=1 To 3 Step )")

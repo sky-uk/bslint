@@ -13,7 +13,7 @@ class TestMultiLineReductionParse(unittest.TestCase):
         self.common.match_program("function x(y, z)\n?test\n end function", const.BLOCK_STATEMENT)
 
     def test_function_declaration_closed_for_endif(self):
-        self.common.exception_runner("function x(y, z)\n?test\n end if")
+        self.common.status_error("function x(y, z)\n?test\n end if")
 
     def test_function_declaration_closed_for_endwhile(self):
-        self.common.exception_runner("function x(y, z)\n?test\n end while")
+        self.common.status_error("function x(y, z)\n?test\n end while")

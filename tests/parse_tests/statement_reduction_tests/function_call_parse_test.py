@@ -44,7 +44,7 @@ class TestFunctionCallParse(unittest.TestCase):
         self.common.match_statement("wait(0, x.y)", const.FUNCTION_CALL)
 
     def test_invalid_function_call_missing_parenthesis(self):
-        self.common.exception_runner("x(")
+        self.common.status_error("x(")
 
     def test_invalid_function_call_extra_parenthesis(self):
-        self.common.exception_runner("x(())")
+        self.common.status_error("x(())")

@@ -19,7 +19,7 @@ class TestForEachParse(unittest.TestCase):
         self.common.match_statement("For Each char In \"abc\"", const.FOR_EACH_STATEMENT)
 
     def test_for_each_value_in_id(self):
-        self.common.exception_runner("For Each 1 in num")
+        self.common.status_error("For Each 1 in num")
 
     def test_for_each_function_call_in_id(self):
-        self.common.exception_runner("For Each x() in num")
+        self.common.status_error("For Each x() in num")

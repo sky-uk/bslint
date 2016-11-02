@@ -23,7 +23,8 @@ NO_TODOS = "NO_TODOS"
 METHOD_DECLARATION_SPACING = "METHOD_DECLARATION_SPACING"
 UNMATCHED_TOKEN = "UNMATCHED_TOKEN"
 NO_MATCH_FOUND = "NO_MATCH_FOUND"
-PARSING_FAILED = "PARSING_FAILED"
+STMT_PARSING_FAILED = "STMT_PARSING_FAILED"
+PROGRAM_PARSING_FAILED = "PROGRAM_PARSING_FAILED"
 NO_SUCH_KEY = "NO_SUCH_KEY"
 
 ERROR_TABLE = {
@@ -59,5 +60,7 @@ ERROR_TABLE = {
     NO_TODOS: err_builder.Error(WARNING + ": comments must not be TODOs. Line number: {}"),
     METHOD_DECLARATION_SPACING: err_builder.Error(
         WARNING + ": The spacing on the method declaration is incorrect: {}"),
-    UNMATCHED_TOKEN: err_builder.Error(ERROR + ": Unmatched tokens, expected {}, but got {}")
+    UNMATCHED_TOKEN: err_builder.Error(ERROR + ": Unmatched tokens, expected {}, but got {}"),
+    STMT_PARSING_FAILED: err_builder.Error(ERROR + ": Parsing statement failed. Line number: {}"),
+    PROGRAM_PARSING_FAILED: err_builder.Error(ERROR + ": Parsing program failed. Line number: {}")
 }

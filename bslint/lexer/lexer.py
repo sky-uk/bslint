@@ -29,24 +29,29 @@ class Lexer:
             try:
                 self.create_token_and_handle_styling()
             except ValueError as exception:
-                if exception == err_const.PARSING_FAILED:
-                    self.parsing_failed = True
+                self.parsing_failed = True
+                exception_code = self.get_exception_code(exception)
+                if exception_code == err_const.STMT_PARSING_FAILED:
+                    self.handle_parsing_error(exception_code)
+                    break
                 else:
                     self.handle_unexpected_token()
         self.handle_style.apply_new_line_styling()
         if not self.parsing_failed:
-            self.check_statement_validity(self.tokens[self.current_token_index:])
-            self.check_program_validity()
+            try:
+                self.check_statement_validity(self.tokens[self.current_token_index:])
+                self.check_program_validity()
+            except ValueError as exception:
+                self.parsing_failed = True
+                self.handle_parsing_error(self.get_exception_code(exception))
+
         if len(self.errors) is not 0 or self.parsing_failed:
-            return {"Status": "Error", "Tokens": self.errors,
-                    "Warnings": self.handle_style.warnings}
+            return {"Status": "Error", "Tokens": self.errors, "Warnings": self.handle_style.warnings}
         else:
-            return {"Status": "Success", "Tokens": self.tokens,
-                    "Warnings": self.handle_style.warnings}
+            return {"Status": "Success", "Tokens": self.tokens, "Warnings": self.handle_style.warnings}
 
     def create_token_and_handle_styling(self):
-        regex_match = regex_handler.find_match(
-            self.characters[self.handle_style.current_char_index:])
+        regex_match = regex_handler.find_match(self.characters[self.handle_style.current_char_index:])
         self.handle_style.line_length += len(regex_match["match"].group())
         self.handle_style.current_char_index += len(regex_match["match"].group())
         if regex_match["token_lexer_type"] is not None:
@@ -79,3 +84,11 @@ class Lexer:
     # pylint: disable=no-self-use
     def check_program_validity(self):
         return
+
+    # pylint: disable=no-self-use
+    def handle_parsing_error(self, exception):
+        return
+
+    @staticmethod
+    def get_exception_code(exception):
+        return exception.args[0]

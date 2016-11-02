@@ -16,10 +16,10 @@ class TestMultiLineReductionParse(unittest.TestCase):
         self.common.match_program("if x() then\n x = 4\n end if", const.BLOCK_STATEMENT)
 
     def test_if_closed_endwhile(self):
-        self.common.exception_runner("if function() then\n x = 4\n end while")
+        self.common.status_error("if function() then\n x = 4\n end while")
 
     def test_if_closed_endfor(self):
-        self.common.exception_runner("if function() then\n x = 4\n end for")
+        self.common.status_error("if function() then\n x = 4\n end for")
 
     def test_if_with_else_if_closed_endfor(self):
         self.common.match_program("if x = 3 then\n x = 4\n else if x = 4\n x = 5\n end if", const.BLOCK_STATEMENT)
@@ -31,13 +31,13 @@ class TestMultiLineReductionParse(unittest.TestCase):
         self.common.match_program("if x = 3 then\n x = 4\n else if x = 4 then\n x = 5\nelse\n x = 6\n end if", const.BLOCK_STATEMENT)
 
     def test_else_if_closed_endfor(self):
-        self.common.exception_runner("if x = 3 then\n x = 4\n else\n x = 5\n end for")
+        self.common.status_error("if x = 3 then\n x = 4\n else\n x = 5\n end for")
 
     def test_else_if_closed_endwhile(self):
-        self.common.exception_runner("if x = 3 then\n x = 4\n else\n x = 5\n end while")
+        self.common.status_error("if x = 3 then\n x = 4\n else\n x = 5\n end while")
 
     def test_incorrect_else(self):
-        self.common.exception_runner("if x = 3 then\n x = 4\n else\n x = 5\nelse if x = 5\n x = 6\n end if")
+        self.common.status_error("if x = 3 then\n x = 4\n else\n x = 5\nelse if x = 5\n x = 6\n end if")
 
     def test_incorrect_else_if(self):
-        self.common.exception_runner("if x = 3 then\n x = 4\n else if\n x = 5\n end if")
+        self.common.status_error("if x = 3 then\n x = 4\n else if\n x = 5\n end if")

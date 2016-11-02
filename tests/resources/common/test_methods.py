@@ -15,12 +15,10 @@ class CommonMethods(unittest.TestCase):
     STATUS = 'Status'
     SUCCESS = 'Success'
 
-    def exception_runner(self, str_to_parse):
+    def status_error(self, str_to_parse):
         parser = Parser()
-        exp_exception_msg = err_const.PARSING_FAILED
-        with self.assertRaises(ValueError) as ve:
-            parser.parse(str_to_parse)
-            self.assertEqual(ve.exception.args[0], exp_exception_msg)
+        result = parser.parse(str_to_parse)
+        self.assertEqual("Error", result["Status"])
 
     def match_statement(self, input, expected):
         parser = Parser()

@@ -13,16 +13,16 @@ class TestMultiLineReductionParse(unittest.TestCase):
         self.common.match_program("for x=10 To 3 Step zz\nx()\n end for", const.BLOCK_STATEMENT)
 
     def test_for_closed_for_endif(self):
-        self.common.exception_runner("for x=10 To 3 Step zz\ni = 4\n end if")
+        self.common.status_error("for x=10 To 3 Step zz\ni = 4\n end if")
 
     def test_for_closed_for_endwhile(self):
-        self.common.exception_runner("for x=10 To 3 Step zz\ni = 4\n end while")
+        self.common.status_error("for x=10 To 3 Step zz\ni = 4\n end while")
 
     def test_for_each_block(self):
         self.common.match_program("For Each char In x\nprint test\n end for", const.BLOCK_STATEMENT)
 
     def test_for_each_closed_for_endif(self):
-        self.common.exception_runner("For Each char In x\ni = 4\n end if")
+        self.common.status_error("For Each char In x\ni = 4\n end if")
 
     def test_for_each_closed_for_endwhile(self):
-        self.common.exception_runner("For Each char In x\ni = 4\n end while")
+        self.common.status_error("For Each char In x\ni = 4\n end while")

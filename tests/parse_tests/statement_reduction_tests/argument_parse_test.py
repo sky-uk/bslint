@@ -35,10 +35,10 @@ class TestArgumentParse(unittest.TestCase):
         self.common.match_statement("a(b())", const.FUNCTION_CALL)
 
     def test_invalid_argument_while(self):
-        self.common.exception_runner("x(while, 1)")
+        self.common.status_error("x(while, 1)")
 
     def test_invalid_argument_minus(self):
-        self.common.exception_runner("x(-)")
+        self.common.status_error("x(-)")
 
     def test_invalid_argument_comment(self):
-        self.common.exception_runner("x(')")
+        self.common.status_error("x(')")
