@@ -10,7 +10,7 @@ class TestMultiLineReductionParse(unittest.TestCase):
         cls.common = Common()
 
     def test_while_block(self):
-        self.common.match_program("while x = 3\ni = 4\nendwhile", const.BLOCK_STATEMENT)
+        self.common.match_program("while x = 3\ni = 4\nendwhile", const.BLOCK_STMT)
 
     def test_while_closed_with_endfor(self):
         self.common.status_error("while x = 3\ni = 4\n end for")

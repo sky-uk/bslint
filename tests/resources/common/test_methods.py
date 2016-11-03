@@ -22,8 +22,7 @@ class CommonMethods(unittest.TestCase):
 
     def match_statement(self, input, expected):
         parser = Parser()
-        result = parser.parse(input)
-        self.assertEqual("Success", result["Status"])
+        parser.parse(input)
         self.assertEqual(expected, parser.all_statements[-1][0])
 
     def match_program(self, input, expected):

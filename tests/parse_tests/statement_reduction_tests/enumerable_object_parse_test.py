@@ -11,11 +11,14 @@ class TestArgumentParse(unittest.TestCase):
     def test_open_curly_bracket_close_curly_bracket(self):
         self.common.match_statement("{}", const.ENUMERABLE_OBJECT)
 
-    def test_open_curly_bracket_idcolon_value_close_curly_bracket(self):
+    def test_open_enumerable_object_single_values(self):
         self.common.match_statement("{a:1}", const.ENUMERABLE_OBJECT)
 
-    def test_open_curly_bracket_object_comma_object_close_curly_bracket(self):
+    def test_open_enumerable_object_two_values(self):
         self.common.match_statement("{a:1, b:2}", const.ENUMERABLE_OBJECT)
+
+    def test_open_enumerable_object_value_function_call(self):
+        self.common.match_statement("{a: m.id(), b: m.id()}", const.ENUMERABLE_OBJECT)
 
     def test_open_square_bracket_close_square_bracket(self):
         self.common.match_statement("[]", const.ENUMERABLE_OBJECT)

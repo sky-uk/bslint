@@ -38,7 +38,7 @@ class TestFunctionCallParse(unittest.TestCase):
         self.common.match_statement("x(y = 1)", const.FUNCTION_CALL)
 
     def test_built_in_function_call_test(self):
-        self.common.match_statement("wait(0, x.y())", const.FUNCTION_CALL)
+        self.common.match_statement("wait(0, x.y().t(), a)", const.FUNCTION_CALL)
 
     def test_built_in_function_call_with_id_dot_id(self):
         self.common.match_statement("wait(0, x.y)", const.FUNCTION_CALL)

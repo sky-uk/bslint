@@ -39,7 +39,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("STEP", 1, const.KEYWORD, const.STEP)
 
     def test_exit_for(self):
-        self.common.match_regex("EXIT FOR", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("EXIT FOR", 1, const.KEYWORD, const.EXIT)
 
     def test_for_each(self):
         self.common.match_regex("FOR EACH", 1, const.KEYWORD, const.FOR_EACH)
@@ -57,7 +57,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("END WHILE", 1, const.KEYWORD, const.END_WHILE_TOKEN)
 
     def test_exit_while(self):
-        self.common.match_regex("EXIT WHILE", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("EXIT WHILE", 1, const.KEYWORD, const.EXIT)
 
     def test_function(self):
         self.common.match_regex("FUNCTION", 1, const.KEYWORD, const.FUNCTION)
@@ -81,7 +81,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("DIM", 1, const.KEYWORD, const.KEYWORD)
 
     def test_stop(self):
-        self.common.match_regex("STOP", 1, const.KEYWORD, const.STOP)
+        self.common.match_regex("STOP", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_and(self):
         self.common.match_regex("AND", 1, const.KEYWORD, const.AND)
@@ -108,10 +108,10 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("EVAL", 1, const.KEYWORD, const.KEYWORD)
 
     def test_exit(self):
-        self.common.match_regex("EXIT", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("EXIT", 1, const.KEYWORD, const.EXIT)
 
     def test_exitwhile(self):
-        self.common.match_regex("EXITWHILE", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("EXITWHILE", 1, const.KEYWORD, const.EXIT)
 
     def test_false(self):
         self.common.match_regex("FALSE", 1, const.KEYWORD, const.VALUE)
@@ -174,7 +174,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("TYPE", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_main(self):
-        self.common.match_regex("MAIN", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("MAIN", 1, const.ID, const.ID)
 
     def test_question_mark(self):
         self.common.match_regex("?", 0, const.PRINT_KEYWORD, const.PRINT_KEYWORD)
@@ -336,10 +336,10 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("Type", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_void(self):
-        self.common.match_regex("Void", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("Void", 1, const.KEYWORD, const.TYPE)
 
     def test_dynamic(self):
-        self.common.match_regex("Dynamic", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("Dynamic", 1, const.KEYWORD, const.TYPE)
 
     def test_float(self):
         self.common.match_regex("Float", 1, const.KEYWORD, const.TYPE)

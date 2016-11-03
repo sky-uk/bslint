@@ -10,10 +10,10 @@ class TestMultiLineReductionParse(unittest.TestCase):
         cls.common = Common()
         
     def test_if_statements_block(self):
-        self.common.match_program("if x = 3\n x = 4\n end if", const.BLOCK_STATEMENT)
+        self.common.match_program("if x = 3\n x = 4\n end if", const.BLOCK_STMT)
 
     def test_if_then_statements_block(self):
-        self.common.match_program("if x() then\n x = 4\n end if", const.BLOCK_STATEMENT)
+        self.common.match_program("if x() then\n x = 4\n end if", const.BLOCK_STMT)
 
     def test_if_closed_endwhile(self):
         self.common.status_error("if function() then\n x = 4\n end while")
@@ -22,13 +22,13 @@ class TestMultiLineReductionParse(unittest.TestCase):
         self.common.status_error("if function() then\n x = 4\n end for")
 
     def test_if_with_else_if_closed_endfor(self):
-        self.common.match_program("if x = 3 then\n x = 4\n else if x = 4\n x = 5\n end if", const.BLOCK_STATEMENT)
+        self.common.match_program("if x = 3 then\n x = 4\n else if x = 4\n x = 5\n end if", const.BLOCK_STMT)
 
     def test_if_with_else_closed_endfor(self):
-        self.common.match_program("if x = 3 then\n x = 4\n else\n x = 5\n end if", const.BLOCK_STATEMENT)
+        self.common.match_program("if x = 3 then\n x = 4\n else\n x = 5\n end if", const.BLOCK_STMT)
 
     def test_if_with_else_if_and_ele_closed_endfor(self):
-        self.common.match_program("if x = 3 then\n x = 4\n else if x = 4 then\n x = 5\nelse\n x = 6\n end if", const.BLOCK_STATEMENT)
+        self.common.match_program("if x = 3 then\n x = 4\n else if x = 4 then\n x = 5\nelse\n x = 6\n end if", const.BLOCK_STMT)
 
     def test_else_if_closed_endfor(self):
         self.common.status_error("if x = 3 then\n x = 4\n else\n x = 5\n end for")

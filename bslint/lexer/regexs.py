@@ -1,6 +1,5 @@
 # this characters need escaping . ^ $ * + ? { } [ ] \ | ( )
 import collections
-
 import bslint.constants as const
 
 Regex = collections.namedtuple('Token', ['regex', 'lexer_type', 'parser_type', 'indentation'])
@@ -56,11 +55,11 @@ REGEX_LIST = [
     [r"(ELSE IF)\b", const.KEYWORD, const.ELSE_IF, const.SPECIAL_INDENTATION],
 
     [r"(END IF)\b", const.KEYWORD, const.END_IF_TOKEN, const.DECREMENT_INDENTATION],
-    [r"(EXIT FOR)\b", const.KEYWORD, const.KEYWORD, const.DECREMENT_INDENTATION],
+    [r"(EXIT FOR)\b", const.KEYWORD, const.EXIT, const.DECREMENT_INDENTATION],
     [r"(FOR EACH)\b", const.KEYWORD, const.FOR_EACH, const.INCREMENT_INDENTATION],
     [r"(END FOR)\b", const.KEYWORD, const.END_FOR_TOKEN, const.DECREMENT_INDENTATION],
     [r"(END WHILE)\b", const.KEYWORD, const.END_WHILE_TOKEN, const.DECREMENT_INDENTATION],
-    [r"(EXIT WHILE)\b", const.KEYWORD, const.KEYWORD, const.DECREMENT_INDENTATION],
+    [r"(EXIT WHILE)\b", const.KEYWORD, const.EXIT, const.DECREMENT_INDENTATION],
     [r"(END FUNCTION)\b", const.KEYWORD, const.END_FUNCTION_TOKEN, const.DECREMENT_INDENTATION],
     [r"(END SUB)\b", const.KEYWORD, const.END_SUB_TOKEN, const.DECREMENT_INDENTATION],
     [r"(LINE_NUM)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
@@ -70,7 +69,8 @@ REGEX_LIST = [
     [r"(ENDIF)\b", const.KEYWORD, const.END_IF_TOKEN, const.DECREMENT_INDENTATION],
     [r"(ENDFOR)\b", const.KEYWORD, const.END_FOR_TOKEN, const.DECREMENT_INDENTATION],
     [r"(ENDWHILE)\b", const.KEYWORD, const.END_WHILE_TOKEN, const.DECREMENT_INDENTATION],
-    [r"(EXITWHILE)\b", const.KEYWORD, const.KEYWORD, const.DECREMENT_INDENTATION],
+    [r"(EXITWHILE)\b", const.KEYWORD, const.EXIT, const.DECREMENT_INDENTATION],
+    [r"(EXITFOR)\b", const.KEYWORD, const.EXIT, const.DECREMENT_INDENTATION],
     [r"(ENDFUNCTION)\b", const.KEYWORD, const.END_FUNCTION_TOKEN, const.DECREMENT_INDENTATION],
     [r"(ENDSUB)\b", const.KEYWORD, const.END_SUB_TOKEN, const.DECREMENT_INDENTATION],
     [r"(OBJFUN)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
@@ -127,8 +127,8 @@ REGEX_LIST = [
     [r"(FindMemberFunction)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
     [r"(Rnd)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
     [r"(Type)\b", const.KEYWORD, const.BUILT_IN_FUNCTION, const.NO_INDENTATION],
-    [r"(Void)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
-    [r"(Dynamic)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
+    [r"(Void)\b", const.KEYWORD, const.TYPE, const.NO_INDENTATION],
+    [r"(Dynamic)\b", const.KEYWORD, const.TYPE, const.NO_INDENTATION],
     [r"(Float)\b", const.KEYWORD, const.TYPE, const.NO_INDENTATION],
     [r"(Double)\b", const.KEYWORD, const.TYPE, const.NO_INDENTATION],
     [r"(Integer)\b", const.KEYWORD, const.TYPE, const.NO_INDENTATION],
@@ -161,12 +161,12 @@ REGEX_LIST = [
     [r"(DIM)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
     [r"(END)\b", const.KEYWORD, const.END_TOKEN, const.DECREMENT_INDENTATION],
     [r"(MOD)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
-    [r"(STOP)\b", const.KEYWORD, const.STOP, const.NO_INDENTATION],
+    [r"(STOP)\b", const.KEYWORD, const.BUILT_IN_FUNCTION, const.NO_INDENTATION],
     [r"(AND)\b", const.KEYWORD, const.AND, const.NO_INDENTATION],
     [r"(BOX)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
     [r"(EACH)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
     [r"(EVAL)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
-    [r"(EXIT)\b", const.KEYWORD, const.KEYWORD, const.DECREMENT_INDENTATION],
+    [r"(EXIT)\b", const.KEYWORD, const.EXIT, const.DECREMENT_INDENTATION],
     [r"(FALSE)\b", const.KEYWORD, const.VALUE, const.NO_INDENTATION],
     [r"(LET)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
     [r"(NEXT)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
@@ -181,7 +181,6 @@ REGEX_LIST = [
     [r"(TAB)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
     [r"(TYPE)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
 
-    [r"(MAIN)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
     [r"\?", const.PRINT_KEYWORD, const.PRINT_KEYWORD, const.NO_INDENTATION],
 
     [r"(?P<value>^[a-z_][a-z0-9_]*)(?P<type>\$|%|!|#|&?)", const.ID, const.ID,
