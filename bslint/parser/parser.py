@@ -100,11 +100,10 @@ class Parser(Lexer):
         return len(production.rule) + index
 
     def _get_possible_production_rules(self, current_token):
-        corresponding_rules = []
-        for rule in self.current_grammar.RULES[self.current_priority_level]:
-            if rule.rule[-1] == current_token:
-                corresponding_rules.append(rule)
-        return corresponding_rules
+        if current_token not in self.current_grammar.RULES[self.current_priority_level]:
+            return []
+        else:
+            return self.current_grammar.RULES[self.current_priority_level][current_token]
 
     def check_program_validity(self):
         self.current_grammar = program_grammar
