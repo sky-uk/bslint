@@ -186,7 +186,7 @@ REGEX_LIST = [
 
     [r"(?P<value>^[a-z_][a-z0-9_]*)(?P<type>\$|%|!|#|&?)", const.ID, const.ID,
      const.NO_INDENTATION],
-    ['\"(?P<value>.*)\"', const.STRING, const.VALUE, const.NO_INDENTATION],
+    ['\"(?P<value>.*?)\"', const.STRING, const.VALUE, const.NO_INDENTATION],
     [r"^\d*(\.?\d+){1}", const.NUMERIC, const.VALUE, const.NO_INDENTATION]
 ]
 

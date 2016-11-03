@@ -36,7 +36,7 @@ class TestStringRegex(unittest.TestCase):
         test_string = '""""'
         exp_result = '""'
         result = regex_handler.find_match(test_string)
-        self.assertEqual(result["match"].group(1), exp_result)
+        self.assertEqual(result["match"].group(), exp_result)
         self.assertEqual(result["token_lexer_type"], const.STRING)
         self.assertEqual(result["token_parser_type"], const.VALUE)
 

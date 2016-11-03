@@ -84,3 +84,20 @@ class TestIdentifierRegex(unittest.TestCase):
         self.assertEqual(result["match"].group(self.TYPE_GROUP), exp_type)
         self.assertEqual(result["token_lexer_type"], const.ID)
         self.assertEqual(result["token_parser_type"], const.ID)
+
+    def test_random(self):
+        identifier = 'print "[";_logLevel;"]   ";isoDateTime;"   ";message'
+        exp_result = [Token('print', const.PRINT_KEYWORD, const.PRINT_KEYWORD, 1, None),
+                      Token('[', const.STRING, const.VALUE, 1, None),
+                      Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
+                      Token('_logLevel', const.ID, const.ID, 1, None),
+                      Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
+                      Token(']   ', const.STRING, const.VALUE, 1, None),
+                      Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
+                      Token('isoDateTime', const.ID, const.ID, 1, None),
+                      Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
+                      Token('   ', const.STRING, const.VALUE, 1, None),
+                      Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
+                      Token('message', const.ID, const.ID, 1, None)]
+        result = Lexer().lex(identifier)
+        self.assertEqual(result['Tokens'], exp_result)
