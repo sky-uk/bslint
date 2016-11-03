@@ -71,6 +71,18 @@ class TestIfParse(unittest.TestCase):
     def test_if_with_numeric_value_then(self):
         self.common.match_statement("else if 3 then", const.ELSE_IF_STMT)
 
+    def test_if_then_no_end_if_func_call(self):
+        self.common.match_statement("if requiresUpdate then showRequiresUpdateScreen()", const.BLOCK_STMT)
+
+    def test_else_if_then_no_end_if_func_call(self):
+        self.common.match_statement("elseif requiresUpdate then showRequiresUpdateScreen()", const.BLOCK_STMT)
+
+    def test_else_if_then_no_end_if_var_as(self):
+        self.common.match_statement("elseif requiresUpdate then c = 3", const.BLOCK_STMT)
+
+    def test_if_then_no_end_if_var_as(self):
+        self.common.match_statement("if requiresUpdate then c = 3", const.BLOCK_STMT)
+
     def test_else(self):
         self.common.match_statement("else", const.ELSE_STMT)
 

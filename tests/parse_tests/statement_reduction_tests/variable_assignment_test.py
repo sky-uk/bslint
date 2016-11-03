@@ -49,13 +49,16 @@ class TestVariableAssignment(unittest.TestCase):
         self.common.match_statement("(x = 1)", const.VAR_AS)
 
     def test_variable_declaration_with_reduction(self):
-        self.common.match_statement('jack = 3 + 2', const.VAR_AS)
+        self.common.match_statement('x = 3 + 2', const.VAR_AS)
 
     def test_variable_declaration_with_multiple_reduction(self):
-        self.common.match_statement('jack = 3 + 2 - 5', const.VAR_AS)
+        self.common.match_statement('x = 3 + 2 - 5', const.VAR_AS)
 
     def test_variable_declaration_with_reduction_and_parenthesis(self):
-        self.common.match_statement('jack = (3 + 2)', const.VAR_AS)
+        self.common.match_statement('x = (3 + 2)', const.VAR_AS)
+
+    def test_assignment_to_array_key(self):
+        self.common.match_statement('x[y] = (3 + 2)', const.VAR_AS)
 
     def test_invalid_variable_assignment_while(self):
         self.common.status_error("jack = while")

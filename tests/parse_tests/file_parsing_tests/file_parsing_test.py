@@ -10,4 +10,3 @@ class TestMultiLineReductionParse(unittest.TestCase):
         parser = Parser()
         result = parser.parse(file)
         self.assertEqual("Success", result["Status"])
-

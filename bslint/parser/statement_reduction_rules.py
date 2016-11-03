@@ -6,6 +6,8 @@ RULES_LIST = {
             ([const.ID, const.DOT, const.ID], const.ID),
             ([const.FUNCTION_CALL, const.DOT, const.ID], const.VALUE)
         ],
+        const.CLOSE_SQUARE_BRACKET: [([const.ID, const.OPEN_SQUARE_BRACKET, const.ID, const.CLOSE_SQUARE_BRACKET],
+                                      const.ID)],
         const.FUNCTION_CALL: [([const.FUNCTION_CALL, const.DOT, const.FUNCTION_CALL], const.FUNCTION_CALL)],
         const.ELSE: [([const.ELSE], const.ELSE_STMT)],
 
@@ -179,7 +181,9 @@ RULES_LIST = {
             ([const.WHILE, const.MINUS, const.FUNCTION_CALL], const.WHILE_STMT),
             ([const.PRINT_KEYWORD, const.FUNCTION_CALL], const.PRINT_STMT),
             ([const.COMMA, const.FUNCTION_CALL], const.ARGUMENT),
-            ([const.SEMI_COLON, const.FUNCTION_CALL], const.ARGUMENT)
+            ([const.SEMI_COLON, const.FUNCTION_CALL], const.ARGUMENT),
+            ([const.IF_STMT, const.THEN, const.FUNCTION_CALL], const.BLOCK_STMT),
+            ([const.ELSE_IF_STMT, const.THEN, const.FUNCTION_CALL], const.BLOCK_STMT),
         ],
         const.TYPE: [
             ([const.FUNCTION, const.FUNCTION_CALL, const.AS, const.TYPE], const.FUNCTION_DECLARATION),
@@ -195,7 +199,9 @@ RULES_LIST = {
             ([const.SEMI_COLON, const.VAR_AS], const.ARGUMENT),
             ([const.IF, const.VAR_AS], const.IF_STMT),
             ([const.ELSE_IF, const.VAR_AS], const.ELSE_IF_STMT),
-            ([const.RETURN_STMT, const.VAR_AS], const.RETURN_STMT)
+            ([const.RETURN_STMT, const.VAR_AS], const.RETURN_STMT),
+            ([const.IF_STMT, const.THEN, const.VAR_AS], const.BLOCK_STMT),
+            ([const.ELSE_IF_STMT, const.THEN, const.VAR_AS], const.BLOCK_STMT),
         ],
         const.CLOSE_PARENTHESIS: [
             ([const.FUNCTION, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS], const.ANONYMOUS_FUNCTION_DECLARATION),
@@ -269,7 +275,6 @@ RULES_LIST = {
         ],
         const.CLOSE_SQUARE_BRACKET: [
             ([const.OPEN_SQUARE_BRACKET, const.CLOSE_SQUARE_BRACKET], const.ENUMERABLE_OBJECT),
-            ([const.OPEN_SQUARE_BRACKET, const.ARRAY_ARGUMENT, const.CLOSE_SQUARE_BRACKET], const.ENUMERABLE_OBJECT),
             ([const.OPEN_SQUARE_BRACKET, const.VALUE, const.CLOSE_SQUARE_BRACKET], const.ENUMERABLE_OBJECT),
             ([const.OPEN_SQUARE_BRACKET, const.ID, const.CLOSE_SQUARE_BRACKET], const.ENUMERABLE_OBJECT),
             ([const.OPEN_SQUARE_BRACKET, const.VALUE, const.ARGUMENT, const.CLOSE_SQUARE_BRACKET],
