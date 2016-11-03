@@ -89,7 +89,6 @@ class InterfaceHandler:
             if file.endswith(".brs") or file.endswith(".bs"):
                 filepath = os.path.join(dir_name, file)
                 self.lint_file(filepath)
-                self.print_warnings(filepath)
 
     def lint_file(self, filepath):
         filename = filepath.replace(os.getcwd() + '/', '')
@@ -103,6 +102,7 @@ class InterfaceHandler:
                 self.handle_lexing_warnings(filepath, lex_result)
         else:
             self.is_lexed_correctly = False
+        self.print_warnings(filepath)
 
     def handle_lexing_warnings(self, filepath, lex_result):
         self.is_lexed_correctly = False
