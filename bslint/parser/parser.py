@@ -4,6 +4,7 @@ from bslint.error_messages import constants as err_const
 from bslint import constants as const
 from bslint.lexer.lexer import Lexer
 from bslint.error_messages import handler as err
+import bslint.utilities.custom_exceptions as custom_exception
 
 MAX_FINAL_STATEMENT_LENGTH = 1
 INVALID_STATEMENT = [const.CONDITION]
@@ -25,7 +26,14 @@ class Parser(Lexer):
 
     def parse(self, characters):
         self.set_number_of_priorities_level()
-        return Lexer.lex(self, characters)
+        try:
+            lexing_result = Lexer.lex(self, characters)
+            if lexing_result["Status"] == "Success":
+                self.check_statement_validity(self.tokens[self.current_token_index:])
+                self.check_program_validity()
+        except custom_exception.ParsingException as exception:
+            self.handle_parsing_error(exception.args[0])
+        return self.build_return_message()
 
     def set_number_of_priorities_level(self):
         self.number_of_priorities = len(self.current_grammar.RULES.keys())
@@ -35,7 +43,7 @@ class Parser(Lexer):
         if len(self.current_tokens) > 0:
             self.iterate_over_statement()
             if self.current_tokens[0] in INVALID_STATEMENT:
-                raise ValueError(err_const.STMT_PARSING_FAILED)
+                raise custom_exception.ParsingException(err_const.STMT_PARSING_FAILED)
             else:
                 self.program.append(self.current_tokens[0])
 
@@ -66,7 +74,7 @@ class Parser(Lexer):
                 is_valid_statement = True
             index += 1
         if is_valid_statement is False and self.current_priority_level == self.number_of_priorities - 1:
-            raise ValueError(err_const.STMT_PARSING_FAILED)
+            raise custom_exception.ParsingException(err_const.STMT_PARSING_FAILED)
 
     def _find_matching_production(self, index, possible_production_rules):
         matching_production = None
@@ -112,8 +120,8 @@ class Parser(Lexer):
         self.set_number_of_priorities_level()
         try:
             self.iterate_over_statement()
-        except ValueError:
-            raise ValueError(err_const.PROGRAM_PARSING_FAILED)
+        except custom_exception.ParsingException:
+            raise custom_exception.ParsingException(err_const.PROGRAM_PARSING_FAILED)
 
     def handle_parsing_error(self, err_code):
         self.errors.append(err.get_message(err_code, [self.handle_style.line_number]))

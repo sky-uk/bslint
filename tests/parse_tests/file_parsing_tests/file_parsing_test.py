@@ -10,3 +10,9 @@ class TestMultiLineReductionParse(unittest.TestCase):
         parser = Parser()
         result = parser.parse(file)
         self.assertEqual("Success", result["Status"])
+
+    def test_complex_file(self):
+        file = open(TESTS_RESOURCES_PATH + "/files_to_parse/complex_parsing.brs", "r+").read()
+        parser = Parser()
+        result = parser.parse(file)
+        self.assertEqual("Success", result["Status"])

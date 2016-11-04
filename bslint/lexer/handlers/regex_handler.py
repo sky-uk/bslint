@@ -1,5 +1,5 @@
-import bslint.error_messages.constants as err_const
 import bslint.lexer.regexs as regexs
+import bslint.utilities.custom_exceptions as custom_exception
 
 
 def find_match(characters):
@@ -9,7 +9,7 @@ def find_match(characters):
         if match:
             break
     if not match:
-        raise ValueError(err_const.NO_MATCH_FOUND)
+        raise custom_exception.UnexpectedTokenException()
     else:
         return {"match": match, "token_lexer_type": token.lexer_type,
                 "token_parser_type": token.parser_type, "indentation_level": token.indentation}

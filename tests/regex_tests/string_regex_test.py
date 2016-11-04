@@ -8,6 +8,7 @@ from bslint.lexer.token import Token as Token
 from filepaths import LEXING_TEST_FILES_PATH
 from filepaths import STYLING_TEST_FILES_PATH
 from tests.resources.common.test_methods import CommonMethods as Common
+import bslint.utilities.custom_exceptions as custom_exception
 
 
 class TestStringRegex(unittest.TestCase):
@@ -21,7 +22,7 @@ class TestStringRegex(unittest.TestCase):
         self.common.match_regex('"test123ID"', None, const.STRING, const.VALUE)
 
     def test_unclosed_quotes(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(custom_exception.UnexpectedTokenException):
             self.common.match_regex('"test123ID\n', None, const.STRING, const.VALUE)
 
     def test_variable_assignment_string(self):
