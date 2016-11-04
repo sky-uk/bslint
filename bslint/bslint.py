@@ -7,8 +7,11 @@ __version__ = "0.6.0"
 
 
 def main():
-    interface_handler = InterfaceHandler()
-    interface_handler.main()
+    try:
+        interface_handler = InterfaceHandler()
+        interface_handler.main()
+    except KeyboardInterrupt:
+        pass
 
 
 def runner(to_lex=None):
