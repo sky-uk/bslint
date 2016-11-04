@@ -166,8 +166,8 @@ class InterfaceHandler:
 
     @staticmethod
     def file_reader(file_to_lex):
-        file = open(file_to_lex, "r+")
-        str_to_lex = file.read()
+        with open(file_to_lex, "r+") as file:
+            str_to_lex = file.read()
         return {"invalid_encoding": commands.check_file_encoding(file_to_lex),
                 "str_to_lex": str_to_lex}
 

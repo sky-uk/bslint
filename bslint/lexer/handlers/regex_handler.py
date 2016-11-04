@@ -1,5 +1,3 @@
-import re
-
 import bslint.error_messages.constants as err_const
 import bslint.lexer.regexs as regexs
 
@@ -7,7 +5,7 @@ import bslint.lexer.regexs as regexs
 def find_match(characters):
     token = None
     for token in regexs.REGEXS:
-        match = re.match(token.regex, characters, re.IGNORECASE)
+        match = token.regex.match(characters)
         if match:
             break
     if not match:

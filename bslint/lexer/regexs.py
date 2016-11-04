@@ -1,5 +1,6 @@
 # this characters need escaping . ^ $ * + ? { } [ ] \ | ( )
 import collections
+import re
 import bslint.constants as const
 
 Regex = collections.namedtuple('Token', ['regex', 'lexer_type', 'parser_type', 'indentation'])
@@ -191,4 +192,5 @@ REGEX_LIST = [
 
 REGEXS = []
 for regex in REGEX_LIST:
+    regex[0] = re.compile(regex[0], re.IGNORECASE)
     REGEXS.append(Regex._make(regex))

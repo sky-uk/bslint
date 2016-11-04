@@ -21,7 +21,8 @@ def check_comment(token):
     todos_format = check_comment_config["TODOs"]["format"]
 
     if allow_todos and allow_generic_comments:
-        if re.match(COMMENT_REGEX + "TODO", token):
+        matching_string = re.compile(COMMENT_REGEX.pattern + "TODO")
+        if matching_string.match(token):
             if not re.match(todos_format, token):
                 return {"error_key": err_const.NON_CONVENTIONAL_TODO, "error_params": []}
 
@@ -31,7 +32,8 @@ def check_comment(token):
                     "error_params": []}
 
     elif not allow_todos and allow_generic_comments:
-        if re.match(COMMENT_REGEX + "TODO", token, re.IGNORECASE):
+        matching_string = re.compile(COMMENT_REGEX.pattern + "TODO", re.IGNORECASE)
+        if matching_string.match(token):
             return {"error_key": err_const.NO_TODOS, "error_params": []}
 
     else:
@@ -136,7 +138,7 @@ def check_method_dec_spacing(read_line):
     read_line = read_line.lstrip()
 
     if _command_is_active("check_method_declaration_spacing") is not True or \
-            re.match(COMMENT_REGEX, read_line, re.IGNORECASE):
+            COMMENT_REGEX.match(read_line):
         return
 
     method_spaces = config_loader.CONFIG["check_method_declaration_spacing"]["params"][
