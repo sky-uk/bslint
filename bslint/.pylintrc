@@ -1,3 +1,6 @@
 [MESSAGES CONTROL]
 disable=C0111,W0603, W0150, locally-disabled
 max-line-length = 120
+
+[SIMILARITIES]
+ignore-imports = yes

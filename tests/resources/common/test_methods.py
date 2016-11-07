@@ -3,7 +3,6 @@ import unittest
 from filepaths import TEST_CONFIG_FILE_PATH
 from bslint.parser.parser import Parser
 import bslint.constants as const
-import bslint.error_messages.constants as err_const
 import bslint.lexer.commands as commands
 from bslint.lexer.lexer import Lexer as Lexer
 import bslint.lexer.handlers.regex_handler as regex_handler
@@ -20,19 +19,19 @@ class CommonMethods(unittest.TestCase):
         result = parser.parse(str_to_parse)
         self.assertEqual("Error", result["Status"])
 
-    def match_statement(self, input, expected):
+    def match_statement(self, characters, expected):
         parser = Parser()
-        parser.parse(input)
+        parser.parse(characters)
         self.assertEqual(expected, parser.all_statements[-1][0])
 
-    def match_program(self, input, expected):
+    def match_program(self, characters, expected):
         parser = Parser()
-        result = parser.parse(input)
+        result = parser.parse(characters)
         self.assertEqual("Success", result["Status"])
         self.assertEqual(expected, parser.line_reductions[-1][0])
 
-    def lex_warnings_match(self, input, exp_result):
-        result = Lexer().lex(input)
+    def lex_warnings_match(self, characters, exp_result):
+        result = Lexer().lex(characters)
         self.assertEqual(exp_result, result[self.WARNINGS])
 
     def match_regex(self, identifier, match_group, lexer_type, parser_type):
@@ -57,8 +56,8 @@ class CommonMethods(unittest.TestCase):
         result = commands.check_spaces_around_operators(string, chars_index)
         self.assertEqual(result, exp_result)
 
-    def spell_check(self, input, exp_result):
-        result = commands.check_spelling(input, const.ID)
+    def spell_check(self, string, exp_result):
+        result = commands.check_spelling(string, const.ID)
         self.assertEqual(result, exp_result)
 
     def lex_file(self, file, exp_result):

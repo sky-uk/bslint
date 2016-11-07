@@ -10,11 +10,10 @@ from tests.resources.common.test_methods import CommonMethods as Common
 
 
 class TestSpacesAroundOperators(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.common = Common()
-    
+
     def setUp(self):
         spaces_around_operators_path = os.path.join(TESTS_CONFIG_PATH,
                                                     'spaces_around_operators/spaces-around-operators-config.json')
@@ -46,8 +45,8 @@ class TestSpacesAroundOperators(unittest.TestCase):
         self.common.lex_string('this    =        "words"', exp_result)
 
     def test_many_spaces_around_operator_with_config(self):
-        three_spaces_around_operators_path = os.path.join(TESTS_CONFIG_PATH,
-                                                        'spaces_around_operators/3-spaces-around-operators-config.json')
+        three_spaces_around_operators_path = \
+            os.path.join(TESTS_CONFIG_PATH, 'spaces_around_operators/3-spaces-around-operators-config.json')
         bslint.load_config_file(user_filepath=three_spaces_around_operators_path)
         exp_result = [error.get_message(err_const.NO_SPACE_AROUND_OPERATORS, [3, 1])]
         self.common.lex_string('this   =        "words"', exp_result)

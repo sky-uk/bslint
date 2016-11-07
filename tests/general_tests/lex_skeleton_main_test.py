@@ -4,8 +4,8 @@ import unittest
 import bslint.error_messages.handler as err
 import bslint.error_messages.constants as err_const
 from bslint.lexer.lexer import Lexer as Lexer
-from filepaths import LEXING_TEST_FILES_PATH
 from bslint.utilities import config_loader
+from filepaths import LEXING_TEST_FILES_PATH
 
 
 class TestLexSkeletonMain(unittest.TestCase):

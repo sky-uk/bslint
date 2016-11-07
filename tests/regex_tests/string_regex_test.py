@@ -5,10 +5,10 @@ import bslint.constants as const
 import bslint.lexer.handlers.regex_handler as regex_handler
 from bslint.lexer.lexer import Lexer as Lexer
 from bslint.lexer.token import Token as Token
+import bslint.utilities.custom_exceptions as custom_exception
 from filepaths import LEXING_TEST_FILES_PATH
 from filepaths import STYLING_TEST_FILES_PATH
 from tests.resources.common.test_methods import CommonMethods as Common
-import bslint.utilities.custom_exceptions as custom_exception
 
 
 class TestStringRegex(unittest.TestCase):

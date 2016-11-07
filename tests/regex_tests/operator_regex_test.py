@@ -55,4 +55,4 @@ class TestOperatorRegex(unittest.TestCase):
         self.common.match_regex(">>", None, const.OPERATOR, const.OPERATOR)
 
     def test_divide_integer_assign(self):
-        self.common.match_regex("\=", None, const.OPERATOR, const.OPERATOR)
+        self.common.match_regex(r"\=", None, const.OPERATOR, const.OPERATOR)

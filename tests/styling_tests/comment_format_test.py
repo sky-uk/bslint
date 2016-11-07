@@ -4,7 +4,6 @@ import unittest
 import bslint
 import bslint.error_messages.handler as error
 import bslint.error_messages.constants as err_const
-from bslint.lexer.lexer import Lexer as Lexer
 from filepaths import TEST_CONFIG_FILE_PATH
 from filepaths import STYLING_TEST_FILES_PATH
 from filepaths import COMMENTS_CONFIG_PATH
@@ -12,11 +11,10 @@ from tests.resources.common.test_methods import CommonMethods as Common
 
 
 class TestCommentFormat(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.valid_comment_single_quote_no_todo_file_path = os.path.join(STYLING_TEST_FILES_PATH,
-                                                                    'valid-comment-single-quote-no-TODO.txt')
+                                                                        'valid-comment-single-quote-no-TODO.txt')
         cls.common = Common()
 
     def test_no_comment_check(self):

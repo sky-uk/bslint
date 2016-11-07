@@ -4,7 +4,6 @@ import os
 import bslint
 import bslint.error_messages.handler as error
 import bslint.error_messages.constants as err_const
-from bslint.lexer.lexer import Lexer as Lexer
 from filepaths import TEST_CONFIG_FILE_PATH
 from filepaths import TESTS_CONFIG_PATH
 from filepaths import EMPTY_LINES_TEST_FILES_PATH
@@ -104,4 +103,3 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         exp_res = [error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [2, 3]),
                    error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [2, 4])]
         self.common.lex_file(file_name, exp_res)
-

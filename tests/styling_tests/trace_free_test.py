@@ -37,7 +37,7 @@ class TestTraceFree(unittest.TestCase):
         print_and_question_mark_file_path = os.path.join(TRACE_TEST_FILES_PATH, 'print-and-question-mark.brs')
         self.common.lex_file(print_and_question_mark_file_path,
                              [error.get_message(err_const.TRACEABLE_CODE, [3]),
-                                      error.get_message(err_const.TRACEABLE_CODE, [4])])
+                              error.get_message(err_const.TRACEABLE_CODE, [4])])
 
     def test_no_print_no_question_mark(self):
         bslint.load_config_file(user_filepath=self.trace_free_config_path, default_filepath=TEST_CONFIG_FILE_PATH)

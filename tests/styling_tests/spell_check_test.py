@@ -15,7 +15,7 @@ class TestSpellCheck(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        this_dir, this_filename = os.path.split(__file__)
+        this_dir = os.path.dirname(__file__)
         cls.filepath_prefix = os.path.join(this_dir, "../resources/styling_test_files/")
         cls.common = Common()
 
@@ -69,11 +69,11 @@ class TestSpellCheck(unittest.TestCase):
     def test_us_dictionary_failing(self):
         us_spellcheck_config_path = os.path.join(TESTS_CONFIG_PATH, 'spell_check/us-spellcheck-config.json')
         bslint.load_config_file(user_filepath=us_spellcheck_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
-        commands._change_dict_lang(bslint.config_loader.CONFIG["spell_check"]["params"]["dictionary"])
+        commands.change_dict_lang(bslint.config_loader.CONFIG["spell_check"]["params"]["dictionary"])
         self.common.spell_check("specialised", {"error_key": err_const.TYPO_IN_CODE, "error_params": []})
 
     def test_us_dictionary_passing(self):
         us_spellcheck_config_path = os.path.join(TESTS_CONFIG_PATH, 'spell_check/us-spellcheck-config.json')
         bslint.load_config_file(user_filepath=us_spellcheck_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
-        commands._change_dict_lang(bslint.config_loader.CONFIG["spell_check"]["params"]["dictionary"])
+        commands.change_dict_lang(bslint.config_loader.CONFIG["spell_check"]["params"]["dictionary"])
         self.common.spell_check("specialized", None)

@@ -4,11 +4,11 @@ import bslint.constants as const
 from tests.resources.common.test_methods import CommonMethods as Common
 
 
-class TestMultiLineReductionParse(unittest.TestCase):
+class TestIfBlockParse(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.common = Common()
-        
+
     def test_if_statements_block(self):
         self.common.match_program("if x = 3\n x = 4\n end if", const.BLOCK_STMT)
 
@@ -28,7 +28,8 @@ class TestMultiLineReductionParse(unittest.TestCase):
         self.common.match_program("if x = 3 then\n x = 4\n else\n x = 5\n end if", const.BLOCK_STMT)
 
     def test_if_with_else_if_and_ele_closed_endfor(self):
-        self.common.match_program("if x = 3 then\n x = 4\n else if x = 4 then\n x = 5\nelse\n x = 6\n end if", const.BLOCK_STMT)
+        self.common.match_program("if x = 3 then\n x = 4\n else if x = 4 then\n x = 5\nelse\n x = 6\n end if",
+                                  const.BLOCK_STMT)
 
     def test_else_if_closed_endfor(self):
         self.common.status_error("if x = 3 then\n x = 4\n else\n x = 5\n end for")

@@ -10,11 +10,11 @@ class TestSkipLineRegex(unittest.TestCase):
     SKIP_LINE = 'skip_line'
     SKIP_FILE = 'skip_file'
 
-    def _match(self, identifier, type, match):
+    def _match(self, identifier, token_type, match):
         result = regex_handler.find_match(identifier)
         self.assertEqual(match, result["match"].group(self.COMMAND_GROUP))
-        self.assertEqual(result["token_lexer_type"], type)
-        self.assertEqual(result["token_parser_type"], type)
+        self.assertEqual(result["token_lexer_type"], token_type)
+        self.assertEqual(result["token_parser_type"], token_type)
 
     def test_skip_line_single_space(self):
         self._match("' BSLINT_skip_line\n", const.BSLINT_COMMAND, self.SKIP_LINE)

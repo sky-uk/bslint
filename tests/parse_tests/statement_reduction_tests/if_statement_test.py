@@ -1,8 +1,6 @@
 import unittest
 
 import bslint.constants as const
-import bslint.error_messages.constants as err_const
-from bslint.parser.parser import Parser
 from tests.resources.common.test_methods import CommonMethods as Common
 
 
@@ -97,5 +95,3 @@ class TestIfParse(unittest.TestCase):
 
     def test_else_if_with_print_fails(self):
         self.common.status_error("else if =")
-
-

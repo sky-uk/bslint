@@ -9,7 +9,7 @@ from tests.resources.common.test_methods import CommonMethods as Common
 class TestMiscRegex(unittest.TestCase):
 
     TOKENS = 'Tokens'
-    
+
     @classmethod
     def setUpClass(cls):
         cls.common = Common()

@@ -13,4 +13,5 @@ test:
     - nosetests --with-coverage --cover-inclusive --cover-package=bslint
   post:
     - coverage report --omit="bslint/__main__.py" -m > $CIRCLE_ARTIFACTS/coverage.txt
-    - pylint bslint > $CIRCLE_ARTIFACTS/pylint.txt
+    - cd bslint && pylint bslint > $CIRCLE_ARTIFACTS/pylint_bslint.txt
+    - cd tests && pylint tests > $CIRCLE_ARTIFACTS/pylint_tests.txt

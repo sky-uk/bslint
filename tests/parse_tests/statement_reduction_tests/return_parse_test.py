@@ -4,7 +4,7 @@ import bslint.constants as const
 from tests.resources.common.test_methods import CommonMethods as Common
 
 
-class TestParamParse(unittest.TestCase):
+class TestReturnParse(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.common = Common()

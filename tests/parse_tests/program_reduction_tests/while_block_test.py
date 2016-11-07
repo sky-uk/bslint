@@ -4,7 +4,7 @@ import bslint.constants as const
 from tests.resources.common.test_methods import CommonMethods as Common
 
 
-class TestMultiLineReductionParse(unittest.TestCase):
+class TestWhileBlockParse(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.common = Common()

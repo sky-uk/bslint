@@ -158,6 +158,10 @@ def check_method_dec_spacing(read_line):
             return {const.ERROR_KEY: err_const.METHOD_DECLARATION_SPACING, const.ERROR_PARAMS: []}
 
 
+def change_dict_lang(dict_lang):
+    global DICTIONARY
+    DICTIONARY = words_dict.get_new_dictionary(dict_lang)
+
 # region Private helper functions
 
 
@@ -166,11 +170,6 @@ def _command_is_active(command_name):
         return config_loader.CONFIG[command_name][const.ACTIVE]
     else:
         return False
-
-
-def _change_dict_lang(dict_lang):
-    global DICTIONARY
-    DICTIONARY = words_dict.get_new_dictionary(dict_lang)
 
 
 def _handle_warnings(current_indentation_level, characters):

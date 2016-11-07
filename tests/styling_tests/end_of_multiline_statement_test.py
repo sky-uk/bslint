@@ -36,4 +36,3 @@ class TestEndOfMultiLineStatement(unittest.TestCase):
     def test_statement_with_2matchin_curly_braces(self):
         exp_statements_counter = 1
         self.common.lex_identifier("myVar = {\na: {b:\"Test String\",\n c:\"Test String\"}\n}", exp_statements_counter)
-

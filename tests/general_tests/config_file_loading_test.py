@@ -1,7 +1,8 @@
 import unittest
 import os
-import bslint
 from io import StringIO
+
+import bslint
 import bslint.constants as const
 from filepaths import TEST_CONFIG_FILE_PATH
 from filepaths import DEFAULT_CONFIG_FILE_PATH
@@ -52,5 +53,5 @@ class TestConfigFileLoading(unittest.TestCase):
     def test_read_json(self):
         indentation_config_path = os.path.join(TESTS_CONFIG_PATH, 'indentation/indentation-config.json')
         json = bslint.config_loader.read_json(indentation_config_path)
-        exp_result = {'check_indentation': {'active': True,'params': {'tab_size': 4,'only_tab_indents': False}}}
+        exp_result = {'check_indentation': {'active': True, 'params': {'tab_size': 4, 'only_tab_indents': False}}}
         self.assertEqual(json, exp_result)
