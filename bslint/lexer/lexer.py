@@ -1,12 +1,10 @@
 # pylint: disable=too-many-instance-attributes
-import re
 
 import bslint.error_messages.constants as err_const
 import bslint.error_messages.handler as err
 import bslint.lexer.handlers.match_handler as match_handler
 import bslint.lexer.handlers.regex_handler as regex_handler
 import bslint.lexer.handlers.styling_handler as styling_handler
-from bslint import constants as const
 import bslint.utilities.custom_exceptions as custom_exception
 
 
@@ -30,6 +28,8 @@ class Lexer:
                 self.create_token_and_handle_styling()
             except custom_exception.UnexpectedTokenException:
                 self.handle_unexpected_token()
+                break
+
         self.handle_style.apply_new_line_styling()
         self.statements_counter += 1
         return self.build_return_message()
@@ -58,14 +58,10 @@ class Lexer:
                 self.current_token_index = len(self.tokens)
 
     def handle_unexpected_token(self):
-        end_of_line = re.match(r"(.*)\n", self.characters[self.handle_style.current_char_index:])
-        if end_of_line is None:
-            end_of_line = re.match(r"(.*)$", self.characters[self.handle_style.current_char_index:])
+        end_of_line = self.characters[self.handle_style.current_char_index:].split("\n")[0]
         self.errors.append(err.get_message(err_const.UNMATCHED_QUOTATION_MARK,
-                                           [(end_of_line.group()[:const.PENULTIMATE_CHARACTER]),
+                                           [end_of_line,
                                             self.handle_style.line_number]))
-        self.handle_style.line_number += 1
-        self.handle_style.current_char_index += len(end_of_line.group())
 
     # pylint: disable=unused-argument
     def check_statement_validity(self, statement):

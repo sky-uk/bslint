@@ -1,5 +1,3 @@
-import re
-
 from bslint import constants as const
 from bslint.error_messages import handler as err
 from bslint.lexer import commands as commands
@@ -25,8 +23,7 @@ class StylingHandler:
         self._line_not_to_style_check = -1
 
     def _get_last_line(self):
-        last_line = re.findall("(?:(?<=^)|(?<=\n))(.*)",
-                               self.characters[:self.current_char_index - 1], re.MULTILINE)
+        last_line = self.characters[:self.current_char_index - 1].split("\n")
         return last_line[-1]
 
     def apply_bslint_command(self, command_type):

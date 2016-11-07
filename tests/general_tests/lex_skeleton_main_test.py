@@ -23,7 +23,6 @@ class TestLexSkeletonMain(unittest.TestCase):
         skeleton_main_with_errors_file_path = os.path.join(LEXING_TEST_FILES_PATH, 'skeleton-main-with-errors.brs')
         chars = open(skeleton_main_with_errors_file_path, "r+").read()
         result = Lexer().lex(chars)
-        exp_result = [err.get_message(err_const.UNMATCHED_QUOTATION_MARK, ['"roSGScreen', 2]),
-                      err.get_message(err_const.UNMATCHED_QUOTATION_MARK, ['"SampleScene', 6])]
+        exp_result = [err.get_message(err_const.UNMATCHED_QUOTATION_MARK, ['"roSGScreen)', 2])]
         self.assertEqual(result["Tokens"], exp_result)
         self.assertEqual(result["Status"], 'Error')

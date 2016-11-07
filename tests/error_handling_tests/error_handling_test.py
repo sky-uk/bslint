@@ -49,5 +49,5 @@ class TestErrorHandling(unittest.TestCase):
         error_file_path = os.path.join(TESTS_RESOURCES_PATH, 'error_handling_files/error-file.brs')
         chars = open(error_file_path, "r+").read()
         result = Lexer().lex(chars)
-        exp_result = [err.get_message(err_const.UNMATCHED_QUOTATION_MARK, ['"error fi', 1])]
+        exp_result = [err.get_message(err_const.UNMATCHED_QUOTATION_MARK, ['"error file', 1])]
         self.assertEqual(exp_result, result["Tokens"])
