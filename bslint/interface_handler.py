@@ -8,13 +8,12 @@ import bslint.constants as const
 import bslint.lexer.commands as commands
 from bslint.lexer.lexer import Lexer as Lexer
 
-
 class InterfaceHandler:
     def __init__(self, out=sys.stdout):
         self.is_lexed_correctly = True
         self.files = []
-        self.messages = {"Errors": {}, "Warnings": {}}
-        self.bslintrc = {"ignore": []}
+        self.messages = {const.ERRORS: {}, const.WARNINGS: {}}
+        self.bslintrc = {const.IGNORE: []}
         self.out = out
         self.manifest_path = ""
         self.warnings_total = 0
@@ -80,15 +79,14 @@ class InterfaceHandler:
     def lint_all(self, directory):
         for dir_name, subdirList, files in os.walk(directory):  # pylint: disable=C0103, W0612
             relative_path = self.get_relative_path(dir_name)
-            if "ignore" in self.bslintrc and not self.ignore_dir(relative_path, self.bslintrc["ignore"]):
+            if const.IGNORE in self.bslintrc and not self.ignore_dir(relative_path, self.bslintrc[const.IGNORE]):
                 self.lint_directory(dir_name, files)
         self.print_errors()
 
     def lint_directory(self, dir_name, files):
         for file in files:
-            if file.endswith(".brs") or file.endswith(".bs"):
-                filepath = os.path.join(dir_name, file)
-                self.lint_file(filepath)
+            filepath = os.path.join(dir_name, file)
+            self.lint_file(filepath)
 
     def lint_file(self, filepath):
         filename = filepath.replace(os.getcwd() + '/', '')
@@ -96,9 +94,9 @@ class InterfaceHandler:
             self.files.append(filename)
             read_file = self.file_reader(filename)
             lex_result = Lexer().lex(read_file['str_to_lex'])
-            if lex_result["Status"] == "Error":
+            if lex_result[const.STATUS] == "Error":
                 self.handle_lexing_error(filepath, lex_result)
-            elif lex_result["Warnings"]:
+            elif lex_result[const.WARNINGS]:
                 self.handle_lexing_warnings(filepath, lex_result)
         else:
             self.is_lexed_correctly = False
@@ -106,34 +104,34 @@ class InterfaceHandler:
 
     def handle_lexing_warnings(self, filepath, lex_result):
         self.is_lexed_correctly = False
-        self.messages["Warnings"][filepath] = []
-        for warning in lex_result["Warnings"]:
-            self.messages["Warnings"][filepath].append(
+        self.messages[const.WARNINGS][filepath] = []
+        for warning in lex_result[const.WARNINGS]:
+            self.messages[const.WARNINGS][filepath].append(
                 const.WARNING_COLOUR + str(warning) + const.END_COLOUR)
 
     def handle_lexing_error(self, filepath, lex_result):
         self.is_lexed_correctly = False
-        self.messages["Errors"][filepath] = []
-        for error in lex_result["Tokens"]:
-            self.messages["Errors"][filepath].append(
+        self.messages[const.ERRORS][filepath] = []
+        for error in lex_result[const.TOKENS]:
+            self.messages[const.ERRORS][filepath].append(
                 const.ERROR_COLOUR + str(error) + const.END_COLOUR)
 
     def print_warnings(self, file_name):
-        if file_name in self.messages["Warnings"]:
+        if file_name in self.messages[const.WARNINGS]:
             self.out.write(const.FILE_COLOUR + file_name + const.END_COLOUR + "\n")
-            for message in self.messages["Warnings"][file_name]:
+            for message in self.messages[const.WARNINGS][file_name]:
                 self.out.write(message + "\n")
-            number_warnings = len(self.messages["Warnings"][file_name])
+            number_warnings = len(self.messages[const.WARNINGS][file_name])
             self.warnings_total += number_warnings
             self.out.write(const.TOTAL_COLOUR + "WARNINGS IN FILE: " + str(number_warnings) + const.END_COLOUR + "\n")
             self.out.write("\n")
 
     def print_errors(self):
-        for file_name in self.messages["Errors"]:
+        for file_name in self.messages[const.ERRORS]:
             self.out.write(const.FILE_COLOUR + file_name + const.END_COLOUR + "\n")
-            for message in self.messages["Errors"][file_name]:
+            for message in self.messages[const.ERRORS][file_name]:
                 self.out.write(message + "\n")
-            number_errors = len(self.messages["Errors"][file_name])
+            number_errors = len(self.messages[const.ERRORS][file_name])
             self.errors_total += number_errors
             self.out.write(const.TOTAL_COLOUR + "ERRORS IN FILE: " + str(number_errors) + const.END_COLOUR + "\n")
             self.out.write("\n")

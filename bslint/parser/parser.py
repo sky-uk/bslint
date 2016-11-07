@@ -28,7 +28,7 @@ class Parser(Lexer):
         self.set_number_of_priorities_level()
         try:
             lexing_result = Lexer.lex(self, characters)
-            if lexing_result["Status"] == "Success":
+            if lexing_result[const.STATUS] == const.SUCCESS:
                 self.check_statement_validity(self.tokens[self.current_token_index:])
                 self.check_program_validity()
         except custom_exception.ParsingException as exception:

@@ -7,6 +7,13 @@ import bslint.lexer.handlers.regex_handler as regex_handler
 import bslint.lexer.handlers.styling_handler as styling_handler
 import bslint.utilities.custom_exceptions as custom_exception
 
+STATUS = "Status"
+TOKENS = "Tokens"
+WARNINGS = "Warnings"
+ERROR = "Error"
+SUCCESS = "Success"
+MATCH = "match"
+
 
 class Lexer:
     def __init__(self):
@@ -36,14 +43,14 @@ class Lexer:
 
     def build_return_message(self):
         if len(self.errors) is not 0:
-            return {"Status": "Error", "Tokens": self.errors, "Warnings": self.handle_style.warnings}
+            return {STATUS: ERROR, TOKENS: self.errors, WARNINGS: self.handle_style.warnings}
         else:
-            return {"Status": "Success", "Tokens": self.tokens, "Warnings": self.handle_style.warnings}
+            return {STATUS: SUCCESS, TOKENS: self.tokens, WARNINGS: self.handle_style.warnings}
 
     def create_token_and_handle_styling(self):
         regex_match = regex_handler.find_match(self.characters[self.handle_style.current_char_index:])
-        self.handle_style.line_length += len(regex_match["match"].group())
-        self.handle_style.current_char_index += len(regex_match["match"].group())
+        self.handle_style.line_length += len(regex_match[MATCH].group())
+        self.handle_style.current_char_index += len(regex_match[MATCH].group())
         if regex_match["token_lexer_type"] is not None:
             applied_common_styling = self.handle_style.apply_styling(regex_match)
             if applied_common_styling:

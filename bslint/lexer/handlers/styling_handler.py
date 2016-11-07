@@ -27,16 +27,16 @@ class StylingHandler:
         return last_line[-1]
 
     def apply_bslint_command(self, command_type):
-        if command_type == "skip_line":
+        if command_type == const.SKIP_LINE:
             self._line_not_to_style_check = commands.check_skip_line(self.line_number)
-        elif command_type == "skip_file":
+        elif command_type == const.SKIP_FILE:
             self._skip_styling_on_file = commands.check_skip_file()
 
     def apply_styling(self, regex_match):
-        self._match = regex_match["match"]
-        self._token_lexer_type = regex_match["token_lexer_type"]
-        if regex_match["indentation_level"] != const.NO_INDENTATION:
-            self._indentation_level = regex_match["indentation_level"]
+        self._match = regex_match[const.MATCH]
+        self._token_lexer_type = regex_match[const.TOKEN_LEXER_TYPE]
+        if regex_match[const.INDENTATION_LEVEL] != const.NO_INDENTATION:
+            self._indentation_level = regex_match[const.INDENTATION_LEVEL]
 
         applied_common_styling = False
         if self._token_lexer_type == const.NEW_LINE:
@@ -45,7 +45,7 @@ class StylingHandler:
             self.line_number += 1
             self.line_length = 0
         elif self._token_lexer_type == const.BSLINT_COMMAND:
-            self.apply_bslint_command(self._match.group('command'))
+            self.apply_bslint_command(self._match.group(const.COMMAND))
         else:
             self.apply_common_styling()
             applied_common_styling = True
@@ -132,6 +132,6 @@ class StylingHandler:
 
     def _warning_filter(self, result):
         if result is not None:
-            result["error_params"].append(str(self.line_number))
-            warning = err.get_message(result["error_key"], result["error_params"])
+            result[const.ERROR_PARAMS].append(str(self.line_number))
+            warning = err.get_message(result[const.ERROR_KEY], result[const.ERROR_PARAMS])
             self.warnings += [warning]
