@@ -20,23 +20,19 @@ def check_comment(token):
     allow_generic_comments = check_comment_config[const.ALLOW_GENERIC_COMMENTS]
     todos_format = check_comment_config[const.TODOS][const.FORMAT]
 
+    return_message = None
     if allow_todos and allow_generic_comments:
-        matching_string = re.compile(COMMENT_REGEX.pattern + "TODO")
-        if matching_string.match(token):
-            if not re.match(todos_format, token):
-                return {const.ERROR_KEY: err_const.NON_CONVENTIONAL_TODO, const.ERROR_PARAMS: []}
+        return_message = _check_comment_and_todos(return_message, todos_format, token)
 
     elif allow_todos and not allow_generic_comments:
-        if not re.match(todos_format, token):
-            return {const.ERROR_KEY: err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, const.ERROR_PARAMS: []}
+        return_message = _check_only_todos(return_message, todos_format, token)
 
     elif not allow_todos and allow_generic_comments:
-        matching_string = re.compile(COMMENT_REGEX.pattern + "TODO", re.IGNORECASE)
-        if matching_string.match(token):
-            return {const.ERROR_KEY: err_const.NO_TODOS, const.ERROR_PARAMS: []}
+        return_message = _check_only_generic_comments(return_message, token)
 
     else:
-        return {const.ERROR_KEY: err_const.COMMENTS_NOT_ALLOWED, const.ERROR_PARAMS: []}
+        return_message = {const.ERROR_KEY: err_const.COMMENTS_NOT_ALLOWED, const.ERROR_PARAMS: []}
+    return return_message
 
 
 def check_file_encoding(file_path):
@@ -105,15 +101,13 @@ def check_skip_line(line_number):
 def check_spaces_around_operators(characters, current_char_index):
     if _command_is_active(const.SPACES_AROUND_OPERATORS) is False:
         return
-    allowed_num_spaces = config_loader.CONFIG[const.SPACES_AROUND_OPERATORS][const.PARAMS][
-        const.SPACES_AROUND_OPERATORS]
-    before_index = current_char_index - allowed_num_spaces - 2
-    after_index = current_char_index + allowed_num_spaces + 1
+    allowed_spaces = config_loader.CONFIG[const.SPACES_AROUND_OPERATORS][const.PARAMS][const.SPACES_AROUND_OPERATORS]
+    before_index = current_char_index - allowed_spaces - 2
+    after_index = current_char_index + allowed_spaces + 1
     chars_around_operator = characters[before_index:after_index]
-    if not re.match(r"(\S{0,1})\s{" + str(allowed_num_spaces) + r"}\S\s{" + str(
-            allowed_num_spaces) + r"}\S{0,1}$", chars_around_operator):
-        return {const.ERROR_KEY: err_const.NO_SPACE_AROUND_OPERATORS,
-                const.ERROR_PARAMS: [allowed_num_spaces]}
+    if not re.match(r"(\S{0,1})\s{" + str(allowed_spaces) + r"}\S\s{" + str(
+            allowed_spaces) + r"}\S{0,1}$", chars_around_operator):
+        return {const.ERROR_KEY: err_const.NO_SPACE_AROUND_OPERATORS, const.ERROR_PARAMS: [allowed_spaces]}
 
 
 def check_spelling(token, token_lexer_type):
@@ -132,22 +126,15 @@ def check_spelling(token, token_lexer_type):
 
 
 def check_method_dec_spacing(read_line):
-    read_line = read_line.lstrip()
-
     if _command_is_active(const.CHECK_METHOD_DECLARATION_SPACING) is False or COMMENT_REGEX.match(read_line):
         return
 
-    method_spaces = config_loader.CONFIG[const.CHECK_METHOD_DECLARATION_SPACING][const.PARAMS][const.METHOD_SPACES]
-
-    if re.search(r"\b(function|sub)\b", read_line, re.IGNORECASE) and \
-            not re.search(r"\b(end function|end sub)\b", read_line) and \
-            not re.search(r"\b(endfunction|endsub)\b", read_line, re.IGNORECASE):
-        if not re.search(r"(function|sub)\s{" + str(
-                method_spaces) + r"}[a-z0-9_A-Z]*\(([a-z0-9_A-Z]*" + \
-                                 r"(?:(\s{" + str(method_spaces) + r"}as\s{" + str(
-                                     method_spaces) + r"}([a-z0-9_A-Z]+))?)(?:,\s{" + \
-                                 str(method_spaces) + r"}[a-z0-9_A-Z]*)?)*\)", read_line,
-                         re.IGNORECASE):
+    read_line = read_line.lstrip()
+    method_spaces = str(config_loader.CONFIG[const.CHECK_METHOD_DECLARATION_SPACING][const.PARAMS][const.METHOD_SPACES])
+    if re.match(r"\b(function|sub)\b", read_line, re.IGNORECASE):
+        if not re.match(r"(function|sub)\s{" + method_spaces + r"}[a-z0-9_]+\(([a-z0-9_]+"
+                        + r"(?:(\s{" + method_spaces + r"}as\s{" + method_spaces + r"}([a-z0-9_]+))?)(?:,\s{"
+                        + method_spaces + r"}[a-z0-9_]*)?)*\)", read_line, re.IGNORECASE):
             return {const.ERROR_KEY: err_const.METHOD_DECLARATION_SPACING, const.ERROR_PARAMS: []}
 
 
@@ -156,6 +143,27 @@ def change_dict_lang(dict_lang):
     DICTIONARY = words_dict.get_new_dictionary(dict_lang)
 
 # region Private helper functions
+
+
+def _check_only_generic_comments(return_message, token):
+    matching_string = re.compile(COMMENT_REGEX.pattern + "TODO", re.IGNORECASE)
+    if matching_string.match(token):
+        return_message = {const.ERROR_KEY: err_const.NO_TODOS, const.ERROR_PARAMS: []}
+    return return_message
+
+
+def _check_only_todos(return_message, todos_format, token):
+    if not re.match(todos_format, token):
+        return_message = {const.ERROR_KEY: err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, const.ERROR_PARAMS: []}
+    return return_message
+
+
+def _check_comment_and_todos(return_message, todos_format, token):
+    matching_string = re.compile(COMMENT_REGEX.pattern + "TODO")
+    if matching_string.match(token):
+        if not re.match(todos_format, token):
+            return_message = {const.ERROR_KEY: err_const.NON_CONVENTIONAL_TODO, const.ERROR_PARAMS: []}
+    return return_message
 
 
 def _command_is_active(command_name):
