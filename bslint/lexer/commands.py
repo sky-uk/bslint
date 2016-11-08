@@ -11,9 +11,8 @@ COMMENT_REGEX = [regex.regex for regex in regexs.REGEXS if regex.lexer_type == c
 DICTIONARY = words_dict.get_new_dictionary()
 
 
-
 def check_comment(token):
-    if _command_is_active(const.CHECK_COMMENT) is not True:
+    if _command_is_active(const.CHECK_COMMENT) is False:
         return
 
     check_comment_config = config_loader.CONFIG[const.CHECK_COMMENT][const.PARAMS]
@@ -29,8 +28,7 @@ def check_comment(token):
 
     elif allow_todos and not allow_generic_comments:
         if not re.match(todos_format, token):
-            return {const.ERROR_KEY: err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS,
-                    const.ERROR_PARAMS: []}
+            return {const.ERROR_KEY: err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, const.ERROR_PARAMS: []}
 
     elif not allow_todos and allow_generic_comments:
         matching_string = re.compile(COMMENT_REGEX.pattern + "TODO", re.IGNORECASE)
@@ -39,11 +37,10 @@ def check_comment(token):
 
     else:
         return {const.ERROR_KEY: err_const.COMMENTS_NOT_ALLOWED, const.ERROR_PARAMS: []}
-    return
 
 
 def check_file_encoding(file_path):
-    if _command_is_active(const.CHECK_FILE_ENCODING) is not True:
+    if _command_is_active(const.CHECK_FILE_ENCODING) is False:
         return
 
     file_encoding = config_loader.CONFIG[const.CHECK_FILE_ENCODING][const.PARAMS]
@@ -54,14 +51,15 @@ def check_file_encoding(file_path):
 
 
 def check_indentation(current_indentation_level, characters, indentation_level):
-    if _command_is_active(const.CHECK_INDENTATION) is not True:
+    if _command_is_active(const.CHECK_INDENTATION) is False or not len(characters) > 0:
         return
-    if indentation_level == const.DECREMENT_INDENTATION or \
-                    indentation_level == const.SPECIAL_INDENTATION:
+
+    if indentation_level == const.DECREMENT_INDENTATION or indentation_level == const.SPECIAL_INDENTATION:
         current_indentation_level -= 1
-    warning = _handle_warnings(current_indentation_level, characters)
-    if indentation_level == const.INCREMENT_INDENTATION or \
-                    indentation_level == const.SPECIAL_INDENTATION:
+    warning = _check_indentation(current_indentation_level, characters)
+    if re.match(r"(\s*)if (.+) then(\s+)(\S)", characters, re.IGNORECASE):
+        current_indentation_level -= 1
+    if indentation_level == const.INCREMENT_INDENTATION or indentation_level == const.SPECIAL_INDENTATION:
         current_indentation_level += 1
 
     return warning, current_indentation_level
@@ -88,8 +86,7 @@ def check_consecutive_empty_lines(empty_lines):
     params = config_loader.CONFIG[const.CONSECUTIVE_EMPTY_LINES][const.PARAMS]
     empty_lines_allowed = params[const.CONSECUTIVE_EMPTY_LINES]
     if empty_lines > empty_lines_allowed:
-        return {const.ERROR_KEY: err_const.CONSECUTIVE_EMPTY_LINES,
-                const.ERROR_PARAMS: [empty_lines_allowed]}
+        return {const.ERROR_KEY: err_const.CONSECUTIVE_EMPTY_LINES, const.ERROR_PARAMS: [empty_lines_allowed]}
 
 
 def check_skip_file():
@@ -106,9 +103,8 @@ def check_skip_line(line_number):
 
 
 def check_spaces_around_operators(characters, current_char_index):
-    if _command_is_active(const.SPACES_AROUND_OPERATORS) is not True:
+    if _command_is_active(const.SPACES_AROUND_OPERATORS) is False:
         return
-
     allowed_num_spaces = config_loader.CONFIG[const.SPACES_AROUND_OPERATORS][const.PARAMS][
         const.SPACES_AROUND_OPERATORS]
     before_index = current_char_index - allowed_num_spaces - 2
@@ -121,7 +117,7 @@ def check_spaces_around_operators(characters, current_char_index):
 
 
 def check_spelling(token, token_lexer_type):
-    if _command_is_active(const.SPELL_CHECK) is not True:
+    if _command_is_active(const.SPELL_CHECK) is False:
         return
 
     if token_lexer_type == const.COMMENT:
@@ -138,17 +134,14 @@ def check_spelling(token, token_lexer_type):
 def check_method_dec_spacing(read_line):
     read_line = read_line.lstrip()
 
-    if _command_is_active(const.CHECK_METHOD_DECLARATION_SPACING) is not True or \
-            COMMENT_REGEX.match(read_line):
+    if _command_is_active(const.CHECK_METHOD_DECLARATION_SPACING) is False or COMMENT_REGEX.match(read_line):
         return
 
     method_spaces = config_loader.CONFIG[const.CHECK_METHOD_DECLARATION_SPACING][const.PARAMS][const.METHOD_SPACES]
 
-    if re.search(r"\b(function|sub)\b", read_line, re.IGNORECASE) and not re.search(
-            r"\b(end function|end sub)\b",
-            read_line) and not re.search(
-                r"\b(endfunction|endsub)\b",
-                read_line, re.IGNORECASE):
+    if re.search(r"\b(function|sub)\b", read_line, re.IGNORECASE) and \
+            not re.search(r"\b(end function|end sub)\b", read_line) and \
+            not re.search(r"\b(endfunction|endsub)\b", read_line, re.IGNORECASE):
         if not re.search(r"(function|sub)\s{" + str(
                 method_spaces) + r"}[a-z0-9_A-Z]*\(([a-z0-9_A-Z]*" + \
                                  r"(?:(\s{" + str(method_spaces) + r"}as\s{" + str(
@@ -172,19 +165,15 @@ def _command_is_active(command_name):
         return False
 
 
-def _handle_warnings(current_indentation_level, characters):
+def _check_indentation(current_indentation_level, characters):
     indent_config = config_loader.CONFIG[const.CHECK_INDENTATION][const.PARAMS]
-    only_tab_indents = indent_config[const.ONLY_TAB_INDENTS]
     tab_size = indent_config[const.TAB_SIZE]
-    if re.search(r"\S", characters):
-        if only_tab_indents:
-            if not re.match(r"\t{" + str(current_indentation_level) + r"}\S", characters):
-                return {const.ERROR_KEY: err_const.TAB_AND_SPACES, const.ERROR_PARAMS: []}
-        else:
-            if not re.match(r"\s{" + str(
-                    tab_size * current_indentation_level) + r"}\S", characters):
-                return {const.ERROR_KEY: err_const.TAB_INDENTATION_ERROR,
-                        const.ERROR_PARAMS: [tab_size]}
+    if indent_config[const.ONLY_TAB_INDENTS]:
+        if not re.match(r"\t{" + str(current_indentation_level) + r"}\S", characters):
+            return {const.ERROR_KEY: err_const.TAB_AND_SPACES, const.ERROR_PARAMS: []}
+    else:
+        if not re.match(r"\s{" + str(tab_size * current_indentation_level) + r"}\S", characters):
+            return {const.ERROR_KEY: err_const.TAB_INDENTATION_ERROR, const.ERROR_PARAMS: [tab_size]}
 
 
 def _parse_words(identifier_str):

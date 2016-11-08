@@ -36,7 +36,7 @@ class StylingHandler:
         self._match = regex_match[const.MATCH]
         self._token_lexer_type = regex_match[const.TOKEN_LEXER_TYPE]
         if regex_match[const.INDENTATION_LEVEL] != const.NO_INDENTATION:
-            self._indentation_level = regex_match[const.INDENTATION_LEVEL]
+            self._indentation_level += regex_match[const.INDENTATION_LEVEL]
 
         applied_common_styling = False
         if self._token_lexer_type == const.NEW_LINE:
