@@ -194,9 +194,6 @@ def _parse_words(identifier_str):
                 words.append(word)
             word = ''
             word += char
-        elif char == '_' and word != '':
-            words.append(word)
-            word = ''
     if not word == '':
         words.append(word)
 

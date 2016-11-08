@@ -28,7 +28,7 @@ class TestStringRegex(unittest.TestCase):
     def test_variable_assignment_string(self):
         exp_result = [Token('myString', const.ID, const.ID, 1), Token('=', const.OPERATOR, const.EQUALS, 1),
                       Token('words', const.STRING, const.VALUE, 1)]
-        string_file_path = os.path.join(LEXING_TEST_FILES_PATH, 'basic-string-assignment.txt')
+        string_file_path = os.path.join(LEXING_TEST_FILES_PATH, 'basic-string-assignment.brs')
         string_file = open(string_file_path, "r+").read()
         result = Lexer().lex(string_file)
         self.assertEqual(result[self.TOKENS], exp_result)

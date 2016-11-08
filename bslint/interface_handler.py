@@ -8,6 +8,7 @@ import bslint.constants as const
 import bslint.lexer.commands as commands
 from bslint.lexer.lexer import Lexer as Lexer
 
+
 class InterfaceHandler:
     def __init__(self, out=sys.stdout):
         self.is_lexed_correctly = True
@@ -20,8 +21,9 @@ class InterfaceHandler:
         self.errors_total = 0
 
     def main(self):
-        print(const.TITLE_COLOUR + "BSLint: A linter for BrightScript. %s. \n" %
-              InterfaceHandler.get_version() + const.END_COLOUR)
+        self.out.write(
+            const.TITLE_COLOUR + "BSLint: A linter for BrightScript. %s. \n" %
+            InterfaceHandler.get_version() + const.END_COLOUR)
 
         if self.is_specific_path():
             filename = sys.argv[1]
@@ -32,10 +34,7 @@ class InterfaceHandler:
                 return
 
         self.manifest_path = self._get_manifest_path()
-        self.bslintrc = self._parse_bslintrc(self.manifest_path)
-
-        if self.bslintrc is None:
-            return
+        self.bslintrc = self._parse_bslintrc(self.manifest_path, self.out)
 
         self.out.write("\n")
 
@@ -50,8 +49,7 @@ class InterfaceHandler:
         self.out.write(
             const.FILE_COLOUR + "LINTING COMPLETE" + const.END_COLOUR + "\n")
         if self.is_lexed_correctly:
-            print(const.PASS_COLOUR + 'All linted correctly' + const.END_COLOUR)
-            print("\n")
+            self.out.write(const.PASS_COLOUR + "All linted correctly" + const.END_COLOUR + "\n")
         else:
             self.out.write(const.TOTAL_COLOUR + "TOTAL WARNINGS: " + str(self.warnings_total) + const.END_COLOUR + "\n")
             self.out.write(const.TOTAL_COLOUR + "TOTAL ERRORS: " + str(self.errors_total) + const.END_COLOUR + "\n")
@@ -73,7 +71,7 @@ class InterfaceHandler:
                 raise FileNotFoundError
             return upper_dir
         except FileNotFoundError:
-            print(const.ERROR_COLOUR + "No manifest file found" + const.END_COLOUR)
+            self.out.write(const.ERROR_COLOUR + "No manifest file found" + const.END_COLOUR + "\n")
             return ""
 
     def lint_all(self, directory):
@@ -146,9 +144,9 @@ class InterfaceHandler:
         return False
 
     @staticmethod
-    def _parse_bslintrc(manifest_path):
+    def _parse_bslintrc(manifest_path, out):
         bslintrc_path = os.path.join(manifest_path, ".bslintrc")
-        return bslint.config_loader.load_config_file(bslintrc_path)
+        return bslint.config_loader.load_config_file(bslintrc_path, out=out)
 
     def get_relative_path(self, dir_name):
         directory = os.path.abspath(self.manifest_path)
