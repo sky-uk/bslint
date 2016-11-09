@@ -55,6 +55,10 @@ In this file you can specify specific directories you want to ignore each time a
 
 For a full list of styling rules, view the default config file in bslint/config in the Github source code
 
+## Watching for Changes
+
+If you want to run the linter each time a file changes then refer to this page in the wiki: https://github.com/sky-uk/bslint/wiki/Watching-For-Changes
+
 ## Roku SDK Documentation
 [BrightScript Language Reference](https://sdkdocs.roku.com/display/sdkdoc/BrightScript+Language+Reference)
 
