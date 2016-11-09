@@ -2,7 +2,7 @@
 import os
 import re
 import sys
-
+import argparse
 import bslint
 import bslint.constants as const
 import bslint.lexer.commands as commands
@@ -21,24 +21,21 @@ class InterfaceHandler:
         self.errors_total = 0
 
     def main(self):
-        self.out.write(
-            const.TITLE_COLOUR + "BSLint: A linter for BrightScript. %s. \n" %
-            InterfaceHandler.get_version() + const.END_COLOUR)
-
-        if self.is_specific_path():
-            filename = sys.argv[1]
+        args = self._get_cli_arguments()
+        if args.path:
+            filename = args.path
             if not os.path.exists(filename):
                 self.is_lexed_correctly = False
                 self.out.write(
                     const.ERROR_COLOUR + "The path you have provided does not exist." + const.END_COLOUR + "\n")
                 return
 
-        self.manifest_path = self._get_manifest_path()
+        self.manifest_path = self._get_manifest_path(args.path)
         self.bslintrc = self._parse_bslintrc(self.manifest_path, self.out)
 
         self.out.write("\n")
 
-        if self.is_specific_path():
+        if args.path:
             if os.path.isfile(filename):
                 self.lint_file(filename)
             else:
@@ -54,13 +51,13 @@ class InterfaceHandler:
             self.out.write(const.TOTAL_COLOUR + "TOTAL WARNINGS: " + str(self.warnings_total) + const.END_COLOUR + "\n")
             self.out.write(const.TOTAL_COLOUR + "TOTAL ERRORS: " + str(self.errors_total) + const.END_COLOUR + "\n")
 
-    def _get_manifest_path(self):
+    def _get_manifest_path(self, specific_part):
         try:
-            if self.is_specific_path():
-                if os.path.isfile(sys.argv[1]):
-                    upper_dir = os.path.dirname(sys.argv[1])
+            if specific_part:
+                if os.path.isfile(specific_part):
+                    upper_dir = os.path.dirname(specific_part)
                 else:
-                    upper_dir = sys.argv[1]
+                    upper_dir = specific_part
             else:
                 upper_dir = ""
             count = 0
@@ -143,6 +140,13 @@ class InterfaceHandler:
                 return True
         return False
 
+    def _get_cli_arguments(self):
+        parser = argparse.ArgumentParser(description=const.TITLE_COLOUR + "BSLint: A linter for BrightScript. %s. \n" %
+                                         self.get_version() + const.END_COLOUR)
+        parser.add_argument("--path", "-p", help="Specify directory or file")
+        parser.add_argument('--version', "-v", action='version', version=self.get_version(), help="Get current version")
+        return parser.parse_args()
+
     @staticmethod
     def _parse_bslintrc(manifest_path, out):
         bslintrc_path = os.path.join(manifest_path, ".bslintrc")
@@ -164,21 +168,12 @@ class InterfaceHandler:
     def file_reader(file_to_lex):
         with open(file_to_lex, "r+") as file:
             str_to_lex = file.read()
-        return {"invalid_encoding": commands.check_file_encoding(file_to_lex),
-                "str_to_lex": str_to_lex}
+        return {"invalid_encoding": commands.check_file_encoding(file_to_lex), "str_to_lex": str_to_lex}
 
     @staticmethod
     def get_version():
         this_dir = os.path.dirname(__file__)
-        return re.search(
-            r'^__version__\s*=\s*"(.*)"',
-            open(os.path.join(this_dir, 'bslint.py')).read(),
-            re.M
-        ).group(1)
-
-    @staticmethod
-    def is_specific_path():
-        return len(sys.argv) != 1
+        return re.search(r'^__version__\s*=\s*"(.*)"', open(os.path.join(this_dir, 'bslint.py')).read(), re.M).group(1)
 
     @staticmethod
     def no_manifest_in_folder(upper_dir):

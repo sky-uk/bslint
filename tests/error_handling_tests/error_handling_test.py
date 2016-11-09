@@ -34,8 +34,6 @@ class TestErrorHandling(unittest.TestCase):
         result = out.getvalue()
         out.close()
         self.assertEqual(result,
-                         const.TITLE_COLOUR + "BSLint: A linter for BrightScript. %s. \n" %
-                         InterfaceHandler.get_version() + const.END_COLOUR +
                          const.ERROR_COLOUR + "No manifest file found" + const.END_COLOUR + "\n" +
                          const.ERROR_COLOUR + "Cannot find bslintrc, using default config." + const.END_COLOUR +
                          "\n" + "\n" +

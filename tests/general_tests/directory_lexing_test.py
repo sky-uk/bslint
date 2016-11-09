@@ -27,8 +27,6 @@ class TestDirectoryLexing(unittest.TestCase):
         result = out.getvalue()
         out.close()
         self.assertEqual(result,
-                         const.TITLE_COLOUR + "BSLint: A linter for BrightScript. %s. \n" %
-                         InterfaceHandler.get_version() + const.END_COLOUR +
                          const.ERROR_COLOUR + "The path you have provided does not exist." + const.END_COLOUR + "\n")
 
     def test_brs_file_with_path_lexed(self):

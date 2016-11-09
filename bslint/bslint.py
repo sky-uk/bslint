@@ -17,6 +17,7 @@ def main():
 def runner(to_lex=None, out=sys.stdout):
     sys.argv = [sys.argv[0]]
     if to_lex is not None:
+        sys.argv.append("--path")
         sys.argv.append(os.path.abspath(to_lex))
     interface_handler = InterfaceHandler(out=out)
     interface_handler.main()
