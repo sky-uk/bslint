@@ -46,7 +46,7 @@ class CommonMethods(unittest.TestCase):
     def directory_lexing(self, brs_file_path, exp_result):
         bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH)
         result = bslint.bslint.runner(brs_file_path).files
-        self.assertEqual(exp_result, result)
+        self.assertTrue(self.check_lists_equal(exp_result, result))
 
     def spaces_around_operators(self, string, chars_index, exp_result):
         result = commands.check_spaces_around_operators(string, chars_index)
@@ -77,3 +77,7 @@ class CommonMethods(unittest.TestCase):
         self.assertEqual(result["match"].group(match_group), identifier)
         self.assertEqual(result["token_lexer_type"], const.ID)
         self.assertEqual(result["token_parser_type"], const.ID)
+
+    @staticmethod
+    def check_lists_equal(expected, result):
+        return len(expected) == len(result) and sorted(expected) == sorted(result)
