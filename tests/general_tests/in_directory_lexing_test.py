@@ -15,7 +15,9 @@ class TestInDirectoryLexing(unittest.TestCase):
 
     def test_brs_file_without_path_lexed(self):
         bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH)
-        result = bslint.bslint.runner().files
+        runner = bslint.bslint.runner()
+        result = runner.files
+        runner.join()
         exp_result = ["print.brs"]
         self.assertEqual(exp_result, result)
 

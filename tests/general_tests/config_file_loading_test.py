@@ -40,9 +40,9 @@ class TestConfigFileLoading(unittest.TestCase):
     def test_default_config_overwritten(self):
         bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH)
         general_ignore_test_files_path = os.path.join(TESTS_RESOURCES_PATH, 'general_ignore_test_files')
-        bslint.bslint.runner(general_ignore_test_files_path)
-        self.assertEqual(False, bslint.config_loader.CONFIG["check_trace_free"]["active"])
-        self.assertEqual(["sub_directory1_test_files"], bslint.config_loader.CONFIG["ignore"])
+        result = bslint.bslint.runner(general_ignore_test_files_path)
+        self.assertEqual(False, result.config["check_trace_free"]["active"])
+        self.assertEqual(["sub_directory1_test_files"], result.config["ignore"])
 
     def test_default_config_persists(self):
         exp_res = True

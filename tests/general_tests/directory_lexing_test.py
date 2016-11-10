@@ -23,9 +23,7 @@ class TestDirectoryLexing(unittest.TestCase):
         out = StringIO()
         brs_file_path = "falsepath/file.brs"
         bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH, out=out)
-        bslint.bslint.runner(to_lex=brs_file_path, out=out)
-        result = out.getvalue()
-        out.close()
+        result = bslint.bslint.runner(to_lex=brs_file_path, out=out).printed_output
         self.assertEqual(result,
                          const.ERROR_COLOUR + "The path you have provided does not exist." + const.END_COLOUR + "\n")
 

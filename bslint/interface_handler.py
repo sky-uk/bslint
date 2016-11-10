@@ -1,16 +1,22 @@
-# pylint: disable=too-many-instance-attributes
+# pylint: disable=too-many-instance-attributes, no-member
 import os
 import re
 import sys
+from io import StringIO
+from multiprocessing import Process, Lock
 import argparse
 import bslint
 import bslint.constants as const
 import bslint.lexer.commands as commands
 from bslint.lexer.lexer import Lexer as Lexer
+from bslint.utilities.spinner import SpinnerProcess as SpinnerProcess
+
+PROCESS_LOCK = Lock()
 
 
-class InterfaceHandler:
-    def __init__(self, out=sys.stdout):
+class InterfaceHandler(Process):
+    def __init__(self, out=sys.stdout, conn=None):
+        Process.__init__(self)
         self.is_lexed_correctly = True
         self.files = []
         self.messages = {const.ERRORS: {}, const.WARNINGS: {}}
@@ -19,8 +25,11 @@ class InterfaceHandler:
         self.manifest_path = ""
         self.warnings_total = 0
         self.errors_total = 0
+        self.conn = conn
+        self.printed_output = None
+        self.config = None
 
-    def main(self):
+    def run(self):
         args = self._get_cli_arguments()
         if args.path:
             filename = args.path
@@ -28,6 +37,7 @@ class InterfaceHandler:
                 self.is_lexed_correctly = False
                 self.out.write(
                     const.ERROR_COLOUR + "The path you have provided does not exist." + const.END_COLOUR + "\n")
+                self.send_to_pipe()
                 return
 
         self.manifest_path = self._get_manifest_path(args.path)
@@ -35,6 +45,7 @@ class InterfaceHandler:
 
         self.out.write("\n")
 
+        self.start_spinner()
         if args.path:
             if os.path.isfile(filename):
                 self.lint_file(filename)
@@ -43,13 +54,32 @@ class InterfaceHandler:
         else:
             pathname = os.getcwd()
             self.lint_all(pathname)
-        self.out.write(
-            const.FILE_COLOUR + "LINTING COMPLETE" + const.END_COLOUR + "\n")
+        PROCESS_LOCK.acquire()
+        self.out.write(const.FILE_COLOUR + "LINTING COMPLETE" + const.END_COLOUR + "\n")
         if self.is_lexed_correctly:
             self.out.write(const.PASS_COLOUR + "All linted correctly" + const.END_COLOUR + "\n")
         else:
             self.out.write(const.TOTAL_COLOUR + "TOTAL WARNINGS: " + str(self.warnings_total) + const.END_COLOUR + "\n")
             self.out.write(const.TOTAL_COLOUR + "TOTAL ERRORS: " + str(self.errors_total) + const.END_COLOUR + "\n")
+        PROCESS_LOCK.release()
+        self.send_to_pipe()
+
+    @staticmethod
+    def start_spinner():
+        spinner_process = SpinnerProcess(PROCESS_LOCK)
+        spinner_process.daemon = True
+        spinner_process.start()
+
+    def send_to_pipe(self):
+        if self.conn:
+            if isinstance(self.out, StringIO):
+                self.printed_output = self.out.getvalue()
+            self.out.close()
+            self.config = bslint.config_loader.CONFIG
+            testing_dict = {"files": self.files, "messages": self.messages, "printed_output": self.printed_output,
+                            "config": self.config}
+            self.conn.send(testing_dict)
+            self.conn.close()
 
     def _get_manifest_path(self, specific_part):
         try:
@@ -113,13 +143,14 @@ class InterfaceHandler:
 
     def print_warnings(self, file_name):
         if file_name in self.messages[const.WARNINGS]:
-            self.out.write(const.FILE_COLOUR + file_name + const.END_COLOUR + "\n")
+            PROCESS_LOCK.acquire()
+            self.out.write('\r' + const.FILE_COLOUR + file_name + const.END_COLOUR + "\n")
             for message in self.messages[const.WARNINGS][file_name]:
                 self.out.write(message + "\n")
             number_warnings = len(self.messages[const.WARNINGS][file_name])
             self.warnings_total += number_warnings
-            self.out.write(const.TOTAL_COLOUR + "WARNINGS IN FILE: " + str(number_warnings) + const.END_COLOUR + "\n")
-            self.out.write("\n")
+            self.out.write(const.TOTAL_COLOUR + "WARNINGS IN FILE: " + str(number_warnings) + const.END_COLOUR + "\n\n")
+            PROCESS_LOCK.release()
 
     def print_errors(self):
         for file_name in self.messages[const.ERRORS]:
@@ -128,8 +159,7 @@ class InterfaceHandler:
                 self.out.write(message + "\n")
             number_errors = len(self.messages[const.ERRORS][file_name])
             self.errors_total += number_errors
-            self.out.write(const.TOTAL_COLOUR + "ERRORS IN FILE: " + str(number_errors) + const.END_COLOUR + "\n")
-            self.out.write("\n")
+            self.out.write(const.TOTAL_COLOUR + "ERRORS IN FILE: " + str(number_errors) + const.END_COLOUR + "\n\n")
 
     def ignore_dir(self, relative_directory_path, directories_to_ignore):
         for directory in directories_to_ignore:
