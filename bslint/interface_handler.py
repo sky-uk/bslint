@@ -26,43 +26,46 @@ class InterfaceHandler(Process):
         self.bslintrc = {const.IGNORE: []}
         self.out = out
         self.manifest_path = ""
-        self.warnings_total = 0
-        self.errors_total = 0
+        self.issues_total = {const.WARNINGS: 0, const.ERRORS: 0}
         self.conn = conn
         self.printed_output = None
         self.config = None
 
     def run(self):
         args = self._get_cli_arguments()
-        if args.path:
-            filename = args.path
-            if not os.path.exists(filename):
-                self.is_lexed_correctly = False
-                self.out.write(msg_handler.get_print_msg(print_const.PATH_DOSNT_EXIST))
-                self.send_to_pipe()
-                return
+        if args.path and not os.path.exists(args.path):
+            self.is_lexed_correctly = False
+            self.out.write(msg_handler.get_print_msg(print_const.PATH_DOSNT_EXIST))
+            self.send_to_pipe()
+            return
 
         self.manifest_path = self._get_manifest_path(args.path)
         self.bslintrc = self._parse_bslintrc(self.manifest_path, self.out)
 
         self.start_spinner()
+        self.lint(args)
+        self.print_summary()
+        self.send_to_pipe()
+
+    def lint(self, args):
         if args.path:
-            if os.path.isfile(filename):
-                self.lint_file(filename)
+            if os.path.isfile(args.path):
+                self.lint_file(args.path)
             else:
-                self.lint_all(filename)
+                self.lint_all(args.path)
         else:
             pathname = os.getcwd()
             self.lint_all(pathname)
+
+    def print_summary(self):
         PROCESS_LOCK.acquire()
         self.out.write(msg_handler.get_print_msg(print_const.LINTING_COMPLETE))
         if self.is_lexed_correctly:
             self.out.write(msg_handler.get_print_msg(print_const.ALL_LINTED_CORRECTLY))
         else:
-            self.out.write(msg_handler.get_print_msg(print_const.TOTAL_WARNINGS, [str(self.warnings_total)]))
-            self.out.write(msg_handler.get_print_msg(print_const.TOTAL_ERRORS, [str(self.errors_total)]))
+            self.out.write(msg_handler.get_print_msg(print_const.TOTAL_WARNINGS, [self.issues_total[const.WARNINGS]]))
+            self.out.write(msg_handler.get_print_msg(print_const.TOTAL_ERRORS, [self.issues_total[const.ERRORS]]))
         PROCESS_LOCK.release()
-        self.send_to_pipe()
 
     @staticmethod
     def start_spinner():
@@ -82,31 +85,29 @@ class InterfaceHandler(Process):
             self.conn.close()
 
     def _get_manifest_path(self, specific_part):
-        try:
-            if specific_part:
-                if os.path.isfile(specific_part):
-                    upper_dir = os.path.dirname(specific_part)
-                else:
-                    upper_dir = specific_part
+        if specific_part:
+            if os.path.isfile(specific_part):
+                upper_dir = os.path.dirname(specific_part)
             else:
-                upper_dir = ""
-            count = 0
-            while self.no_manifest_in_folder(upper_dir) and count < 5:
-                upper_dir = os.path.join(upper_dir, "../")
-                count += 1
-            if count == 5:
-                raise FileNotFoundError
-            return upper_dir
-        except FileNotFoundError:
+                upper_dir = specific_part
+        else:
+            upper_dir = ""
+        count = 0
+        while self.no_manifest_in_folder(upper_dir) and count < const.ALLOWED_SUB_DIR_NUM:
+            upper_dir = os.path.join(upper_dir, "../")
+            count += 1
+        if count == const.ALLOWED_SUB_DIR_NUM:
             self.out.write(msg_handler.get_print_msg(print_const.NO_MANIFEST))
-            return ""
+            upper_dir = ""
+        return upper_dir
 
     def lint_all(self, directory):
-        for dir_name, subdirList, files in os.walk(directory):  # pylint: disable=C0103, W0612
+        for dir_name, _, files in os.walk(directory):  # pylint: disable=C0103
             relative_path = self.get_relative_path(dir_name)
-            if const.IGNORE in self.bslintrc and not self.ignore_dir(relative_path, self.bslintrc[const.IGNORE]):
+            if not self.ignore_dir(relative_path, self.bslintrc[const.IGNORE]):
                 self.lint_directory(dir_name, files)
-        self.print_errors()
+        for file_name in self.messages[const.ERRORS]:
+            self.print_issues(file_name, const.ERRORS)
 
     def lint_directory(self, dir_name, files):
         for file in files:
@@ -120,44 +121,31 @@ class InterfaceHandler(Process):
             read_file = self.file_reader(filename)
             lex_result = Lexer().lex(read_file['str_to_lex'])
             if lex_result[const.STATUS] == const.ERROR:
-                self.handle_lexing_error(filepath, lex_result)
+                self.handle_lexing_result(filepath, const.ERRORS, lex_result[const.TOKENS])
             elif lex_result[const.WARNINGS]:
-                self.handle_lexing_warnings(filepath, lex_result)
-        else:
-            self.is_lexed_correctly = False
-        self.print_warnings(filepath)
+                self.handle_lexing_result(filepath, const.WARNINGS, lex_result[const.WARNINGS])
+        self.print_issues(filepath, const.WARNINGS)
 
-    def handle_lexing_warnings(self, filepath, lex_result):
+    def handle_lexing_result(self, filepath, error_type, messages):
         self.is_lexed_correctly = False
-        self.messages[const.WARNINGS][filepath] = []
-        for warning in lex_result[const.WARNINGS]:
-            self.messages[const.WARNINGS][filepath].append(msg_handler.get_print_msg(const.WARNING, [str(warning)]))
+        self.messages[error_type][filepath] = []
+        for msg in messages:
+            self.messages[error_type][filepath].append(msg_handler.get_print_msg(error_type, [msg]))
 
-    def handle_lexing_error(self, filepath, lex_result):
-        self.is_lexed_correctly = False
-        self.messages[const.ERRORS][filepath] = []
-        for error in lex_result[const.TOKENS]:
-            self.messages[const.ERRORS][filepath].append(msg_handler.get_print_msg(const.ERROR, [str(error)]))
-
-    def print_warnings(self, file_name):
-        if file_name in self.messages[const.WARNINGS]:
+    def print_issues(self, file_name, issue_type):
+        if file_name in self.messages[issue_type]:
             PROCESS_LOCK.acquire()
-            self.out.write(msg_handler.get_print_msg(print_const.FILE_NAME, [str(file_name)]))
-            for message in self.messages[const.WARNINGS][file_name]:
-                self.out.write(message)
-            number_warnings = len(self.messages[const.WARNINGS][file_name])
-            self.warnings_total += number_warnings
-            self.out.write(msg_handler.get_print_msg(print_const.WARNINGS_IN_FILE, [str(number_warnings)]))
-            PROCESS_LOCK.release()
-
-    def print_errors(self):
-        for file_name in self.messages[const.ERRORS]:
             self.out.write(msg_handler.get_print_msg(print_const.FILE_NAME, [file_name]))
-            for message in self.messages[const.ERRORS][file_name]:
+            for message in self.messages[issue_type][file_name]:
                 self.out.write(message)
-            number_errors = len(self.messages[const.ERRORS][file_name])
-            self.errors_total += number_errors
-            self.out.write(msg_handler.get_print_msg(print_const.ERRORS_IN_FILE, [str(number_errors)]))
+            number_issues = len(self.messages[issue_type][file_name])
+            self.issues_total[issue_type] += number_issues
+            if issue_type is const.WARNINGS:
+                print_key = print_const.WARNINGS_IN_FILE
+            else:
+                print_key = print_const.ERRORS_IN_FILE
+            self.out.write(msg_handler.get_print_msg(print_key, [number_issues]))
+            PROCESS_LOCK.release()
 
     def ignore_dir(self, relative_directory_path, directories_to_ignore):
         for directory in directories_to_ignore:

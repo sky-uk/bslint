@@ -47,7 +47,7 @@ MESSAGE_TABLE = {
         build.Message(TOTAL_COLOUR + "ERRORS IN FILE: {}" + END_COLOUR + "\n"),
     DESCRIPTION:
         build.Message(TITLE_COLOUR + "BSLint: A linter for BrightScript." + END_COLOUR),
-    const.WARNING: build.Message(WARNING_COLOUR + "{}" + END_COLOUR),
-    const.ERROR: build.Message(ERROR_COLOUR + "{}" + END_COLOUR),
+    const.WARNINGS: build.Message(WARNING_COLOUR + "{}" + END_COLOUR),
+    const.ERRORS: build.Message(ERROR_COLOUR + "{}" + END_COLOUR),
     FILE_NAME: build.Message('\r' + FILE_COLOUR + "{}" + END_COLOUR)
 }
