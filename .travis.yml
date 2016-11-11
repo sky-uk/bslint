@@ -11,3 +11,6 @@ script: nosetests --with-coverage --cover-inclusive --cover-package=bslint
 after_script:
     - cd bslint && pylint bslint
     - cd ../tests && pylint tests
+
+notifications:
+  email: false
