@@ -140,11 +140,7 @@ class InterfaceHandler(Process):
                 self.out.write(message)
             number_issues = len(self.messages[issue_type][file_name])
             self.issues_total[issue_type] += number_issues
-            if issue_type is const.WARNINGS:
-                print_key = print_const.WARNINGS_IN_FILE
-            else:
-                print_key = print_const.ERRORS_IN_FILE
-            self.out.write(msg_handler.get_print_msg(print_key, [number_issues]))
+            self.out.write(msg_handler.get_print_msg(issue_type + print_const.IN_FILE, [number_issues]))
             PROCESS_LOCK.release()
 
     def ignore_dir(self, relative_directory_path, directories_to_ignore):

@@ -127,14 +127,12 @@ def check_spelling(token, token_lexer_type):
 def check_method_dec_spacing(read_line):
     if _command_is_active(const.CHECK_METHOD_DECLARATION_SPACING) is False or COMMENT_REGEX.match(read_line):
         return
-
     read_line = read_line.lstrip()
     method_spaces = str(config_loader.CONFIG[const.CHECK_METHOD_DECLARATION_SPACING][const.PARAMS][const.METHOD_SPACES])
-    if re.match(r"\b(function|sub)\b", read_line, re.IGNORECASE):
-        if not re.match(r"(function|sub)\s{" + method_spaces + r"}[a-z0-9_]+\(([a-z0-9_]+"
-                        + r"(?:(\s{" + method_spaces + r"}as\s{" + method_spaces + r"}([a-z0-9_]+))?)(?:,\s{"
-                        + method_spaces + r"}[a-z0-9_]*)?)*\)", read_line, re.IGNORECASE):
-            return {const.ERROR_KEY: err_const.METHOD_DECLARATION_SPACING, const.ERROR_PARAMS: []}
+    if not re.match(r"(function|sub)\s{" + method_spaces + r"}[a-z0-9_]+\(([a-z0-9_]+"
+                    + r"(?:(\s{" + method_spaces + r"}as\s{" + method_spaces + r"}([a-z0-9_]+))?)(?:,\s{"
+                    + method_spaces + r"}[a-z0-9_]*)?)*\)", read_line, re.IGNORECASE):
+        return {const.ERROR_KEY: err_const.METHOD_DECLARATION_SPACING, const.ERROR_PARAMS: []}
 
 
 def change_dict_lang(dict_lang):

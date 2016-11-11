@@ -45,6 +45,10 @@ class CommonMethods(unittest.TestCase):
         result = bslint.bslint.runner(brs_file_path).files
         self.assertTrue(self.check_lists_equal(exp_result, result))
 
+    def method_dec_spacing(self, string, exp_result):
+        result = commands.check_method_dec_spacing(string)
+        self.assertEqual(result, exp_result)
+
     def spaces_around_operators(self, string, chars_index, exp_result):
         result = commands.check_spaces_around_operators(string, chars_index)
         self.assertEqual(result, exp_result)

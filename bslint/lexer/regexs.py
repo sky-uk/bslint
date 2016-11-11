@@ -155,7 +155,7 @@ REGEX_LIST = [
     [r"(INVALID)\b", const.KEYWORD, const.VALUE, const.NO_INDENTATION],
     [r"(IN)\b", const.KEYWORD, const.IN, const.NO_INDENTATION],
     [r"(WHILE)\b", const.KEYWORD, const.WHILE, const.INCREMENT_INDENTATION],
-    [r"(FUNCTION)\b", const.KEYWORD, const.FUNCTION, const.INCREMENT_INDENTATION],
+    [r"(FUNCTION)\b", const.FUNCTION, const.FUNCTION, const.INCREMENT_INDENTATION],
     [r"(AS)\b", const.KEYWORD, const.AS, const.NO_INDENTATION],
     [r"(RETURN)\b", const.KEYWORD, const.RETURN, const.NO_INDENTATION],
     [r"(PRINT)\b", const.PRINT_KEYWORD, const.PRINT_KEYWORD, const.NO_INDENTATION],
@@ -178,7 +178,7 @@ REGEX_LIST = [
      const.BSLINT_COMMAND, const.NO_INDENTATION],
     [r"('|REM\b) *(.*)", const.COMMENT, const.COMMENT, const.NO_INDENTATION],
     [r"(RUN)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
-    [r"(SUB)\b", const.KEYWORD, const.SUB, const.INCREMENT_INDENTATION],
+    [r"(SUB)\b", const.SUB, const.SUB, const.INCREMENT_INDENTATION],
     [r"(TAB)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
     [r"(TYPE)\b", const.KEYWORD, const.KEYWORD, const.NO_INDENTATION],
 

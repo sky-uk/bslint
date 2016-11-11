@@ -73,6 +73,9 @@ class StylingHandler:
             self._check_spelling()
         elif self._token_lexer_type == const.PRINT_KEYWORD:
             self.check_trace_free()
+        elif self._token_lexer_type == const.FUNCTION or self._token_lexer_type == const.SUB:
+            is_correct_method_dec_spacing = commands.check_method_dec_spacing(self.characters)
+            self._warning_filter(is_correct_method_dec_spacing)
 
     def _check_spelling(self):
         is_spelt_correctly = commands.check_spelling(self._match.group(), self._token_lexer_type)
@@ -101,9 +104,6 @@ class StylingHandler:
 
         last_read_line = self._get_last_line()
         self._apply_indentation_styling(last_read_line)
-        is_correct_method_dec_spacing = commands.check_method_dec_spacing(
-            last_read_line)
-        self._warning_filter(is_correct_method_dec_spacing)
 
     def _apply_indentation_styling(self, last_read_line):
         is_correct_indentation = commands.check_indentation(self._current_indentation_level,

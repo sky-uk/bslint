@@ -60,7 +60,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("EXIT WHILE", 1, const.KEYWORD, const.EXIT)
 
     def test_function(self):
-        self.common.match_regex("FUNCTION", 1, const.KEYWORD, const.FUNCTION)
+        self.common.match_regex("FUNCTION", 1, const.FUNCTION, const.FUNCTION)
 
     def test_end_function(self):
         self.common.match_regex("END FUNCTION", 1, const.KEYWORD, const.END_FUNCTION_TOKEN)
@@ -162,7 +162,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("RUN", 1, const.KEYWORD, const.KEYWORD)
 
     def test_sub(self):
-        self.common.match_regex("SUB", 1, const.KEYWORD, const.SUB)
+        self.common.match_regex("SUB", 1, const.SUB, const.SUB)
 
     def test_tab(self):
         self.common.match_regex("TAB", 1, const.KEYWORD, const.KEYWORD)

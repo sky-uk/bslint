@@ -13,6 +13,7 @@ ERRORS_IN_FILE = "ERRORS_IN_FILE"
 WARNINGS_IN_FILE = "WARNINGS_IN_FILE"
 DESCRIPTION = "DESCRIPTION"
 FILE_NAME = "FILE_NAME"
+IN_FILE = "_IN_FILE"
 
 WARNING_COLOUR = '\033[93m'
 PASS_COLOUR = '\033[92m'
@@ -41,9 +42,9 @@ MESSAGE_TABLE = {
         build.Message(TOTAL_COLOUR + "TOTAL WARNINGS: {}" + END_COLOUR),
     TOTAL_ERRORS:
         build.Message(TOTAL_COLOUR + "TOTAL ERRORS: {}" + END_COLOUR),
-    WARNINGS_IN_FILE:
+    const.WARNINGS + IN_FILE:
         build.Message(TOTAL_COLOUR + "WARNINGS IN FILE: {}" + END_COLOUR + "\n"),
-    ERRORS_IN_FILE:
+    const.ERRORS + IN_FILE:
         build.Message(TOTAL_COLOUR + "ERRORS IN FILE: {}" + END_COLOUR + "\n"),
     DESCRIPTION:
         build.Message(TITLE_COLOUR + "BSLint: A linter for BrightScript." + END_COLOUR),
