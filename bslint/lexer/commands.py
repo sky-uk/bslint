@@ -2,7 +2,7 @@ import codecs
 import re
 
 import bslint.constants as const
-import bslint.error_messages.constants as err_const
+import bslint.messages.error_constants as err_const
 import bslint.lexer.regexs as regexs
 import bslint.lexer.words_dictionary as words_dict
 import bslint.utilities.config_loader as config_loader

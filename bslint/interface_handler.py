@@ -1,15 +1,18 @@
 # pylint: disable=too-many-instance-attributes, no-member
+import argparse
 import os
 import re
 import sys
 from io import StringIO
 from multiprocessing import Process, Lock
-import argparse
+
 import bslint
 import bslint.constants as const
 import bslint.lexer.commands as commands
 from bslint.lexer.lexer import Lexer as Lexer
 from bslint.utilities.spinner import SpinnerProcess as SpinnerProcess
+from bslint.messages import handler as msg_handler
+from bslint.messages import print_constants as print_const
 
 PROCESS_LOCK = Lock()
 
@@ -35,15 +38,12 @@ class InterfaceHandler(Process):
             filename = args.path
             if not os.path.exists(filename):
                 self.is_lexed_correctly = False
-                self.out.write(
-                    const.ERROR_COLOUR + "The path you have provided does not exist." + const.END_COLOUR + "\n")
+                self.out.write(msg_handler.get_print_msg(print_const.PATH_DOSNT_EXIST))
                 self.send_to_pipe()
                 return
 
         self.manifest_path = self._get_manifest_path(args.path)
         self.bslintrc = self._parse_bslintrc(self.manifest_path, self.out)
-
-        self.out.write("\n")
 
         self.start_spinner()
         if args.path:
@@ -55,12 +55,12 @@ class InterfaceHandler(Process):
             pathname = os.getcwd()
             self.lint_all(pathname)
         PROCESS_LOCK.acquire()
-        self.out.write(const.FILE_COLOUR + "LINTING COMPLETE" + const.END_COLOUR + "\n")
+        self.out.write(msg_handler.get_print_msg(print_const.LINTING_COMPLETE))
         if self.is_lexed_correctly:
-            self.out.write(const.PASS_COLOUR + "All linted correctly" + const.END_COLOUR + "\n")
+            self.out.write(msg_handler.get_print_msg(print_const.ALL_LINTED_CORRECTLY))
         else:
-            self.out.write(const.TOTAL_COLOUR + "TOTAL WARNINGS: " + str(self.warnings_total) + const.END_COLOUR + "\n")
-            self.out.write(const.TOTAL_COLOUR + "TOTAL ERRORS: " + str(self.errors_total) + const.END_COLOUR + "\n")
+            self.out.write(msg_handler.get_print_msg(print_const.TOTAL_WARNINGS, [str(self.warnings_total)]))
+            self.out.write(msg_handler.get_print_msg(print_const.TOTAL_ERRORS, [str(self.errors_total)]))
         PROCESS_LOCK.release()
         self.send_to_pipe()
 
@@ -76,8 +76,8 @@ class InterfaceHandler(Process):
                 self.printed_output = self.out.getvalue()
             self.out.close()
             self.config = bslint.config_loader.CONFIG
-            testing_dict = {"files": self.files, "messages": self.messages, "printed_output": self.printed_output,
-                            "config": self.config}
+            testing_dict = {"files": self.files, "messages": self.messages,
+                            "printed_output": self.printed_output, "config": self.config}
             self.conn.send(testing_dict)
             self.conn.close()
 
@@ -98,7 +98,7 @@ class InterfaceHandler(Process):
                 raise FileNotFoundError
             return upper_dir
         except FileNotFoundError:
-            self.out.write(const.ERROR_COLOUR + "No manifest file found" + const.END_COLOUR + "\n")
+            self.out.write(msg_handler.get_print_msg(print_const.NO_MANIFEST))
             return ""
 
     def lint_all(self, directory):
@@ -119,7 +119,7 @@ class InterfaceHandler(Process):
             self.files.append(filename)
             read_file = self.file_reader(filename)
             lex_result = Lexer().lex(read_file['str_to_lex'])
-            if lex_result[const.STATUS] == "Error":
+            if lex_result[const.STATUS] == const.ERROR:
                 self.handle_lexing_error(filepath, lex_result)
             elif lex_result[const.WARNINGS]:
                 self.handle_lexing_warnings(filepath, lex_result)
@@ -131,35 +131,33 @@ class InterfaceHandler(Process):
         self.is_lexed_correctly = False
         self.messages[const.WARNINGS][filepath] = []
         for warning in lex_result[const.WARNINGS]:
-            self.messages[const.WARNINGS][filepath].append(
-                const.WARNING_COLOUR + str(warning) + const.END_COLOUR)
+            self.messages[const.WARNINGS][filepath].append(msg_handler.get_print_msg(const.WARNING, [str(warning)]))
 
     def handle_lexing_error(self, filepath, lex_result):
         self.is_lexed_correctly = False
         self.messages[const.ERRORS][filepath] = []
         for error in lex_result[const.TOKENS]:
-            self.messages[const.ERRORS][filepath].append(
-                const.ERROR_COLOUR + str(error) + const.END_COLOUR)
+            self.messages[const.ERRORS][filepath].append(msg_handler.get_print_msg(const.ERROR, [str(error)]))
 
     def print_warnings(self, file_name):
         if file_name in self.messages[const.WARNINGS]:
             PROCESS_LOCK.acquire()
-            self.out.write('\r' + const.FILE_COLOUR + file_name + const.END_COLOUR + "\n")
+            self.out.write(msg_handler.get_print_msg(print_const.FILE_NAME, [str(file_name)]))
             for message in self.messages[const.WARNINGS][file_name]:
-                self.out.write(message + "\n")
+                self.out.write(message)
             number_warnings = len(self.messages[const.WARNINGS][file_name])
             self.warnings_total += number_warnings
-            self.out.write(const.TOTAL_COLOUR + "WARNINGS IN FILE: " + str(number_warnings) + const.END_COLOUR + "\n\n")
+            self.out.write(msg_handler.get_print_msg(print_const.WARNINGS_IN_FILE, [str(number_warnings)]))
             PROCESS_LOCK.release()
 
     def print_errors(self):
         for file_name in self.messages[const.ERRORS]:
-            self.out.write(const.FILE_COLOUR + file_name + const.END_COLOUR + "\n")
+            self.out.write(msg_handler.get_print_msg(print_const.FILE_NAME, [file_name]))
             for message in self.messages[const.ERRORS][file_name]:
-                self.out.write(message + "\n")
+                self.out.write(message)
             number_errors = len(self.messages[const.ERRORS][file_name])
             self.errors_total += number_errors
-            self.out.write(const.TOTAL_COLOUR + "ERRORS IN FILE: " + str(number_errors) + const.END_COLOUR + "\n\n")
+            self.out.write(msg_handler.get_print_msg(print_const.ERRORS_IN_FILE, [str(number_errors)]))
 
     def ignore_dir(self, relative_directory_path, directories_to_ignore):
         for directory in directories_to_ignore:
@@ -171,8 +169,7 @@ class InterfaceHandler(Process):
         return False
 
     def _get_cli_arguments(self):
-        parser = argparse.ArgumentParser(description=const.TITLE_COLOUR + "BSLint: A linter for BrightScript. %s. \n" %
-                                         self.get_version() + const.END_COLOUR)
+        parser = argparse.ArgumentParser(description=msg_handler.get_print_msg(print_const.DESCRIPTION))
         parser.add_argument("--path", "-p", help="Specify directory or file")
         parser.add_argument('--version', "-v", action='version', version=self.get_version(), help="Get current version")
         return parser.parse_args()

@@ -2,8 +2,8 @@ import unittest
 import os
 
 import bslint
-import bslint.error_messages.handler as error
-import bslint.error_messages.constants as err_const
+import bslint.messages.handler as error
+import bslint.messages.error_constants as err_const
 from filepaths import TEST_CONFIG_FILE_PATH
 from filepaths import TESTS_CONFIG_PATH
 from filepaths import EMPTY_LINES_TEST_FILES_PATH
@@ -41,9 +41,9 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         only_empty_lines_file_path = os.path.join(EMPTY_LINES_TEST_FILES_PATH, 'only-empty-lines.brs')
         file_name = only_empty_lines_file_path
         exp_res = [
-            error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 2]),
-            error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 3]),
-            error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 4])]
+            error.get_error_msg(err_const.CONSECUTIVE_EMPTY_LINES, [1, 2]),
+            error.get_error_msg(err_const.CONSECUTIVE_EMPTY_LINES, [1, 3]),
+            error.get_error_msg(err_const.CONSECUTIVE_EMPTY_LINES, [1, 4])]
         self.common.lex_file(file_name, exp_res)
 
     def test_empty_lines_at_end(self):
@@ -51,8 +51,8 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
                                 default_filepath=TEST_CONFIG_FILE_PATH)
         empty_lines_at_end_file_path = os.path.join(EMPTY_LINES_TEST_FILES_PATH, 'empty-lines-at-end.brs')
         file_name = empty_lines_at_end_file_path
-        exp_res = [error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 3]),
-                   error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 4])]
+        exp_res = [error.get_error_msg(err_const.CONSECUTIVE_EMPTY_LINES, [1, 3]),
+                   error.get_error_msg(err_const.CONSECUTIVE_EMPTY_LINES, [1, 4])]
         self.common.lex_file(file_name, exp_res)
 
     def test_empty_lines_at_start(self):
@@ -60,8 +60,8 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
                                 default_filepath=TEST_CONFIG_FILE_PATH)
         empty_lines_at_start_file_path = os.path.join(EMPTY_LINES_TEST_FILES_PATH, 'empty-lines-at-start.brs')
         file_name = empty_lines_at_start_file_path
-        exp_res = [error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 2]),
-                   error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 3])]
+        exp_res = [error.get_error_msg(err_const.CONSECUTIVE_EMPTY_LINES, [1, 2]),
+                   error.get_error_msg(err_const.CONSECUTIVE_EMPTY_LINES, [1, 3])]
         self.common.lex_file(file_name, exp_res)
 
     def test_empty_lines_in_middle(self):
@@ -69,7 +69,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
                                 default_filepath=TEST_CONFIG_FILE_PATH)
         empty_lines_in_middle_file_path = os.path.join(EMPTY_LINES_TEST_FILES_PATH, 'empty-lines-in-middle.brs')
         file_name = empty_lines_in_middle_file_path
-        exp_res = [error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 4])]
+        exp_res = [error.get_error_msg(err_const.CONSECUTIVE_EMPTY_LINES, [1, 4])]
         self.common.lex_file(file_name, exp_res)
 
     def test_comment_not_empty_lines(self):
@@ -85,7 +85,7 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
         multiple_tokens_and_empty_lines_file_path = os.path.join(EMPTY_LINES_TEST_FILES_PATH,
                                                                  'multiple-tokens-and-empty-lines.brs')
         file_name = multiple_tokens_and_empty_lines_file_path
-        exp_res = [error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [1, 3])]
+        exp_res = [error.get_error_msg(err_const.CONSECUTIVE_EMPTY_LINES, [1, 3])]
         self.common.lex_file(file_name, exp_res)
 
     def test_empty_lines_in_middle_custom_config(self):
@@ -100,6 +100,6 @@ class TestConsecutiveEmptyLines(unittest.TestCase):
                                 default_filepath=TEST_CONFIG_FILE_PATH)
         only_empty_lines_file_path = os.path.join(EMPTY_LINES_TEST_FILES_PATH, 'only-empty-lines.brs')
         file_name = only_empty_lines_file_path
-        exp_res = [error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [2, 3]),
-                   error.get_message(err_const.CONSECUTIVE_EMPTY_LINES, [2, 4])]
+        exp_res = [error.get_error_msg(err_const.CONSECUTIVE_EMPTY_LINES, [2, 3]),
+                   error.get_error_msg(err_const.CONSECUTIVE_EMPTY_LINES, [2, 4])]
         self.common.lex_file(file_name, exp_res)

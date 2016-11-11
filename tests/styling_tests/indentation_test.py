@@ -2,8 +2,9 @@ import unittest
 import os
 
 import bslint
-import bslint.error_messages.handler as error
-import bslint.error_messages.constants as err_const
+from bslint import constants as const
+import bslint.messages.handler as error
+import bslint.messages.error_constants as err_const
 import bslint.lexer.commands as commands
 from bslint.lexer.lexer import Lexer as Lexer
 from filepaths import TEST_CONFIG_FILE_PATH
@@ -42,9 +43,9 @@ class TestIndentation(unittest.TestCase):
         basic_indentation_file_path = os.path.join(STYLING_TEST_FILES_PATH, 'basic-indentation.txt')
         file_name = basic_indentation_file_path
         file = open(file_name, "r+").read()
-        exp_result = [error.get_message(err_const.TAB_INDENTATION_ERROR, [4, 2])]
+        exp_result = [error.get_error_msg(err_const.TAB_INDENTATION_ERROR, [4, 2])]
         result = Lexer().lex(file)
-        self.assertEqual(exp_result, result[self.common.WARNINGS])
+        self.assertEqual(exp_result, result[const.WARNINGS])
 
     def test_advanced_indentation_success(self):
         bslint.load_config_file(user_filepath=self.indentation_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
@@ -53,7 +54,7 @@ class TestIndentation(unittest.TestCase):
         file = open(file_name, "r+").read()
         exp_result = []
         result = Lexer().lex(file)
-        self.assertEqual(exp_result, result[self.common.WARNINGS])
+        self.assertEqual(exp_result, result[const.WARNINGS])
 
     def test_indent_with_only_tabs_with_error(self):
         tab_only_indentation_config_path = os.path.join(TESTS_CONFIG_PATH, 'indentation/tab-only-indentation.json')
@@ -61,9 +62,9 @@ class TestIndentation(unittest.TestCase):
         indent_with_tabs_only_file_path = os.path.join(STYLING_TEST_FILES_PATH, 'indent-with-tabs-only.txt')
         file_name = indent_with_tabs_only_file_path
         file = open(file_name, "r+").read()
-        exp_result = [error.get_message(err_const.TAB_AND_SPACES, [10])]
+        exp_result = [error.get_error_msg(err_const.TAB_AND_SPACES, [10])]
         result = Lexer().lex(file)
-        self.assertEqual(exp_result, result[self.common.WARNINGS])
+        self.assertEqual(exp_result, result[const.WARNINGS])
 
     def test_really_advanced_indentation(self):
         bslint.load_config_file(user_filepath=self.indentation_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
@@ -71,7 +72,7 @@ class TestIndentation(unittest.TestCase):
         file_name = sample_advanced_indentation_file_path
         file = open(file_name, "r+").read()
         exp_result = []
-        exp_status = self.common.SUCCESS
+        exp_status = const.SUCCESS
         result = Lexer().lex(file)
-        self.assertEqual(exp_result, result[self.common.WARNINGS])
-        self.assertEqual(exp_status, result[self.common.STATUS])
+        self.assertEqual(exp_result, result[const.WARNINGS])
+        self.assertEqual(exp_status, result[const.STATUS])

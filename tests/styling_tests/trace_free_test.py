@@ -2,8 +2,8 @@ import os
 import unittest
 
 import bslint
-import bslint.error_messages.handler as error
-import bslint.error_messages.constants as err_const
+import bslint.messages.handler as error
+import bslint.messages.error_constants as err_const
 from filepaths import TEST_CONFIG_FILE_PATH
 from filepaths import TESTS_CONFIG_PATH
 from filepaths import TRACE_TEST_FILES_PATH
@@ -24,20 +24,20 @@ class TestTraceFree(unittest.TestCase):
         bslint.load_config_file(user_filepath=self.trace_free_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
         print_file_path = os.path.join(TRACE_TEST_FILES_PATH, 'print.brs')
-        self.common.lex_file(print_file_path, [error.get_message(err_const.TRACEABLE_CODE, [3])])
+        self.common.lex_file(print_file_path, [error.get_error_msg(err_const.TRACEABLE_CODE, [3])])
 
     def test_question_mark(self):
         bslint.load_config_file(user_filepath=self.trace_free_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
         question_mark_file_path = os.path.join(TRACE_TEST_FILES_PATH, 'question-mark.brs')
-        self.common.lex_file(question_mark_file_path, [error.get_message(err_const.TRACEABLE_CODE, [3])])
+        self.common.lex_file(question_mark_file_path, [error.get_error_msg(err_const.TRACEABLE_CODE, [3])])
 
     def test_print_and_question_mark(self):
         bslint.load_config_file(user_filepath=self.trace_free_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
         print_and_question_mark_file_path = os.path.join(TRACE_TEST_FILES_PATH, 'print-and-question-mark.brs')
         self.common.lex_file(print_and_question_mark_file_path,
-                             [error.get_message(err_const.TRACEABLE_CODE, [3]),
-                              error.get_message(err_const.TRACEABLE_CODE, [4])])
+                             [error.get_error_msg(err_const.TRACEABLE_CODE, [3]),
+                              error.get_error_msg(err_const.TRACEABLE_CODE, [4])])
 
     def test_no_print_no_question_mark(self):
         bslint.load_config_file(user_filepath=self.trace_free_config_path, default_filepath=TEST_CONFIG_FILE_PATH)

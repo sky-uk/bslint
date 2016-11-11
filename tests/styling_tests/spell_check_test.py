@@ -2,8 +2,8 @@ import os
 import unittest
 
 import bslint
-import bslint.error_messages.constants as err_const
-import bslint.error_messages.handler as error
+import bslint.messages.error_constants as err_const
+import bslint.messages.handler as error
 import bslint.lexer.commands as commands
 from filepaths import TEST_CONFIG_FILE_PATH
 from filepaths import TESTS_CONFIG_PATH
@@ -60,11 +60,12 @@ class TestSpellCheck(unittest.TestCase):
 
     def test_real_file(self):
         spell_check_file_path = os.path.join(STYLING_TEST_FILES_PATH, 'spell-check.brs')
-        self.common.lex_file(spell_check_file_path, [error.get_message(err_const.TYPO_IN_CODE, [2])])
+        self.common.lex_file(spell_check_file_path, [error.get_error_msg(err_const.TYPO_IN_CODE, [2])])
 
     def test_misspelled_comment_from_file(self):
         incorrect_comment_spelling_file_path = os.path.join(STYLING_TEST_FILES_PATH, 'incorrect-comment-spelling.brs')
-        self.common.lex_file(incorrect_comment_spelling_file_path, [error.get_message(err_const.TYPO_IN_CODE, [1])])
+        self.common.lex_file(incorrect_comment_spelling_file_path, [error.get_error_msg(err_const.TYPO_IN_CODE,
+                                                                                        [1])])
 
     def test_us_dictionary_failing(self):
         us_spellcheck_config_path = os.path.join(TESTS_CONFIG_PATH, 'spell_check/us-spellcheck-config.json')

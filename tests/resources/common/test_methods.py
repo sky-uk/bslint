@@ -10,14 +10,11 @@ import bslint
 
 
 class CommonMethods(unittest.TestCase):
-    WARNINGS = 'Warnings'
-    STATUS = 'Status'
-    SUCCESS = 'Success'
 
     def status_error(self, str_to_parse):
         parser = Parser()
         result = parser.parse(str_to_parse)
-        self.assertEqual("Error", result["Status"])
+        self.assertEqual(const.ERROR, result["Status"])
 
     def match_statement(self, characters, expected):
         parser = Parser()
@@ -27,21 +24,21 @@ class CommonMethods(unittest.TestCase):
     def match_program(self, characters, expected):
         parser = Parser()
         result = parser.parse(characters)
-        self.assertEqual("Success", result["Status"])
+        self.assertEqual(const.SUCCESS, result["Status"])
         self.assertEqual(expected, parser.line_reductions[-1][0])
 
     def lex_warnings_match(self, characters, exp_result):
         result = Lexer().lex(characters)
-        self.assertEqual(exp_result, result[self.WARNINGS])
+        self.assertEqual(exp_result, result[const.WARNINGS])
 
     def match_regex(self, identifier, match_group, lexer_type, parser_type):
         result = regex_handler.find_match(identifier)
         if match_group is None:
-            self.assertEqual(result["match"].group(), identifier)
+            self.assertEqual(result[const.MATCH].group(), identifier)
         else:
-            self.assertEqual(result["match"].group(match_group), identifier)
-        self.assertEqual(result["token_lexer_type"], lexer_type)
-        self.assertEqual(result["token_parser_type"], parser_type)
+            self.assertEqual(result[const.MATCH].group(match_group), identifier)
+        self.assertEqual(result[const.TOKEN_LEXER_TYPE], lexer_type)
+        self.assertEqual(result[const.TOKEN_PARSER_TYPE], parser_type)
 
     def directory_lexing(self, brs_file_path, exp_result):
         bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH)
@@ -59,13 +56,13 @@ class CommonMethods(unittest.TestCase):
     def lex_file(self, file, exp_result):
         file = open(file, "r+").read()
         result = Lexer().lex(file)
-        self.assertEqual(result[self.WARNINGS], exp_result)
-        self.assertEqual(result[self.STATUS], self.SUCCESS)
+        self.assertEqual(result[const.WARNINGS], exp_result)
+        self.assertEqual(result[const.STATUS], const.SUCCESS)
 
     def lex_string(self, string, exp_result):
         result = Lexer().lex(string)
-        self.assertEqual(result[self.WARNINGS], exp_result)
-        self.assertEqual(result[self.STATUS], self.SUCCESS)
+        self.assertEqual(result[const.WARNINGS], exp_result)
+        self.assertEqual(result[const.STATUS], const.SUCCESS)
 
     def lex_identifier(self, identifier, exp_result):
         lexer = Lexer()
@@ -74,9 +71,9 @@ class CommonMethods(unittest.TestCase):
 
     def match(self, identifier, match_group):
         result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(match_group), identifier)
-        self.assertEqual(result["token_lexer_type"], const.ID)
-        self.assertEqual(result["token_parser_type"], const.ID)
+        self.assertEqual(result[const.MATCH].group(match_group), identifier)
+        self.assertEqual(result[const.TOKEN_LEXER_TYPE], const.ID)
+        self.assertEqual(result[const.TOKEN_PARSER_TYPE], const.ID)
 
     @staticmethod
     def check_lists_equal(expected, result):

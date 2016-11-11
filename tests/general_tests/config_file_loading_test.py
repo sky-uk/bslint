@@ -3,7 +3,8 @@ import os
 from io import StringIO
 
 import bslint
-import bslint.constants as const
+from bslint.messages import print_constants as print_const
+from bslint.messages import handler as msg_handler
 from filepaths import TEST_CONFIG_FILE_PATH
 from filepaths import DEFAULT_CONFIG_FILE_PATH
 from filepaths import CONFIG_PATH
@@ -24,16 +25,16 @@ class TestConfigFileLoading(unittest.TestCase):
         out = StringIO()
         config_file = os.path.join(CONFIG_PATH, 'fig.json')
         bslint.load_config_file(config_file, out=out)
-        result = out.getvalue().strip()
+        result = out.getvalue()
         out.close()
-        exp_res = const.ERROR_COLOUR + "Cannot find bslintrc, using default config." + const.END_COLOUR
+        exp_res = msg_handler.get_print_msg(print_const.NO_BSLINTRC)
         self.assertEqual(result, exp_res)
 
     def test_load_config_file_check_read(self):
         exp_res = ""
         out = StringIO()
         bslint.load_config_file(out=out)
-        result = out.getvalue().strip()
+        result = out.getvalue()
         out.close()
         self.assertEqual(result, exp_res)
 

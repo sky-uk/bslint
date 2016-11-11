@@ -1,9 +1,9 @@
 from bslint.parser import statement_reduction_rules as statement_grammar
 from bslint.parser import program_reduction_rules as program_grammar
-from bslint.error_messages import constants as err_const
+from bslint.messages import error_constants as err_const
 from bslint import constants as const
 from bslint.lexer.lexer import Lexer
-from bslint.error_messages import handler as err
+from bslint.messages import handler as err
 import bslint.utilities.custom_exceptions as custom_exception
 
 MAX_FINAL_STATEMENT_LENGTH = 1
@@ -124,4 +124,4 @@ class Parser(Lexer):
             raise custom_exception.ParsingException(err_const.PROGRAM_PARSING_FAILED)
 
     def handle_parsing_error(self, err_code):
-        self.errors.append(err.get_message(err_code, [self.handle_style.line_number]))
+        self.errors.append(err.get_error_msg(err_code, [self.handle_style.line_number]))

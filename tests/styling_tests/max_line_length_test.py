@@ -2,8 +2,8 @@ import os
 import unittest
 
 import bslint
-import bslint.error_messages.handler as error
-import bslint.error_messages.constants as err_const
+import bslint.messages.handler as error
+import bslint.messages.error_constants as err_const
 from filepaths import TEST_CONFIG_FILE_PATH
 from filepaths import TESTS_CONFIG_PATH
 from filepaths import STYLING_TEST_FILES_PATH
@@ -28,7 +28,7 @@ class TestMaxLineLength(unittest.TestCase):
         bslint.load_config_file(user_filepath=self.small_max_line_length_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
         file_name = self.short_line_length_file_path
-        exp_result = [error.get_message(err_const.LINE_LENGTH, [11, 1])]
+        exp_result = [error.get_error_msg(err_const.LINE_LENGTH, [11, 1])]
         self.common.lex_file(file_name, exp_result)
 
     def test_equal_max_line_length(self):
@@ -43,6 +43,6 @@ class TestMaxLineLength(unittest.TestCase):
                                 default_filepath=TEST_CONFIG_FILE_PATH)
         multi_line_file_path = os.path.join(STYLING_TEST_FILES_PATH, 'multiline-assignment.txt')
         file_name = multi_line_file_path
-        exp_result = [error.get_message(err_const.LINE_LENGTH, [11, 1]),
-                      error.get_message(err_const.LINE_LENGTH, [11, 2])]
+        exp_result = [error.get_error_msg(err_const.LINE_LENGTH, [11, 1]),
+                      error.get_error_msg(err_const.LINE_LENGTH, [11, 2])]
         self.common.lex_file(file_name, exp_result)

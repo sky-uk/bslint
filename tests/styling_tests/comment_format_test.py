@@ -2,8 +2,8 @@ import os
 import unittest
 
 import bslint
-import bslint.error_messages.handler as error
-import bslint.error_messages.constants as err_const
+import bslint.messages.handler as error
+import bslint.messages.error_constants as err_const
 from filepaths import TEST_CONFIG_FILE_PATH
 from filepaths import STYLING_TEST_FILES_PATH
 from filepaths import COMMENTS_CONFIG_PATH
@@ -26,7 +26,7 @@ class TestCommentFormat(unittest.TestCase):
         todo_comment_config_path = os.path.join(COMMENTS_CONFIG_PATH, 'TODO-comment-config.json')
         bslint.load_config_file(user_filepath=todo_comment_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
         file_name = self.valid_comment_single_quote_no_todo_file_path
-        exp_res = [error.get_message(err_const.NON_CONVENTIONAL_TODO, [17])]
+        exp_res = [error.get_error_msg(err_const.NON_CONVENTIONAL_TODO, [17])]
         self.common.lex_file(file_name, exp_res)
 
     def test_todo_no_comment(self):
@@ -35,17 +35,17 @@ class TestCommentFormat(unittest.TestCase):
         bslint.load_config_file(user_filepath=valid_comment_single_quote_no_todo_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
         file_name = self.valid_comment_single_quote_no_todo_file_path
-        exp_res = [error.get_message(err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [11]),
-                   error.get_message(err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [12]),
-                   error.get_message(err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [17])]
+        exp_res = [error.get_error_msg(err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [11]),
+                   error.get_error_msg(err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [12]),
+                   error.get_error_msg(err_const.NON_CONVENTIONAL_TODO_AND_NO_COMMENTS, [17])]
         self.common.lex_file(file_name, exp_res)
 
     def test_no_todo_comment(self):
         no_todo_comment_config_path = os.path.join(COMMENTS_CONFIG_PATH, 'no-TODO-comment-config.json')
         bslint.load_config_file(user_filepath=no_todo_comment_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
         file_name = self.valid_comment_single_quote_no_todo_file_path
-        exp_res = [error.get_message(err_const.NO_TODOS, [1]),
-                   error.get_message(err_const.NO_TODOS, [17])]
+        exp_res = [error.get_error_msg(err_const.NO_TODOS, [1]),
+                   error.get_error_msg(err_const.NO_TODOS, [17])]
         self.common.lex_file(file_name, exp_res)
 
     def test_no_todo_no_comment(self):
@@ -53,8 +53,8 @@ class TestCommentFormat(unittest.TestCase):
         bslint.load_config_file(user_filepath=no_todo_no_comment_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
         file_name = self.valid_comment_single_quote_no_todo_file_path
         exp_res = [
-            error.get_message(err_const.COMMENTS_NOT_ALLOWED, [1]),
-            error.get_message(err_const.COMMENTS_NOT_ALLOWED, [11]),
-            error.get_message(err_const.COMMENTS_NOT_ALLOWED, [12]),
-            error.get_message(err_const.COMMENTS_NOT_ALLOWED, [17])]
+            error.get_error_msg(err_const.COMMENTS_NOT_ALLOWED, [1]),
+            error.get_error_msg(err_const.COMMENTS_NOT_ALLOWED, [11]),
+            error.get_error_msg(err_const.COMMENTS_NOT_ALLOWED, [12]),
+            error.get_error_msg(err_const.COMMENTS_NOT_ALLOWED, [17])]
         self.common.lex_file(file_name, exp_res)

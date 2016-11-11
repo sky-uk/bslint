@@ -1,8 +1,7 @@
 import json
 import sys
-import bslint.constants as const
-
-
+from bslint.messages import print_constants as print_const
+from bslint.messages import handler as msg_handler
 from filepaths import DEFAULT_CONFIG_FILE_PATH
 CONFIG = ""
 
@@ -14,9 +13,10 @@ def load_config_file(user_filepath=None, default_filepath=DEFAULT_CONFIG_FILE_PA
         default_json = overwrite_default_config(default_json, user_json)
 
     except FileNotFoundError:
-        out.write(const.ERROR_COLOUR + "Cannot find bslintrc, using default config." + const.END_COLOUR + "\n")
+        out.write(msg_handler.get_print_msg(print_const.NO_BSLINTRC))
     except ValueError:
-        out.write(const.ERROR_COLOUR + "Unable to parse JSON in .bslintrc file" + const.END_COLOUR)
+
+        out.write(msg_handler.get_print_msg(print_const.CANNOT_PARSE_BSLINTRC))
         default_json = None
     finally:
         global CONFIG

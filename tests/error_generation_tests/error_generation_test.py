@@ -1,11 +1,11 @@
 import unittest
-import bslint.error_messages.handler as err
-import bslint.error_messages.constants as err_const
+from bslint.messages import handler as msg_handler
+import bslint.messages.error_constants as err_const
 
 
 class TestErrorGeneration(unittest.TestCase):
 
     def test_random_key(self):
         with self.assertRaises(ValueError) as ve:
-            err.get_message("RANDOM_KEY")
+            msg_handler.get_error_msg("RANDOM_KEY")
         self.assertEqual(err_const.NO_SUCH_KEY, ve.exception.args[0])

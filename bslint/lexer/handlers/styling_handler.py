@@ -1,5 +1,5 @@
 from bslint import constants as const
-from bslint.error_messages import handler as err
+from bslint.messages import handler as msg_handler
 from bslint.lexer import commands as commands
 from bslint.lexer.token import Token
 
@@ -137,7 +137,7 @@ class StylingHandler:
     def _warning_filter(self, result):
         if result is not None:
             result[const.ERROR_PARAMS].append(str(self.line_number))
-            warning = err.get_message(result[const.ERROR_KEY], result[const.ERROR_PARAMS])
+            warning = msg_handler.get_error_msg(result[const.ERROR_KEY], result[const.ERROR_PARAMS])
             self.warnings += [warning]
 
     def add_object_commas(self, lexer):
