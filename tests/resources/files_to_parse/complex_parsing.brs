@@ -19,10 +19,10 @@ sub Main(args as Dynamic)
         else if msgType = "roUrlEvent"
             if msg.GetInt() = 1
                 m.messageBus.dispatchEvent( Event("roUrlEvent", {
-                                            sourceIdentity: msg.GetSourceIdentity(),
-                                            responseCode: msg.GetResponseCode(),
-                                            failureReason: msg.GetFailureReason(),
-                                            data: msg.getString(),
+                                            sourceIdentity: msg.GetSourceIdentity()
+                                            responseCode: msg.GetResponseCode()
+                                            failureReason: msg.GetFailureReason()
+                                            data: msg.getString()
                                             responseHeadersArray:msg.GetResponseHeadersArray()
                                             }))
             end if

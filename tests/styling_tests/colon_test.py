@@ -7,11 +7,12 @@ from bslint.lexer.lexer import Lexer as Lexer
 class TestColon(unittest.TestCase):
 
     def test_statement_ends_with_colon(self):
+        lexer = Lexer()
         identifier = ":"
         regex_match = regex_handler.find_match(identifier)
         styling_handler = StylingHandler(identifier)
-        styling_handler.apply_styling(regex_match)
-        styling_handler.check_end_of_statement()
+        styling_handler.apply_styling(lexer, regex_match)
+        styling_handler.check_end_of_statement(lexer)
         self.assertTrue(styling_handler.end_of_statement)
 
     def test_statement_ends_with_colon_no_change_line(self):

@@ -8,6 +8,27 @@ class TestArgumentParse(unittest.TestCase):
     def setUpClass(cls):
         cls.common = Common()
 
+    def test_open_enumerable_object_no_commas(self):
+        self.common.match_statement("{a:1\n b:2}", const.ENUMERABLE_OBJECT)
+
+    def test_open_enumerable_object_no_commas_all_new_lines(self):
+        self.common.match_statement("{\na:1\n b:2\n}", const.ENUMERABLE_OBJECT)
+
+    def test_open_enumerable_object_no_commas_start_new_lines(self):
+        self.common.match_statement("{\na:1\n b:2}", const.ENUMERABLE_OBJECT)
+
+    def test_open_enumerable_object_commas(self):
+        self.common.match_statement("{a:1,\n b:2}", const.ENUMERABLE_OBJECT)
+
+    def test_open_enumerable_object_commas_all_new_lines(self):
+        self.common.match_statement("{\na:1,\n b:2\n}", const.ENUMERABLE_OBJECT)
+
+    def test_open_enumerable_object_commas_start_new_lines(self):
+        self.common.match_statement("{\na:1,\n b:2}", const.ENUMERABLE_OBJECT)
+
+    def test_open_enumerable_object_mix_commas_all_new_lines(self):
+        self.common.match_statement("{\na:1\n b:2,\nc:3}", const.ENUMERABLE_OBJECT)
+
     def test_open_curly_bracket_close_curly_bracket(self):
         self.common.match_statement("{}", const.ENUMERABLE_OBJECT)
 

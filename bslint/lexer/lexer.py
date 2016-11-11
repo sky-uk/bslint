@@ -52,13 +52,13 @@ class Lexer:
         self.handle_style.line_length += len(regex_match[MATCH].group())
         self.handle_style.current_char_index += len(regex_match[MATCH].group())
         if regex_match["token_lexer_type"] is not None:
-            applied_common_styling = self.handle_style.apply_styling(regex_match)
+            applied_common_styling = self.handle_style.apply_styling(self, regex_match)
             if applied_common_styling:
                 token = self.handle_match.match_handler(regex_match)
                 if token is not None:
                     token.line_number = self.handle_style.line_number
                     self.tokens.append(token)
-            self.handle_style.check_end_of_statement()
+            self.handle_style.check_end_of_statement(self)
             if self.handle_style.end_of_statement is True:
                 self.check_statement_validity(self.tokens[self.current_token_index:])
                 self.handle_style.end_of_statement = False

@@ -94,7 +94,6 @@ def check_skip_file():
 def check_skip_line(line_number):
     if _command_is_active(const.SKIP_LINE) is False:
         return
-
     return line_number + 1
 
 

@@ -1,6 +1,7 @@
 from bslint import constants as const
 from bslint.error_messages import handler as err
 from bslint.lexer import commands as commands
+from bslint.lexer.token import Token
 
 
 class StylingHandler:
@@ -32,7 +33,7 @@ class StylingHandler:
         elif command_type == const.SKIP_FILE:
             self._skip_styling_on_file = commands.check_skip_file()
 
-    def apply_styling(self, regex_match):
+    def apply_styling(self, lexer, regex_match):
         self._match = regex_match[const.MATCH]
         self._token_lexer_type = regex_match[const.TOKEN_LEXER_TYPE]
         if regex_match[const.INDENTATION_LEVEL] != const.NO_INDENTATION:
@@ -42,6 +43,7 @@ class StylingHandler:
         if self._token_lexer_type == const.NEW_LINE:
             self.end_of_statement = True
             self.apply_new_line_styling()
+            self.add_object_commas(lexer)
             self.line_number += 1
             self.line_length = 0
         elif self._token_lexer_type == const.BSLINT_COMMAND:
@@ -119,15 +121,17 @@ class StylingHandler:
             self._is_empty_line = True
             self._consecutive_empty_lines = 0
 
-    def check_end_of_statement(self):
+    def check_end_of_statement(self, lexer):
         if self._token_lexer_type == const.COLON:
             self.end_of_statement = True
         elif self._token_lexer_type == const.OPEN_CURLY_BRACKET:
             self.open_curly_braces += 1
         elif self._token_lexer_type == const.CLOSE_CURLY_BRACKET:
+            if lexer.tokens[-2].parser_type == const.COMMA:
+                lexer.tokens.pop(-2)
             self.open_curly_braces -= 1
 
-        if self.open_curly_braces is not 0:
+        if self.open_curly_braces != 0:
             self.end_of_statement = False
 
     def _warning_filter(self, result):
@@ -135,3 +139,10 @@ class StylingHandler:
             result[const.ERROR_PARAMS].append(str(self.line_number))
             warning = err.get_message(result[const.ERROR_KEY], result[const.ERROR_PARAMS])
             self.warnings += [warning]
+
+    def add_object_commas(self, lexer):
+        if self.open_curly_braces != 0:
+            if lexer.tokens[-1].lexer_type != const.OPEN_CURLY_BRACKET and lexer.tokens[-1].parser_type != const.COMMA:
+                comma_token = Token(",", const.SPECIAL_OPERATOR, const.COMMA, None)
+                comma_token.line_number = lexer.handle_style.line_number
+                lexer.tokens.append(comma_token)
