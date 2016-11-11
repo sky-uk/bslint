@@ -48,3 +48,6 @@ class TestFunctionCallParse(unittest.TestCase):
 
     def test_invalid_function_call_extra_parenthesis(self):
         self.common.status_error("x(())")
+
+    def test_invalid_function_call_semi_colon(self):
+        self.common.status_error("x(a; b)")
