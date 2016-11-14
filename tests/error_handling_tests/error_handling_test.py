@@ -2,7 +2,7 @@ import unittest
 import re
 import os
 from io import StringIO
-
+from argparse import Namespace
 import bslint
 import bslint.constants as const
 from bslint.messages import print_constants as print_const
@@ -21,6 +21,7 @@ class TestErrorHandling(unittest.TestCase):
 
     def test_no_warnings_in_file_with_errors(self):
         skeleton_main_with_errors_path = os.path.join(LEXING_TEST_FILES_PATH, 'skeleton-main-with-errors.brs')
+        self.interface_handler.args = Namespace(lex=True)
         self.interface_handler.lint_file(skeleton_main_with_errors_path)
         self.assertEqual(len(self.interface_handler.messages[const.ERRORS]), 1)
         self.assertEqual(len(self.interface_handler.messages[const.WARNINGS]), 0)
@@ -37,11 +38,13 @@ class TestErrorHandling(unittest.TestCase):
 
     def test_only_warnings_in_file_without_errors(self):
         skeleton_main_path = os.path.join(LEXING_TEST_FILES_PATH, 'skeleton-main.brs')
+        self.interface_handler.args = Namespace(lex=True)
         self.interface_handler.lint_file(skeleton_main_path)
         self.assertEqual(len(self.interface_handler.messages[const.ERRORS]), 0)
         self.assertEqual(len(self.interface_handler.messages[const.WARNINGS]), 1)
 
     def test_parsing_directory(self):
+        self.interface_handler.args = Namespace(lex=True)
         self.interface_handler.lint_all(LEXING_TEST_FILES_PATH)
         self.assertEqual(len(self.interface_handler.messages[const.WARNINGS]), 1)
         self.assertEqual(len(self.interface_handler.messages[const.ERRORS]), 1)
@@ -50,6 +53,7 @@ class TestErrorHandling(unittest.TestCase):
         out = StringIO()
         self.interface_handler = InterfaceHandler(out)
         error_handling_file_path = os.path.join(TESTS_RESOURCES_PATH, 'error_handling_files')
+        self.interface_handler.args = Namespace(lex=True)
         self.interface_handler.lint_all(error_handling_file_path)
         result = out.getvalue()
         out.close()

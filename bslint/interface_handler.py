@@ -10,6 +10,7 @@ import bslint
 import bslint.constants as const
 import bslint.lexer.commands as commands
 from bslint.lexer.lexer import Lexer as Lexer
+from bslint.parser.parser import Parser as Parser
 from bslint.utilities.spinner import SpinnerProcess as SpinnerProcess
 from bslint.messages import handler as msg_handler
 from bslint.messages import print_constants as print_const
@@ -30,29 +31,30 @@ class InterfaceHandler(Process):
         self.conn = conn
         self.printed_output = None
         self.config = None
+        self.args = None
 
     def run(self):
-        args = self._get_cli_arguments()
-        if args.path and not os.path.exists(args.path):
+        self._get_cli_arguments()
+        if self.args.path and not os.path.exists(self.args.path):
             self.is_lexed_correctly = False
             self.out.write(msg_handler.get_print_msg(print_const.PATH_DOSNT_EXIST))
             self.send_to_pipe()
             return
 
-        self.manifest_path = self._get_manifest_path(args.path)
+        self.manifest_path = self._get_manifest_path(self.args.path)
         self.bslintrc = self._parse_bslintrc(self.manifest_path, self.out)
 
         self.start_spinner()
-        self.lint(args)
+        self.lint()
         self.print_summary()
         self.send_to_pipe()
 
-    def lint(self, args):
-        if args.path:
-            if os.path.isfile(args.path):
-                self.lint_file(args.path)
+    def lint(self):
+        if self.args.path:
+            if os.path.isfile(self.args.path):
+                self.lint_file(self.args.path)
             else:
-                self.lint_all(args.path)
+                self.lint_all(self.args.path)
         else:
             pathname = os.getcwd()
             self.lint_all(pathname)
@@ -66,12 +68,6 @@ class InterfaceHandler(Process):
             self.out.write(msg_handler.get_print_msg(print_const.TOTAL_WARNINGS, [self.issues_total[const.WARNINGS]]))
             self.out.write(msg_handler.get_print_msg(print_const.TOTAL_ERRORS, [self.issues_total[const.ERRORS]]))
         PROCESS_LOCK.release()
-
-    @staticmethod
-    def start_spinner():
-        spinner_process = SpinnerProcess(PROCESS_LOCK)
-        spinner_process.daemon = True
-        spinner_process.start()
 
     def send_to_pipe(self):
         if self.conn:
@@ -118,8 +114,11 @@ class InterfaceHandler(Process):
         filename = filepath.replace(os.getcwd() + '/', '')
         if filename.endswith(".brs") or filename.endswith(".bs"):
             self.files.append(filename)
-            read_file = self.file_reader(filename)
-            lex_result = Lexer().lex(read_file['str_to_lex'])
+            file_content = self.file_reader(filename)['file_content']
+            if self.args.lex:
+                lex_result = Lexer().lex(file_content)
+            else:
+                lex_result = Parser().parse(file_content)
             if lex_result[const.STATUS] == const.ERROR:
                 self.handle_lexing_result(filepath, const.ERRORS, lex_result[const.TOKENS])
             elif lex_result[const.WARNINGS]:
@@ -155,8 +154,10 @@ class InterfaceHandler(Process):
     def _get_cli_arguments(self):
         parser = argparse.ArgumentParser(description=msg_handler.get_print_msg(print_const.DESCRIPTION))
         parser.add_argument("--path", "-p", help="Specify directory or file")
+        parser.add_argument('--lex', "-l", help="Runs only the lexer, without parsing the code",
+                            action='store_true', default=False)
         parser.add_argument('--version', "-v", action='version', version=self.get_version(), help="Get current version")
-        return parser.parse_args()
+        self.args = parser.parse_args()
 
     @staticmethod
     def _parse_bslintrc(manifest_path, out):
@@ -179,7 +180,7 @@ class InterfaceHandler(Process):
     def file_reader(file_to_lex):
         with open(file_to_lex, "r+") as file:
             str_to_lex = file.read()
-        return {"invalid_encoding": commands.check_file_encoding(file_to_lex), "str_to_lex": str_to_lex}
+        return {"invalid_encoding": commands.check_file_encoding(file_to_lex), "file_content": str_to_lex}
 
     @staticmethod
     def get_version():
@@ -190,3 +191,9 @@ class InterfaceHandler(Process):
     def no_manifest_in_folder(upper_dir):
         return not os.path.exists(os.path.join(upper_dir, "MANIFEST")) and not os.path.exists(
             os.path.join(upper_dir, "manifest"))
+
+    @staticmethod
+    def start_spinner():
+        spinner_process = SpinnerProcess(PROCESS_LOCK)
+        spinner_process.daemon = True
+        spinner_process.start()

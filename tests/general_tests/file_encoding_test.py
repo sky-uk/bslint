@@ -51,7 +51,7 @@ class TestEncodingCheck(unittest.TestCase):
         fo = open(file_path, "r+")
         str_to_lex = fo.read()
         result = InterfaceHandler.file_reader(file_path)
-        exp_result = {"invalid_encoding": None, "str_to_lex": str_to_lex}
+        exp_result = {"invalid_encoding": None, "file_content": str_to_lex}
         self.assertEqual(result, exp_result)
 
     def test_file_reader_no_encoding_check(self):
@@ -60,5 +60,5 @@ class TestEncodingCheck(unittest.TestCase):
         fo = open(file_path, "r+")
         str_to_lex = fo.read()
         result = InterfaceHandler.file_reader(file_path)
-        exp_result = {"invalid_encoding": None, "str_to_lex": str_to_lex}
+        exp_result = {"invalid_encoding": None, "file_content": str_to_lex}
         self.assertEqual(result, exp_result)

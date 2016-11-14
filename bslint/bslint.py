@@ -20,6 +20,7 @@ def runner(to_lex=None, out=sys.stdout):
     if to_lex is not None:
         sys.argv.append("--path")
         sys.argv.append(os.path.abspath(to_lex))
+        sys.argv.append("--lex")
     parent_conn, child_conn = Pipe()
     interface_handler = InterfaceHandler(out=out, conn=child_conn)
     interface_handler.start()
