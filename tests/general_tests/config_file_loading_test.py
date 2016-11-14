@@ -16,10 +16,10 @@ class TestConfigFileLoading(unittest.TestCase):
 
     def test_read_json_correctly(self):
         config_file = DEFAULT_CONFIG_FILE_PATH
-        exp_res = 17
+        expected = 17
         config_json = bslint.read_json(config_file)
         result = len(config_json)
-        self.assertEqual(result, exp_res)
+        self.assertEqual(expected, result)
 
     def test_read_json_bad_file_name(self):
         out = StringIO()
@@ -27,32 +27,32 @@ class TestConfigFileLoading(unittest.TestCase):
         bslint.load_config_file(config_file, out=out)
         result = out.getvalue()
         out.close()
-        exp_res = msg_handler.get_print_msg(print_const.NO_BSLINTRC)
-        self.assertEqual(result, exp_res)
+        expected = msg_handler.get_print_msg(print_const.NO_BSLINTRC)
+        self.assertEqual(expected, result)
 
     def test_load_config_file_check_read(self):
-        exp_res = ""
+        expected = ""
         out = StringIO()
         bslint.load_config_file(out=out)
         result = out.getvalue()
         out.close()
-        self.assertEqual(result, exp_res)
+        self.assertEqual(expected, result)
 
     def test_default_config_overwritten(self):
         bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH)
         general_ignore_test_files_path = os.path.join(TESTS_RESOURCES_PATH, 'general_ignore_test_files')
         result = bslint.bslint.runner(general_ignore_test_files_path)
-        self.assertEqual(False, result.config["check_trace_free"]["active"])
+        self.assertFalse(result.config["check_trace_free"]["active"])
         self.assertEqual(["sub_directory1_test_files"], result.config["ignore"])
 
     def test_default_config_persists(self):
-        exp_res = True
+        expected = True
         config = bslint.load_config_file()
         result = config["spell_check"]["active"]
-        self.assertEqual(result, exp_res)
+        self.assertEqual(expected, result)
 
     def test_read_json(self):
         indentation_config_path = os.path.join(TESTS_CONFIG_PATH, 'indentation/indentation-config.json')
         json = bslint.config_loader.read_json(indentation_config_path)
-        exp_result = {'check_indentation': {'active': True, 'params': {'tab_size': 4, 'only_tab_indents': False}}}
-        self.assertEqual(json, exp_result)
+        expected = {'check_indentation': {'active': True, 'params': {'tab_size': 4, 'only_tab_indents': False}}}
+        self.assertEqual(expected, json)

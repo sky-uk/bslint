@@ -16,68 +16,68 @@ class CommonMethods(unittest.TestCase):
         result = parser.parse(str_to_parse)
         self.assertEqual(const.ERROR, result["Status"])
 
-    def match_statement(self, characters, expected):
+    def match_statement(self, expected, characters):
         parser = Parser()
         parser.parse(characters)
         self.assertEqual(expected, parser.all_statements[-1][0])
 
-    def match_program(self, characters, expected):
+    def match_program(self, expected, characters):
         parser = Parser()
         result = parser.parse(characters)
         self.assertEqual(const.SUCCESS, result["Status"])
         self.assertEqual(expected, parser.line_reductions[-1][0])
 
-    def lex_warnings_match(self, characters, exp_result):
+    def lex_warnings_match(self, expected, characters):
         result = Lexer().lex(characters)
-        self.assertEqual(exp_result, result[const.WARNINGS])
+        self.assertEqual(expected, result[const.WARNINGS])
 
     def match_regex(self, identifier, match_group, lexer_type, parser_type):
         result = regex_handler.find_match(identifier)
         if match_group is None:
-            self.assertEqual(result[const.MATCH].group(), identifier)
+            self.assertEqual(identifier, result[const.MATCH].group())
         else:
-            self.assertEqual(result[const.MATCH].group(match_group), identifier)
-        self.assertEqual(result[const.TOKEN_LEXER_TYPE], lexer_type)
-        self.assertEqual(result[const.TOKEN_PARSER_TYPE], parser_type)
+            self.assertEqual(identifier, result[const.MATCH].group(match_group))
+        self.assertEqual(lexer_type, result[const.TOKEN_LEXER_TYPE])
+        self.assertEqual(parser_type, result[const.TOKEN_PARSER_TYPE])
 
-    def directory_lexing(self, brs_file_path, exp_result):
+    def directory_lexing(self, expected, brs_file_path):
         bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH)
         result = bslint.bslint.runner(brs_file_path).files
-        self.assertTrue(self.check_lists_equal(exp_result, result))
+        self.assertTrue(self.check_lists_equal(expected, result))
 
-    def method_dec_spacing(self, string, exp_result):
+    def method_dec_spacing(self, expected, string):
         result = commands.check_method_dec_spacing(string)
-        self.assertEqual(result, exp_result)
+        self.assertEqual(expected, result)
 
-    def spaces_around_operators(self, string, chars_index, exp_result):
+    def spaces_around_operators(self, expected, string, chars_index):
         result = commands.check_spaces_around_operators(string, chars_index)
-        self.assertEqual(result, exp_result)
+        self.assertEqual(expected, result)
 
-    def spell_check(self, string, exp_result):
+    def spell_check(self, expected, string):
         result = commands.check_spelling(string, const.ID)
-        self.assertEqual(result, exp_result)
+        self.assertEqual(expected, result)
 
-    def lex_file(self, file, exp_result):
+    def lex_file(self, expected, file):
         file = open(file, "r+").read()
         result = Lexer().lex(file)
-        self.assertEqual(result[const.WARNINGS], exp_result)
-        self.assertEqual(result[const.STATUS], const.SUCCESS)
+        self.assertEqual(expected, result[const.WARNINGS])
+        self.assertEqual(const.SUCCESS, result[const.STATUS])
 
-    def lex_string(self, string, exp_result):
+    def lex_string(self, expected, string):
         result = Lexer().lex(string)
-        self.assertEqual(result[const.WARNINGS], exp_result)
-        self.assertEqual(result[const.STATUS], const.SUCCESS)
+        self.assertEqual(expected, result[const.WARNINGS])
+        self.assertEqual(const.SUCCESS, result[const.STATUS])
 
-    def lex_identifier(self, identifier, exp_result):
+    def lex_identifier(self, expected, identifier):
         lexer = Lexer()
         lexer.lex(identifier)
-        self.assertEqual(lexer.statements_counter, exp_result)
+        self.assertEqual(expected, lexer.statements_counter)
 
     def match(self, identifier, match_group):
         result = regex_handler.find_match(identifier)
-        self.assertEqual(result[const.MATCH].group(match_group), identifier)
-        self.assertEqual(result[const.TOKEN_LEXER_TYPE], const.ID)
-        self.assertEqual(result[const.TOKEN_PARSER_TYPE], const.ID)
+        self.assertEqual(identifier, result[const.MATCH].group(match_group))
+        self.assertEqual(const.ID, result[const.TOKEN_LEXER_TYPE])
+        self.assertEqual(const.ID, result[const.TOKEN_PARSER_TYPE])
 
     @staticmethod
     def check_lists_equal(expected, result):

@@ -29,21 +29,21 @@ class TestEncodingCheck(unittest.TestCase):
         bslint.load_config_file(user_filepath=self.ascii_encoding_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
         file_path = self.ascii_chars_file_path
         result = commands.check_file_encoding(file_path)
-        exp_result = None
-        self.assertEqual(result, exp_result)
+        expected = None
+        self.assertEqual(expected, result)
 
     def test_non_ascii_chars(self):
         bslint.load_config_file(user_filepath=self.ascii_encoding_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
         file_path = self.non_ascii_chars_file_path
         result = commands.check_file_encoding(file_path)
-        self.assertEqual(result['error_key'], err_const.FILE_ENCODING)
+        self.assertEqual(err_const.FILE_ENCODING, result['error_key'])
 
     def test_utf_8_chars(self):
         bslint.load_config_file(user_filepath=self.utf8_encoding_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
         file_path = self.non_ascii_chars_file_path
         result = commands.check_file_encoding(file_path)
-        exp_result = None
-        self.assertEqual(result, exp_result)
+        expected = None
+        self.assertEqual(expected, result)
 
     def test_file_reader(self):
         bslint.load_config_file(user_filepath=self.ascii_encoding_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
@@ -51,8 +51,8 @@ class TestEncodingCheck(unittest.TestCase):
         fo = open(file_path, "r+")
         str_to_lex = fo.read()
         result = InterfaceHandler.file_reader(file_path)
-        exp_result = {"invalid_encoding": None, "file_content": str_to_lex}
-        self.assertEqual(result, exp_result)
+        expected = {"invalid_encoding": None, "file_content": str_to_lex}
+        self.assertEqual(expected, result)
 
     def test_file_reader_no_encoding_check(self):
         bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH)
@@ -60,5 +60,5 @@ class TestEncodingCheck(unittest.TestCase):
         fo = open(file_path, "r+")
         str_to_lex = fo.read()
         result = InterfaceHandler.file_reader(file_path)
-        exp_result = {"invalid_encoding": None, "file_content": str_to_lex}
-        self.assertEqual(result, exp_result)
+        expected = {"invalid_encoding": None, "file_content": str_to_lex}
+        self.assertEqual(expected, result)

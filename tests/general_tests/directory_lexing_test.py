@@ -24,32 +24,32 @@ class TestDirectoryLexing(unittest.TestCase):
         brs_file_path = "falsepath/file.brs"
         bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH, out=out)
         result = bslint.bslint.runner(to_lex=brs_file_path, out=out).printed_output
-        self.assertEqual(result, msg_handler.get_print_msg(print_const.PATH_DOSNT_EXIST))
+        self.assertEqual(msg_handler.get_print_msg(print_const.PATH_DOSNT_EXIST), result)
 
     def test_brs_file_with_path_lexed(self):
         brs_file_path = "resources/general_test_files/sub_directory1_test_files/print.brs"
-        exp_result = ["resources/general_test_files/sub_directory1_test_files/print.brs"]
-        self.common.directory_lexing(brs_file_path, exp_result)
+        expected = ["resources/general_test_files/sub_directory1_test_files/print.brs"]
+        self.common.directory_lexing(expected, brs_file_path)
 
     def test_bs_file_with_path_lexed(self):
         brs_file_path = "resources/general_test_files/incorrect-comment-spelling.bs"
-        exp_result = ["resources/general_test_files/incorrect-comment-spelling.bs"]
-        self.common.directory_lexing(brs_file_path, exp_result)
+        expected = ["resources/general_test_files/incorrect-comment-spelling.bs"]
+        self.common.directory_lexing(expected, brs_file_path)
 
     def test_directory_with_path_lexed(self):
         brs_file_path = "resources/general_test_files/sub_directory1_test_files"
-        exp_result = ["resources/general_test_files/sub_directory1_test_files/print.brs"]
-        self.common.directory_lexing(brs_file_path, exp_result)
+        expected = ["resources/general_test_files/sub_directory1_test_files/print.brs"]
+        self.common.directory_lexing(expected, brs_file_path)
 
     def test_sub_directory_lexed(self):
         brs_file_path = "resources/general_test_files"
-        exp_result = ["resources/general_test_files/incorrect-comment-spelling.bs",
-                      "resources/general_test_files/sub_directory1_test_files/print.brs",
-                      "resources/general_test_files/sub_directory2_test_files/question-mark.brs"]
-        self.common.directory_lexing(brs_file_path, exp_result)
+        expected = ["resources/general_test_files/incorrect-comment-spelling.bs",
+                    "resources/general_test_files/sub_directory1_test_files/print.brs",
+                    "resources/general_test_files/sub_directory2_test_files/question-mark.brs"]
+        self.common.directory_lexing(expected, brs_file_path)
 
     def test_sub_directory_ignored(self):
         brs_file_path = "resources/general_ignore_test_files"
-        exp_result = ["resources/general_ignore_test_files/incorrect-comment-spelling.bs",
-                      "resources/general_ignore_test_files/sub_directory2_test_files/question-mark.brs"]
-        self.common.directory_lexing(brs_file_path, exp_result)
+        expected = ["resources/general_ignore_test_files/incorrect-comment-spelling.bs",
+                    "resources/general_ignore_test_files/sub_directory2_test_files/question-mark.brs"]
+        self.common.directory_lexing(expected, brs_file_path)

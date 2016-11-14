@@ -26,27 +26,27 @@ class TestStringRegex(unittest.TestCase):
             self.common.match_regex('"test123ID\n', None, const.STRING, const.VALUE)
 
     def test_variable_assignment_string(self):
-        exp_result = [Token('myString', const.ID, const.ID, 1), Token('=', const.OPERATOR, const.EQUALS, 1),
-                      Token('words', const.STRING, const.VALUE, 1)]
+        expected = [Token('myString', const.ID, const.ID, 1), Token('=', const.OPERATOR, const.EQUALS, 1),
+                    Token('words', const.STRING, const.VALUE, 1)]
         string_file_path = os.path.join(LEXING_TEST_FILES_PATH, 'basic-string-assignment.brs')
         string_file = open(string_file_path, "r+").read()
         result = Lexer().lex(string_file)
-        self.assertEqual(result[self.TOKENS], exp_result)
+        self.assertEqual(expected, result[self.TOKENS])
 
     def test_double_quote_string(self):
         test_string = '""""'
-        exp_result = '""'
+        expected = '""'
         result = regex_handler.find_match(test_string)
-        self.assertEqual(result["match"].group(), exp_result)
-        self.assertEqual(result["token_lexer_type"], const.STRING)
-        self.assertEqual(result["token_parser_type"], const.VALUE)
+        self.assertEqual(expected, result["match"].group())
+        self.assertEqual(const.STRING, result["token_lexer_type"])
+        self.assertEqual(const.VALUE, result["token_parser_type"])
 
     def test_multiline_assignment(self):
-        exp_result = [Token('myString', const.ID, const.ID, 1), Token('=', const.OPERATOR, const.EQUALS, 1),
-                      Token("words", const.STRING, const.VALUE, 1),
-                      Token('test_String', const.ID, const.ID, 2), Token('=', const.OPERATOR, const.EQUALS, 2),
-                      Token("this is words", const.STRING, const.VALUE, 2)]
+        expected = [Token('myString', const.ID, const.ID, 1), Token('=', const.OPERATOR, const.EQUALS, 1),
+                    Token("words", const.STRING, const.VALUE, 1),
+                    Token('test_String', const.ID, const.ID, 2), Token('=', const.OPERATOR, const.EQUALS, 2),
+                    Token("this is words", const.STRING, const.VALUE, 2)]
         multi_line_file_path = os.path.join(STYLING_TEST_FILES_PATH, 'multiline-assignment.txt')
         multi_line_file = open(multi_line_file_path, "r+").read()
         result = Lexer().lex(multi_line_file)
-        self.assertEqual(result[self.TOKENS], exp_result)
+        self.assertEqual(expected, result[self.TOKENS])

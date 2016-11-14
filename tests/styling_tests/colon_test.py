@@ -18,4 +18,4 @@ class TestColon(unittest.TestCase):
     def test_statement_ends_with_colon_no_change_line(self):
         identifier = "myVar = value: otherVar = otherValue"
         result = Lexer().lex(identifier)
-        self.assertEqual(result["Tokens"].pop().line_number, 1)
+        self.assertEqual(1, result["Tokens"].pop().line_number)

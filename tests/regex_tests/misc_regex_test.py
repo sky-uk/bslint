@@ -46,21 +46,21 @@ class TestMiscRegex(unittest.TestCase):
 
     def test_space_new_line(self):
         identifier = " \n"
-        exp_res = ' '
+        expected = ' '
         result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), exp_res)
-        self.assertEqual(len(result["match"].group()), 1)
-        self.assertEqual(result["token_lexer_type"], None)
-        self.assertEqual(result["token_parser_type"], None)
+        self.assertEqual(expected, result["match"].group())
+        self.assertEqual(1, len(result["match"].group()))
+        self.assertEqual(None, result["token_lexer_type"])
+        self.assertEqual(None, result["token_parser_type"])
 
     def test_white_space(self):
         identifier = " "
-        exp_result = []
+        expected_result = []
         result = Lexer().lex(identifier)
-        self.assertEqual(result[self.TOKENS], exp_result)
+        self.assertEqual(expected_result, result[self.TOKENS])
 
     def test_single_quote_comment(self):
         identifier = "' do stuff \n"
-        exp_result = []
+        expected = []
         result = Lexer().lex(identifier)
-        self.assertEqual(result[self.TOKENS], exp_result)
+        self.assertEqual(expected, result[self.TOKENS])

@@ -17,4 +17,4 @@ class TestInvalidBSLintJSON(unittest.TestCase):
         bslint.config_loader.load_config_file(invalid_json_path, DEFAULT_CONFIG_FILE_PATH, out)
         result = out.getvalue()
         out.close()
-        self.assertEqual(result, msg_handler.get_print_msg(print_const.CANNOT_PARSE_BSLINTRC))
+        self.assertEqual(msg_handler.get_print_msg(print_const.CANNOT_PARSE_BSLINTRC), result)

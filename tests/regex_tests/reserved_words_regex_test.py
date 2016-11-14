@@ -152,9 +152,9 @@ class TestReservedWordsRegex(unittest.TestCase):
     def test_rem(self):
         self.common.match_regex("REM", 1, const.COMMENT, const.COMMENT)
         identifier = "REM\n"
-        exp_result = "REM"
+        expected = "REM"
         result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(), exp_result)
+        self.assertEqual(expected, result["match"].group())
         self.assertEqual(result["token_lexer_type"], const.COMMENT)
         self.assertEqual(result["token_parser_type"], const.COMMENT)
 

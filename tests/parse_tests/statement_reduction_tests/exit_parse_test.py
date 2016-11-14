@@ -10,10 +10,10 @@ class TestExitParse(unittest.TestCase):
         cls.common = Common()
 
     def test_exit_while(self):
-        self.common.match_statement("exit while", const.EXIT_STMT)
+        self.common.match_statement(const.EXIT_STMT, "exit while")
 
     def test_exit_for(self):
-        self.common.match_statement("exit for", const.EXIT_STMT)
+        self.common.match_statement(const.EXIT_STMT, "exit for")
 
     def test_exit_if(self):
         self.common.status_error("exit if")

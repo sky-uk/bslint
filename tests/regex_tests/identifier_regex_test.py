@@ -8,7 +8,6 @@ from tests.resources.common.test_methods import CommonMethods as Common
 
 
 class TestIdentifierRegex(unittest.TestCase):
-
     TYPE_GROUP = 'type'
     VALUE_GROUP = 'value'
 
@@ -36,68 +35,68 @@ class TestIdentifierRegex(unittest.TestCase):
 
     def test_identifier_in_statement_with_space(self):
         identifier = "_testId ="
-        exp_result = [Token('_testId', const.ID, const.ID, 1), Token('=', const.OPERATOR, const.EQUALS, 1)]
+        expected = [Token('_testId', const.ID, const.ID, 1), Token('=', const.OPERATOR, const.EQUALS, 1)]
         result = Lexer().lex(identifier)
-        self.assertEqual(result["Tokens"], exp_result)
+        self.assertEqual(expected, result["Tokens"])
 
     def test_identifier_in_statement_dollar(self):
         identifier = "_testId$="
-        exp_result = [Token('_testId', const.ID, const.ID, 1, '$'), Token('=', const.OPERATOR, const.EQUALS, 1, None)]
+        expected = [Token('_testId', const.ID, const.ID, 1, '$'), Token('=', const.OPERATOR, const.EQUALS, 1, None)]
         result = Lexer().lex(identifier)
-        self.assertEqual(result['Tokens'], exp_result)
+        self.assertEqual(expected, result['Tokens'])
 
     def test_identifier_in_statement_percentage(self):
         identifier = "_testId%"
-        exp_result = "_testId"
-        exp_type = "%"
+        expected_result = "_testId"
+        expected_type = "%"
         result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(self.VALUE_GROUP), exp_result)
-        self.assertEqual(result["match"].group(self.TYPE_GROUP), exp_type)
-        self.assertEqual(result["token_lexer_type"], const.ID)
-        self.assertEqual(result["token_parser_type"], const.ID)
+        self.assertEqual(expected_result, result["match"].group(self.VALUE_GROUP))
+        self.assertEqual(expected_type, result["match"].group(self.TYPE_GROUP))
+        self.assertEqual(const.ID, result["token_lexer_type"])
+        self.assertEqual(const.ID, result["token_parser_type"])
 
     def test_identifier_in_statement_exclamation(self):
         identifier = "_testId!"
-        exp_result = "_testId"
-        exp_type = "!"
+        expected_result = "_testId"
+        expected_type = "!"
         result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(self.VALUE_GROUP), exp_result)
-        self.assertEqual(result["match"].group(self.TYPE_GROUP), exp_type)
-        self.assertEqual(result["token_lexer_type"], const.ID)
-        self.assertEqual(result["token_parser_type"], const.ID)
+        self.assertEqual(expected_result, result["match"].group(self.VALUE_GROUP))
+        self.assertEqual(expected_type, result["match"].group(self.TYPE_GROUP))
+        self.assertEqual(const.ID, result["token_lexer_type"])
+        self.assertEqual(const.ID, result["token_parser_type"])
 
     def test_identifier_in_statement_hashtag(self):
         identifier = "_testId#"
-        exp_result = "_testId"
-        exp_type = "#"
+        expected_result = "_testId"
+        expected_type = "#"
         result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(self.VALUE_GROUP), exp_result)
-        self.assertEqual(result["match"].group(self.TYPE_GROUP), exp_type)
-        self.assertEqual(result["token_lexer_type"], const.ID)
+        self.assertEqual(expected_result, result["match"].group(self.VALUE_GROUP))
+        self.assertEqual(expected_type, result["match"].group(self.TYPE_GROUP))
+        self.assertEqual(const.ID, result["token_lexer_type"])
 
     def test_identifier_in_statement_ampersand(self):
         identifier = "_testId&"
-        exp_result = "_testId"
-        exp_type = "&"
+        expected_result = "_testId"
+        expected_type = "&"
         result = regex_handler.find_match(identifier)
-        self.assertEqual(result["match"].group(self.VALUE_GROUP), exp_result)
-        self.assertEqual(result["match"].group(self.TYPE_GROUP), exp_type)
-        self.assertEqual(result["token_lexer_type"], const.ID)
-        self.assertEqual(result["token_parser_type"], const.ID)
+        self.assertEqual(expected_result, result["match"].group(self.VALUE_GROUP))
+        self.assertEqual(expected_type, result["match"].group(self.TYPE_GROUP))
+        self.assertEqual(const.ID, result["token_lexer_type"])
+        self.assertEqual(const.ID, result["token_parser_type"])
 
     def test_random(self):
         identifier = 'print "[";_logLevel;"]   ";isoDateTime;"   ";message'
-        exp_result = [Token('print', const.PRINT_KEYWORD, const.PRINT_KEYWORD, 1, None),
-                      Token('[', const.STRING, const.VALUE, 1, None),
-                      Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
-                      Token('_logLevel', const.ID, const.ID, 1, None),
-                      Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
-                      Token(']   ', const.STRING, const.VALUE, 1, None),
-                      Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
-                      Token('isoDateTime', const.ID, const.ID, 1, None),
-                      Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
-                      Token('   ', const.STRING, const.VALUE, 1, None),
-                      Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
-                      Token('message', const.ID, const.ID, 1, None)]
+        expected = [Token('print', const.PRINT_KEYWORD, const.PRINT_KEYWORD, 1, None),
+                    Token('[', const.STRING, const.VALUE, 1, None),
+                    Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
+                    Token('_logLevel', const.ID, const.ID, 1, None),
+                    Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
+                    Token(']   ', const.STRING, const.VALUE, 1, None),
+                    Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
+                    Token('isoDateTime', const.ID, const.ID, 1, None),
+                    Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
+                    Token('   ', const.STRING, const.VALUE, 1, None),
+                    Token(';', const.SEMI_COLON, const.SEMI_COLON, 1, None),
+                    Token('message', const.ID, const.ID, 1, None)]
         result = Lexer().lex(identifier)
-        self.assertEqual(result['Tokens'], exp_result)
+        self.assertEqual(expected, result['Tokens'])

@@ -18,11 +18,11 @@ class TestInDirectoryLexing(unittest.TestCase):
         runner = bslint.bslint.runner()
         result = runner.files
         runner.join()
-        exp_result = ["print.brs"]
-        self.assertEqual(exp_result, result)
+        expected = ["print.brs"]
+        self.assertEqual(expected, result)
 
     def test_directory_without_path_lexed(self):
         bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH)
         result = bslint.bslint.runner().files
-        exp_result = ["print.brs"]
-        self.assertEqual(exp_result, result)
+        expected = ["print.brs"]
+        self.assertEqual(expected, result)

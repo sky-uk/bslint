@@ -24,27 +24,26 @@ class TestTraceFree(unittest.TestCase):
         bslint.load_config_file(user_filepath=self.trace_free_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
         print_file_path = os.path.join(TRACE_TEST_FILES_PATH, 'print.brs')
-        self.common.lex_file(print_file_path, [error.get_error_msg(err_const.TRACEABLE_CODE, [3])])
+        self.common.lex_file([error.get_error_msg(err_const.TRACEABLE_CODE, [3])], print_file_path)
 
     def test_question_mark(self):
         bslint.load_config_file(user_filepath=self.trace_free_config_path,
                                 default_filepath=TEST_CONFIG_FILE_PATH)
         question_mark_file_path = os.path.join(TRACE_TEST_FILES_PATH, 'question-mark.brs')
-        self.common.lex_file(question_mark_file_path, [error.get_error_msg(err_const.TRACEABLE_CODE, [3])])
+        self.common.lex_file([error.get_error_msg(err_const.TRACEABLE_CODE, [3])], question_mark_file_path)
 
     def test_print_and_question_mark(self):
         bslint.load_config_file(user_filepath=self.trace_free_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
         print_and_question_mark_file_path = os.path.join(TRACE_TEST_FILES_PATH, 'print-and-question-mark.brs')
-        self.common.lex_file(print_and_question_mark_file_path,
-                             [error.get_error_msg(err_const.TRACEABLE_CODE, [3]),
-                              error.get_error_msg(err_const.TRACEABLE_CODE, [4])])
+        self.common.lex_file([error.get_error_msg(err_const.TRACEABLE_CODE, [3]),
+                              error.get_error_msg(err_const.TRACEABLE_CODE, [4])], print_and_question_mark_file_path)
 
     def test_no_print_no_question_mark(self):
         bslint.load_config_file(user_filepath=self.trace_free_config_path, default_filepath=TEST_CONFIG_FILE_PATH)
         no_print_no_question_mark_file_path = os.path.join(TRACE_TEST_FILES_PATH, 'no-print-no-question-mark.brs')
-        self.common.lex_file(no_print_no_question_mark_file_path, [])
+        self.common.lex_file([], no_print_no_question_mark_file_path)
 
     def test_inactive_print_and_question_mark(self):
         bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH)
         print_and_question_mark_file_path = os.path.join(TRACE_TEST_FILES_PATH, 'print-and-question-mark.brs')
-        self.common.lex_file(print_and_question_mark_file_path, [])
+        self.common.lex_file([], print_and_question_mark_file_path)

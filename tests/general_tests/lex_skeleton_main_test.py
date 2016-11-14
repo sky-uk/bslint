@@ -18,12 +18,12 @@ class TestLexSkeletonMain(unittest.TestCase):
         skeleton_main_file_path = os.path.join(LEXING_TEST_FILES_PATH, 'skeleton-main.brs')
         chars = open(skeleton_main_file_path, "r+").read()
         result = Lexer().lex(chars)
-        self.assertEqual(result[const.STATUS], const.SUCCESS)
+        self.assertEqual(const.SUCCESS, result[const.STATUS])
 
     def test_lex_whole_file_with_multiple_errors(self):
         skeleton_main_with_errors_file_path = os.path.join(LEXING_TEST_FILES_PATH, 'skeleton-main-with-errors.brs')
         chars = open(skeleton_main_with_errors_file_path, "r+").read()
         result = Lexer().lex(chars)
-        exp_result = [msg_handler.get_error_msg(err_const.UNMATCHED_QUOTATION_MARK, ['"roSGScreen)', 2])]
-        self.assertEqual(result[const.TOKENS], exp_result)
-        self.assertEqual(result[const.STATUS], const.ERROR)
+        expected = [msg_handler.get_error_msg(err_const.UNMATCHED_QUOTATION_MARK, ['"roSGScreen)', 2])]
+        self.assertEqual(expected, result[const.TOKENS])
+        self.assertEqual(const.ERROR, result[const.STATUS])

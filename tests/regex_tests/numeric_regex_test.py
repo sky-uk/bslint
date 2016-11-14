@@ -21,21 +21,21 @@ class TestNumericRegex(unittest.TestCase):
 
     def test_integer_with_trailing_points(self):
         identifier = "123."
-        exp_result = [Token('123', const.NUMERIC, const.VALUE, 1), Token('.', const.SPECIAL_OPERATOR, const.DOT, 1)]
+        expected = [Token('123', const.NUMERIC, const.VALUE, 1), Token('.', const.SPECIAL_OPERATOR, const.DOT, 1)]
         result = Lexer().lex(identifier)
-        self.assertEqual(result[self.TOKENS], exp_result)
+        self.assertEqual(expected, result[self.TOKENS])
 
     def test_multiple_decimal_numbers(self):
         identifier = "123.123.123"
-        exp_result = [Token('123.123', const.NUMERIC, const.VALUE, 1), Token('.', const.SPECIAL_OPERATOR, const.DOT, 1),
-                      Token('123', const.NUMERIC, const.VALUE, 1)]
+        expected = [Token('123.123', const.NUMERIC, const.VALUE, 1), Token('.', const.SPECIAL_OPERATOR, const.DOT, 1),
+                    Token('123', const.NUMERIC, const.VALUE, 1)]
         result = Lexer().lex(identifier)
-        self.assertEqual(result[self.TOKENS], exp_result)
+        self.assertEqual(expected, result[self.TOKENS])
 
     def test_multiple_decimal_points(self):
         identifier = "123..123"
-        exp_result = [Token('123', const.NUMERIC, const.VALUE, 1), Token('.', const.SPECIAL_OPERATOR, const.DOT, 1),
-                      Token('.', const.SPECIAL_OPERATOR, const.DOT, 1),
-                      Token('123', const.NUMERIC, const.VALUE, 1)]
+        expected = [Token('123', const.NUMERIC, const.VALUE, 1), Token('.', const.SPECIAL_OPERATOR, const.DOT, 1),
+                    Token('.', const.SPECIAL_OPERATOR, const.DOT, 1),
+                    Token('123', const.NUMERIC, const.VALUE, 1)]
         result = Lexer().lex(identifier)
-        self.assertEqual(result[self.TOKENS], exp_result)
+        self.assertEqual(expected, result[self.TOKENS])
