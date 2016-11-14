@@ -40,10 +40,10 @@ class TestFunctionDeclarationParse(unittest.TestCase):
         self.common.match_statement(const.FUNCTION_DECLARATION, "sub x(y, z)")
 
     def test_sub_id_open_parenthesis_var_as_close_parenthesis(self):
-        self.common.match_statement("sub x(y=3)", const.FUNCTION_DECLARATION)
+        self.common.match_statement(const.FUNCTION_DECLARATION, "sub x(y=3)")
 
     def test_sub_id_open_parenthesis_var_as_as_type_close_parenthesis(self):
-        self.common.match_statement("sub x(y=3 as Integer)", const.FUNCTION_DECLARATION)
+        self.common.match_statement(const.FUNCTION_DECLARATION, "sub x(y=3 as Integer)")
 
     def test_anonymous_sub_id_open_parenthesis_value_close_parenthesis(self):
         self.common.match_statement(const.ANONYMOUS_FUNCTION_DECLARATION, "sub ()")
