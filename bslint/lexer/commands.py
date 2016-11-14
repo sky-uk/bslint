@@ -12,7 +12,7 @@ DICTIONARY = words_dict.get_new_dictionary()
 
 
 def check_comment(token):
-    if _command_is_active(const.CHECK_COMMENT) is False:
+    if not _command_is_active(const.CHECK_COMMENT):
         return
 
     check_comment_config = config_loader.CONFIG[const.CHECK_COMMENT][const.PARAMS]
@@ -36,7 +36,7 @@ def check_comment(token):
 
 
 def check_file_encoding(file_path):
-    if _command_is_active(const.CHECK_FILE_ENCODING) is False:
+    if not _command_is_active(const.CHECK_FILE_ENCODING):
         return
 
     file_encoding = config_loader.CONFIG[const.CHECK_FILE_ENCODING][const.PARAMS]
@@ -47,7 +47,7 @@ def check_file_encoding(file_path):
 
 
 def check_indentation(current_indentation_level, characters, indentation_level):
-    if _command_is_active(const.CHECK_INDENTATION) is False or not len(characters) > 0:
+    if not _command_is_active(const.CHECK_INDENTATION) or not len(characters) > 0:
         return
 
     if indentation_level == const.DECREMENT_INDENTATION or indentation_level == const.SPECIAL_INDENTATION:
@@ -62,12 +62,12 @@ def check_indentation(current_indentation_level, characters, indentation_level):
 
 
 def check_trace_free():
-    if _command_is_active(const.CHECK_TRACE_FREE) is True:
+    if _command_is_active(const.CHECK_TRACE_FREE):
         return {const.ERROR_KEY: err_const.TRACEABLE_CODE, const.ERROR_PARAMS: []}
 
 
 def check_max_line_length(line_length):
-    if _command_is_active(const.MAX_LINE_LENGTH) is False:
+    if not _command_is_active(const.MAX_LINE_LENGTH):
         return
 
     max_len = config_loader.CONFIG[const.MAX_LINE_LENGTH][const.PARAMS][const.MAX_LINE_LENGTH]
@@ -76,7 +76,7 @@ def check_max_line_length(line_length):
 
 
 def check_consecutive_empty_lines(empty_lines):
-    if _command_is_active(const.CONSECUTIVE_EMPTY_LINES) is False:
+    if not _command_is_active(const.CONSECUTIVE_EMPTY_LINES):
         return
 
     params = config_loader.CONFIG[const.CONSECUTIVE_EMPTY_LINES][const.PARAMS]
@@ -86,19 +86,19 @@ def check_consecutive_empty_lines(empty_lines):
 
 
 def check_skip_file():
-    if _command_is_active(const.SKIP_FILE) is False:
+    if not _command_is_active(const.SKIP_FILE):
         return
     return True
 
 
 def check_skip_line(line_number):
-    if _command_is_active(const.SKIP_LINE) is False:
+    if not _command_is_active(const.SKIP_LINE):
         return
     return line_number + 1
 
 
 def check_spaces_around_operators(characters, current_char_index):
-    if _command_is_active(const.SPACES_AROUND_OPERATORS) is False:
+    if not _command_is_active(const.SPACES_AROUND_OPERATORS):
         return
     allowed_spaces = config_loader.CONFIG[const.SPACES_AROUND_OPERATORS][const.PARAMS][const.SPACES_AROUND_OPERATORS]
     before_index = current_char_index - allowed_spaces - 2
@@ -110,7 +110,7 @@ def check_spaces_around_operators(characters, current_char_index):
 
 
 def check_spelling(token, token_lexer_type):
-    if _command_is_active(const.SPELL_CHECK) is False:
+    if not _command_is_active(const.SPELL_CHECK):
         return
 
     if token_lexer_type == const.COMMENT:
@@ -125,7 +125,7 @@ def check_spelling(token, token_lexer_type):
 
 
 def check_method_dec_spacing(read_line):
-    if _command_is_active(const.CHECK_METHOD_DECLARATION_SPACING) is False or COMMENT_REGEX.match(read_line):
+    if not _command_is_active(const.CHECK_METHOD_DECLARATION_SPACING) or COMMENT_REGEX.match(read_line):
         return
     read_line = read_line.lstrip()
     method_spaces = str(config_loader.CONFIG[const.CHECK_METHOD_DECLARATION_SPACING][const.PARAMS][const.METHOD_SPACES])
@@ -195,11 +195,11 @@ def _parse_words(identifier_str):
         if char.islower():
             word += char
         elif char.isupper():
-            if not word == '':
+            if word != '':
                 words.append(word)
             word = ''
             word += char
-    if not word == '':
+    if word != '':
         words.append(word)
 
     return words
@@ -217,7 +217,7 @@ def _parse_comment_words(comment):
         if word.isupper():
             continue
         else:
-            if not word == '':
+            if word != '':
                 words.append(word)
     return words
 

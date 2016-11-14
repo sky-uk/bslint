@@ -73,7 +73,7 @@ class Parser(Lexer):
                     self.reduce_and_handle_error()
                 is_valid_statement = True
             index += 1
-        if is_valid_statement is False and self.current_priority_level == self.number_of_priorities - 1:
+        if not is_valid_statement and self.current_priority_level == (self.number_of_priorities - 1):
             raise custom_exception.ParsingException(err_const.STMT_PARSING_FAILED)
 
     def _find_matching_production(self, index, possible_production_rules):

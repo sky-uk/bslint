@@ -31,6 +31,6 @@ class MatchHandler:
                      token_type=self._type)
 
     def _build_id_token(self):
-        if self._match.group(TYPE) is not '':
+        if self._match.group(TYPE) != '':
             self._type = self._match.group(TYPE)
         self._match = self._match.group(VALUE)

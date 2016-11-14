@@ -115,7 +115,7 @@ class StylingHandler:
             self._indentation_level = 0
 
     def _count_consecutive_new_lines(self):
-        if self._is_empty_line is True:
+        if self._is_empty_line:
             self._consecutive_empty_lines += 1
         else:
             self._is_empty_line = True

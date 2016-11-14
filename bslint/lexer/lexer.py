@@ -38,7 +38,7 @@ class Lexer:
         return self.build_return_message()
 
     def build_return_message(self):
-        if len(self.errors) is not 0:
+        if len(self.errors) != 0:
             return {const.STATUS: const.ERROR, const.TOKENS: self.errors, const.WARNINGS: self.handle_style.warnings}
         else:
             return {const.STATUS: const.SUCCESS, const.TOKENS: self.tokens, const.WARNINGS: self.handle_style.warnings}
@@ -55,7 +55,7 @@ class Lexer:
                     token.line_number = self.handle_style.line_number
                     self.tokens.append(token)
             self.handle_style.check_end_of_statement(self)
-            if self.handle_style.end_of_statement is True:
+            if self.handle_style.end_of_statement:
                 self.check_statement_validity(self.tokens[self.current_token_index:])
                 self.handle_style.end_of_statement = False
                 self.current_token_index = len(self.tokens)
