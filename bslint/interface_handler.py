@@ -102,8 +102,10 @@ class InterfaceHandler(Process):
             relative_path = self.get_relative_path(dir_name)
             if not self.ignore_dir(relative_path, self.bslintrc[const.IGNORE]):
                 self.lint_directory(dir_name, files)
+        PROCESS_LOCK.acquire()
         for file_name in self.messages[const.ERRORS]:
             self.print_issues(file_name, const.ERRORS)
+        PROCESS_LOCK.release()
 
     def lint_directory(self, dir_name, files):
         for file in files:
@@ -123,7 +125,11 @@ class InterfaceHandler(Process):
                 self.handle_lexing_result(filepath, const.ERRORS, lex_result[const.TOKENS])
             elif lex_result[const.WARNINGS]:
                 self.handle_lexing_result(filepath, const.WARNINGS, lex_result[const.WARNINGS])
-        self.print_issues(filepath, const.WARNINGS)
+        if filepath in self.messages[const.WARNINGS]:
+            PROCESS_LOCK.acquire()
+            self.print_issues(filepath, const.WARNINGS)
+            self.print_file_summary(self.issues_total[const.WARNINGS])
+            PROCESS_LOCK.release()
 
     def handle_lexing_result(self, filepath, error_type, messages):
         self.is_lexed_correctly = False
@@ -132,15 +138,14 @@ class InterfaceHandler(Process):
             self.messages[error_type][filepath].append(msg_handler.get_print_msg(error_type, [msg]))
 
     def print_issues(self, file_name, issue_type):
-        if file_name in self.messages[issue_type]:
-            PROCESS_LOCK.acquire()
-            self.out.write(msg_handler.get_print_msg(print_const.FILE_NAME, [file_name]))
-            for message in self.messages[issue_type][file_name]:
-                self.out.write(message)
-            number_issues = len(self.messages[issue_type][file_name])
-            self.issues_total[issue_type] += number_issues
-            self.out.write(msg_handler.get_print_msg(issue_type + print_const.IN_FILE, [number_issues]))
-            PROCESS_LOCK.release()
+        self.out.write(msg_handler.get_print_msg(print_const.FILE_NAME, [file_name]))
+        for message in self.messages[issue_type][file_name]:
+            self.out.write(message)
+        number_issues = len(self.messages[issue_type][file_name])
+        self.issues_total[issue_type] += number_issues
+
+    def print_file_summary(self, number_issues):
+        self.out.write(msg_handler.get_print_msg(print_const.WARNINGS_IN_FILE, [number_issues]))
 
     def ignore_dir(self, relative_directory_path, directories_to_ignore):
         for directory in directories_to_ignore:
