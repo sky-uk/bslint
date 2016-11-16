@@ -3,6 +3,8 @@ from bslint.messages import builder as build
 ERROR = "ERROR"
 WARNING = "WARNING"
 
+TRAILING_COMMA_IN_OBJECTS = "TRAILING_COMMA_IN_OBJECTS"
+COMMAS_IN_OBJECTS = "COMMAS_IN_OBJECTS"
 LINE_LENGTH = "LINE_LENGTH"
 FILE_ENCODING = "FILE_ENCODING"
 CONSECUTIVE_EMPTY_LINES = "CONSECUTIVE_EMPTY_LINES"
@@ -28,6 +30,8 @@ PROGRAM_PARSING_FAILED = "PROGRAM_PARSING_FAILED"
 NO_SUCH_KEY = "NO_SUCH_KEY"
 
 MESSAGE_TABLE = {
+    TRAILING_COMMA_IN_OBJECTS: build.Message(WARNING + ": Trailing comma in object literal. Line number: {}"),
+    COMMAS_IN_OBJECTS: build.Message(WARNING + ": Object literal name value-pair missing comma. Line number: {}"),
     LINE_LENGTH: build.Message(WARNING + ": Line length exceeds {} number of characters. Line number: {}"),
     FILE_ENCODING: build.Message(WARNING + ": Your files should conform to {} encoding"),
     CONSECUTIVE_EMPTY_LINES: build.Message(

@@ -1,7 +1,7 @@
 from bslint import constants as const
 from bslint.messages import builder as build
 
-PATH_DOSNT_EXIST = "PATH_DOSNT_EXIST"
+PATH_DOESNT_EXIST = "PATH_DOSNT_EXIST"
 LINTING_COMPLETE = "LINTING_COMPLETE"
 ALL_LINTED_CORRECTLY = "ALL_LINTED_CORRECTLY"
 NO_MANIFEST = "NO_MANIFEST"
@@ -26,7 +26,7 @@ TOTAL_COLOUR = '\033[35m'
 
 
 MESSAGE_TABLE = {
-    PATH_DOSNT_EXIST:
+    PATH_DOESNT_EXIST:
         build.Message(ERROR_COLOUR + "The path you have provided does not exist." + END_COLOUR),
     LINTING_COMPLETE:
         build.Message(FILE_COLOUR + "LINTING COMPLETE" + END_COLOUR),

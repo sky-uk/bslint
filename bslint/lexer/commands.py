@@ -11,6 +11,16 @@ COMMENT_REGEX = [regex.regex for regex in regexs.REGEXS if regex.lexer_type == c
 DICTIONARY = words_dict.get_new_dictionary()
 
 
+def check_commas_in_objects():
+    if not _command_is_active(const.CHECK_COMMAS_IN_OBJECT):
+        return
+    return {const.ERROR_KEY: err_const.COMMAS_IN_OBJECTS, const.ERROR_PARAMS: []}
+
+def check_trailing_comma_in_objects():
+    if not _command_is_active(const.CHECK_TRAILING_COMMA_IN_OBJECT):
+        return
+    return {const.ERROR_KEY: err_const.TRAILING_COMMA_IN_OBJECTS, const.ERROR_PARAMS: []}
+
 def check_comment(token):
     if not _command_is_active(const.CHECK_COMMENT):
         return

@@ -10,6 +10,7 @@ DEFAULT_CONFIG_FILE_PATH = os.path.join(CONFIG_PATH, 'default-config.json')
 TEST_CONFIG_FILE_PATH = os.path.join(TESTS_CONFIG_PATH, 'test-config.json')
 BSLINT_COMMAND_CONFIG_PATH = os.path.join(TESTS_CONFIG_PATH, 'bslint_commands')
 COMMENTS_CONFIG_PATH = os.path.join(TESTS_CONFIG_PATH, 'comments')
+COMMAS_IN_OBJECT_PATH = os.path.join(TESTS_CONFIG_PATH, 'commas_in_objects')
 
 LEXING_TEST_FILES_PATH = os.path.join(TESTS_RESOURCES_PATH, 'lexing_test_files')
 STYLING_TEST_FILES_PATH = os.path.join(TESTS_RESOURCES_PATH, 'styling_test_files')

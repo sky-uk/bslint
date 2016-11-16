@@ -128,6 +128,8 @@ class StylingHandler:
             self.open_curly_braces += 1
         elif self._token_lexer_type == const.CLOSE_CURLY_BRACKET:
             if lexer.tokens[-2].parser_type == const.COMMA:
+                has_trailing_comma = commands.check_trailing_comma_in_objects()
+                self._warning_filter(has_trailing_comma)
                 lexer.tokens.pop(-2)
             self.open_curly_braces -= 1
 
@@ -146,3 +148,5 @@ class StylingHandler:
                 comma_token = Token(",", const.SPECIAL_OPERATOR, const.COMMA, None)
                 comma_token.line_number = lexer.handle_style.line_number
                 lexer.tokens.append(comma_token)
+                has_no_commas = commands.check_commas_in_objects()
+                self._warning_filter(has_no_commas)

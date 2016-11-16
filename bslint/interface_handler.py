@@ -37,7 +37,7 @@ class InterfaceHandler(Process):
         self._get_cli_arguments()
         if self.args.path and not os.path.exists(self.args.path):
             self.is_lexed_correctly = False
-            self.out.write(msg_handler.get_print_msg(print_const.PATH_DOSNT_EXIST))
+            self.out.write(msg_handler.get_print_msg(print_const.PATH_DOESNT_EXIST))
             self.send_to_pipe()
             return
 

@@ -24,7 +24,7 @@ class TestDirectoryLexing(unittest.TestCase):
         brs_file_path = "falsepath/file.brs"
         bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH, out=out)
         result = bslint.bslint.runner(to_lex=brs_file_path, out=out).printed_output
-        self.assertEqual(msg_handler.get_print_msg(print_const.PATH_DOSNT_EXIST), result)
+        self.assertEqual(msg_handler.get_print_msg(print_const.PATH_DOESNT_EXIST), result)
 
     def test_brs_file_with_path_lexed(self):
         brs_file_path = "resources/general_test_files/sub_directory1_test_files/print.brs"
