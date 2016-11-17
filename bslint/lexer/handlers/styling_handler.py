@@ -24,7 +24,7 @@ class StylingHandler:
         self._line_not_to_style_check = -1
 
     def _get_last_line(self):
-        last_line = self.characters[:self.current_char_index - 1].split("\n")
+        last_line = self.characters[:self.current_char_index].splitlines()
         return last_line[-1]
 
     def apply_bslint_command(self, command_type):
@@ -104,6 +104,9 @@ class StylingHandler:
 
         last_read_line = self._get_last_line()
         self._apply_indentation_styling(last_read_line)
+
+        is_trailing_white_space = commands.check_trailing_white_space(last_read_line)
+        self._warning_filter(is_trailing_white_space)
 
     def _apply_indentation_styling(self, last_read_line):
         is_correct_indentation = commands.check_indentation(self._current_indentation_level,

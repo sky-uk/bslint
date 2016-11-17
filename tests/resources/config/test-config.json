@@ -94,5 +94,9 @@
     "params": {
       "method_spaces": 1
     }
+  },
+  "trailing_white_space": {
+    "active": false,
+    "params": {}
   }
 }

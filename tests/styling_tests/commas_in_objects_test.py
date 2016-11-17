@@ -29,15 +29,15 @@ class TestCommasInObject(unittest.TestCase):
 
     def test_single_key_with_trailing_comma(self):
         input_str = "testObj = { a:1, }"
-        exp_result = [error.get_error_msg(err_const.TRAILING_COMMA_IN_OBJECTS, [1, 1])]
+        exp_result = [error.get_error_msg(err_const.TRAILING_COMMA_IN_OBJECTS, [1])]
         self.common.lex_string(exp_result, input_str)
 
     def test_multiple_keys_with_trailing_comma(self):
         input_str = "testObj = { a:1, b:2, c:3, }"
-        exp_result = [error.get_error_msg(err_const.TRAILING_COMMA_IN_OBJECTS, [1, 1])]
+        exp_result = [error.get_error_msg(err_const.TRAILING_COMMA_IN_OBJECTS, [1])]
         self.common.lex_string(exp_result, input_str)
 
     def test_multiple_keys_invalid(self):
         input_str = "testObj = { a:1, b:2\n c:3 }"
-        exp_result = [error.get_error_msg(err_const.COMMAS_IN_OBJECTS, [1, 1])]
+        exp_result = [error.get_error_msg(err_const.COMMAS_IN_OBJECTS, [1])]
         self.common.lex_string(exp_result, input_str)

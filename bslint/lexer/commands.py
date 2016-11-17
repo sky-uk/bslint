@@ -16,10 +16,12 @@ def check_commas_in_objects():
         return
     return {const.ERROR_KEY: err_const.COMMAS_IN_OBJECTS, const.ERROR_PARAMS: []}
 
+
 def check_trailing_comma_in_objects():
     if not _command_is_active(const.CHECK_TRAILING_COMMA_IN_OBJECT):
         return
     return {const.ERROR_KEY: err_const.TRAILING_COMMA_IN_OBJECTS, const.ERROR_PARAMS: []}
+
 
 def check_comment(token):
     if not _command_is_active(const.CHECK_COMMENT):
@@ -143,6 +145,13 @@ def check_method_dec_spacing(read_line):
                     + r"(?:(\s{" + method_spaces + r"}as\s{" + method_spaces + r"}([a-z0-9_]+))?)(?:,\s{"
                     + method_spaces + r"}[a-z0-9_]*)?)*\)", read_line, re.IGNORECASE):
         return {const.ERROR_KEY: err_const.METHOD_DECLARATION_SPACING, const.ERROR_PARAMS: []}
+
+
+def check_trailing_white_space(last_read_line):
+    if not _command_is_active(const.TRAILING_WHITE_SPACE):
+        return
+    if last_read_line != "" and last_read_line[-1] == " ":
+        return {const.ERROR_KEY: err_const.TRAILING_WHITE_SPACE, const.ERROR_PARAMS: []}
 
 
 def change_dict_lang(dict_lang):

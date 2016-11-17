@@ -8,5 +8,11 @@
     "params": {
       "spaces_around_operators": 1
     }
+  },
+    "spell_check": {
+    "active": true,
+    "params": {
+      "dictionary": "en_GB"
+    }
   }
 }

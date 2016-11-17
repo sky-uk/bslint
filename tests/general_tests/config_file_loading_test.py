@@ -16,7 +16,7 @@ class TestConfigFileLoading(unittest.TestCase):
 
     def test_read_json_correctly(self):
         config_file = DEFAULT_CONFIG_FILE_PATH
-        expected = 17
+        expected = 18
         config_json = bslint.read_json(config_file)
         result = len(config_json)
         self.assertEqual(expected, result)
