@@ -61,6 +61,8 @@ class InterfaceHandler(Process):
 
     def print_summary(self):
         PROCESS_LOCK.acquire()
+        for file_name in self.messages[const.ERRORS]:
+            self.print_issues(file_name, const.ERRORS)
         self.out.write(msg_handler.get_print_msg(print_const.LINTING_COMPLETE))
         if self.is_lexed_correctly:
             self.out.write(msg_handler.get_print_msg(print_const.ALL_LINTED_CORRECTLY))
@@ -102,10 +104,6 @@ class InterfaceHandler(Process):
             relative_path = self.get_relative_path(dir_name)
             if not self.ignore_dir(relative_path, self.bslintrc[const.IGNORE]):
                 self.lint_directory(dir_name, files)
-        PROCESS_LOCK.acquire()
-        for file_name in self.messages[const.ERRORS]:
-            self.print_issues(file_name, const.ERRORS)
-        PROCESS_LOCK.release()
 
     def lint_directory(self, dir_name, files):
         for file in files:
