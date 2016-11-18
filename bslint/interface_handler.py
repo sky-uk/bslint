@@ -128,7 +128,7 @@ class InterfaceHandler(Process):
         if filepath in self.messages[const.WARNINGS]:
             PROCESS_LOCK.acquire()
             self.print_issues(filepath, const.WARNINGS)
-            self.print_file_summary(self.issues_total[const.WARNINGS])
+            self.print_file_summary(filepath)
             PROCESS_LOCK.release()
 
     def handle_lexing_result(self, filepath, error_type, messages):
@@ -144,8 +144,9 @@ class InterfaceHandler(Process):
         number_issues = len(self.messages[issue_type][file_name])
         self.issues_total[issue_type] += number_issues
 
-    def print_file_summary(self, number_issues):
-        self.out.write(msg_handler.get_print_msg(print_const.WARNINGS_IN_FILE, [number_issues]))
+    def print_file_summary(self, file_name):
+        number_warnings = len(self.messages[const.WARNINGS][file_name])
+        self.out.write(msg_handler.get_print_msg(print_const.WARNINGS_IN_FILE, [number_warnings]))
 
     def ignore_dir(self, relative_directory_path, directories_to_ignore):
         for directory in directories_to_ignore:
