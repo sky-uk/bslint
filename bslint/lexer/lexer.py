@@ -25,7 +25,7 @@ class Lexer:
 
     def lex(self, characters):
         self.characters = characters
-        self.handle_style = styling_handler.StylingHandler(characters)
+        self.handle_style = styling_handler.StylingHandler(self, characters)
         while self.handle_style.current_char_index < len(self.characters):
             try:
                 self.create_token_and_handle_styling()
@@ -48,13 +48,13 @@ class Lexer:
         self.handle_style.line_length += len(regex_match[MATCH].group())
         self.handle_style.current_char_index += len(regex_match[MATCH].group())
         if regex_match["token_lexer_type"] is not None:
-            applied_common_styling = self.handle_style.apply_styling(self, regex_match)
+            applied_common_styling = self.handle_style.apply_styling(regex_match)
             if applied_common_styling:
                 token = self.handle_match.match_handler(regex_match)
                 if token is not None:
                     token.line_number = self.handle_style.line_number
                     self.tokens.append(token)
-            self.handle_style.check_end_of_statement(self)
+            self.handle_style.check_end_of_statement()
             if self.handle_style.end_of_statement:
                 self.check_statement_validity(self.tokens[self.current_token_index:])
                 self.handle_style.end_of_statement = False

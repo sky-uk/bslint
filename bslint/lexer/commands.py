@@ -98,9 +98,7 @@ def check_consecutive_empty_lines(empty_lines):
 
 
 def check_skip_file():
-    if not _command_is_active(const.SKIP_FILE):
-        return
-    return True
+    return _command_is_active(const.SKIP_FILE)
 
 
 def check_skip_line(line_number):

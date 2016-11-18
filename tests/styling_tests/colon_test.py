@@ -10,9 +10,9 @@ class TestColon(unittest.TestCase):
         lexer = Lexer()
         identifier = ":"
         regex_match = regex_handler.find_match(identifier)
-        styling_handler = StylingHandler(identifier)
-        styling_handler.apply_styling(lexer, regex_match)
-        styling_handler.check_end_of_statement(lexer)
+        styling_handler = StylingHandler(lexer, identifier)
+        styling_handler.apply_styling(regex_match)
+        styling_handler.check_end_of_statement()
         self.assertTrue(styling_handler.end_of_statement)
 
     def test_statement_ends_with_colon_no_change_line(self):
