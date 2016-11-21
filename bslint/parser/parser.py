@@ -7,7 +7,6 @@ from bslint.messages import handler as err
 import bslint.utilities.custom_exceptions as custom_exception
 
 MAX_FINAL_STATEMENT_LENGTH = 1
-INVALID_STATEMENT = [const.CONDITION]
 
 
 class Parser(Lexer):
@@ -42,10 +41,7 @@ class Parser(Lexer):
         self.current_tokens = self._get_token_types(statement)
         if len(self.current_tokens) > 0:
             self.iterate_over_statement()
-            if self.current_tokens[0] in INVALID_STATEMENT:
-                raise custom_exception.ParsingException(err_const.STMT_PARSING_FAILED)
-            else:
-                self.program.append(self.current_tokens[0])
+            self.program.append(self.current_tokens[0])
 
     @staticmethod
     def _get_token_types(tokens):
