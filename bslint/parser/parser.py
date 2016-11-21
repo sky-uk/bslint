@@ -120,4 +120,4 @@ class Parser(Lexer):
             raise custom_exception.ParsingException(err_const.PROGRAM_PARSING_FAILED)
 
     def handle_parsing_error(self, err_code):
-        self.errors.append(err.get_error_msg(err_code, [self.handle_style.line_number]))
+        self.errors.append(err.get_error_msg(err_code, [self.handle_style.line_number - 1]))

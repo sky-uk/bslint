@@ -136,7 +136,7 @@ class InterfaceHandler(Process):
             self.messages[error_type][filepath].append(msg_handler.get_print_msg(error_type, [msg]))
 
     def print_issues(self, file_name, issue_type):
-        self.out.write(msg_handler.get_print_msg(print_const.FILE_NAME, [file_name]))
+        self.out.write(msg_handler.get_print_msg(print_const.FILE_NAME, ["file://" + file_name]))
         for message in self.messages[issue_type][file_name]:
             self.out.write(message)
         number_issues = len(self.messages[issue_type][file_name])
