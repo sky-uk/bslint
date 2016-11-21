@@ -60,6 +60,9 @@ class TestVariableAssignment(unittest.TestCase):
     def test_assignment_to_array_key(self):
         self.common.match_statement(const.VAR_AS, 'x[y] = (3 + 2)')
 
+    def test_sub_id_open_parenthesis_var_as_as_type_close_parenthesis(self):
+        self.common.match_statement(const.VAR_AS, "c = x(y=3, a, b[3,5])")
+
     def test_invalid_variable_assignment_while(self):
         self.common.status_error("x = while")
 

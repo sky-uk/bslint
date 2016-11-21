@@ -82,7 +82,7 @@ class TestPrintParse(unittest.TestCase):
         self.common.match_statement(const.PRINT_STMT, "print Y(),x()")
 
     def testPrintFunctionCallCommaVariableAssignment(self):
-        self.common.match_statement(const.PRINT_STMT, "print Y(),x=4")
+        self.common.match_statement(const.PRINT_STMT, "print Y(a, b),x=4")
 
     def testPrintFunctionCallCommaArgument(self):
         self.common.match_statement(const.PRINT_STMT, "print x(),3,4")

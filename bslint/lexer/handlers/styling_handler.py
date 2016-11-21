@@ -23,6 +23,7 @@ class StylingHandler:
         self.end_of_statement = False
         self.open_curly_braces = 0
         self._line_not_to_style_check = -1
+        self.function_in_object = 0
 
     def apply_styling(self, regex_match):
         self._match = regex_match[const.MATCH]
@@ -46,16 +47,6 @@ class StylingHandler:
         self._warning_filter(commands.check_consecutive_empty_lines(self._consecutive_empty_lines))
         self._apply_indentation_styling(self._get_last_line())
 
-    def add_object_commas(self):
-        if self.open_curly_braces != 0:
-            if self._lexer.tokens[-1].lexer_type != const.OPEN_CURLY_BRACKET \
-                    and self._lexer.tokens[-1].parser_type != const.COMMA:
-                comma_token = Token(",", const.SPECIAL_OPERATOR, const.COMMA, None)
-                comma_token.line_number = self._lexer.handle_style.line_number
-                self._lexer.tokens.append(comma_token)
-                has_no_commas = commands.check_commas_in_objects()
-                self._warning_filter(has_no_commas)
-
     def check_end_of_statement(self):
         self._check_end_of_statement()
         if self.open_curly_braces != 0:
@@ -74,6 +65,7 @@ class StylingHandler:
         return self.line_number != self._line_not_to_style_check and not self._skip_styling_on_file
 
     def _apply_common_styling(self):
+        self._check_function_in_object()
         if not self._style_checking_is_active():
             return
         self._is_empty_line = False
@@ -141,6 +133,23 @@ class StylingHandler:
             result[const.ERROR_PARAMS].append(str(self.line_number))
             warning = msg_handler.get_error_msg(result[const.ERROR_KEY], result[const.ERROR_PARAMS])
             self.warnings += [warning]
+
+    def add_object_commas(self, ):
+        if self.open_curly_braces != 0 and self.function_in_object == 0:
+            if self._lexer.tokens[-1].lexer_type != const.OPEN_CURLY_BRACKET \
+                    and self._lexer.tokens[-1].parser_type != const.COMMA:
+                comma_token = Token(",", const.SPECIAL_OPERATOR, const.COMMA, None)
+                comma_token.line_number = self._lexer.handle_style.line_number
+                self._lexer.tokens.append(comma_token)
+                has_no_commas = commands.check_commas_in_objects()
+                self._warning_filter(has_no_commas)
+
+    def _check_function_in_object(self):
+        if self.open_curly_braces != 0:
+            if self._token_lexer_type == const.FUNCTION:
+                self.function_in_object += 1
+            elif self._token_lexer_type == const.END_FUNCTION:
+                self.function_in_object -= 1
 
     def _check_style_function(self, *args):
         lexer_checks = {

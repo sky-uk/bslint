@@ -29,7 +29,10 @@ RULES_LIST = {
 
         const.END_FUNCTION: [
             ([const.FUNCTION_DECLARATION, const.BLOCK_STMT, const.END_FUNCTION], const.BLOCK_STMT),
-            ([const.FUNCTION_DECLARATION, const.END_FUNCTION], const.BLOCK_STMT)
+            ([const.FUNCTION_DECLARATION, const.END_FUNCTION], const.BLOCK_STMT),
+            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.BLOCK_STMT, const.END_FUNCTION],
+             const.ANONYMOUS_FUNCTION_BLOCK),
+            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.END_FUNCTION], const.ANONYMOUS_FUNCTION_BLOCK)
         ],
 
         # region IF statement
