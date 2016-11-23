@@ -155,8 +155,7 @@ class Parser(Lexer):
             del self.current_statement[-tokens_from_end:]
         else:
             del self.current_statement[-tokens_from_end: -index]
-        self.current_statement[
-            len(self.current_statement) - index:len(self.current_statement) - index] = [rule.result]
+        self.current_statement[len(self.current_statement) - index:len(self.current_statement) - index] = [rule.result]
         self.current_output_list.append(self.current_statement[:])
 
     def _get_current_tokens(self, index, tokens_from_end):

@@ -1,6 +1,5 @@
 """bslint.bslint: provides entry point main()."""
 import sys
-import os
 from multiprocessing import Pipe
 from bslint.interface_handler import InterfaceHandler as InterfaceHandler
 
@@ -19,7 +18,7 @@ def runner(to_lex=None, out=sys.stdout, only_lex=True):
     sys.argv = [sys.argv[0]]
     if to_lex is not None:
         sys.argv.append("--path")
-        sys.argv.append(os.path.abspath(to_lex))
+        sys.argv.append(to_lex)
     if only_lex:
         sys.argv.append("--lex")
     parent_conn, child_conn = Pipe()

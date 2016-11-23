@@ -43,7 +43,9 @@ class CommonMethods(unittest.TestCase):
     def directory_lexing(self, expected, brs_file_path):
         bslint.load_config_file(default_filepath=TEST_CONFIG_FILE_PATH)
         result = bslint.bslint.runner(brs_file_path).files
-        self.assertTrue(self.check_lists_equal(expected, result))
+        expected.sort()
+        result.sort()
+        self.assertEqual(expected, result)
 
     def method_dec_spacing(self, expected, string):
         result = commands.check_method_dec_spacing(string)
@@ -78,7 +80,3 @@ class CommonMethods(unittest.TestCase):
         self.assertEqual(identifier, result[const.MATCH].group(match_group))
         self.assertEqual(const.ID, result[const.TOKEN_LEXER_TYPE])
         self.assertEqual(const.ID, result[const.TOKEN_PARSER_TYPE])
-
-    @staticmethod
-    def check_lists_equal(expected, result):
-        return len(expected) == len(result) and sorted(expected) == sorted(result)

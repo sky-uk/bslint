@@ -51,10 +51,11 @@ class InterfaceHandler(Process):
 
     def lint(self):
         if self.args.path:
-            if os.path.isfile(self.args.path):
-                self.lint_file(self.args.path)
+            pathname = os.path.abspath(self.args.path)
+            if os.path.isfile(pathname):
+                self.lint_file(pathname)
             else:
-                self.lint_all(self.args.path)
+                self.lint_all(pathname)
         else:
             pathname = os.getcwd()
             self.lint_all(pathname)
