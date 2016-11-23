@@ -98,5 +98,11 @@
   "trailing_white_space": {
     "active": false,
     "params": {}
+  },
+  "check_commas_in_object": {
+    "active": false
+  },
+  "check_trailing_comma_in_object": {
+    "active": false
   }
 }

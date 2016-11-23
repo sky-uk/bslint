@@ -10,7 +10,8 @@ from filepaths import DEFAULT_CONFIG_FILE_PATH
 
 
 class TestInvalidBSLintJSON(unittest.TestCase):
-    def test_printed_message(self):
+
+    def test_invalid_bslintrc(self):
         out = StringIO()
         invalid_json_path = os.path.join(TESTS_RESOURCES_PATH,
                                          'general_test_files/invalid_bslintrc_test_files/.bslintrc')
@@ -18,3 +19,11 @@ class TestInvalidBSLintJSON(unittest.TestCase):
         result = out.getvalue()
         out.close()
         self.assertEqual(msg_handler.get_print_msg(print_const.CANNOT_PARSE_BSLINTRC), result)
+
+    def test_key_in_bslintrc_not_in_default_config(self):
+        out = StringIO()
+        invalid_json_path = os.path.join(TESTS_RESOURCES_PATH, 'general_test_files/invalid_key_in_bslintrc/.bslintrc')
+        bslint.config_loader.load_config_file(invalid_json_path, DEFAULT_CONFIG_FILE_PATH, out)
+        result = out.getvalue()
+        out.close()
+        self.assertEqual(msg_handler.get_print_msg(print_const.BSLINTRC_KEY_DOSNT_EXIST, ["check_1"]), result)

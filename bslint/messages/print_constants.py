@@ -12,6 +12,7 @@ TOTAL_ERRORS = "TOTAL_ERRORS"
 WARNINGS_IN_FILE = "WARNINGS_IN_FILE"
 DESCRIPTION = "DESCRIPTION"
 FILE_NAME = "FILE_NAME"
+BSLINTRC_KEY_DOSNT_EXIST = "BSLINTRC_KEY_DOSNT_EXIST"
 
 WARNING_COLOUR = '\033[93m'
 PASS_COLOUR = '\033[92m'
@@ -46,5 +47,6 @@ MESSAGE_TABLE = {
         build.Message(TITLE_COLOUR + "BSLint: A linter for BrightScript." + END_COLOUR),
     const.WARNINGS: build.Message(WARNING_COLOUR + "{}" + END_COLOUR),
     const.ERRORS: build.Message(ERROR_COLOUR + "{}" + END_COLOUR),
-    FILE_NAME: build.Message('\r' + FILE_COLOUR + "{}" + END_COLOUR)
+    FILE_NAME: build.Message('\r' + FILE_COLOUR + "{}" + END_COLOUR),
+    BSLINTRC_KEY_DOSNT_EXIST: build.Message(ERROR_COLOUR + "Bslintrc key doesn't exist: {}" + END_COLOUR)
 }

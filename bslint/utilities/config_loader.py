@@ -11,12 +11,13 @@ def load_config_file(user_filepath=None, default_filepath=DEFAULT_CONFIG_FILE_PA
     try:
         user_json = get_user_config(user_filepath)
         default_json = overwrite_default_config(default_json, user_json)
-
     except FileNotFoundError:
         out.write(msg_handler.get_print_msg(print_const.NO_BSLINTRC))
     except ValueError:
-
         out.write(msg_handler.get_print_msg(print_const.CANNOT_PARSE_BSLINTRC))
+        default_json = None
+    except IndexError as ex:
+        out.write(msg_handler.get_print_msg(print_const.BSLINTRC_KEY_DOSNT_EXIST, [ex.args[0]]))
         default_json = None
     finally:
         global CONFIG
@@ -37,6 +38,8 @@ def get_user_config(user_filepath):
 
 def overwrite_default_config(default_json, user_json):
     for setting in user_json:
+        if setting not in default_json:
+            raise IndexError(setting)
         default_json[setting] = user_json[setting]
     return default_json
 
