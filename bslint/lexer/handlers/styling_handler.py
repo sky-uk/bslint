@@ -150,7 +150,7 @@ class StylingHandler:
         if self.open_curly_braces != 0:
             if self._token_lexer_type == const.FUNCTION:
                 self.function_in_object += 1
-            elif self._token_lexer_type == const.END_FUNCTION:
+            elif self._token_lexer_type == const.END_FUNCTION_TOKEN:
                 self.function_in_object -= 1
 
     def _check_style_function(self, *args):

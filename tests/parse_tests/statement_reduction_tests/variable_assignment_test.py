@@ -63,6 +63,12 @@ class TestVariableAssignment(unittest.TestCase):
     def test_sub_id_open_parenthesis_var_as_as_type_close_parenthesis(self):
         self.common.match_statement(const.VAR_AS, "c = x(y=3, a, b[3,5])")
 
+    def test_id_equals_id_with_parenthesis(self):
+        self.common.match_statement(const.VAR_AS, "x = (y)")
+
+    def test_id_equals_value_with_parenthesis(self):
+        self.common.match_statement(const.VAR_AS, "x = (6)")
+
     def test_invalid_variable_assignment_while(self):
         self.common.status_error("x = while")
 

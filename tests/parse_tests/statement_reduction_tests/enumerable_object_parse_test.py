@@ -50,6 +50,18 @@ class TestArgumentParse(unittest.TestCase):
     def test_open_square_bracket_value_comma_id_close_square_bracket(self):
         self.common.match_statement(const.ENUMERABLE_OBJECT, "[5, x]")
 
+    def test_open_square_bracket_function_call_close_square_bracket(self):
+        self.common.match_statement(const.ENUMERABLE_OBJECT, "[x()]")
+
+    def test_id_anonymous_function_block(self):
+        self.common.match_statement(const.ENUMERABLE_OBJECT, "{x:function () \n c=3\nend function}")
+
+    def test_value_anonymous_function_block(self):
+        self.common.match_statement(const.ENUMERABLE_OBJECT, "{3:function () \n c=3\nend function}")
+
+    def test_open_enumerable_object_value_colon_value(self):
+        self.common.match_statement(const.ENUMERABLE_OBJECT, "{\"help\":1}")
+
     def test_invalid_associative_array_var_as(self):
         self.common.status_error("{x = 3}")
 

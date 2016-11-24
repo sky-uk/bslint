@@ -43,6 +43,12 @@ class TestFunctionCallParse(unittest.TestCase):
     def test_built_in_function_call_with_id_dot_id(self):
         self.common.match_statement(const.FUNCTION_CALL, "wait(0, x.y)")
 
+    def test_enumerable_object_function_call(self):
+        self.common.match_statement(const.FUNCTION_CALL, "{a:1}.x()")
+
+    def test_function_call_dot_id(self):
+        self.common.match_statement(const.ID, "f().p")
+
     def test_invalid_function_call_missing_parenthesis(self):
         self.common.status_error("x(const.FUNCTION_CALL, ")
 

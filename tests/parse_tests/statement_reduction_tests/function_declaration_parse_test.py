@@ -48,6 +48,9 @@ class TestFunctionDeclarationParse(unittest.TestCase):
     def test_anonymous_id_open_parenthesis_argument_close_parenthesis(self):
         self.common.match_statement(const.ANONYMOUS_FUNCTION_DECLARATION, "function (y, z)")
 
+    def test_anonymous_id_open_parenthesis_argument_close_parenthesis_as_type(self):
+        self.common.match_statement(const.ANONYMOUS_FUNCTION_DECLARATION, "function (y, z) as Object")
+
     def test_invalid_function_declaraion_value(self):
         self.common.status_error("function 1()")
 

@@ -22,8 +22,10 @@ RULES_LIST = {
         ],
         const.END_FOR: [
             ([const.FOR_STMT, const.BLOCK_STMT, const.END_FOR], const.BLOCK_STMT),
+            ([const.FOR_STMT, const.IF_BLOCK, const.END_FOR], const.BLOCK_STMT),
             ([const.FOR_STMT, const.END_FOR], const.BLOCK_STMT),
             ([const.FOR_EACH_STMT, const.BLOCK_STMT, const.END_FOR], const.BLOCK_STMT),
+            ([const.FOR_EACH_STMT, const.IF_BLOCK, const.END_FOR], const.BLOCK_STMT),
             ([const.FOR_EACH_STMT, const.END_FOR], const.BLOCK_STMT),
         ],
 
