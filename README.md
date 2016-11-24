@@ -1,6 +1,12 @@
 ## BrightScript Linter
 [![CircleCI](https://circleci.com/gh/sky-uk/bslint/tree/master.svg?style=shield&circle-token=a9218a324d2d7bebd187a00fdc170b6a11a17462)](https://circleci.com/gh/sky-uk/bslint/tree/master)
 
+*We're hiring!*
+[http://developers.sky.com](http://developers.sky.com)
+
+*Ever thought about joining us?*
+[Python Developer - Sky Tickets](https://goo.gl/AUZh1w)
+
 #Description
 
 This is a tool for linting BrightScript.
