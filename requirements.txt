@@ -2,3 +2,4 @@ nose
 pyenchant
 pylint
 coverage
+Fabric3==1.12.post1
