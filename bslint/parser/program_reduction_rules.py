@@ -1,6 +1,7 @@
 import bslint.constants as const
 import bslint.parser.rule_builder as rule_builder
 
+GRAMMAR_NAME = const.PROGRAM_GRAMMAR
 RULES_LIST = {
     const.PRIORITY_ZERO: {
         const.BLOCK_STMT: [
@@ -40,9 +41,11 @@ RULES_LIST = {
         # region IF statement
         const.END_IF: [
             ([const.IF_STMT, const.BLOCK_STMT, const.END_IF], const.BLOCK_STMT),
+            ([const.IF_STMT, const.END_IF], const.BLOCK_STMT),
             ([const.ELSE_STMT, const.BLOCK_STMT, const.END_IF], const.END_IF),
             ([const.IF_BLOCK, const.ELSE_IF_BLOCK, const.END_IF], const.BLOCK_STMT)
         ],
+        const.IF_BLOCK: [([const.IF_BLOCK], const.BLOCK_STMT)],
         const.ELSE_IF_BLOCK: [([const.ELSE_IF_BLOCK, const.ELSE_IF_BLOCK], const.ELSE_IF_BLOCK)],
         # endregion
     }
