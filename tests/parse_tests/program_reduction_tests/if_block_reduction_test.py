@@ -15,6 +15,9 @@ class TestIfBlockParse(unittest.TestCase):
     def test_if_then_statements_block(self):
         self.common.match_program(const.BLOCK_STMT, "if x() then\n x = 4\n end if")
 
+    def test_if_no_body(self):
+        self.common.match_program(const.BLOCK_STMT, "if x() \n end if")
+
     def test_if_closed_endwhile(self):
         self.common.status_error("if function() then\n x = 4\n end while")
 

@@ -51,6 +51,9 @@ class TestVariableAssignment(unittest.TestCase):
     def test_variable_declaration_with_reduction(self):
         self.common.match_statement(const.VAR_AS, 'x = 3 + 2')
 
+    def test_variable_declaration_with_negation(self):
+        self.common.match_statement(const.VAR_AS, 'x = not p')
+
     def test_variable_declaration_with_multiple_reduction(self):
         self.common.match_statement(const.VAR_AS, 'x = 3 + 2 - 5')
 

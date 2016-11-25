@@ -3,7 +3,7 @@ import sys
 from multiprocessing import Pipe
 from bslint.interface_handler import InterfaceHandler as InterfaceHandler
 
-__version__ = "0.6.2"
+__version__ = "1.0.0"
 
 
 def main():

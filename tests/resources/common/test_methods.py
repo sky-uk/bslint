@@ -20,6 +20,7 @@ class CommonMethods(unittest.TestCase):
         parser = Parser()
         parser.parse(characters)
         self.assertEqual(expected, parser.all_statements[-1][0])
+        self.assertEqual(len(parser.all_statements[-1]), 1)
 
     def match_program(self, expected, characters):
         parser = Parser()

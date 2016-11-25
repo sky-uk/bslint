@@ -270,10 +270,10 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("Ucase", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_format_json(self):
-        self.common.match_regex("FormatJson", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("FormatJson", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_parse_json(self):
-        self.common.match_regex("ParseJson", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("ParseJson", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_run_garbage_collector(self):
         self.common.match_regex("RunGarbageCollector", 1, const.KEYWORD, const.KEYWORD)
