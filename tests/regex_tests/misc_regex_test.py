@@ -15,16 +15,16 @@ class TestMiscRegex(unittest.TestCase):
         cls.common = Common()
 
     def test_open_parenthesis(self):
-        self.common.match_regex("(", None, const.BRACKET, const.OPEN_PARENTHESIS)
+        self.common.match_regex("(", None, const.OPEN_PARENTHESIS, const.OPEN_PARENTHESIS)
 
     def test_close_parenthesis(self):
-        self.common.match_regex(")", None, const.BRACKET, const.CLOSE_PARENTHESIS)
+        self.common.match_regex(")", None, const.CLOSE_PARENTHESIS, const.CLOSE_PARENTHESIS)
 
     def test_open_square_bracket(self):
-        self.common.match_regex("[", None, const.SQUARE_BRACKET, const.OPEN_SQUARE_BRACKET)
+        self.common.match_regex("[", None, const.OPEN_SQUARE_BRACKET, const.OPEN_SQUARE_BRACKET)
 
     def test_close_square_bracket(self):
-        self.common.match_regex("]", None, const.SQUARE_BRACKET, const.CLOSE_SQUARE_BRACKET)
+        self.common.match_regex("]", None, const.CLOSE_SQUARE_BRACKET, const.CLOSE_SQUARE_BRACKET)
 
     def test_open_curly_bracket(self):
         self.common.match_regex("{", None, const.OPEN_CURLY_BRACKET, const.OPEN_CURLY_BRACKET)

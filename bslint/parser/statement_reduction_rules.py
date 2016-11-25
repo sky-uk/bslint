@@ -1,7 +1,7 @@
 import bslint.constants as const
 import bslint.parser.rule_builder as rule_builder
 
-
+GRAMMAR_NAME = const.STATEMENT_GRAMMAR
 RULES_LIST = {
     const.PRIORITY_ZERO: {
         const.END_FOR_TOKEN: [([const.END_FOR_TOKEN], const.END_FOR)],
@@ -56,33 +56,44 @@ RULES_LIST = {
         ],
         const.KEYWORD: [
             ([const.ID, const.DOT, const.KEYWORD], const.ID)
+        ],
+        const.CLOSE_CURLY_BRACKET: [
+            ([const.OPEN_CURLY_BRACKET, const.CLOSE_CURLY_BRACKET], const.ENUMERABLE_OBJECT),
+            ([const.OPEN_CURLY_BRACKET, const.ASSOCIATIVE_ARRAY_ARGUMENT, const.CLOSE_CURLY_BRACKET],
+             const.ENUMERABLE_OBJECT)
+        ],
+        const.BUILT_IN_FUNCTION: [
+            ([const.ID, const.DOT, const.BUILT_IN_FUNCTION], const.ID)
+        ],
+        const.KEYWORD: [
+            ([const.ID, const.DOT, const.KEYWORD], const.ID)
         ]
     },
     const.PRIORITY_ONE: {
-        const.VALUE: [
-            ([const.VALUE, const.PLUS, const.VALUE], const.VALUE),
-            ([const.VALUE, const.PLUS, const.PLUS, const.VALUE], const.VALUE),
-            ([const.VALUE, const.PLUS, const.MINUS, const.VALUE], const.VALUE),
-            ([const.FUNCTION_CALL, const.PLUS, const.VALUE], const.VALUE),
-            ([const.ID, const.PLUS, const.VALUE], const.VALUE),
-            ([const.ID, const.PLUS, const.PLUS, const.VALUE], const.VALUE),
-            ([const.ID, const.PLUS, const.MINUS, const.VALUE], const.VALUE),
-            ([const.FUNCTION_CALL, const.PLUS, const.VALUE], const.VALUE),
-            ([const.FUNCTION_CALL, const.PLUS, const.PLUS, const.VALUE], const.VALUE),
-            ([const.FUNCTION_CALL, const.PLUS, const.MINUS, const.VALUE], const.VALUE),
-            ([const.VALUE, const.MINUS, const.PLUS, const.VALUE], const.VALUE),
-            ([const.ID, const.MINUS, const.PLUS, const.VALUE], const.VALUE),
-            ([const.FUNCTION_CALL, const.MINUS, const.PLUS, const.VALUE], const.VALUE),
-            ([const.WHILE, const.PLUS, const.VALUE], const.WHILE_STMT),
-            ([const.VALUE, const.MINUS, const.VALUE], const.VALUE),
-            ([const.VALUE, const.MINUS, const.MINUS, const.VALUE], const.VALUE),
-            ([const.ID, const.MINUS, const.VALUE], const.VALUE),
-            ([const.ID, const.MINUS, const.MINUS, const.VALUE], const.VALUE),
-            ([const.FUNCTION_CALL, const.MINUS, const.VALUE], const.VALUE),
-            ([const.FUNCTION_CALL, const.MINUS, const.MINUS, const.VALUE], const.VALUE),
-            ([const.WHILE, const.MINUS, const.VALUE], const.WHILE_STMT),
+        const.CLOSE_SQUARE_BRACKET: [
+            ([const.OPEN_SQUARE_BRACKET, const.CLOSE_SQUARE_BRACKET], const.ENUMERABLE_OBJECT),
+            ([const.OPEN_SQUARE_BRACKET, const.VALUE, const.CLOSE_SQUARE_BRACKET], const.ENUMERABLE_OBJECT),
+            ([const.OPEN_SQUARE_BRACKET, const.ID, const.CLOSE_SQUARE_BRACKET], const.ENUMERABLE_OBJECT),
+            ([const.OPEN_SQUARE_BRACKET, const.FUNCTION_CALL, const.CLOSE_SQUARE_BRACKET], const.ENUMERABLE_OBJECT),
+            ([const.OPEN_SQUARE_BRACKET, const.ENUMERABLE_OBJECT, const.CLOSE_SQUARE_BRACKET], const.ENUMERABLE_OBJECT),
+            ([const.OPEN_SQUARE_BRACKET, const.ARGUMENT, const.CLOSE_SQUARE_BRACKET],
+             const.ENUMERABLE_OBJECT),
         ],
+        const.FUNCTION_CALL: [
+            ([const.OPEN_PARENTHESIS, const.VALUE, const.CLOSE_PARENTHESIS, const.DOT, const.FUNCTION_CALL],
+             const.FUNCTION_CALL)
+        ],
+    },
+    const.PRIORITY_TWO: {
         const.ID: [
+            ([const.ID, const.COLON, const.ID], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+            ([const.KEYWORD, const.COLON, const.ID], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+            ([const.BUILT_IN_FUNCTION, const.COLON, const.ID], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+            ([const.ID, const.OPERATOR, const.ID], const.VALUE),
+            ([const.VALUE, const.OPERATOR, const.ID], const.VALUE),
+            ([const.FUNCTION_CALL, const.OPERATOR, const.ID], const.VALUE),
+            ([const.VALUE, const.COLON, const.ID], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+            ([const.NOT, const.ID], const.VALUE),
             ([const.ID, const.PLUS, const.ID], const.VALUE),
             ([const.ID, const.PLUS, const.PLUS, const.ID], const.VALUE),
             ([const.ID, const.PLUS, const.MINUS, const.ID], const.VALUE),
@@ -102,9 +113,16 @@ RULES_LIST = {
             ([const.VALUE, const.MINUS, const.MINUS, const.ID], const.VALUE),
             ([const.FUNCTION_CALL, const.MINUS, const.ID], const.VALUE),
             ([const.FUNCTION_CALL, const.MINUS, const.MINUS, const.ID], const.VALUE),
-            ([const.WHILE, const.MINUS, const.ID], const.WHILE_STMT),
+            ([const.WHILE, const.MINUS, const.ID], const.WHILE_STMT)
         ],
         const.FUNCTION_CALL: [
+            ([const.ID, const.COLON, const.FUNCTION_CALL], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+            ([const.KEYWORD, const.COLON, const.FUNCTION_CALL], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+            ([const.BUILT_IN_FUNCTION, const.COLON, const.FUNCTION_CALL], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+            ([const.ID, const.OPERATOR, const.FUNCTION_CALL], const.VALUE),
+            ([const.VALUE, const.OPERATOR, const.FUNCTION_CALL], const.VALUE),
+            ([const.FUNCTION_CALL, const.OPERATOR, const.FUNCTION_CALL], const.VALUE),
+            ([const.VALUE, const.COLON, const.FUNCTION_CALL], const.ASSOCIATIVE_ARRAY_ARGUMENT),
             ([const.VALUE, const.PLUS, const.FUNCTION_CALL], const.VALUE),
             ([const.ID, const.PLUS, const.FUNCTION_CALL], const.VALUE),
             ([const.ID, const.PLUS, const.PLUS, const.FUNCTION_CALL], const.VALUE),
@@ -127,43 +145,48 @@ RULES_LIST = {
             ([const.FUNCTION_CALL, const.MINUS, const.MINUS, const.FUNCTION_CALL], const.VALUE),
             ([const.WHILE, const.MINUS, const.FUNCTION_CALL], const.WHILE_STMT),
         ],
-    },
-    const.PRIORITY_TWO: {
-        const.ID: [
-            ([const.ID, const.COLON, const.ID], const.ASSOCIATIVE_ARRAY_ARGUMENT),
-            ([const.ID, const.OPERATOR, const.ID], const.VALUE),
-            ([const.VALUE, const.OPERATOR, const.ID], const.VALUE),
-            ([const.FUNCTION_CALL, const.OPERATOR, const.ID], const.VALUE),
-            ([const.VALUE, const.COLON, const.ID], const.ASSOCIATIVE_ARRAY_ARGUMENT)
-        ],
-        const.CLOSE_SQUARE_BRACKET: [
-            ([const.OPEN_SQUARE_BRACKET, const.CLOSE_SQUARE_BRACKET], const.ENUMERABLE_OBJECT),
-            ([const.OPEN_SQUARE_BRACKET, const.VALUE, const.CLOSE_SQUARE_BRACKET], const.ENUMERABLE_OBJECT),
-            ([const.OPEN_SQUARE_BRACKET, const.ID, const.CLOSE_SQUARE_BRACKET], const.ENUMERABLE_OBJECT),
-            ([const.OPEN_SQUARE_BRACKET, const.FUNCTION_CALL, const.CLOSE_SQUARE_BRACKET], const.ENUMERABLE_OBJECT),
-            ([const.OPEN_SQUARE_BRACKET, const.ARGUMENT, const.CLOSE_SQUARE_BRACKET],
-             const.ENUMERABLE_OBJECT),
-        ],
-        const.FUNCTION_CALL: [
-            ([const.ID, const.COLON, const.FUNCTION_CALL], const.ASSOCIATIVE_ARRAY_ARGUMENT),
-            ([const.ID, const.OPERATOR, const.FUNCTION_CALL], const.VALUE),
-            ([const.VALUE, const.OPERATOR, const.FUNCTION_CALL], const.VALUE),
-            ([const.FUNCTION_CALL, const.OPERATOR, const.FUNCTION_CALL], const.VALUE),
-            ([const.VALUE, const.COLON, const.FUNCTION_CALL], const.ASSOCIATIVE_ARRAY_ARGUMENT)
-        ],
         const.ANONYMOUS_FUNCTION_BLOCK: [
             ([const.ID, const.COLON, const.ANONYMOUS_FUNCTION_BLOCK], const.ASSOCIATIVE_ARRAY_ARGUMENT),
-            ([const.VALUE, const.COLON, const.ANONYMOUS_FUNCTION_BLOCK], const.ASSOCIATIVE_ARRAY_ARGUMENT)
+            ([const.VALUE, const.COLON, const.ANONYMOUS_FUNCTION_BLOCK], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+            ([const.KEYWORD, const.COLON, const.ANONYMOUS_FUNCTION_BLOCK], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+            ([const.BUILT_IN_FUNCTION, const.COLON, const.ANONYMOUS_FUNCTION_BLOCK], const.ASSOCIATIVE_ARRAY_ARGUMENT),
         ],
-
         const.VALUE: [
             ([const.ID, const.COLON, const.VALUE], const.ASSOCIATIVE_ARRAY_ARGUMENT),
             ([const.VALUE, const.COLON, const.VALUE], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+            ([const.KEYWORD, const.COLON, const.VALUE], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+            ([const.BUILT_IN_FUNCTION, const.COLON, const.VALUE], const.ASSOCIATIVE_ARRAY_ARGUMENT),
             ([const.VALUE, const.OPERATOR, const.VALUE], const.VALUE),
             ([const.ID, const.OPERATOR, const.VALUE], const.VALUE),
             ([const.FUNCTION_CALL, const.OPERATOR, const.VALUE], const.VALUE),
+            ([const.VALUE, const.PLUS, const.VALUE], const.VALUE),
+            ([const.VALUE, const.PLUS, const.PLUS, const.VALUE], const.VALUE),
+            ([const.VALUE, const.PLUS, const.MINUS, const.VALUE], const.VALUE),
+            ([const.FUNCTION_CALL, const.PLUS, const.VALUE], const.VALUE),
+            ([const.ID, const.PLUS, const.VALUE], const.VALUE),
+            ([const.ID, const.PLUS, const.PLUS, const.VALUE], const.VALUE),
+            ([const.ID, const.PLUS, const.MINUS, const.VALUE], const.VALUE),
+            ([const.FUNCTION_CALL, const.PLUS, const.VALUE], const.VALUE),
+            ([const.FUNCTION_CALL, const.PLUS, const.PLUS, const.VALUE], const.VALUE),
+            ([const.FUNCTION_CALL, const.PLUS, const.MINUS, const.VALUE], const.VALUE),
+            ([const.VALUE, const.MINUS, const.PLUS, const.VALUE], const.VALUE),
+            ([const.ID, const.MINUS, const.PLUS, const.VALUE], const.VALUE),
+            ([const.FUNCTION_CALL, const.MINUS, const.PLUS, const.VALUE], const.VALUE),
+            ([const.WHILE, const.PLUS, const.VALUE], const.WHILE_STMT),
+            ([const.VALUE, const.MINUS, const.VALUE], const.VALUE),
+            ([const.VALUE, const.MINUS, const.MINUS, const.VALUE], const.VALUE),
+            ([const.ID, const.MINUS, const.VALUE], const.VALUE),
+            ([const.ID, const.MINUS, const.MINUS, const.VALUE], const.VALUE),
+            ([const.FUNCTION_CALL, const.MINUS, const.VALUE], const.VALUE),
+            ([const.FUNCTION_CALL, const.MINUS, const.MINUS, const.VALUE], const.VALUE),
+            ([const.WHILE, const.MINUS, const.VALUE], const.WHILE_STMT),
         ],
-        const.ENUMERABLE_OBJECT: [([const.ID, const.COLON, const.ENUMERABLE_OBJECT], const.ASSOCIATIVE_ARRAY_ARGUMENT)],
+        const.ENUMERABLE_OBJECT: [
+            ([const.ID, const.COLON, const.ENUMERABLE_OBJECT], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+            ([const.VALUE, const.COLON, const.ENUMERABLE_OBJECT], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+            ([const.KEYWORD, const.COLON, const.ENUMERABLE_OBJECT], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+            ([const.BUILT_IN_FUNCTION, const.COLON, const.ENUMERABLE_OBJECT], const.ASSOCIATIVE_ARRAY_ARGUMENT),
+        ]
     },
     const.PRIORITY_THREE: {
         const.VALUE: [
@@ -173,7 +196,7 @@ RULES_LIST = {
             ([const.VALUE, const.EQUALS, const.VALUE], const.CONDITION),
             ([const.FUNCTION_CALL, const.EQUALS, const.VALUE], const.CONDITION),
             ([const.ANONYMOUS_FUNCTION_DECLARATION, const.EQUALS, const.VALUE], const.CONDITION),
-            ([const.ELSE_IF, const.FUNCTION_CALL, const.EQUALS, const.VALUE], const.ELSE_IF_STMT),
+            ([const.ELSE_IF, const.FUNCTION_CALL, const.EQUALS, const.VALUE], const.ELSE_IF_STMT)
         ],
         const.ENUMERABLE_OBJECT: [
             ([const.ID, const.EQUALS, const.ENUMERABLE_OBJECT], const.VAR_AS)
@@ -184,7 +207,7 @@ RULES_LIST = {
             ([const.ID, const.EQUALS, const.PLUS, const.FUNCTION_CALL], const.VAR_AS),
             ([const.VALUE, const.EQUALS, const.FUNCTION_CALL], const.CONDITION),
             ([const.FUNCTION_CALL, const.EQUALS, const.FUNCTION_CALL], const.CONDITION),
-            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.EQUALS, const.FUNCTION_CALL], const.CONDITION),
+            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.EQUALS, const.FUNCTION_CALL], const.CONDITION)
         ],
         const.ID: [
             ([const.ID, const.EQUALS, const.ID], const.VAR_AS),
@@ -192,7 +215,10 @@ RULES_LIST = {
             ([const.ID, const.EQUALS, const.PLUS, const.ID], const.VAR_AS),
             ([const.VALUE, const.EQUALS, const.ID], const.CONDITION),
             ([const.FUNCTION_CALL, const.EQUALS, const.ID], const.CONDITION),
-            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.EQUALS, const.ID], const.CONDITION),
+            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.EQUALS, const.ID], const.CONDITION)
+        ],
+        const.ANONYMOUS_FUNCTION_BLOCK: [
+            ([const.ID, const.EQUALS, const.ANONYMOUS_FUNCTION_BLOCK], const.VAR_AS)
         ],
         const.ANONYMOUS_FUNCTION_BLOCK: [
             ([const.ID, const.EQUALS, const.ANONYMOUS_FUNCTION_BLOCK], const.VAR_AS),
@@ -208,8 +234,13 @@ RULES_LIST = {
             ([const.PRINT_ARGUMENT, const.COMMA, const.ID], const.PRINT_ARGUMENT),
             ([const.ENUMERABLE_OBJECT, const.COMMA, const.ID], const.ARGUMENT),
             ([const.PARAM, const.COMMA, const.ID], const.ARGUMENT),
-            ([const.PRINT_STMT, const.COMMA, const.ID], const.PRINT_STMT)
-        ], const.VALUE: [
+            ([const.PRINT_STMT, const.COMMA, const.ID], const.PRINT_STMT),
+            ([const.VALUE, const.COMPARISON_OPERATOR, const.ID], const.CONDITION),
+            ([const.ID, const.COMPARISON_OPERATOR, const.ID], const.CONDITION),
+            ([const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.ID], const.CONDITION),
+            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.ID], const.CONDITION),
+        ],
+        const.VALUE: [
             ([const.ID, const.COMMA, const.VALUE], const.ARGUMENT),
             ([const.VALUE, const.COMMA, const.VALUE], const.ARGUMENT),
             ([const.FUNCTION_CALL, const.COMMA, const.VALUE], const.ARGUMENT),
@@ -218,8 +249,13 @@ RULES_LIST = {
             ([const.PRINT_ARGUMENT, const.COMMA, const.VALUE], const.PRINT_ARGUMENT),
             ([const.ENUMERABLE_OBJECT, const.COMMA, const.VALUE], const.ARGUMENT),
             ([const.PARAM, const.COMMA, const.VALUE], const.ARGUMENT),
-            ([const.PRINT_STMT, const.COMMA, const.VALUE], const.PRINT_STMT)
-        ], const.FUNCTION_CALL: [
+            ([const.PRINT_STMT, const.COMMA, const.VALUE], const.PRINT_STMT),
+            ([const.VALUE, const.COMPARISON_OPERATOR, const.VALUE], const.CONDITION),
+            ([const.ID, const.COMPARISON_OPERATOR, const.VALUE], const.CONDITION),
+            ([const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.VALUE], const.CONDITION),
+            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.VALUE], const.CONDITION),
+        ],
+        const.FUNCTION_CALL: [
             ([const.ID, const.COMMA, const.FUNCTION_CALL], const.ARGUMENT),
             ([const.VALUE, const.COMMA, const.FUNCTION_CALL], const.ARGUMENT),
             ([const.FUNCTION_CALL, const.COMMA, const.FUNCTION_CALL], const.ARGUMENT),
@@ -228,8 +264,13 @@ RULES_LIST = {
             ([const.PRINT_ARGUMENT, const.COMMA, const.FUNCTION_CALL], const.PRINT_ARGUMENT),
             ([const.ENUMERABLE_OBJECT, const.COMMA, const.FUNCTION_CALL], const.ARGUMENT),
             ([const.PARAM, const.COMMA, const.FUNCTION_CALL], const.ARGUMENT),
-            ([const.PRINT_STMT, const.COMMA, const.FUNCTION_CALL], const.PRINT_STMT)
-        ], const.VAR_AS: [
+            ([const.PRINT_STMT, const.COMMA, const.FUNCTION_CALL], const.PRINT_STMT),
+            ([const.VALUE, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], const.CONDITION),
+            ([const.ID, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], const.CONDITION),
+            ([const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], const.CONDITION),
+            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], const.CONDITION),
+        ],
+        const.VAR_AS: [
             ([const.ID, const.COMMA, const.VAR_AS], const.ARGUMENT),
             ([const.VALUE, const.COMMA, const.VAR_AS], const.ARGUMENT),
             ([const.FUNCTION_CALL, const.COMMA, const.VAR_AS], const.ARGUMENT),
@@ -238,7 +279,8 @@ RULES_LIST = {
             ([const.PRINT_ARGUMENT, const.COMMA, const.VAR_AS], const.PRINT_ARGUMENT),
             ([const.ENUMERABLE_OBJECT, const.COMMA, const.VAR_AS], const.ARGUMENT),
             ([const.PARAM, const.COMMA, const.VAR_AS], const.ARGUMENT)
-        ], const.ARGUMENT: [
+        ],
+        const.ARGUMENT: [
             ([const.ID, const.COMMA, const.ARGUMENT], const.ARGUMENT),
             ([const.VALUE, const.COMMA, const.ARGUMENT], const.ARGUMENT),
             ([const.FUNCTION_CALL, const.COMMA, const.ARGUMENT], const.ARGUMENT),
@@ -248,7 +290,8 @@ RULES_LIST = {
             ([const.ENUMERABLE_OBJECT, const.COMMA, const.ARGUMENT], const.ARGUMENT),
             ([const.PARAM, const.COMMA, const.ARGUMENT], const.ARGUMENT),
             ([const.PRINT_STMT, const.COMMA, const.ARGUMENT], const.PRINT_STMT)
-        ], const.ENUMERABLE_OBJECT: [
+        ],
+        const.ENUMERABLE_OBJECT: [
             ([const.ID, const.COMMA, const.ENUMERABLE_OBJECT], const.ARGUMENT),
             ([const.VALUE, const.COMMA, const.ENUMERABLE_OBJECT], const.ARGUMENT),
             ([const.FUNCTION_CALL, const.COMMA, const.ENUMERABLE_OBJECT], const.ARGUMENT),
@@ -258,7 +301,8 @@ RULES_LIST = {
             ([const.ENUMERABLE_OBJECT, const.COMMA, const.ENUMERABLE_OBJECT], const.ARGUMENT),
             ([const.PARAM, const.COMMA, const.ENUMERABLE_OBJECT], const.ARGUMENT),
             ([const.PRINT_STMT, const.COMMA, const.ENUMERABLE_OBJECT], const.PRINT_STMT)
-        ], const.PARAM: [
+        ],
+        const.PARAM: [
             ([const.ID, const.COMMA, const.PARAM], const.ARGUMENT),
             ([const.VALUE, const.COMMA, const.PARAM], const.ARGUMENT),
             ([const.FUNCTION_CALL, const.COMMA, const.PARAM], const.ARGUMENT),
@@ -294,12 +338,24 @@ RULES_LIST = {
             ([const.VALUE, const.SEMI_COLON, const.ID], const.PRINT_ARGUMENT),
             ([const.FUNCTION_CALL, const.SEMI_COLON, const.ID], const.PRINT_ARGUMENT),
             ([const.VAR_AS, const.SEMI_COLON, const.ID], const.PRINT_ARGUMENT),
+            ([const.CONDITION, const.AND, const.ID], const.CONDITION),
+            ([const.CONDITION, const.OR, const.ID], const.CONDITION),
+            ([const.VAR_AS, const.AND, const.ID], const.CONDITION),
+            ([const.VAR_AS, const.OR, const.ID], const.CONDITION),
+            ([const.FUNCTION_CALL, const.AND, const.ID], const.CONDITION),
+            ([const.FUNCTION_CALL, const.OR, const.ID], const.CONDITION),
         ],
         const.VALUE: [
             ([const.VALUE, const.SEMI_COLON, const.VALUE], const.PRINT_ARGUMENT),
             ([const.ID, const.SEMI_COLON, const.VALUE], const.PRINT_ARGUMENT),
             ([const.FUNCTION_CALL, const.SEMI_COLON, const.VALUE], const.PRINT_ARGUMENT),
             ([const.VAR_AS, const.SEMI_COLON, const.VALUE], const.PRINT_ARGUMENT),
+            ([const.CONDITION, const.AND, const.VALUE], const.CONDITION),
+            ([const.CONDITION, const.OR, const.VALUE], const.CONDITION),
+            ([const.VAR_AS, const.AND, const.VALUE], const.CONDITION),
+            ([const.VAR_AS, const.OR, const.VALUE], const.CONDITION),
+            ([const.FUNCTION_CALL, const.AND, const.VALUE], const.CONDITION),
+            ([const.FUNCTION_CALL, const.OR, const.VALUE], const.CONDITION),
         ],
         const.ARGUMENT: [
             ([const.VALUE, const.SEMI_COLON, const.ARGUMENT], const.PRINT_ARGUMENT),
@@ -310,12 +366,26 @@ RULES_LIST = {
             ([const.ID, const.SEMI_COLON, const.FUNCTION_CALL], const.PRINT_ARGUMENT),
             ([const.VALUE, const.SEMI_COLON, const.FUNCTION_CALL], const.PRINT_ARGUMENT),
             ([const.VAR_AS, const.SEMI_COLON, const.FUNCTION_CALL], const.PRINT_ARGUMENT),
+            ([const.VAR_AS, const.AND, const.FUNCTION_CALL], const.CONDITION),
+            ([const.VAR_AS, const.OR, const.FUNCTION_CALL], const.CONDITION),
+            ([const.FUNCTION_CALL, const.AND, const.FUNCTION_CALL], const.CONDITION),
+            ([const.FUNCTION_CALL, const.OR, const.FUNCTION_CALL], const.CONDITION),
+            ([const.CONDITION, const.AND, const.FUNCTION_CALL], const.CONDITION),
+            ([const.CONDITION, const.OR, const.FUNCTION_CALL], const.CONDITION),
         ],
         const.VAR_AS: [
             ([const.VAR_AS, const.SEMI_COLON, const.VAR_AS], const.PRINT_ARGUMENT),
             ([const.ID, const.SEMI_COLON, const.VAR_AS], const.PRINT_ARGUMENT),
             ([const.VALUE, const.SEMI_COLON, const.VAR_AS], const.PRINT_ARGUMENT),
-            ([const.FUNCTION_CALL, const.SEMI_COLON, const.VAR_AS], const.PRINT_ARGUMENT)
+            ([const.FUNCTION_CALL, const.SEMI_COLON, const.VAR_AS], const.PRINT_ARGUMENT),
+            ([const.VAR_AS, const.AND, const.VAR_AS], const.CONDITION),
+            ([const.VAR_AS, const.OR, const.VAR_AS], const.CONDITION),
+            ([const.CONDITION, const.AND, const.VAR_AS], const.CONDITION),
+            ([const.CONDITION, const.OR, const.VAR_AS], const.CONDITION),
+            ([const.VAR_AS, const.AND, const.VAR_AS], const.CONDITION),
+            ([const.VAR_AS, const.OR, const.VAR_AS], const.CONDITION),
+            ([const.FUNCTION_CALL, const.AND, const.VAR_AS], const.CONDITION),
+            ([const.FUNCTION_CALL, const.OR, const.VAR_AS], const.CONDITION),
         ],
         const.ENUMERABLE_OBJECT: [
             ([const.ENUMERABLE_OBJECT, const.SEMI_COLON, const.ENUMERABLE_OBJECT], const.PRINT_ARGUMENT),
@@ -332,7 +402,19 @@ RULES_LIST = {
             ([const.ID, const.SEMI_COLON, const.PRINT_ARGUMENT], const.PRINT_ARGUMENT),
             ([const.VAR_AS, const.SEMI_COLON, const.PRINT_ARGUMENT], const.PRINT_ARGUMENT),
             ([const.VALUE, const.SEMI_COLON, const.PRINT_ARGUMENT], const.PRINT_ARGUMENT),
-        ]
+        ],
+        const.CONDITION: [
+            ([const.CONDITION, const.AND, const.CONDITION], const.CONDITION),
+            ([const.CONDITION, const.OR, const.CONDITION], const.CONDITION),
+            ([const.VAR_AS, const.AND, const.CONDITION], const.CONDITION),
+            ([const.VAR_AS, const.OR, const.CONDITION], const.CONDITION),
+            ([const.FUNCTION_CALL, const.AND, const.CONDITION], const.CONDITION),
+            ([const.FUNCTION_CALL, const.OR, const.CONDITION], const.CONDITION),
+            ([const.ID, const.AND, const.CONDITION], const.CONDITION),
+            ([const.ID, const.OR, const.CONDITION], const.CONDITION),
+            ([const.VALUE, const.AND, const.CONDITION], const.CONDITION),
+            ([const.VALUE, const.OR, const.CONDITION], const.CONDITION),
+        ],
     },
     const.PRIORITY_SIX: {
         const.ID: [
@@ -344,10 +426,6 @@ RULES_LIST = {
             ([const.PRINT_KEYWORD, const.ID], const.PRINT_STMT),
             ([const.FOR_EACH, const.ID, const.IN, const.ID], const.FOR_EACH_STMT),
             ([const.IF, const.ID], const.IF_STMT),
-            ([const.VALUE, const.COMPARISON_OPERATOR, const.ID], const.CONDITION),
-            ([const.ID, const.COMPARISON_OPERATOR, const.ID], const.CONDITION),
-            ([const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.ID], const.CONDITION),
-            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.ID], const.CONDITION),
             ([const.ELSE_IF, const.ID], const.ELSE_IF_STMT),
             ([const.RETURN_STMT, const.ID], const.RETURN_STMT),
         ],
@@ -358,10 +436,6 @@ RULES_LIST = {
             ([const.FOR, const.VAR_AS, const.TO, const.FUNCTION_CALL, const.STEP, const.VALUE], const.FOR_STMT),
             ([const.FOR_EACH, const.ID, const.IN, const.VALUE], const.FOR_EACH_STMT),
             ([const.IF, const.VALUE], const.IF_STMT),
-            ([const.VALUE, const.COMPARISON_OPERATOR, const.VALUE], const.CONDITION),
-            ([const.ID, const.COMPARISON_OPERATOR, const.VALUE], const.CONDITION),
-            ([const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.VALUE], const.CONDITION),
-            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.VALUE], const.CONDITION),
             ([const.ELSE_IF, const.VALUE], const.ELSE_IF_STMT),
             ([const.RETURN_STMT, const.VALUE], const.RETURN_STMT),
             ([const.WHILE, const.VALUE], const.WHILE_STMT),
@@ -372,10 +446,6 @@ RULES_LIST = {
             ([const.SUB, const.FUNCTION_CALL], const.FUNCTION_DECLARATION),
             ([const.FOR_EACH, const.ID, const.IN, const.FUNCTION_CALL], const.FOR_EACH_STMT),
             ([const.IF, const.FUNCTION_CALL], const.IF_STMT),
-            ([const.VALUE, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], const.CONDITION),
-            ([const.ID, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], const.CONDITION),
-            ([const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], const.CONDITION),
-            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], const.CONDITION),
             ([const.ELSE_IF, const.FUNCTION_CALL], const.ELSE_IF_STMT),
             ([const.RETURN_STMT, const.FUNCTION_CALL], const.RETURN_STMT),
             ([const.FOR, const.VAR_AS, const.TO, const.VALUE, const.STEP, const.FUNCTION_CALL], const.FOR_STMT),
@@ -384,9 +454,10 @@ RULES_LIST = {
             ([const.FOR, const.VAR_AS, const.TO, const.FUNCTION_CALL, const.STEP, const.FUNCTION_CALL], const.FOR_STMT),
             ([const.WHILE, const.FUNCTION_CALL], const.WHILE_STMT),
             ([const.PRINT_KEYWORD, const.FUNCTION_CALL], const.PRINT_STMT),
-            ([const.IF, const.CONDITION, const.THEN, const.FUNCTION_CALL], const.BLOCK_STMT),
-            ([const.IF, const.FUNCTION_CALL, const.THEN, const.FUNCTION_CALL], const.BLOCK_STMT),
-            ([const.IF, const.ID, const.THEN, const.FUNCTION_CALL], const.BLOCK_STMT)
+            ([const.IF, const.CONDITION, const.THEN, const.FUNCTION_CALL], const.IF_BLOCK),
+            ([const.IF, const.VAR_AS, const.THEN, const.FUNCTION_CALL], const.IF_BLOCK),
+            ([const.IF, const.FUNCTION_CALL, const.THEN, const.FUNCTION_CALL], const.IF_BLOCK),
+            ([const.IF, const.ID, const.THEN, const.FUNCTION_CALL], const.IF_BLOCK),
         ],
         const.TYPE: [
             ([const.FUNCTION, const.FUNCTION_CALL, const.AS, const.TYPE], const.FUNCTION_DECLARATION),
@@ -400,13 +471,14 @@ RULES_LIST = {
             ([const.IF, const.VAR_AS], const.IF_STMT),
             ([const.ELSE_IF, const.VAR_AS], const.ELSE_IF_STMT),
             ([const.RETURN_STMT, const.VAR_AS], const.RETURN_STMT),
+            ([const.IF, const.CONDITION, const.THEN, const.VAR_AS], const.IF_BLOCK),
+            ([const.IF, const.VAR_AS, const.THEN, const.VAR_AS], const.IF_BLOCK),
+            ([const.IF, const.FUNCTION_CALL, const.THEN, const.VAR_AS], const.IF_BLOCK),
+            ([const.IF, const.ID, const.THEN, const.VAR_AS], const.IF_BLOCK),
             ([const.VAR_AS, const.AND, const.VAR_AS], const.CONDITION),
             ([const.VAR_AS, const.OR, const.VAR_AS], const.CONDITION),
             ([const.CONDITION, const.AND, const.VAR_AS], const.CONDITION),
-            ([const.CONDITION, const.OR, const.VAR_AS], const.CONDITION),
-            ([const.IF, const.CONDITION, const.THEN, const.VAR_AS], const.BLOCK_STMT),
-            ([const.IF, const.FUNCTION_CALL, const.THEN, const.VAR_AS], const.BLOCK_STMT),
-            ([const.IF, const.ID, const.THEN, const.VAR_AS], const.BLOCK_STMT)
+            ([const.CONDITION, const.OR, const.VAR_AS], const.CONDITION)
         ],
         const.CLOSE_PARENTHESIS: [
             ([const.FUNCTION, const.OPEN_PARENTHESIS, const.CLOSE_PARENTHESIS], const.ANONYMOUS_FUNCTION_DECLARATION),
@@ -431,14 +503,10 @@ RULES_LIST = {
              const.ANONYMOUS_FUNCTION_DECLARATION),
             ([const.SUB, const.OPEN_PARENTHESIS, const.VALUE, const.ARGUMENT, const.CLOSE_PARENTHESIS],
              const.ANONYMOUS_FUNCTION_DECLARATION),
+            ([const.OPEN_PARENTHESIS, const.VALUE, const.CLOSE_PARENTHESIS], const.ID),
             ([const.OPEN_PARENTHESIS, const.ID, const.CLOSE_PARENTHESIS], const.ID),
             ([const.OPEN_PARENTHESIS, const.VAR_AS, const.CLOSE_PARENTHESIS], const.VAR_AS),
             ([const.OPEN_PARENTHESIS, const.CONDITION, const.CLOSE_PARENTHESIS], const.CONDITION)
-        ],
-        const.CLOSE_CURLY_BRACKET: [
-            ([const.OPEN_CURLY_BRACKET, const.CLOSE_CURLY_BRACKET], const.ENUMERABLE_OBJECT),
-            ([const.OPEN_CURLY_BRACKET, const.ASSOCIATIVE_ARRAY_ARGUMENT, const.CLOSE_CURLY_BRACKET],
-             const.ENUMERABLE_OBJECT)
         ],
         const.ARGUMENT: [
             ([const.ARRAY_ARGUMENT, const.ARGUMENT], const.ARRAY_ARGUMENT),
@@ -467,9 +535,10 @@ RULES_LIST = {
             ([const.CONDITION, const.OR, const.CONDITION], const.CONDITION),
             ([const.IF, const.CONDITION], const.IF_STMT),
             ([const.ELSE_IF, const.CONDITION], const.ELSE_IF_STMT),
-            ([const.VAR_AS, const.AND, const.CONDITION], const.CONDITION),
-            ([const.VAR_AS, const.OR, const.CONDITION], const.CONDITION),
-
+        ],
+        const.RETURN_STMT: [
+            ([const.IF, const.CONDITION, const.THEN, const.RETURN_STMT], const.IF_STMT),
+            ([const.IF, const.VAR_AS, const.THEN, const.RETURN_STMT], const.IF_STMT),
         ],
         const.WHILE: [([const.EXIT, const.WHILE], const.EXIT)],
         const.FOR: [([const.EXIT, const.FOR], const.EXIT)],

@@ -43,6 +43,9 @@ class TestFunctionCallParse(unittest.TestCase):
     def test_built_in_function_call_with_id_dot_id(self):
         self.common.match_statement(const.FUNCTION_CALL, "wait(0, x.y)")
 
+    def test_function_call_with_empty_object_as_first_param(self):
+        self.common.match_statement(const.FUNCTION_CALL, "x({}, y)")
+
     def test_enumerable_object_function_call(self):
         self.common.match_statement(const.FUNCTION_CALL, "{a:1}.x()")
 

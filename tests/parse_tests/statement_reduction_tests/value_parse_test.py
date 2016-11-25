@@ -200,7 +200,6 @@ class TestValueParse(unittest.TestCase):
 
     def test_open_parenthesis_value_close_parenthesis(self):
         self.common.match_statement(const.ID, "(1)")
-
     # Only ID Test
 
     def test_open_parenthesis_id_close_parenthesis(self):
