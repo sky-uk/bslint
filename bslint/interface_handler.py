@@ -83,12 +83,12 @@ class InterfaceHandler(Process):
             self.conn.send(testing_dict)
             self.conn.close()
 
-    def _get_manifest_path(self, specific_part):
-        if specific_part:
-            if os.path.isfile(specific_part):
-                upper_dir = os.path.dirname(specific_part)
+    def _get_manifest_path(self, specific_path):
+        if specific_path:
+            if os.path.isfile(specific_path):
+                upper_dir = os.path.dirname(specific_path)
             else:
-                upper_dir = specific_part
+                upper_dir = specific_path
         else:
             upper_dir = ""
         count = 0

@@ -25,10 +25,19 @@ class TestErrorHandling(unittest.TestCase):
         self.assertEqual(1, len(self.interface_handler.messages[const.ERRORS]))
         self.assertEqual(0, len(self.interface_handler.messages[const.WARNINGS]))
 
-    def test_all_linted_correctly(self):
+    def test_all_lexed_correctly(self):
         out = StringIO()
         brs_file_path = os.path.join(LEXING_TEST_FILES_PATH, 'basic-string-assignment.brs')
         result = bslint.bslint.runner(to_lex=brs_file_path, out=out).printed_output
+        self.assertEqual(msg_handler.get_print_msg(print_const.NO_MANIFEST) +
+                         msg_handler.get_print_msg(print_const.NO_BSLINTRC) +
+                         msg_handler.get_print_msg(print_const.LINTING_COMPLETE) +
+                         msg_handler.get_print_msg(print_const.ALL_LINTED_CORRECTLY), result)
+
+    def test_all_parsed_correctly(self):
+        out = StringIO()
+        brs_file_path = os.path.join(LEXING_TEST_FILES_PATH, 'basic-string-assignment.brs')
+        result = bslint.bslint.runner(to_lex=brs_file_path, out=out, only_lex=False).printed_output
         self.assertEqual(msg_handler.get_print_msg(print_const.NO_MANIFEST) +
                          msg_handler.get_print_msg(print_const.NO_BSLINTRC) +
                          msg_handler.get_print_msg(print_const.LINTING_COMPLETE) +
@@ -47,17 +56,36 @@ class TestErrorHandling(unittest.TestCase):
         self.assertEqual(1, len(self.interface_handler.messages[const.WARNINGS]))
         self.assertEqual(1, len(self.interface_handler.messages[const.ERRORS]))
 
-    def test_printed_message(self):
+    def test_warning_message_printed(self):
         out = StringIO()
-        self.interface_handler = InterfaceHandler(out)
-        error_handling_file_path = os.path.join(TESTS_RESOURCES_PATH, 'error_handling_files')
-        self.interface_handler.args = Namespace(lex=True)
-        self.interface_handler.lint_all(error_handling_file_path)
-        result = out.getvalue()
-        out.close()
-        second_line = re.match(r".*\n(?P<second_line>.*)\n", result).group("second_line")
-        self.assertEqual('\x1b[93mWARNING: Invalid indentation, you must indent with tabs. Line number: 1[0m',
-                         second_line)
+        warning_file_path = os.path.join(TESTS_RESOURCES_PATH, 'error_handling_files/warning-file.brs')
+        result = bslint.bslint.runner(to_lex=warning_file_path, out=out).printed_output
+        self.assertEqual(msg_handler.get_print_msg(print_const.NO_MANIFEST) +
+                         msg_handler.get_print_msg(print_const.NO_BSLINTRC) +
+                         msg_handler.get_print_msg(print_const.FILE_NAME, ["file://" + warning_file_path]) +
+                         msg_handler.get_print_msg(const.WARNINGS,
+                                                   [msg_handler.get_error_msg(err_const.TAB_AND_SPACES, [1])]) +
+                         msg_handler.get_print_msg(const.WARNINGS,
+                                                   [msg_handler.get_error_msg(err_const.TAB_AND_SPACES, [2])]) +
+                         msg_handler.get_print_msg(print_const.WARNINGS_IN_FILE, [2]) +
+                         msg_handler.get_print_msg(print_const.LINTING_COMPLETE) +
+                         msg_handler.get_print_msg(print_const.TOTAL_WARNINGS, [2]) +
+                         msg_handler.get_print_msg(print_const.TOTAL_ERRORS, [0]), result)
+
+    def test_error_message_printed(self):
+        out = StringIO()
+        error_file_path = os.path.join(TESTS_RESOURCES_PATH, 'error_handling_files/error-file.brs')
+        result = bslint.bslint.runner(to_lex=error_file_path, out=out).printed_output
+        print(result)
+        self.assertEqual(msg_handler.get_print_msg(print_const.NO_MANIFEST) +
+                         msg_handler.get_print_msg(print_const.NO_BSLINTRC) +
+                         msg_handler.get_print_msg(print_const.FILE_NAME, ["file://" + error_file_path]) +
+                         msg_handler.get_print_msg(const.ERRORS,
+                                                   [msg_handler.get_error_msg(err_const.UNMATCHED_QUOTATION_MARK,
+                                                                              ['"error file', 1])]) +
+                         msg_handler.get_print_msg(print_const.LINTING_COMPLETE) +
+                         msg_handler.get_print_msg(print_const.TOTAL_WARNINGS, [0]) +
+                         msg_handler.get_print_msg(print_const.TOTAL_ERRORS, [1]), result)
 
     def test_error_handled_on_last_line_without_return(self):
         error_file_path = os.path.join(TESTS_RESOURCES_PATH, 'error_handling_files/error-file.brs')

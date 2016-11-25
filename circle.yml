@@ -10,12 +10,10 @@ dependencies:
     - pip install -r requirements.txt
     - python setup.py install
 test:
-  pre:
-    - pip install coverage
-    - pip install pylint
   override:
     - nosetests --ignore-files="fabfile.py" --ignore-files="setup.py" --with-coverage --cover-inclusive --cover-package=bslint
   post:
-    - coverage report --omit="bslint/__main__.py" -m > $CIRCLE_ARTIFACTS/coverage.txt
+    - coverage combine
+    - coverage report -m > $CIRCLE_ARTIFACTS/coverage.txt
     - cd bslint && pylint bslint > $CIRCLE_ARTIFACTS/pylint_bslint.txt
     - cd tests && pylint tests > $CIRCLE_ARTIFACTS/pylint_tests.txt
