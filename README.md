@@ -36,8 +36,13 @@ To run `bslint` from the terminal, `cd` to the directory that you wish to lint a
 
 You can run `bslint` in multiple ways:
 * `bslint` -> Executes on the current directory and all subdirectories
-* `bslint <directory_path>` -> Executes on the specified directory (if directory is not in the ignore list)
-* `bslint <file_path>` -> Executes only on the specified file (even if the parent directory is in the ignore list)
+* `bslint -p <directory_path>` -> Executes on the specified directory (if directory is not in the ignore list)
+* `bslint -p <file_path>` -> Executes only on the specified file (even if the parent directory is in the ignore list)
+* `bslint -l` -> will only check the code for styling warnings, therefore not giving any errors.  
+   You can combine the `-p` flag with the `-l` if you want to only lex a specific folder or directory.(e.g. `bslint -p     <file_path> -l` 
+* `bslint -v` -> will give you the current version. 
+For a general overview of all the possible commands you can always type `bslint -h` or `bslint --help`
+
 
 ##Advanced Options
 
@@ -60,6 +65,8 @@ In this file you can specify specific directories you want to ignore each time a
 ```
 
 For a full list of styling rules, view the default config file in bslint/config in the Github source code
+
+
 
 ## Watching for Changes
 

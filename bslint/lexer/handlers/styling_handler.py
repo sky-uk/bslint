@@ -103,6 +103,8 @@ class StylingHandler:
         self._check_spelling()
 
     def _get_last_line(self):
+        if self.current_char_index == 0:
+            return ""
         return self.characters[:self.current_char_index].splitlines()[-1]
 
     def _check_skip_line(self):
