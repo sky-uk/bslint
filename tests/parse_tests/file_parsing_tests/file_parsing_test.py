@@ -17,3 +17,9 @@ class TestMultiLineReductionParse(unittest.TestCase):
         parser = Parser()
         result = parser.parse(file)
         self.assertEqual("Success", result["Status"])
+
+    def test_if_inside_function(self):
+        file = open(TESTS_RESOURCES_PATH + "/files_to_parse/if_stmt_inside_function.brs", "r+").read()
+        parser = Parser()
+        result = parser.parse(file)
+        self.assertEqual("Success", result["Status"])

@@ -24,10 +24,10 @@ class TestIfBlockParse(unittest.TestCase):
     def test_if_closed_endfor(self):
         self.common.status_error("if function() then\n x = 4\n end for")
 
-    def test_if_with_else_if_closed_endfor(self):
+    def test_if_with_else_if_closed_endif(self):
         self.common.match_program(const.BLOCK_STMT, "if x = 3 then\n x = 4\n else if x = 4\n x = 5\n end if")
 
-    def test_if_with_else_closed_endfor(self):
+    def test_if_with_else_closed_endif(self):
         self.common.match_program(const.BLOCK_STMT, "if x = 3 then\n x = 4\n else\n x = 5\n end if")
 
     def test_if_with_else_if_and_ele_closed_endfor(self):
