@@ -42,8 +42,9 @@ RULES_LIST = {
         const.END_IF: [
             ([const.IF_STMT, const.BLOCK_STMT, const.END_IF], const.BLOCK_STMT),
             ([const.IF_STMT, const.END_IF], const.BLOCK_STMT),
+            ([const.IF_BLOCK, const.BLOCK_STMT, const.END_IF], const.BLOCK_STMT),
             ([const.ELSE_STMT, const.BLOCK_STMT, const.END_IF], const.END_IF),
-            ([const.IF_BLOCK, const.ELSE_IF_BLOCK, const.END_IF], const.BLOCK_STMT)
+            ([const.IF_BLOCK, const.ELSE_IF_BLOCK, const.END_IF], const.BLOCK_STMT),
         ],
         const.IF_BLOCK: [([const.IF_BLOCK], const.BLOCK_STMT)],
         const.ELSE_IF_BLOCK: [([const.ELSE_IF_BLOCK, const.ELSE_IF_BLOCK], const.ELSE_IF_BLOCK)],
