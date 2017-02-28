@@ -4,9 +4,6 @@
 *We're hiring!*
 [http://developers.sky.com](http://developers.sky.com)
 
-*Ever thought about joining us?*
-[Feature Role: Python Developer for Sky Tickets in Osterley](https://goo.gl/AUZh1w)
-
 #Description
 
 This is a tool for linting BrightScript.
