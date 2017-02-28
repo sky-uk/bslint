@@ -129,8 +129,8 @@ class TestIfParse(unittest.TestCase):
     def test_if_with_print_fails(self):
         self.common.status_error("if print x")
 
-    def test_else_if_with_function_declaration_fails(self):
-        self.common.status_error("else if +")
+    def test_else_if_operator(self):
+        self.common.status_error("else if + ")
 
     def test_else_if_with_print_fails(self):
-        self.common.status_error("else if =")
+        self.common.status_error("else if = ")

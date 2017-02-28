@@ -96,7 +96,8 @@ class StylingHandler:
         self._warning_filter(commands.check_spelling(self._match.group(), self._token_lexer_type))
 
     def _check_operator_spacing(self):
-        self._warning_filter(commands.check_spaces_around_operators(self.characters, self.current_char_index))
+        self._warning_filter(
+            commands.check_spaces_around_operators(self.characters, self.current_char_index, self._match.group()))
 
     def _check_comment_styling(self):
         self._warning_filter(commands.check_comment(self._match.group()))
@@ -180,7 +181,7 @@ class StylingHandler:
             const.FUNCTION: self._check_method_dec_spacing,
             const.SUB: self._check_method_dec_spacing,
             const.SKIP_LINE: self._check_skip_line,
-            const.SKIP_FILE: self. _check_skip_file,
+            const.SKIP_FILE: self._check_skip_file,
         }
         try:
             lexer_checks[self._token_lexer_type](*args)

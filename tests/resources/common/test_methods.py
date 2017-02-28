@@ -52,8 +52,8 @@ class CommonMethods(unittest.TestCase):
         result = commands.check_method_dec_spacing(string)
         self.assertEqual(expected, result)
 
-    def spaces_around_operators(self, expected, string, chars_index):
-        result = commands.check_spaces_around_operators(string, chars_index)
+    def spaces_around_operators(self, expected, string, chars_index, operator):
+        result = commands.check_spaces_around_operators(string, chars_index, operator)
         self.assertEqual(expected, result)
 
     def spell_check(self, expected, string):

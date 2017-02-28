@@ -107,15 +107,15 @@ def check_skip_line(line_number):
     return line_number + 1
 
 
-def check_spaces_around_operators(characters, current_char_index):
+def check_spaces_around_operators(characters, current_char_index, operator):
     if not _command_is_active(const.SPACES_AROUND_OPERATORS):
         return
     allowed_spaces = config_loader.CONFIG[const.SPACES_AROUND_OPERATORS][const.PARAMS][const.SPACES_AROUND_OPERATORS]
-    before_index = current_char_index - allowed_spaces - 2
+    before_index = current_char_index - allowed_spaces - 1 - len(operator)
     after_index = current_char_index + allowed_spaces + 1
     chars_around_operator = characters[before_index:after_index]
-    if not re.match(r"(\S{0,1})\s{" + str(allowed_spaces) + r"}\S\s{" + str(
-            allowed_spaces) + r"}\S{0,1}$", chars_around_operator):
+    if not re.match(r"(\S{0,1})\s{" + str(allowed_spaces) + "}" + re.escape(operator) + r"\s{"
+                    + str(allowed_spaces) + r"}\S{0,1}$", chars_around_operator):
         return {const.ERROR_KEY: err_const.NO_SPACE_AROUND_OPERATORS, const.ERROR_PARAMS: [allowed_spaces]}
 
 
@@ -155,6 +155,7 @@ def check_trailing_white_space(last_read_line):
 def change_dict_lang(dict_lang):
     global DICTIONARY
     DICTIONARY = words_dict.get_new_dictionary(dict_lang)
+
 
 # region Private helper functions
 

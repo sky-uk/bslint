@@ -22,11 +22,11 @@ class TestSpacesAroundOperators(unittest.TestCase):
 
     def test_correct_space_before(self):
         expected = None
-        self.common.spaces_around_operators(expected, "a = 1", 3)
+        self.common.spaces_around_operators(expected, "a = 1", 3, "=")
 
     def test_incorrect_space_before(self):
         expected = {"error_key": err_const.NO_SPACE_AROUND_OPERATORS, "error_params": [1]}
-        self.common.spaces_around_operators(expected, "a = 1", 1)
+        self.common.spaces_around_operators(expected, "a = 1", 1, "=")
 
     def test_spaces_after_operator(self):
         expected = [error.get_error_msg(err_const.NO_SPACE_AROUND_OPERATORS, [1, 1])]
@@ -54,3 +54,11 @@ class TestSpacesAroundOperators(unittest.TestCase):
     def test_no_spaces_around_operator(self):
         expected = [error.get_error_msg(err_const.NO_SPACE_AROUND_OPERATORS, [1, 1])]
         self.common.lex_string(expected, 'this="words"')
+
+    def test_spaces_around_if_stmt_with_2_char_operator(self):
+        expected = []
+        self.common.lex_string(expected, 'if (parsedJSONObject <> invalid)')
+
+    def test_spaces_around_if_stmt_with_3_char_operator(self):
+        expected = []
+        self.common.lex_string(expected, 'if (parsedJSONObject <<= invalid)')
