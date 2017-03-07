@@ -1,88 +1,109 @@
-sub Main(args as Dynamic)
-    m.port = CreateObject("roMessagePort")
-    m.atlasScreen = showScene("AtlasScene")
-
-    _appContext = AppContext()
-    _appContext.init(m.AtlasScene, m.port, args)
-
-    messageBus = Atlantis().messageBus
-    m.isRunning = true
-    while(m.isRunning)
-        msg = wait(10, m.port)
-
-        m.messageBus.dispatchEvent(Event(TimerContext().TIMER_TICK))
-
-        msgType = type(msg)
-
-        if msgType = "roSGNodeEvent"
-            m.messageBus.dispatchEvent(Event(msg.getNode()+"Event", {property: msg.getField(), data: msg.getData()}))
-        else if msgType = "roUrlEvent"
-            if msg.GetInt() = 1
-                m.messageBus.dispatchEvent( Event("roUrlEvent", {
-                                            sourceIdentity: msg.GetSourceIdentity(),
-                                            responseCode: msg.GetResponseCode(),
-                                            failureReason: msg.GetFailureReason(),
-                                            data: msg.getString(),
-                                            responseHeadersArray:msg.GetResponseHeadersArray()
-                                            }))
-            end if
-        else if msgType = "roDeviceInfoEvent"
-            m.messageBus.dispatchEvent(Event(DeviceInfoContext().NETWORK_CHANGE, msg))
-        end if
-    end while
-end sub
-
-sub closeApp()
-    m.isRunning = false
-    m.atlasScreen.close()
-end sub
-
-function showScene(_sceneName as String) as Object
-    screen = CreateObject("roSGScreen")
-    screen.setMessagePort(m.port)
-
-    'until Roku fix a bug with being unable to access scene using screen.GetScene()
-    m[_sceneName] = screen.CreateScene(_sceneName)
-
-    screen.show()
-
-    m[_sceneName].id = _sceneName
-
-    return screen
+function init()
+	m.top.visible = false
+	m.grid = m.top.findNode("grid")
+	m.grid.focusBitmapUri = StyleConstants().PIXEL_IMG_TRANSPARENT
+	m.top.observeField("focusedChild", "_onFocus")
+	m.pageNumber = m.top.findNode("pageNumber")
 end function
 
-function closeScreen(_screenName as String, _sceneName as String) as Void
-    m[_screenName] = Invalid
-
-    'until Roku fix a bug with being unable to access scene using screen.GetScene()
-    m[_sceneName] = Invalid
-end function
-
-function firmwareRequiresUpdate() as boolean
-    'First firmware release with SceneGraph SDK2.0 support is 6.0.
-    majorRequirement = 6
-    minorRequirement = 0
-    buildRequirement = 0
-
-    version = CreateObject("roDeviceInfo").GetVersion()
-
-    print("Firmware Version Found: " + version)
-
-    major = Mid(version, 3, 1)
-    minor = Mid(version, 5, 2)
-    build = Mid(version, 8, 5)
-
-    print("Major Version: " + major + " Minor Version: " + minor + " Build Number: " + build)
-
-    requiresUpdate = false
-    if Val(major) < majorRequirement then
-        requiresUpdate = true
-    else if Val(major) = majorRequirement then
-        c = 3
+function _onFocus() as Void
+    if nodeHasFocus(m.top)
+    	forceFocus(m.grid)
     end if
+end function
 
-    if requiresUpdate then showRequiresUpdateScreen()
+function generate()
+	if m.top.content.data <> Invalid
+		m.grid.horizFocusAnimationStyle = m.top.horizFocusAnimationStyle
+		m.grid.focusColumn = m.top.focusColumn
+		m.grid.focusBitmapUri = m.top.focusRectangle
+		m.titleYvalue = 75 - m.top.titleFontSize
+		calculateWidth()
+		checkLogo()
+		checkPagination()
 
-    return requiresUpdate
+		positionGrid()
 
+		checkItems()
+	end if
+
+	m.top.visible = true
+	m.top.generate = false
+end function
+
+function checkLogo()
+	m.title = m.top.findNode("title")
+	m.title.font.size = m.top.titleFontSize
+
+	if m.top.showLogo = true
+		m.top.findNode("logo").uri = m.top.logo
+		m.title.text = "| " + m.top.title
+		m.title.translation= "[150," + m.titleYvalue.toStr() + "]"
+	else
+		m.title.text = m.top.title
+		m.title.translation="[15," + m.titleYvalue.toStr() + "]"
+	end if
+end function
+
+function positionGrid()
+	if m.title.text <> ""
+		m.grid.translation = "[0," + (m.titleYvalue + 50).toStr() + "]"
+	else
+		m.grid.translation = "[0, 0]"
+		m.pageNumber.translation = "[" + (m.top.width - 142).toStr()+ ",0]"
+	end if
+end function
+
+function checkPagination()
+	if m.top.showPagination = true and (m.top.hidePaginationIfNoItems = false or (m.top.hidePaginationIfNoItems = true and m.top.content.data.count() > 0))
+		m.pageNumber.font.size = m.top.titleFontSize
+		m.arrayCount = ""
+		m.pageNumber.translation = "[" + (m.top.width - 122).toStr()+ "," + m.titleYvalue.toStr() + "]"
+		m.arrayCount = m.top.content.data.count().toStr()
+		m.pageNumber.text =  "1 " + getTextById("grid.label.pageNumber") + " " + m.arrayCount
+	end if
+end function
+
+function onItemFocused()
+	if m.top.content <> Invalid and m.top.content.data <> Invalid
+
+		focusedChild = m.grid.content.getChild(m.grid.itemFocused)
+		if focusedChild <> Invalid
+			focusedChild.resizeFactor = m.top.focusedResizeFactor
+			if m.top.showPagination = true and (m.top.hidePaginationIfNoItems = false or (m.top.hidePaginationIfNoItems = true and m.top.content.data.count() > 0))
+				m.pageNumber.text = (m.grid.itemFocused + 1).toStr()  + " " + getTextById("grid.label.pageNumber") + " " + m.arrayCount
+			end if
+		end if
+	end if
+	m.top.itemChanged = m.top.itemFocused
+end function
+
+function onItemUnfocused()
+	if m.grid.itemUnfocused <> -1
+		unfocusedChild = m.grid.content.getChild(m.grid.itemUnfocused)
+		unfocusedChild.resizeFactor = 1
+	end if
+end function
+
+function checkItems()
+	items = m.top.content.data
+
+	catalogueContentNode = createObject("RoSGNode", "ContentNode")
+	for each item in items
+		newNode = catalogueContentNode.createChild("ItemInterface")
+		newNode.itemContent = item
+		newNode.resizeFactor = 1
+		newNode.focusedResizeFactor = m.top.focusedResizeFactor
+		newNode.width = m.top.gridItemWidth
+		newNode.height = m.top.gridItemHeight
+		newNode.staticText = m.top.staticText
+		newNode.theme = m.top.theme
+	end for
+	m.grid.content = catalogueContentNode
+
+	m.grid.itemSize = "[" + (m.top.gridItemWidth * m.top.focusedResizeFactor).ToStr() + "," + (m.top.gridItemHeight * m.top.focusedResizeFactor).ToStr() +"]"
+end function
+
+function calculateWidth()
+	m.top.width = m.top.numColumns * (m.top.gridItemWidth + Int(m.top.itemSpacing[0]))
 end function

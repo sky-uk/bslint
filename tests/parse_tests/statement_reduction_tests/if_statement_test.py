@@ -87,6 +87,12 @@ class TestIfParse(unittest.TestCase):
     def test_if_condition_and_condition(self):
         self.common.match_statement(const.IF_STMT, "if x > 3 and y < 5")
 
+    def test_if_withminus_after_operator(self):
+        self.common.match_statement(const.IF_STMT, "if x > -3")
+
+    def test_if_plus_or_minus_after_operator_with_function_call(self):
+        self.common.match_statement(const.IF_STMT, "if x > -test()")
+
     def test_if_condition_or_condition(self):
         self.common.match_statement(const.IF_STMT, "if x > 3 or y < 5")
 

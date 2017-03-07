@@ -51,12 +51,6 @@ RULES_LIST = {
             ([const.ID, const.DOT, const.FUNCTION_CALL], const.FUNCTION_CALL),
             ([const.ENUMERABLE_OBJECT, const.DOT, const.FUNCTION_CALL], const.FUNCTION_CALL),
         ],
-        const.BUILT_IN_FUNCTION: [
-            ([const.ID, const.DOT, const.BUILT_IN_FUNCTION], const.ID)
-        ],
-        const.KEYWORD: [
-            ([const.ID, const.DOT, const.KEYWORD], const.ID)
-        ],
         const.CLOSE_CURLY_BRACKET: [
             ([const.OPEN_CURLY_BRACKET, const.CLOSE_CURLY_BRACKET], const.ENUMERABLE_OBJECT),
             ([const.OPEN_CURLY_BRACKET, const.ASSOCIATIVE_ARRAY_ARGUMENT, const.CLOSE_CURLY_BRACKET],
@@ -236,6 +230,11 @@ RULES_LIST = {
             ([const.ID, const.COMPARISON_OPERATOR, const.ID], const.CONDITION),
             ([const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.ID], const.CONDITION),
             ([const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.ID], const.CONDITION),
+
+            ([const.VALUE, const.COMPARISON_OPERATOR, const.MINUS, const.ID], const.CONDITION),
+            ([const.ID, const.COMPARISON_OPERATOR, const.MINUS, const.ID], const.CONDITION),
+            ([const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.MINUS, const.ID], const.CONDITION),
+            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.MINUS, const.COMPARISON_OPERATOR, const.ID], const.CONDITION),
         ],
         const.VALUE: [
             ([const.ID, const.COMMA, const.VALUE], const.ARGUMENT),
@@ -251,6 +250,12 @@ RULES_LIST = {
             ([const.ID, const.COMPARISON_OPERATOR, const.VALUE], const.CONDITION),
             ([const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.VALUE], const.CONDITION),
             ([const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.VALUE], const.CONDITION),
+
+            ([const.VALUE, const.COMPARISON_OPERATOR, const.MINUS, const.VALUE], const.CONDITION),
+            ([const.ID, const.COMPARISON_OPERATOR, const.MINUS, const.VALUE], const.CONDITION),
+            ([const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.MINUS, const.VALUE], const.CONDITION),
+            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.MINUS, const.VALUE],
+             const.CONDITION),
         ],
         const.FUNCTION_CALL: [
             ([const.ID, const.COMMA, const.FUNCTION_CALL], const.ARGUMENT),
@@ -266,6 +271,12 @@ RULES_LIST = {
             ([const.ID, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], const.CONDITION),
             ([const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], const.CONDITION),
             ([const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.FUNCTION_CALL], const.CONDITION),
+
+            ([const.VALUE, const.COMPARISON_OPERATOR, const.MINUS, const.FUNCTION_CALL], const.CONDITION),
+            ([const.ID, const.COMPARISON_OPERATOR, const.MINUS, const.FUNCTION_CALL], const.CONDITION),
+            ([const.FUNCTION_CALL, const.COMPARISON_OPERATOR, const.MINUS, const.FUNCTION_CALL], const.CONDITION),
+            ([const.ANONYMOUS_FUNCTION_DECLARATION, const.COMPARISON_OPERATOR, const.MINUS, const.FUNCTION_CALL],
+             const.CONDITION),
         ],
         const.VAR_AS: [
             ([const.ID, const.COMMA, const.VAR_AS], const.ARGUMENT),
