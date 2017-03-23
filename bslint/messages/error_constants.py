@@ -34,7 +34,7 @@ MESSAGE_TABLE = {
     TRAILING_WHITE_SPACE: build.Message(WARNING + ": Trailing white space. Line number: {}"),
     TRAILING_COMMA_IN_OBJECTS: build.Message(WARNING + ": Trailing comma in object literal. Line number: {}"),
     COMMAS_IN_OBJECTS: build.Message(WARNING + ": Object literal name value-pair missing comma. Line number: {}"),
-    LINE_LENGTH: build.Message(WARNING + ": Line length exceeds {} number of characters. Line number: {}"),
+    LINE_LENGTH: build.Message(WARNING + ": Line length exceeds {} characters. Line number: {}"),
     FILE_ENCODING: build.Message(WARNING + ": Your files should conform to {} encoding"),
     CONSECUTIVE_EMPTY_LINES: build.Message(
         WARNING + ": Cannot have more than {} consecutive empty lines. Line number: {}"),
