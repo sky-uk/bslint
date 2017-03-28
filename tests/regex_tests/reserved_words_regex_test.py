@@ -382,3 +382,12 @@ class TestReservedWordsRegex(unittest.TestCase):
 
     def test_component(self):
         self.common.match_regex("Component", 1, const.KEYWORD, const.KEYWORD)
+
+    def test_assertTrue(self):
+        self.common.match_regex("assertTrue", 1, const.ASSERT, const.ASSERT)
+
+    def test_assertFalse(self):
+        self.common.match_regex("assertFalse", 1, const.ASSERT, const.ASSERT)
+
+    def test_assertEqual(self):
+        self.common.match_regex("assertEqual", 1, const.ASSERT, const.ASSERT)

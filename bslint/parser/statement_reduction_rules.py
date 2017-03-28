@@ -37,7 +37,12 @@ RULES_LIST = {
              const.FUNCTION_CALL),
             ([const.BUILT_IN_FUNCTION, const.OPEN_PARENTHESIS, const.FUNCTION_CALL, const.ARGUMENT,
               const.CLOSE_PARENTHESIS], const.FUNCTION_CALL),
+            ([const.BUILT_IN_FUNCTION, const.OPEN_PARENTHESIS, const.ENUMERABLE_OBJECT, const.CLOSE_PARENTHESIS],
+             const.FUNCTION_CALL),
             ([const.OPEN_PARENTHESIS, const.VALUE, const.CLOSE_PARENTHESIS], const.ID),
+            ([const.ASSERT, const.OPEN_PARENTHESIS, const.CONDITION, const.CLOSE_PARENTHESIS], const.FUNCTION_CALL),
+            ([const.ASSERT, const.OPEN_PARENTHESIS, const.FUNCTION_CALL, const.CLOSE_PARENTHESIS], const.FUNCTION_CALL),
+            ([const.ASSERT, const.OPEN_PARENTHESIS, const.ARGUMENT, const.CLOSE_PARENTHESIS], const.FUNCTION_CALL)
         ],
         const.ENUMERABLE_OBJECT: [
             ([const.ID, const.ENUMERABLE_OBJECT], const.ID),
