@@ -237,22 +237,22 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("Val", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_stringi(self):
-        self.common.match_regex("Stringi", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("Stringi", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_stri(self):
-        self.common.match_regex("Stri", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("Stri", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_str(self):
-        self.common.match_regex("Str", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("Str", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_right(self):
-        self.common.match_regex("Right", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("Right", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_len(self):
         self.common.match_regex("Len", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_left(self):
-        self.common.match_regex("Left", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("Left", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_instr(self):
         self.common.match_regex("Instr", 1, const.KEYWORD, const.KEYWORD)

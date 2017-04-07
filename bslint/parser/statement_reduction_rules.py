@@ -54,7 +54,6 @@ RULES_LIST = {
         const.FUNCTION_CALL: [
             ([const.FUNCTION_CALL, const.DOT, const.FUNCTION_CALL], const.FUNCTION_CALL),
             ([const.ID, const.DOT, const.FUNCTION_CALL], const.FUNCTION_CALL),
-            ([const.ENUMERABLE_OBJECT, const.DOT, const.FUNCTION_CALL], const.FUNCTION_CALL),
         ],
         const.CLOSE_CURLY_BRACKET: [
             ([const.OPEN_CURLY_BRACKET, const.CLOSE_CURLY_BRACKET], const.ENUMERABLE_OBJECT),
@@ -80,7 +79,8 @@ RULES_LIST = {
         ],
         const.FUNCTION_CALL: [
             ([const.OPEN_PARENTHESIS, const.VALUE, const.CLOSE_PARENTHESIS, const.DOT, const.FUNCTION_CALL],
-             const.FUNCTION_CALL)
+             const.FUNCTION_CALL),
+            ([const.ENUMERABLE_OBJECT, const.DOT, const.FUNCTION_CALL], const.FUNCTION_CALL)
         ],
     },
     const.PRIORITY_TWO: {
