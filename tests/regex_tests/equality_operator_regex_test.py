@@ -31,7 +31,7 @@ class TestEqualityOperatorRegex(unittest.TestCase):
         self.common.match_regex("<", 0, const.OPERATOR, const.COMPARISON_OPERATOR)
 
     def test_mod(self):
-        self.common.match_regex("MOD", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("MOD", 1, const.OPERATOR, const.OPERATOR)
 
     def test_not(self):
         self.common.match_regex("NOT", 1, const.KEYWORD, const.NOT)

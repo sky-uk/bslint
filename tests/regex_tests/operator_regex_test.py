@@ -56,3 +56,6 @@ class TestOperatorRegex(unittest.TestCase):
 
     def test_divide_integer_assign(self):
         self.common.match_regex(r"\=", None, const.OPERATOR, const.OPERATOR)
+
+    def test_mod_operator(self):
+        self.common.match_regex("%", None, const.OPERATOR, const.OPERATOR)
