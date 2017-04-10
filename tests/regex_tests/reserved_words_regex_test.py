@@ -330,7 +330,10 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("FindMemberFunction", 1, const.KEYWORD, const.KEYWORD)
 
     def test_rnd(self):
-        self.common.match_regex("Rnd", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("Rnd", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
+
+    def test_mid(self):
+        self.common.match_regex("Mid", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_type(self):
         self.common.match_regex("Type", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
