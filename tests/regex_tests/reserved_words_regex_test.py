@@ -255,7 +255,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("Left", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_instr(self):
-        self.common.match_regex("Instr", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("Instr", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_chr(self):
         self.common.match_regex("Chr", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
