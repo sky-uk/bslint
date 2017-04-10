@@ -87,7 +87,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("AND", 1, const.KEYWORD, const.AND)
 
     def test_box(self):
-        self.common.match_regex("BOX", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("BOX", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_createobject(self):
         self.common.match_regex("CREATEOBJECT", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
@@ -105,7 +105,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("ENDWHILE", 1, const.KEYWORD, const.END_WHILE_TOKEN)
 
     def test_eval(self):
-        self.common.match_regex("EVAL", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("EVAL", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_exit(self):
         self.common.match_regex("EXIT", 1, const.KEYWORD, const.EXIT)
@@ -117,13 +117,13 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("FALSE", 1, const.KEYWORD, const.VALUE)
 
     def test_getglobalaa(self):
-        self.common.match_regex("GETGLOBALAA", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("GETGLOBALAA", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_getlastruncompileerror(self):
-        self.common.match_regex("GETLASTRUNCOMPILEERROR", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("GETLASTRUNCOMPILEERROR", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_getlastrunruntimeerror(self):
-        self.common.match_regex("GETLASTRUNRUNTIMEERROR", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("GETLASTRUNRUNTIMEERROR", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_invalid(self):
         self.common.match_regex("INVALID", 1, const.KEYWORD, const.VALUE)
@@ -147,7 +147,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("OR", 1, const.KEYWORD, const.OR)
 
     def test_pos(self):
-        self.common.match_regex("POS", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("POS", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_rem(self):
         self.common.match_regex("REM", 1, const.COMMENT, const.COMMENT)
@@ -159,13 +159,13 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.assertEqual(result["token_parser_type"], const.COMMENT)
 
     def test_run_uppercase(self):
-        self.common.match_regex("RUN", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("RUN", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_sub(self):
         self.common.match_regex("SUB", 1, const.SUB, const.SUB)
 
     def test_tab(self):
-        self.common.match_regex("TAB", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("TAB", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_true(self):
         self.common.match_regex("TRUE", 1, const.KEYWORD, const.VALUE)
@@ -231,7 +231,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("Substitute", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_tr(self):
-        self.common.match_regex("Tr", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("Tr", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_val(self):
         self.common.match_regex("Val", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
@@ -261,7 +261,7 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("Chr", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_asc(self):
-        self.common.match_regex("Asc", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("Asc", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_lcase(self):
         self.common.match_regex("Lcase", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
@@ -276,43 +276,43 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("ParseJson", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_run_garbage_collector(self):
-        self.common.match_regex("RunGarbageCollector", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("RunGarbageCollector", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_strtoi(self):
-        self.common.match_regex("strtoi", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("strtoi", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_format_drive(self):
-        self.common.match_regex("FormatDrive", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("FormatDrive", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_create_directory(self):
-        self.common.match_regex("CreateDirectory", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("CreateDirectory", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_delete_directory(self):
-        self.common.match_regex("DeleteDirectory", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("DeleteDirectory", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_delete_file(self):
-        self.common.match_regex("DeleteFile", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("DeleteFile", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test__match_files(self):
-        self.common.match_regex("matchFiles", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("matchFiles", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_move_file(self):
-        self.common.match_regex("MoveFile", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("MoveFile", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_copy_file(self):
-        self.common.match_regex("CopyFile", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("CopyFile", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_write_ascii_file(self):
-        self.common.match_regex("WriteAsciiFile", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("WriteAsciiFile", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_read_ascii_file(self):
-        self.common.match_regex("ReadAsciiFile", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("ReadAsciiFile", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_up_time(self):
-        self.common.match_regex("UpTime", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("UpTime", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_get_interface(self):
-        self.common.match_regex("GetInterface", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("GetInterface", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_wait(self):
         self.common.match_regex("Wait", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
@@ -321,13 +321,13 @@ class TestReservedWordsRegex(unittest.TestCase):
         self.common.match_regex("Sleep", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_eval_lowercase(self):
-        self.common.match_regex("Eval", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("Eval", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_run(self):
-        self.common.match_regex("Run", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("Run", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_find_member_function(self):
-        self.common.match_regex("FindMemberFunction", 1, const.KEYWORD, const.KEYWORD)
+        self.common.match_regex("FindMemberFunction", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_rnd(self):
         self.common.match_regex("Rnd", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
@@ -379,9 +379,6 @@ class TestReservedWordsRegex(unittest.TestCase):
 
     def test_implements(self):
         self.common.match_regex("Implements", 1, const.KEYWORD, const.KEYWORD)
-
-    def test_event(self):
-        self.common.match_regex("Event", 1, const.KEYWORD, const.BUILT_IN_FUNCTION)
 
     def test_component(self):
         self.common.match_regex("Component", 1, const.KEYWORD, const.KEYWORD)
