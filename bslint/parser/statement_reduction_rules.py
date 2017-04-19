@@ -112,7 +112,9 @@ RULES_LIST = {
             ([const.VALUE, const.MINUS, const.MINUS, const.ID], const.VALUE),
             ([const.FUNCTION_CALL, const.MINUS, const.ID], const.VALUE),
             ([const.FUNCTION_CALL, const.MINUS, const.MINUS, const.ID], const.VALUE),
-            ([const.WHILE, const.MINUS, const.ID], const.WHILE_STMT)
+            ([const.WHILE, const.MINUS, const.ID], const.WHILE_STMT),
+            ([const.MINUS, const.ID], const.VALUE),
+            ([const.PLUS, const.ID], const.VALUE),
         ],
         const.FUNCTION_CALL: [
             ([const.ID, const.COLON, const.FUNCTION_CALL], const.ASSOCIATIVE_ARRAY_ARGUMENT),
@@ -179,6 +181,8 @@ RULES_LIST = {
             ([const.FUNCTION_CALL, const.MINUS, const.VALUE], const.VALUE),
             ([const.FUNCTION_CALL, const.MINUS, const.MINUS, const.VALUE], const.VALUE),
             ([const.WHILE, const.MINUS, const.VALUE], const.WHILE_STMT),
+            ([const.MINUS, const.VALUE], const.VALUE),
+            ([const.PLUS, const.VALUE], const.VALUE),
         ],
         const.ENUMERABLE_OBJECT: [
             ([const.ID, const.COLON, const.ENUMERABLE_OBJECT], const.ASSOCIATIVE_ARRAY_ARGUMENT),
