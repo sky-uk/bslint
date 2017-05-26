@@ -4,7 +4,7 @@
 *We're hiring!*
 [http://developers.sky.com](http://developers.sky.com)
 
-# Description
+#Description
 
 This is a tool for linting BrightScript.
 
@@ -12,7 +12,7 @@ This tool has been made because there aren't any tools currently available to he
 The linter validates against the official [BrightScript Language Reference](https://sdkdocs.roku.com/display/sdkdoc/BrightScript+Language+Reference).
 Currently the linter only lexes the file and validates styling. We are actively developing a parser which will be integrated into this project.
 
-# Installing bslint via pip3
+#Installing bslint via pip3
 
 The package is published on pip3, to install follow the steps below:
 
@@ -25,11 +25,11 @@ The package is published on pip3, to install follow the steps below:
 
 To upgrade `bslint` run the following command in terminal `pip3 install bslint --upgrade`.
 
-# Running bslint from terminal
+#Running bslint from terminal
 
 To run `bslint` from the terminal, `cd` to the directory that you wish to lint and run the command `bslint`.
 
-## Basic Options
+##Basic Options
 
 You can run `bslint` in multiple ways:
 * `bslint` -> Executes on the current directory and all subdirectories
@@ -41,7 +41,7 @@ You can run `bslint` in multiple ways:
 For a general overview of all the possible commands you can always type `bslint -h` or `bslint --help`
 
 
-## Advanced Options
+##Advanced Options
 
 You can create a .bslintrc file, this MUST be in the same directory as your manifest file. 
 The .bslintrc file must be valid JSON.
