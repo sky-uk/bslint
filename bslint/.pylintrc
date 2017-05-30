@@ -1,5 +1,5 @@
 [MESSAGES CONTROL]
-disable=C0111,W0603, W0150, locally-disabled
+disable=C0111,W0603, W0150, C1801, R1705, W0235, locally-disabled
 max-line-length = 120
 
 [SIMILARITIES]
